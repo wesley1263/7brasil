@@ -1,0 +1,9 @@
+[Sun Dec 22 17:52:11 2013] [error] [client 127.0.0.1] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /var/www/7brasil/Application/Views/template/cambio.phtml on line 6, referer: http://7brasil.local/
+[Sun Dec 22 18:07:37 2013] [error] [client 127.0.0.1] PHP Fatal error:  Call to undefined method Vendor\\Library\\Form\\Form::render() in /var/www/7brasil/Application/Views/cliente/index.phtml on line 4
+[Sun Dec 22 19:19:03 2013] [error] [client 127.0.0.1] PHP Notice:  Undefined variable: form in /var/www/7brasil/Application/Controllers/ClienteController.php on line 15
+[Mon Dec 23 18:33:25 2013] [error] [client 127.0.0.1] PHP Notice:  Undefined variable: tabel in /var/www/7brasil/Application/Views/cliente/fisica.phtml on line 3, referer: http://7brasil.local/cliente
+[Mon Dec 23 18:33:25 2013] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function t_Row() on a non-object in /var/www/7brasil/Application/Views/cliente/fisica.phtml on line 3, referer: http://7brasil.local/cliente
+[Mon Dec 23 18:33:52 2013] [error] [client 127.0.0.1] PHP Notice:  Undefined variable: tabel in /var/www/7brasil/Application/Views/cliente/fisica.phtml on line 3, referer: http://7brasil.local/cliente
+[Mon Dec 23 18:33:52 2013] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function t_Row() on a non-object in /var/www/7brasil/Application/Views/cliente/fisica.phtml on line 3, referer: http://7brasil.local/cliente
+[Mon Dec 23 18:33:54 2013] [error] [client 127.0.0.1] PHP Notice:  Undefined variable: tabel in /var/www/7brasil/Application/Views/cliente/fisica.phtml on line 3, referer: http://7brasil.local/cliente
+[Mon Dec 23 18:33:54 2013] [error] [client 127.0.0.1] PHP Fatal error:  Call to a member function t_Row() on a non-object in /var/www/7brasil/Application/Views/cliente/fisica.phtml on line 3, referer: http://7brasil.local/cliente
