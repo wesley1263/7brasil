@@ -167,11 +167,25 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `db_7brasil`.`tbl_classificacao`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_classificacao` (
+  `id_classificacao` INT NOT NULL AUTO_INCREMENT ,
+  `titulo_classificacao` VARCHAR(45) NOT NULL ,
+  `status_classificacao` TINYINT(1) NULL DEFAULT 1 ,
+  PRIMARY KEY (`id_classificacao`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
 -- Table `db_7brasil`.`tbl_dependentePJ`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePJ` (
   `id_dependentePJ` INT NOT NULL AUTO_INCREMENT ,
   `id_clientePJ` INT NOT NULL ,
+  `id_classificacao` INT NOT NULL ,
   `nome_dependentePJ` VARCHAR(99) NOT NULL ,
   `dt_nascimento_dependentePJ` DATE NULL ,
   `cpf_dependentePJ` VARCHAR(20) NOT NULL ,
@@ -188,9 +202,15 @@ CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePJ` (
   `status_dependentePJ` TINYINT(1) NULL DEFAULT 1 ,
   PRIMARY KEY (`id_dependentePJ`) ,
   INDEX `fk_dependente_cliente` (`id_clientePJ` ASC) ,
+  INDEX `fk_tbl_dependentePJ_tbl_classificacao1` (`id_classificacao` ASC) ,
   CONSTRAINT `fk_dependente_cliente`
     FOREIGN KEY (`id_clientePJ` )
     REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_dependentePJ_tbl_classificacao1`
+    FOREIGN KEY (`id_classificacao` )
+    REFERENCES `db_7brasil`.`tbl_classificacao` (`id_classificacao` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -644,6 +664,7 @@ COMMENT = 'departamento da empresa e do funcionario que vai viajar';
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_clientePF` (
   `id_clientePF` INT NOT NULL AUTO_INCREMENT ,
+  `id_classificacao` INT NOT NULL ,
   `nome_clientePF` VARCHAR(99) NOT NULL ,
   `dataNascimento_clientePF` DATE NULL ,
   `rg_clientePF` VARCHAR(20) NULL ,
@@ -665,7 +686,13 @@ CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_clientePF` (
   `numero_fidelidade_clientePF` VARCHAR(99) NULL ,
   `descricao_clientePF` TEXT NULL ,
   `status_clientePF` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_clientePF`) )
+  PRIMARY KEY (`id_clientePF`) ,
+  INDEX `fk_tbl_clientePF_tbl_classificacao1` (`id_classificacao` ASC) ,
+  CONSTRAINT `fk_tbl_clientePF_tbl_classificacao1`
+    FOREIGN KEY (`id_classificacao` )
+    REFERENCES `db_7brasil`.`tbl_classificacao` (`id_classificacao` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -675,6 +702,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePF` (
   `id_dependentePF` INT NOT NULL ,
   `id_clientePF` INT NOT NULL ,
+  `id_classificacao` INT NOT NULL ,
   `nome_dependentePF` VARCHAR(99) NOT NULL ,
   `dt_nascimento_dependentePF` DATE NULL ,
   `cpf_dependentePF` VARCHAR(20) NOT NULL ,
@@ -690,9 +718,15 @@ CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePF` (
   `descricao_dependentePF` TEXT NULL ,
   PRIMARY KEY (`id_dependentePF`) ,
   INDEX `fk_dependentePF_clientePF` (`id_clientePF` ASC) ,
+  INDEX `fk_tbl_dependentePF_tbl_classificacao1` (`id_classificacao` ASC) ,
   CONSTRAINT `fk_dependentePF_clientePF`
     FOREIGN KEY (`id_clientePF` )
     REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_dependentePF_tbl_classificacao1`
+    FOREIGN KEY (`id_classificacao` )
+    REFERENCES `db_7brasil`.`tbl_classificacao` (`id_classificacao` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

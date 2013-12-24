@@ -1,10 +1,10 @@
 <?php
 
 $dbconfig = array(
-'DBNAME' => '',
-'DRIVER'=> '',
-'HOST'=> '',
-'USERNAME'=> '',
-'PASSWORD'=> '',
+'DBNAME' => 'db_7brasil',
+'DRIVER'=> 'mysql',
+'HOST'=> 'localhost',
+'USERNAME'=> 'root',
+'PASSWORD'=> '123456',
 'CHARSET'=> 'utf8',
 );

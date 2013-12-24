@@ -36,6 +36,16 @@ class ClienteController extends OXE_Controller {
 		$this->view('template/footer');
 	}
 	
+	public function saveFisicaAction()
+	{
+		$_POST['nome_clientePF'] = strtoupper($_POST['nome_clientePF']);
+		foreach($_POST as $key => $value){
+			$_POST[$key] = utf8_decode(strip_tags($value));
+		}
+		$this->dump($_POST);
+		$this->dump($_FILES);
+	}
+	
 	public function juridicaAction()
 	{
 		$form = new Form();
@@ -48,6 +58,12 @@ class ClienteController extends OXE_Controller {
 		$this->view('cliente/juridica',$data);
 		$this->view('template/footer');
 		
+	}
+	
+	public function findCepAction()
+	{
+		$cep = file_get_contents("http://clareslab.com.br/ws/cep/json/".$_POST['cep'].'/');
+		echo utf8_encode($cep);
 	}
 	
 }
