@@ -161,7 +161,6 @@
 
 	  
 	  <div class="form-group">
-	  	
     	<label for="descricao_clientePF" style="color: #797676;" class="col-sm-2 control-label">Descrição</label>
 		<div class="col-sm-9">
 		<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"></textarea>
@@ -181,7 +180,7 @@
 	 
 	 <br />
 	  <div class="form-group">
-    <div class="col-sm-offset-5 col-sm-10">
+    	<div class="col-sm-offset-5 col-sm-10">
       <button type="submit" style="padding:20px 40px" class="btn btn-default">Salvar</button>
     </div>
   </div>
@@ -201,7 +200,6 @@
 		
 	
 		 jQuery("#cep_clientePF").blur(function(){
-		 // var cep = jQuery(this).val().replace('-','');
 		 var cep = jQuery(this).val();
 		 if(cep != ''){
 		 	jQuery.ajax({
@@ -219,6 +217,7 @@
 		 			jQuery('#bairro_clientePF').val(data.bairro);
 		 			jQuery('#cidade_clientePF').val(data.cidade	);
 		 			jQuery('#uf_clientePF').val(data.uf);
+		 			jQuery('#pais_clientePF').val('Brasil');
 		 			jQuery('#numero_clientePF').focus();
 		 				
 		 			}else{

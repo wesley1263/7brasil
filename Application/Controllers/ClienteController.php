@@ -2,6 +2,7 @@
 
 use Vendor\Core\OXE_Controller;
 use Vendor\Library\Form\Form;
+use Vendor\Library\FormStyle\FormStyle;
 
 class ClienteController extends OXE_Controller {
 	
@@ -48,7 +49,7 @@ class ClienteController extends OXE_Controller {
 	
 	public function juridicaAction()
 	{
-		$form = new Form();
+		$form = new FormStyle();	
 		$data['title'] = 'Gerenciar Clientes - Pessoa Física';
 		$data['form'] = $form;
 		
@@ -64,6 +65,13 @@ class ClienteController extends OXE_Controller {
 	{
 		$cep = file_get_contents("http://clareslab.com.br/ws/cep/json/".$_POST['cep'].'/');
 		echo utf8_encode($cep);
+	}
+	
+	public function saveJuridicaAction()
+	{
+		$_POST['nomefantasia_clientePJ'] = strtoupper($_POST['nomefantasia_clientePJ']);
+		$this->dump($_POST);
+		$this->dump($_FILES);
 	}
 	
 }
