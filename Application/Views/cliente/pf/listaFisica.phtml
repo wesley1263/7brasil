@@ -38,8 +38,8 @@
 								$cliente['cpf_clientePF'],
 								$cliente['uf_clientePF'],
 								$cliente['telefone_clientePF'],
-								'<center><a href="#"><span id="bt_update_PF" id_clientePF="'.$cliente['id_clientePF'].'"class="glyphicon glyphicon-pencil"></span></a></center>',
-								'<center><a href="#"><span class="glyphicon glyphicon-remove"></span></a></center>'
+								'<center><a href="/cliente/updateFisica/id/'.$cliente['id_clientePF'].'"><span  class="glyphicon glyphicon-pencil"></span></a></center>',
+								'<center><a href="/cliente/deleteClientePF/id/'.$cliente['id_clientePF'].'"><span class="glyphicon glyphicon-remove"></span></a></center>'
 								)
 						  );
 			}
@@ -49,10 +49,6 @@
 </div>
 <script>
 	jQuery(function(){
-		jQuery('#bt_update_PF').click(function(){
-			
-			id = jQuery(this).attr('id_clientePF');
-			location.href="\cadfisica&id="+id;
-		});
+
 	});
 </script>

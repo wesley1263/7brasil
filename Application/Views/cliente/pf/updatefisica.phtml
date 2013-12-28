@@ -1,36 +1,41 @@
-<h3 style="color:#c7187d;font-weight: bold">Cadastro de Cliente PF</h3>
-<br />
+
 <div class="cli_fisica">
-<form name="form_clifisica" method="post" action="/cliente/saveFisica" id="form_clifisico" role="form" class="form-horizontal" enctype="multipart/form-data">
+<form name="form_clifisica" method="post" action="/cliente/saveUpdatePF" id="form_clifisico" role="form" class="form-horizontal" enctype="multipart/form-data">
 	 <fieldset id="fs_form_pf">
+	 	<input type="hidden" name="id_clientePF" value="<?=$clientes[0]['id_clientePF']?>" />
 	 <?php
+	 foreach($classif as $class){
+	 	$opt_cl[$class['id_classificacao']] = $class['titulo_classificacao'];
+	 }
+	 
 	 $form->groupOpen();
-	 $form->select(array('1' =>'Sr','2' =>'Sra'),'id_classificacao','Classificação','1');
+	 $form->select($opt_cl,'id_classificacao','Classificação',$clientes[0]['id_classificacao']);
 	 $form->groupClose();
-	  ?>
+	 ?>	 
+	 
 	<div class="form-group">
     <label for="nome_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Nome</label>
     <div class="col-sm-9">
-      <input type="text" style="text-transform: uppercase;" required class="form-control" id="nome_clientePF" placeholder="Nome" name="nome_clientePF">
+      <input type="text" style="text-transform: uppercase;" required class="form-control" value="<?=utf8_encode($clientes[0]['nome_clientePF'])?>" id="nome_clientePF" placeholder="Nome" name="nome_clientePF">
     </div>
   </div>
   
   <div class="form-group">
     <label for="dataNascimento_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Data Nasc.</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="dataNascimento_clientePF" required name="dataNascimento_clientePF">
+      <input type="text" class="form-control" id="dataNascimento_clientePF" value="<?=date('d/m/Y',strtotime($clientes[0]['dataNascimento_clientePF']))?>" required name="dataNascimento_clientePF">
     </div>
   </div>
   
    <div class="form-group">
     <label for="rg_clientePF" style="color: #797676;" class="col-sm-2 control-label">*RG</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" required id="rg_clientePF" name="rg_clientePF" placeholder="RG">
+      <input type="text" class="form-control" required value="<?=$clientes[0]['rg_clientePF']?>" id="rg_clientePF" name="rg_clientePF" placeholder="RG">
     </div>
     
     <label for="cpf_clientePF" style="color: #797676;"  class="col-sm-2 control-label">*CPF</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="cpf_clientePF" required name="cpf_clientePF" placeholder="CPF">
+      <input type="text" class="form-control" id="cpf_clientePF" value="<?=$clientes[0]['cpf_clientePF']?>" required name="cpf_clientePF" placeholder="CPF">
     </div>
   </div>
   
@@ -38,14 +43,14 @@
    <div class="form-group">
    <label for="cep_clientePF" style="color: #797676;"  class="col-sm-2 control-label">*CEP</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="cep_clientePF" required name="cep_clientePF" placeholder="CEP"><div id="msg_cep"></div>
+      <input type="text" class="form-control" id="cep_clientePF" value="<?=$clientes[0]['cep_clientePF']?>" required name="cep_clientePF" placeholder="CEP"><div id="msg_cep"></div>
     </div>
   </div>
   
   	<div class="form-group">
     <label for="endereco_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Endereço</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control" id="endereco_clientePF" required placeholder="Endereço" name="endereco_clientePF">
+      <input type="text" class="form-control" id="endereco_clientePF" value="<?=utf8_encode($clientes[0]['endereco_clientePF'])?>" required placeholder="Endereço" name="endereco_clientePF">
     </div>
     
   </div>
@@ -53,24 +58,24 @@
    <div class="form-group">
     <label for="numero_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Número</label>
     <div class="col-sm-2">
-      <input type="text" class="form-control" id="numero_clientePF" required placeholder="Número" name="numero_clientePF">
+      <input type="text" class="form-control" id="numero_clientePF" value="<?=$clientes[0]['numero_clientePF']?>" required placeholder="Número" name="numero_clientePF">
     </div>
     
      <label for="complemento_clientePF" style="color: #797676;" class="col-sm-2 control-label">Complemento</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="complemento_clientePF" name="complemento_clientePF" placeholder="Complemento">
+      <input type="text" class="form-control" id="complemento_clientePF" value="<?=$clientes[0]['complemento_clientePF']?>" name="complemento_clientePF" placeholder="Complemento">
     </div>
   </div>
   
     <div class="form-group">
     <label for="bairro_clientePF" style="color: #797676;" class="col-sm-2 control-label">Bairro</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="bairro_clientePF" name="bairro_clientePF" placeholder="Bairro">
+      <input type="text" class="form-control" id="bairro_clientePF" name="bairro_clientePF" value="<?=($clientes[0]['bairro_clientePF'])?>" placeholder="Bairro">
     </div>
     
     <label for="cidade_clientePF" style="color: #797676;" class="col-sm-1 control-label">Cidade</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="cidade_clientePF" name="cidade_clientePF" placeholder="CIdade">
+      <input type="text" class="form-control" id="cidade_clientePF" value="<?=($clientes[0]['cidade_clientePF'])?>" name="cidade_clientePF" placeholder="CIdade">
     </div>
      
   </div>
@@ -79,31 +84,31 @@
   <div class="form-group">
   	<label for="uf_clientePF" style="color: #797676;" class="col-sm-2 control-label">UF</label>
     <div class="col-sm-2">
-      <input type="text" class="form-control" id="uf_clientePF" name="uf_clientePF" placeholder="UF">
+      <input type="text" class="form-control" id="uf_clientePF" value="<?=$clientes[0]['uf_clientePF']?>" name="uf_clientePF" placeholder="UF">
     </div>
     
     	<label for="pais_clientePF" style="color: #797676;" class="col-sm-2 control-label">País</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="pais_clientePF" name="pais_clientePF" placeholder="País">
+      <input type="text" class="form-control" id="pais_clientePF" name="pais_clientePF" value="<?=$clientes[0]['pais_clientePF']?>" placeholder="País">
     </div>
   </div>	
   	
   <div class="form-group">
     <label for="email_clientePF" style="color: #797676;" class="col-sm-2 control-label">Email</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control" id="email_clientePF" placeholder="Email" name="email_clientePF">
+      <input type="text" class="form-control" id="email_clientePF" placeholder="Email" value="<?=$clientes[0]['email_clientePF']?>" name="email_clientePF">
     </div>
   </div>
   
    <div class="form-group">
     <label for="telefone_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Telefone</label>
     <div class="col-sm-4">
-      <input type="text"  class="form-control" id="telefone_clientePF" required placeholder="Telefone" name="telefone_clientePF">
+      <input type="text"  class="form-control" id="telefone_clientePF" required placeholder="Telefone" value="<?=$clientes[0]['telefone_clientePF']?>" name="telefone_clientePF">
     </div>
     
     <label for="celular_clientePF" style="color: #797676;" class="col-sm-2 control-label">Celular</label>
     <div class="col-sm-3">
-      <input type="text"  class="form-control" id="celular_clientePF" placeholder="Celular" name="celular_clientePF">
+      <input type="text"  class="form-control" id="celular_clientePF" placeholder="Celular" value="<?=$clientes[0]['celular_clientePF']?>" name="celular_clientePF">
     </div>
     
   </div>
@@ -111,13 +116,13 @@
    <div class="form-group">
    	<label for="numero_passaporte_clientePF" style="color: #797676;" class="col-sm-2 control-label">Passaporte</label>
     <div class="col-sm-4">
-      <input type="text"  class="form-control" id="numero_passaporte_clientePF" placeholder="Passaporte" name="numero_passaporte_clientePF">
+      <input type="text"  class="form-control" id="numero_passaporte_clientePF" placeholder="Passaporte" value="<?=$clientes[0]['numero_passaporte_clientePF']?>" name="numero_passaporte_clientePF">
     </div>
    	
    	
    	 <label for="dt_validadePassaporte_clientePF" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
     	<div class="col-sm-3">
-      <input type="text" class="form-control" id="dt_validadePassaporte_clientePF" name="dt_validadePassaporte_clientePF">
+      <input type="text" class="form-control" id="dt_validadePassaporte_clientePF" value="<?=date('d/m/Y',strtotime($clientes[0]['dt_validadePassaporte_clientePF']))?>" name="dt_validadePassaporte_clientePF">
     	</div>
     	
    	</div> 
@@ -125,7 +130,7 @@
 	 <div class="form-group">
 	 	 <label for="numero_fidelidade_clientePF" style="color: #797676;" class="col-sm-2 control-label">Nº Fidelidade</label>
     	<div class="col-sm-4">
-      <input type="text" class="form-control" id="numero_fidelidade_clientePF" name="numero_fidelidade_clientePF" placeholder="Número Fidelidade">
+      <input type="text" class="form-control" id="numero_fidelidade_clientePF" name="numero_fidelidade_clientePF" value="<?=$clientes[0]['numero_fidelidade_clientePF']?>" placeholder="Número Fidelidade">
     	</div>
 	
 	 </div>
@@ -155,16 +160,21 @@
 	  <div class="form-group">
     	<label for="descricao_clientePF" style="color: #797676;" class="col-sm-2 control-label">Descrição</label>
 		<div class="col-sm-9">
-		<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"></textarea>
+		<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"><?=($clientes[0]['descricao_clientePF'])?></textarea>
 		</div>
 		
 		<label for="status_clientePF" style="color: #797676;" class="col-sm-2 control-label">Status</label>
-	    <div class="col-sm-3">
+	  
+	    <!-- <div class="col-sm-3">
 	     <select class="form-control" name="status_clientePF">
 	     	<option value="1">ATIVO</option>
 	     	<option value="0">INATIVO</option>
 	     </select>
-	    </div>
+	    </div> -->
+	    <?php 
+	     $form->select(array('1'=>'ATIVO','0'=>'INATIVO'),'status_clientePF','Status',$clientes[0]['status_clientePF']);
+	    ?>
+	    
 	  </div>	
 	 
 	 
@@ -173,7 +183,7 @@
 	 <br />
 	  <div class="form-group">
     	<div class="col-sm-offset-5 col-sm-10">
-      <button type="submit" style="padding:20px 40px" class="btn btn-default">Salvar</button>
+      <button type="submit" style="padding:20px 40px" class="btn btn-default">Atualizar</button>
     </div>
   </div>
 	
