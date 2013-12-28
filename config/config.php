@@ -19,6 +19,7 @@ define('LIBRARY_PATH',VENDOR_PATH.B.'Library'.B);
 
 ############ CONFIG PATH ############
 define('CONFIG_PATH',OXE_PATH.B.'config'.B);
+define('UPLOAD_PATH',OXE_PATH.'skin'.B.'img'.B.'uploaded');
 
 
 ############# APPLICATION PATH #############
