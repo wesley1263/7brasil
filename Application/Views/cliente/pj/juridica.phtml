@@ -3,6 +3,14 @@
 		<h3 style="color: #c7187d">Cadastro de Empresa</h3>
 		<br />
 <?php
+	if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+	
 
 	$form->init('form_cli_pj','/cliente/saveJuridica');	
 	

@@ -1,0 +1,206 @@
+<div class="form_dependentePF">
+<?php 
+
+
+$form->init('form_dep_pf','/dependente/saveDependentePF');	
+
+foreach($clientes as $cli){
+	$opt_cli[$cli['id_clientePF']] = $cli['nome_clientePF'];
+}
+
+foreach($classif as $clas){
+	$opt_class[$clas['id_classificacao']] = $clas['titulo_classificacao'];
+}
+
+$form->groupOpen();
+$form->select($opt_cli,'id_clientePF','Cliente','1',2,5);
+$form->groupClose();
+
+$form->groupOpen();
+$form->select($opt_class,'id_classificacao','Classificação','1',2,2);
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'nome_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'dt_nascimento_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'Data de Nasc.',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Data de Nasc.',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'cpf_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'CPF',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'* CPF',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'rg_dependentePF',
+				'type' =>'text',
+				'placeholder' => '* RG',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'RG',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'telefone_dependentePF',
+				'type' =>'text',
+				'placeholder' => ' *Telefone',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Telefone',
+				'value' =>'',
+				'required' => false
+				));
+// $form->groupClose();
+// 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'celular_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'Celular',
+				'num_label' =>'1',
+				'num_input' =>'2',
+				'label' =>'Celular',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'email_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Email',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'numero_passaporte_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'Nº Passaporte',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Nº Passaporte',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'dt_validade_passaporte_dependentePF',
+				'type' =>'text',
+				'placeholder' => 'Data Validade',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Data Validade',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'foto_dependentePF',
+				'type' =>'file',
+				'placeholder' => 'Foto',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Foto',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'copia_cpf_dependentePF',
+				'type' =>'file',
+				'placeholder' => 'Cópia CPF',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Cópia CPF',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'copia_rg_dependentePF',
+				'type' =>'file',
+				'placeholder' => 'Cópia RG',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Cópia RG',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+
+// $form->groupOpen();		
+		$form->textarea('descricao_dependentePF','Descrição','','Descrição',2,5);
+// $form->groupClose();
+		
+		
+echo str_repeat('<br />',3);
+
+	$form->groupOpen();		
+	$form->submit('Salvar','style="padding:5% 13%"');
+	$form->groupClose();
+
+$form->close();
+?>
+</div>
+<script>
+	jQuery(function(){
+		
+		jQuery('#nome_dependentePF').css('text-transform','uppercase');
+		jQuery('#dt_nascimento_dependentePF').mask('99/99/9999');
+		jQuery('#cpf_dependentePF').mask('999.999.999-99');
+		jQuery('#rg_dependentePF').mask('99.999.999-9');
+		jQuery('#telefone_dependentePF').mask('(99) 9999-9999');
+		jQuery('#celular_dependentePF').mask('(99) 9999-9999');
+		jQuery('#dt_validade_passaporte_dependentePF').mask('99/99/9999');
+		
+	});
+</script>

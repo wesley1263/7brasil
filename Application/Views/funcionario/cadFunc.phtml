@@ -1,0 +1,351 @@
+<h3 style="color: #C7187D">Cadastro de Funcionário</h3>
+<br />
+<div class="form_dependentePJ">
+	<fieldset>
+<?php 
+
+
+$form->init('form_func','/funcionario/saveFuncionario');	
+
+foreach($empresas as $cli){
+	$opt_cli[$cli['id_clientePJ']] = $cli['nomefantasia_clientePJ'];
+}
+
+foreach($classificacao as $clas){
+	$opt_class[$clas['id_classificacao']] = $clas['titulo_classificacao'];
+}
+
+$form->groupOpen();
+$form->select($opt_cli,'id_clientePJ','Cliente','1',2,4);
+$form->groupClose();
+
+$form->groupOpen();
+$form->select($opt_class,'id_classificacao','Classificação','1',2,2);
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'nome_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'dt_nascimento_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Data de Nasc.',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Data de Nasc.',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'cpf_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'CPF',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'CPF',
+				'value' =>'',
+				'required' => true
+				));
+// $form->groupClose();
+// 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'rg_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'RG',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'RG',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'telefone_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Telefone',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Telefone',
+				'value' =>'',
+				'required' => true
+				));
+// $form->groupClose();
+// // 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'celular_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Celular',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'Celular',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'cep_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'CEP',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'CEP',
+				'value' =>'',
+				'required' => false
+				));
+echo '<div class="msg_cep"></div>';
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'endereco_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Endereço',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Endereço',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'numero_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Número',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Número',
+				'value' =>'',
+				'required' => true
+				));
+// $form->groupClose();
+// 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'complemento_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Complemento',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Complemento',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'bairro_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Bairro',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Bairro',
+				'value' =>'',
+				'required' => true
+				));
+// $form->groupClose();
+// 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'cidade_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Cidade',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'Cidade',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'uf_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'UF',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'UF',
+				'value' =>'',
+				'required' => true
+				));
+// $form->groupClose();
+// 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'pais_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Pais',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'Pais',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'email_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Email',
+				'value' =>'',
+				'required' => true
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'numero_passaporte_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Nº Passaporte',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Nº Passaporte',
+				'value' =>'',
+				'required' => false
+				));
+// $form->groupClose();
+// 
+// $form->groupOpen();	
+$form->input(array(
+				'name' =>'dt_validade_passaporte_dependentePJ',
+				'type' =>'text',
+				'placeholder' => 'Data Validade',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'Validade',
+				'value' =>'',
+				'required' => false
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'foto_dependentePJ',
+				'type' =>'file',
+				'placeholder' => 'Foto',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Foto',
+				'value' =>'',
+				'required' => FALSE
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'copia_rg_dependentePJ',
+				'type' =>'file',
+				'placeholder' => 'Cópia RG',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Cópia RG',
+				'value' =>'',
+				'required' => FALSE
+				));
+$form->groupClose();
+
+$form->groupOpen();	
+$form->input(array(
+				'name' =>'copia_cpf_dependentePJ',
+				'type' =>'file',
+				'placeholder' => 'Cópia CPF',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Cópia CPF',
+				'value' =>'',
+				'required' => FALSE
+				));
+$form->groupClose();
+
+
+
+$form->groupOpen();
+$form->select(array('1'=>'ATIVO','0'=>'INATIVO'),'status_dependentePJ','Status','1',2,2);
+$form->groupClose();
+
+$form->textarea('descricao_dependentePJ','Descrição','','Descrição',2,5);
+
+echo str_repeat('<br />',3);
+
+	$form->groupOpen();		
+	$form->submit('Salvar','style="padding:5% 13%"');
+	$form->groupClose();
+
+$form->close();
+?>
+</fieldset>
+</div>
+<script>
+	jQuery(function(){
+		jQuery('#nome_dependentePF').css('text-transform','uppercase');
+		jQuery('#dt_nascimento_dependentePJ').mask('99/99/9999');
+		jQuery('#cpf_dependentePJ').mask('999.999.999-99');
+		jQuery('#rg_dependentePJ').mask('99.999.999-99');
+		jQuery('#telefone_dependentePJ').mask('(99) 9999-9999');
+		jQuery('#celular_dependentePJ').mask('(99) 9999-9999');
+		jQuery('#dt_validade_passaporte_dependentePJ').mask('99/99/9999');
+		jQuery('#cep_dependentePJ').mask('99999-999');
+		
+		jQuery("#cep_dependentePJ").blur(function(){
+		 var cep = jQuery(this).val();
+		 if(cep != ''){
+		 	jQuery.ajax({
+		 		url: '/cliente/findCep',
+		 		type: 'post',
+		 		dataType: 'json',
+		 		data: {cep:jQuery(this).val()},
+		 		beforeSend: function(){
+		 			jQuery('#form_dependentePJ').attr('disabled',true);
+		 		},
+		 		success: function(data){
+		 			if(data != '0'){
+		 			jQuery('#form_dependentePJ').attr('disabled',false);
+		 			jQuery('#endereco_dependentePJ').val(data.endereco);
+		 			jQuery('#bairro_dependentePJ').val(data.bairro);
+		 			jQuery('#cidade_dependentePJ').val(data.cidade	);
+		 			jQuery('#uf_dependentePJ').val(data.uf);
+		 			jQuery('#pais_dependentePJ').val('Brasil');
+		 			jQuery('#numero_dependentePJ').focus();
+		 				
+		 			}else{
+			 			jQuery('#form_dependentePJ').attr('disabled',false);
+		 				jQuery('.msg_cep').html('CEP Não encontrado!');
+		 				jQuery('#endereco_clientePF').focus();
+		 			}
+		 			
+		 		}
+		 	});
+		 }
+		 	
+		 });
+	});
+</script>

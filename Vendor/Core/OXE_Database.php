@@ -162,12 +162,15 @@ abstract class OXE_Database extends PDO {
 	}
 	
 	
-	public function from($table,$alias = null)
+	public function from($table = null,$alias = null)
 	{
 		if($alias != null){
 			$alias = "AS $alias";
 		}
-		$sql = "FROM $table $alias WHERE TRUE ";
+		if(is_null($table)){
+			$table = $this->_name;
+		}
+		$sql = "FROM $table $alias";
 		$this->_from = $sql;
 		return $this;
 	}
@@ -226,7 +229,7 @@ abstract class OXE_Database extends PDO {
 		}else{
 			$this->_where = null;
 		}
-		$this->query = "SELECT $this->_distinct $this->_select $this->_from  $this->_join  $this->_where $this->_or  $this->_order $this->_limit";
+		$this->query = "SELECT $this->_distinct $this->_select $this->_from  $this->_join   WHERE TRUE $this->_where $this->_or  $this->_order $this->_limit";
 		try{
 		$db = $this->prepare($this->query);
 		$db->execute();
@@ -245,7 +248,7 @@ abstract class OXE_Database extends PDO {
 			$this->_where = null;
 		}
 		
-		echo $this->query = "SELECT $this->_distinct $this->_select $this->_from $this->_join $this->_where $this->_or  $this->_order $this->_limit";
+		echo $this->query = "SELECT $this->_distinct $this->_select $this->_from $this->_join  WHERE TRUE $this->_where $this->_or  $this->_order $this->_limit";
 	}
 	
 	public function query($query){

@@ -57,9 +57,9 @@ class FormStyle {
 	
 	public function select(array $data,$name, $label,$selected = null, $num_lab = 2 , $num_select= 2)
 	{
-		$this->_select = '<label for="id_classificacao" style="color: #797676;" class="col-sm-2 control-label">*Classificação</label>';
-	    $this->_select .=' <div class="col-sm-2">';
-	    $this->_select .= '<select class="form-control" name="id_classificacao">';
+		$this->_select = '<label for="'.$name.'" style="color: #797676;" class="col-sm-'.$num_lab.' control-label">'.$label.'</label>';
+	    $this->_select .=' <div class="col-sm-'.$num_select.'">';
+	    $this->_select .= '<select class="form-control" name="'.$name.'">';
 		foreach($data as $key => $value){
 			if($selected == $key){
 	     	$this->_select .= "<option value=\"$key\" selected >$value</option>";
