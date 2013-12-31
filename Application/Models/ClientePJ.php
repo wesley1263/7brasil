@@ -20,7 +20,10 @@ class ClientePJ extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->fetch($this->_primary." = '$id'");
+		return $this->select()
+					->from()
+					->where($this->_primary." = $id")
+					->result();
 	}
 	
 	public function delete_cli($id)
@@ -35,17 +38,16 @@ class ClientePJ extends OXE_Model {
 	
 	public function update_cli(array $data)
 	{
-		return $this->update($data, $data['id_clientePF']." = ");
+		return $this->update($data, $this->_primary." = ".$data['id_clientePJ']);
 	}
 	
 	public function findCNPJ($cnpj)
 	{
-		$query = $this->select('cnpj_clientePJ')
+		return $this->select('cnpj_clientePJ')
 				      ->from($this->_name)
 					  ->where("cnpj_clientePJ = '$cnpj'")
 					  ->result();
 					  
-		return $query;
 	}
 	
 }

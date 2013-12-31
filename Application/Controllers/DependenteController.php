@@ -47,12 +47,12 @@ class DependenteController extends OXE_Controller{
 		
 		$model = new DependentePF();
 		$form = new FormStyle();
-		$class = new Classificacao();
-		$sess = new Session();
-		$data['title'] = 'Gerenciar Dependentes';
-		$data['classif'] = $class->list_all();
-		$data['clientes'] = $model->clientePF();
-		$data['form'] = $form;
+		$class = new Classificacao ();
+		$sess = new Session ();
+		$data ['title'] = 'Gerenciar Dependentes';
+		$data ['classif'] = $class->list_all ();
+		$data ['clientes'] = $model->clientePF ();
+		$data ['form'] = $form;
 		$data['session'] = $sess;
 				
 		$this->view('template/head',$data);
@@ -64,11 +64,21 @@ class DependenteController extends OXE_Controller{
 	
 	public function saveDependentePFAction()
 	{
+		$model = new DependentePF();
+		$session = new Session();
+		
+		if($model->findCPF($_POST['cpf_dependentePF'])){
+			$session->setFlashMessage('Dependente já cadastrado no sistema!','error');
+			$this->redirector('/dependente/dependentePF');
+			exit;
+		}
 		$_POST['nome_dependentePF'] = strtoupper($_POST['nome_dependentePF']);
 		$_POST['dt_nascimento_dependentePF'] = $this->dateToMysql($_POST['dt_nascimento_dependentePF']);
 		if($_POST['dt_validade_passaporte_dependentePF']){
 		$_POST['dt_validade_passaporte_dependentePF'] = $this->dateToMysql($_POST['dt_validade_passaporte_dependentePF']);
 		}
+		$this->dump($_POST);
+		exit();
 
 		
 		if($_FILES['foto_dependentePF']['size'] > 0){
@@ -97,8 +107,6 @@ class DependenteController extends OXE_Controller{
 			move_uploaded_file($_FILES['copia_rg_dependentePF']['tmp_name'],UPLOAD_PATH.DIRECTORY_SEPARATOR.$new_name.$ext);
 		}
 		
-		$model = new DependentePF();
-		$session = new Session();
 		
 		if($model->add($_POST)){
 			$session->setFlashMessage('Dependente adicionado com sucesso','success');
@@ -140,7 +148,6 @@ class DependenteController extends OXE_Controller{
 		$data['clientes'] = $model->clientePF();
 		$data['form'] = $form;
 
-				
 		$this->view('template/head',$data);
 		$this->view('template/header');
 		$this->view('template/cambio');

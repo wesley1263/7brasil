@@ -1,183 +1,276 @@
-<h3 style="color:#c7187d;font-weight: bold">Cadastro de Cliente PF</h3>
+<h3 style="color: #c7187d; font-weight: bold">Cadastro de Cliente PF</h3>
 <br />
 <div class="cli_fisica">
-<form name="form_clifisica" method="post" action="/cliente/saveFisica" id="form_clifisico" role="form" class="form-horizontal" enctype="multipart/form-data">
-	 <fieldset id="fs_form_pf">
+	<form name="form_clifisica" method="post" action="/cliente/saveFisica"
+		id="form_clifisico" role="form" class="form-horizontal"
+		enctype="multipart/form-data">
+		<fieldset id="fs_form_pf">
 	 <?php
 	 $form->groupOpen();
 	 $form->select(array('1' =>'Sr','2' =>'Sra'),'id_classificacao','Classificação','1');
 	 $form->groupClose();
 	  ?>
 	<div class="form-group">
-    <label for="nome_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Nome</label>
-    <div class="col-sm-9">
-      <input type="text" style="text-transform: uppercase;" required class="form-control" id="nome_clientePF" placeholder="Nome" name="nome_clientePF">
-    </div>
-  </div>
-  
-  <div class="form-group">
-    <label for="dataNascimento_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Data Nasc.</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="dataNascimento_clientePF" required name="dataNascimento_clientePF">
-    </div>
-  </div>
-  
-   <div class="form-group">
-    <label for="rg_clientePF" style="color: #797676;" class="col-sm-2 control-label">*RG</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" required id="rg_clientePF" name="rg_clientePF" placeholder="RG">
-    </div>
-    
-    <label for="cpf_clientePF" style="color: #797676;"  class="col-sm-2 control-label">*CPF</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="cpf_clientePF" required name="cpf_clientePF" placeholder="CPF">
-    </div>
-  </div>
-  
-  
-   <div class="form-group">
-   <label for="cep_clientePF" style="color: #797676;"  class="col-sm-2 control-label">*CEP</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="cep_clientePF" required name="cep_clientePF" placeholder="CEP"><div id="msg_cep"></div>
-    </div>
-  </div>
-  
-  	<div class="form-group">
-    <label for="endereco_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Endereço</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="endereco_clientePF" required placeholder="Endereço" name="endereco_clientePF">
-    </div>
-    
-  </div>
-  
-   <div class="form-group">
-    <label for="numero_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Número</label>
-    <div class="col-sm-2">
-      <input type="text" class="form-control" id="numero_clientePF" required placeholder="Número" name="numero_clientePF">
-    </div>
-    
-     <label for="complemento_clientePF" style="color: #797676;" class="col-sm-2 control-label">Complemento</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="complemento_clientePF" name="complemento_clientePF" placeholder="Complemento">
-    </div>
-  </div>
-  
-    <div class="form-group">
-    <label for="bairro_clientePF" style="color: #797676;" class="col-sm-2 control-label">Bairro</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="bairro_clientePF" name="bairro_clientePF" placeholder="Bairro">
-    </div>
-    
-    <label for="cidade_clientePF" style="color: #797676;" class="col-sm-1 control-label">Cidade</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="cidade_clientePF" name="cidade_clientePF" placeholder="CIdade">
-    </div>
-     
-  </div>
-  
-  
-  <div class="form-group">
-  	<label for="uf_clientePF" style="color: #797676;" class="col-sm-2 control-label">UF</label>
-    <div class="col-sm-2">
-      <input type="text" class="form-control" id="uf_clientePF" name="uf_clientePF" placeholder="UF">
-    </div>
-    
-    	<label for="pais_clientePF" style="color: #797676;" class="col-sm-2 control-label">País</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="pais_clientePF" name="pais_clientePF" placeholder="País">
-    </div>
-  </div>	
-  	
-  <div class="form-group">
-    <label for="email_clientePF" style="color: #797676;" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="email_clientePF" placeholder="Email" name="email_clientePF">
-    </div>
-  </div>
-  
-   <div class="form-group">
-    <label for="telefone_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Telefone</label>
-    <div class="col-sm-4">
-      <input type="text"  class="form-control" id="telefone_clientePF" required placeholder="Telefone" name="telefone_clientePF">
-    </div>
-    
-    <label for="celular_clientePF" style="color: #797676;" class="col-sm-2 control-label">Celular</label>
-    <div class="col-sm-3">
-      <input type="text"  class="form-control" id="celular_clientePF" placeholder="Celular" name="celular_clientePF">
-    </div>
-    
-  </div>
-  
-   <div class="form-group">
-   	<label for="numero_passaporte_clientePF" style="color: #797676;" class="col-sm-2 control-label">Passaporte</label>
-    <div class="col-sm-4">
-      <input type="text"  class="form-control" id="numero_passaporte_clientePF" placeholder="Passaporte" name="numero_passaporte_clientePF">
-    </div>
-   	
-   	
-   	 <label for="dt_validadePassaporte_clientePF" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
-    	<div class="col-sm-3">
-      <input type="text" class="form-control" id="dt_validadePassaporte_clientePF" name="dt_validadePassaporte_clientePF">
-    	</div>
-    	
-   	</div> 
- 
-	 <div class="form-group">
-	 	 <label for="numero_fidelidade_clientePF" style="color: #797676;" class="col-sm-2 control-label">Nº Fidelidade</label>
-    	<div class="col-sm-4">
-      <input type="text" class="form-control" id="numero_fidelidade_clientePF" name="numero_fidelidade_clientePF" placeholder="Número Fidelidade">
-    	</div>
-	
-	 </div>
-	 
-	  <div class="form-group">
-	 	 <label for="copia_rg_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cópia RG</label>
-    	<div class="col-sm-5">
-     	 <input type="file" class="form-control" id="copia_rg_clientePF" name="copia_rg_clientePF">
-    	</div>
-	 </div>
+				<label for="nome_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*Nome</label>
+				<div class="col-sm-9">
+					<input type="text" style="text-transform: uppercase;" required
+						class="form-control" id="nome_clientePF" placeholder="Nome"
+						name="nome_clientePF">
+				</div>
+			</div>
 
-	  <div class="form-group">
-	      	 <label for="copia_cpf_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cópia CPF</label>
-    	<div class="col-sm-5">
-    	  <input type="file" class="form-control" id="copia_cpf_clientePF" name="copia_cpf_clientePF">
-    	</div>
-	  </div>
+			<div class="form-group">
+				<label for="dataNascimento_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*Data Nasc.</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control"
+						id="dataNascimento_clientePF" required
+						name="dataNascimento_clientePF">
+				</div>
+			</div>
 
-	  <div class="form-group">
-    	<label for="foto_clientePF" style="color: #797676;" class="col-sm-2 control-label">Foto</label>
-    	<div class="col-sm-5">
-     	 <input type="file" class="form-control" id="foto_clientePF" name="foto_clientePF">
-    	</div>
-	  </div>	
+			<div class="form-group">
+				<label for="rg_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*RG</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" required id="rg_clientePF"
+						name="rg_clientePF" placeholder="RG">
+				</div>
 
-	  
-	  <div class="form-group">
-    	<label for="descricao_clientePF" style="color: #797676;" class="col-sm-2 control-label">Descrição</label>
-		<div class="col-sm-9">
-		<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"></textarea>
-		</div>
+				<label for="cpf_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*CPF</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="cpf_clientePF" required
+						name="cpf_clientePF" placeholder="CPF">
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<label for="cep_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*CEP</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="cep_clientePF" required
+						name="cep_clientePF" placeholder="CEP">
+					<div id="msg_cep"></div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="endereco_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*Endereço</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="endereco_clientePF"
+						required placeholder="Endereço" name="endereco_clientePF">
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label for="numero_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*Número</label>
+				<div class="col-sm-2">
+					<input type="text" class="form-control" id="numero_clientePF"
+						required placeholder="Número" name="numero_clientePF">
+				</div>
+
+				<label for="complemento_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Complemento</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="complemento_clientePF"
+						name="complemento_clientePF" placeholder="Complemento">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="bairro_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Bairro</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="bairro_clientePF"
+						name="bairro_clientePF" placeholder="Bairro">
+				</div>
+
+				<label for="cidade_clientePF" style="color: #797676;"
+					class="col-sm-1 control-label">Cidade</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="cidade_clientePF"
+						name="cidade_clientePF" placeholder="CIdade">
+				</div>
+
+			</div>
+
+
+			<div class="form-group">
+				<label for="uf_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">UF</label>
+				<div class="col-sm-2">
+					<input type="text" class="form-control" id="uf_clientePF"
+						name="uf_clientePF" placeholder="UF">
+				</div>
+
+				<label for="pais_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">País</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="pais_clientePF"
+						name="pais_clientePF" placeholder="País">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="email_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Email</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="email_clientePF"
+						placeholder="Email" name="email_clientePF">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="telefone_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">*Telefone</label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" id="telefone_clientePF"
+						required placeholder="Telefone" name="telefone_clientePF">
+				</div>
+
+				<label for="celular_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Celular</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="celular_clientePF"
+						placeholder="Celular" name="celular_clientePF">
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label for="numero_passaporte_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Passaporte</label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control"
+						id="numero_passaporte_clientePF" placeholder="Passaporte"
+						name="numero_passaporte_clientePF">
+				</div>
+
+
+				<label for="dt_validadePassaporte_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Data Validade</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control"
+						id="dt_validadePassaporte_clientePF"
+						name="dt_validadePassaporte_clientePF">
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label for="numero_fidelidade_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Nº Fidelidade</label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control"
+						id="numero_fidelidade_clientePF"
+						name="numero_fidelidade_clientePF" placeholder="Número Fidelidade">
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label for="copia_rg_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Cópia RG</label>
+				<div class="col-sm-5">
+					<input type="file" class="form-control" id="copia_rg_clientePF"
+						name="copia_rg_clientePF">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="copia_cpf_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Cópia CPF</label>
+				<div class="col-sm-5">
+					<input type="file" class="form-control" id="copia_cpf_clientePF"
+						name="copia_cpf_clientePF">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="foto_clientePF" style="color: #797676;"
+					class="col-sm-2 control-label">Foto</label>
+				<div class="col-sm-5">
+					<input type="file" class="form-control" id="foto_clientePF"
+						name="foto_clientePF">
+				</div>
+			</div>
+
+			<hr />
+	<fieldset id="cartao_credito">
+	<center><h3>Cartões de Crédito</h3></center>
+	<br>
+		<div id="cloneDiv1" class="cartoes">
+			<div class="form-group">
+				<label for="numero_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control numero_cartaoPF" id="numero_cartaoPF" placeholder="Número Cartão" name="numero_cartaoPF[]">
+				</div>
+				
+				<label for="codigo_seguranca_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Código Segurança</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control codigo_seguranca_cartaoPF"  id="codigo_seguranca_cartaoPF" placeholder="Número Cartão" name="codigo_seguranca_cartaoPF[]">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="bandeira_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Bandeira do Cartão</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control bandeira_cartaoPF"  id="bandeira_cartaoPF" placeholder="Bandeira do Cartão" name="bandeira_cartaoPF[]">
+				</div>
+
+				
+				<label for="dt_validade_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control dt_validade_cartaoPF"  id="dt_validade_cartaoPF" placeholder="Bandeira do Cartão" name="dt_validade_cartaoPF[]">
+				</div>
+			</div>
+			<hr />
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-5 col-sm-10">
+				<button type="button" style="padding: 5px 20px"  id="bt_add_ct" title="Adicionar novo Cartão de Crédito" class="btn btn-warning bt_add_ct"><span class="glyphicon glyphicon-plus"></span></button>
+				<button type="button" style="padding: 5px 20px"  id="bt_del_ct" title="Remover Cartão de Crédito" class="btn btn-danger bt_del_ct"><span class="glyphicon glyphicon-remove"></span></button>
+				</div>
+				</div>
+			
+	</fieldset>
+
+			
+			<hr />
+				<div class="form-group">
+					<label for="descricao_clientePF" style="color: #797676;" class="col-sm-2 control-label">Descrição</label>
+					<div class="col-sm-9">
+						<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"></textarea>
+					</div>
+
+					<label for="status_clientePF" style="color: #797676;"
+						class="col-sm-2 control-label">Status</label>
+					<div class="col-sm-3">
+						<select class="form-control" name="status_clientePF">
+							<option value="1">ATIVO</option>
+							<option value="0">INATIVO</option>
+						</select>
+					</div>
+				</div>
 		
-		<label for="status_clientePF" style="color: #797676;" class="col-sm-2 control-label">Status</label>
-	    <div class="col-sm-3">
-	     <select class="form-control" name="status_clientePF">
-	     	<option value="1">ATIVO</option>
-	     	<option value="0">INATIVO</option>
-	     </select>
-	    </div>
-	  </div>	
-	 
-	 
-	 </fieldset>
-	 
-	 <br />
-	  <div class="form-group">
-    	<div class="col-sm-offset-5 col-sm-10">
-      <button type="submit" style="padding:20px 40px" class="btn btn-default">Salvar</button>
-    </div>
-  </div>
-	
-</form>
+		</fieldset>
+
+		<br />
+		<div class="form-group">
+			<div class="col-sm-offset-5 col-sm-10">
+				<button type="submit" style="padding: 20px 40px"
+					class="btn btn-default">Salvar</button>
+			</div>
+		</div>
+
+	</form>
 </div>
 <script>
 	jQuery(function(){
@@ -189,7 +282,7 @@
 		 jQuery("#celular_clientePF").mask("(99) 9999-9999");
 		 jQuery("#dataNascimento_clientePF").mask("99/99/9999");
 		 jQuery("#dt_validadePassaporte_clientePF").mask("99/99/9999");
-		
+		 jQuery('.dt_validade_cartaoPF').mask('99/99/9999');
 	
 		 jQuery("#cep_clientePF").blur(function(){
 		 var cep = jQuery(this).val();
@@ -227,6 +320,44 @@
 			jQuery('#nome_clientePF').submit(function(){
 				jQuery(this).val().toUpperCase();
 			});
+
+			jQuery('#bt_add_ct').click(function(){
+
+				num = jQuery('.cartoes').length;
+				newNum = new Number(num + 1);
+
+				var newElem = jQuery('#cloneDiv'+num).clone().attr('id','cloneDiv'+newNum).fadeIn('slow');
+
+				newElem.find('.numero_cartaoPF').attr('id','numero_cartaoPF'+newNum).val('');
+				newElem.find('.codigo_seguranca_cartaoPF').attr('id','codigo_seguranca_cartaoPF'+newNum).val('');
+				newElem.find('.bandeira_cartaoPF').attr('id','bandeira_cartaoPF'+newNum).val('');
+				newElem.find('.dt_validade_cartaoPF').attr('id','dt_validade_cartaoPF'+newNum).val('');
+
+				
+				jQuery('#cloneDiv'+num).after(newElem);
+				jQuery('#bt_del_ct').attr('disabled',false);
+				jQuery('#dt_validade_cartaoPF'+newNum).mask('99/99/9999');
+				
+			});
+
+			jQuery('#bt_del_ct').click(function(){
+				if(confirm('Deseja realmente remover esse cartão ?')){
+				var num = jQuery('.cartoes').length;
+				jQuery('#cloneDiv'+num).slideUp('slow',function(){
+					jQuery('#cloneDiv'+num).remove();
+					if(num - 1 === 1){
+						jQuery('#bt_del_ct').attr('disabled',true);
+					}else{
+						jQuery('#bt_del_ct').attr('disabled',false);
+						}
+					});
+				}
+			});
+			
+			jQuery('#bt_del_ct').attr('disabled',true);
+			
+
+			
 			
 	});
 </script>

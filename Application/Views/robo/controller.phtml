@@ -1,0 +1,30 @@
+<div class="form_controller">
+	<center><h2>Criar Controller</h2></center>
+	<br />
+	<br />
+<?php
+
+$form->init('robo_controller','/robo/createController');
+
+$form->groupOpen();	
+		$form->input(array(
+						'name' =>'name_controller',
+						'type' =>'text',
+						'placeholder' => 'Nome do Controller',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'Controller',
+						'value' =>'',
+						'required' => true
+						));
+		$form->groupClose();
+		
+		echo str_repeat('<br />',2);
+		
+	$form->groupOpen();		
+	$form->submit('Salvar','style="padding:2% 13%"',5,'btn-primary');
+	$form->groupClose();
+
+$form->close();
+?>
+</div>

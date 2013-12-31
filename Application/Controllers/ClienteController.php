@@ -8,6 +8,7 @@ use Vendor\Library\Table\Table;
 use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
 use Application\Models\Classificacao;
+use Application\Models\CartaoPF;
 
 class ClienteController extends OXE_Controller {
 	
@@ -27,7 +28,6 @@ class ClienteController extends OXE_Controller {
 		$this->view('template/cambio');
 		$this->view('cliente/index');
 		$this->view('template/footer');
-		
 	}
 	
 	private function dateToMysql($date)
@@ -95,8 +95,7 @@ class ClienteController extends OXE_Controller {
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
 		}
-		$this->dump($_POST);
-		$this->dump($_FILES);
+
 		if($_FILES['copia_rg_clientePF']['size'] > 0){
 			unlink($model[0]['copia_rg_clientePF']);
 			$extension = explode(".",$_FILES['copia_rg_clientePF']['name']);
@@ -136,11 +135,73 @@ class ClienteController extends OXE_Controller {
 	public function saveFisicaAction()
 	{
 		$_POST['nome_clientePF'] = strtoupper($_POST['nome_clientePF']);
-		foreach($_POST as $key => $value){
-			$_POST[$key] = strip_tags($value);
-		}
+		
+			foreach($_POST as $key => $value){
+				if(!is_array($value)){
+					$_POST[$key] = strip_tags($value);
+				}
+			}
+			
+			
+			############# Iterando names de cartão de crédito  ###########
+			$n1 = 0;
+			$arr1 = array();
+			foreach($_POST as $key => $value){
+				if(is_array($value)){
+					if($key == 'numero_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['numero_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'codigo_seguranca_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['codigo_seguranca_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'bandeira_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['bandeira_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'dt_validade_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+						}
+					}
+					
+				}
+			}
+			############# Iterando names de cartão de crédito  ###########
+			
+			
+			unset($_POST['numero_cartaoPF']);
+			unset($_POST['codigo_seguranca_cartaoPF']);
+			unset($_POST['bandeira_cartaoPF']);
+			unset($_POST['dt_validade_cartaoPF']);
+			
 		$_POST['dataNascimento_clientePF'] = $this->dateToMysql($_POST['dataNascimento_clientePF']);
-		$_POST['dt_validadePassaporte_clientePF'] = $this->dateToMysql($_POST['dt_validadePassaporte_clientePF']);
+		
+			if($_POST['dt_validadePassaporte_clientePF']){
+				$_POST['dt_validadePassaporte_clientePF'] = $this->dateToMysql($_POST['dt_validadePassaporte_clientePF']);
+		}
+		$ultimo = $this->model->max();
+		
+		
+// 		$this->dump($ultimo);
+// 		$this->dump($arr1);
+		
+		
+// 		exit();
 		
 		if($_FILES['copia_rg_clientePF']['error'] == UPLOAD_ERR_OK){
 			$extension = explode('.',$_FILES['copia_rg_clientePF']['name']);
@@ -175,6 +236,18 @@ class ClienteController extends OXE_Controller {
 		if(!$user){
 		$ok = $this->model->insert($_POST);
 		if($ok){
+			$id = $ok;
+			###### Adicionando cartão de crédito do cliente #######
+			$cartao = new CartaoPF();
+			
+			foreach($arr1 as $key => $value){
+				$arr1[$key]['id_clientePF'] = $id;
+			}
+			
+			foreach($arr1 as $card){
+				$cartao->add($card);
+			}
+			###### Adicionando cartão de crédito do cliente #######
 			$this->session->setFlashMessage('Cadastro de Cliente PF realizado com sucesso','success');
 			$this->redirector('/cliente/fisica');
 			}
@@ -266,6 +339,62 @@ class ClienteController extends OXE_Controller {
 	public function listClientePFAction()
 	{
 		return ($this->model->list_once($_POST['id_clientePF']));
+	}
+	
+	public function updateJuridicaAction()
+	{
+		$model = new ClientePJ();
+		$Classificacao = new Classificacao();
+		$param = func_get_args();
+		$model = $model->list_once($param[1]);
+		echo $model[0]['logotipo_clientePJ'];
+		$form = new FormStyle();	
+		$data['title'] = 'Cadastrar Clientes - Pessoa Jurídica';
+		$data['form'] = $form;
+		$data['clientes'] = $model;
+		$data['classificacao'] = $Classificacao->list_all();;
+		
+		$this->view('template/head',$data);
+		$this->view('template/header');
+		$this->view('cliente/pj/updatejuridica',$data);
+		$this->view('template/footer');
+	}
+	
+	public function saveUpdateJuridicaAction()
+	{
+		$model = new ClientePJ();
+		$clientePJ = $model->list_once($_POST['id_clientePJ']);
+		// $this->dump($_POST);
+		// $this->dump($_FILES);
+		
+		if($_FILES['logotipo_clientePJ']['size'] > 0){
+			unlink($clientePJ['logotipo_clientePJ']);
+			$file = explode('.',$_FILES['logotipo_clientePJ']['name']);
+			$extension = '.'.end($file);
+			$new_file = md5(time().$file[0]);
+			move_uploaded_file($_FILES['logotipo_clientePJ']['tmp_name'],UPLOAD_PATH.$new_file.$extension);
+			$_POST['logotipo_clientePJ'] = UPLOAD_PATH.$new_file.$extension;
+		}
+		
+		if($model->update_cli($_POST)){
+			$this->session->setFlashMessage('Dados de Empresa atualizado com sucesso.','success');
+			$this->redirector('/cliente/juridica');
+		}
+	}
+
+	public function deleteJuridicaAction()
+	{
+		$param = func_get_args();
+		
+		$model = new ClientePJ();
+		$cliente = $model->list_once($param[1]);
+		
+		if($model->delete_cli($param[1])){
+			unlink($cliente[0]['logotipo_clientePJ']);
+			$this->session->setFlashMessage('Empresa removida do sistema com sucesso.','success');
+			$this->redirector('/cliente/juridica');
+		}
+		 
 	}
 	
 	

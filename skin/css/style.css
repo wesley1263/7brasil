@@ -439,4 +439,8 @@ form div.submit {
 	background: #DDDDDD;
 }
 
+#cartao_credito {
+	border: 1px solid #ccc;
+	padding: 2%;
+}
 

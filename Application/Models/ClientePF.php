@@ -50,4 +50,14 @@ class ClientePF extends OXE_Model {
 					  
 					  return $query;
 	}
+	
+	public function showTable()
+	{
+		return $this->query("DESC $this->_name");
+	}
+	
+	public function max()
+	{
+		return $this->query("SELECT MAX(id_clientePF) AS id_clientePF FROM $this->_name");
+	}
 }

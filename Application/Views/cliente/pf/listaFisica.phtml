@@ -39,7 +39,7 @@
 								$cliente['uf_clientePF'],
 								$cliente['telefone_clientePF'],
 								'<center><a href="/cliente/updateFisica/id/'.$cliente['id_clientePF'].'"><span  class="glyphicon glyphicon-pencil"></span></a></center>',
-								'<center><a href="/cliente/deleteClientePF/id/'.$cliente['id_clientePF'].'"><span class="glyphicon glyphicon-remove"></span></a></center>'
+								'<center><a href="/cliente/deleteClientePF/id/'.$cliente['id_clientePF'].'" onclick=" return confirm(\'Deseja realmente remover '.$cliente['nome_clientePF'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
 								)
 						  );
 			}

@@ -53,7 +53,15 @@ class DependentePF extends OXE_Model {
 		return $this->select()
 					->from('tbl_clientePF')
 					->result();
-	}	
+	}
+	
+	public function findCPF($cpf)
+	{
+		return $this->select()
+					->from()
+					->where("cpf_dependentePF = '$cpf'")
+					->result();
+	}
 	
 	
 }

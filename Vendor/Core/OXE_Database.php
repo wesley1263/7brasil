@@ -94,7 +94,6 @@ abstract class OXE_Database extends PDO {
 	}
 	
 	
-	
 	public function insert(array $data)
 	{
 		try{
@@ -105,7 +104,8 @@ abstract class OXE_Database extends PDO {
 				$types = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
 				$db->bindValue(":$key",$value,$types);
 			}
-			return $db->execute();
+			$db->execute();
+			return $this->lastInsertId();
 		}catch(PDOException $e){
 			exit($e->getMessage());
 		}

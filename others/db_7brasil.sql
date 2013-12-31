@@ -1,1829 +1,1631 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-
-CREATE SCHEMA IF NOT EXISTS `db_7brasil` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-USE `db_7brasil` ;
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_grupo`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_grupo` (
-  `id_grupo` INT NOT NULL ,
-  `titulo_grupo` VARCHAR(45) NOT NULL ,
-  `descricao_grupo` TEXT NULL ,
-  `status_grupo` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_grupo`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'tabela de grupo de contas a pagar';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_empresa`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_empresa` (
-  `id_empresa` INT NOT NULL AUTO_INCREMENT ,
-  `razaosocial_empresa` VARCHAR(99) NULL ,
-  `nomefantasia_empresa` VARCHAR(99) NULL ,
-  `cnpj_empresa` VARCHAR(45) NULL ,
-  `descricao_empresa` TEXT NULL ,
-  `logotipo_empresa` VARCHAR(99) NULL ,
-  PRIMARY KEY (`id_empresa`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'dados da empresa central';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_usuario`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_usuario` (
-  `id_usuario` INT NOT NULL AUTO_INCREMENT ,
-  `id_grupo` INT NOT NULL ,
-  `id_empresa` INT NOT NULL ,
-  `nome_usuario` VARCHAR(199) NOT NULL ,
-  `login_usuario` VARCHAR(45) NOT NULL ,
-  `senha_usuario` VARCHAR(50) NOT NULL ,
-  `status_usuario` TINYINT(1) NULL DEFAULT 1 ,
-  `porcentagem_usuario` DOUBLE(9,2) NULL ,
-  PRIMARY KEY (`id_usuario`) ,
-  INDEX `fk_usuario_grupo` (`id_grupo` ASC) ,
-  INDEX `fk_tbl_usuario_tbl_empresa1` (`id_empresa` ASC) ,
-  CONSTRAINT `fk_usuario_grupo`
-    FOREIGN KEY (`id_grupo` )
-    REFERENCES `db_7brasil`.`tbl_grupo` (`id_grupo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_usuario_tbl_empresa1`
-    FOREIGN KEY (`id_empresa` )
-    REFERENCES `db_7brasil`.`tbl_empresa` (`id_empresa` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_permissoes`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_permissoes` (
-  `id_permissoes` INT NOT NULL AUTO_INCREMENT ,
-  `id_grupo` INT NOT NULL ,
-  `class_permissoes` VARCHAR(15) NOT NULL ,
-  `method_permissoes` VARCHAR(15) NOT NULL ,
-  PRIMARY KEY (`id_permissoes`) ,
-  INDEX `fk_tbl_permissoes_tbl_grupo1` (`id_grupo` ASC) ,
-  CONSTRAINT `fk_tbl_permissoes_tbl_grupo1`
-    FOREIGN KEY (`id_grupo` )
-    REFERENCES `db_7brasil`.`tbl_grupo` (`id_grupo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_agencia`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_agencia` (
-  `id_agencia` INT NOT NULL AUTO_INCREMENT ,
-  `razaosocial_agencia` VARCHAR(99) NULL ,
-  `nomefantasia_agencia` VARCHAR(99) NOT NULL ,
-  `cnpj_agencia` VARCHAR(45) NOT NULL ,
-  `endereco_agencia` VARCHAR(45) NULL ,
-  `numero_agencia` VARCHAR(10) NULL ,
-  `bairro_agencia` VARCHAR(45) NULL ,
-  `cidade_agencia` VARCHAR(45) NULL ,
-  `uf_agencia` VARCHAR(10) NULL ,
-  `cep_agencia` VARCHAR(15) NULL ,
-  `site_agencia` VARCHAR(99) NULL ,
-  `email_agencia` VARCHAR(99) NULL ,
-  `telefone_agencia` VARCHAR(15) NULL ,
-  `descricao_agencia` TEXT NULL ,
-  `status_agencia` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_agencia`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_clientePJ` (
-  `id_clientePJ` INT NOT NULL AUTO_INCREMENT ,
-  `razaosocial_ClientePJ` VARCHAR(99) NULL ,
-  `nomefantasia_clientePJ` VARCHAR(99) NOT NULL ,
-  `cnpj_clientePJ` VARCHAR(25) NOT NULL ,
-  `logotipo_clientePJ` VARCHAR(99) NULL ,
-  `telefone_clientePJ` VARCHAR(15) NULL ,
-  `endereco_clientePJ` VARCHAR(99) NULL ,
-  `numero_clientePJ` VARCHAR(15) NULL ,
-  `complemento_clientePJ` VARCHAR(45) NULL ,
-  `bairro_clientePJ` VARCHAR(45) NULL ,
-  `cidade_clientePJ` VARCHAR(45) NULL ,
-  `uf_clientePJ` VARCHAR(15) NULL ,
-  `pais_clientePJ` VARCHAR(45) NULL ,
-  `telefone_responsavel_clientePJ` VARCHAR(15) NULL ,
-  `nomeresponsavel_clientePJ` VARCHAR(99) NOT NULL ,
-  `rg_responsavel_clientePJ` VARCHAR(20) NULL ,
-  `email_responsavel_clientePJ` VARCHAR(99) NULL ,
-  `cpf_responsavel_clientePJ` VARCHAR(20) NULL ,
-  `status_clientePJ` TINYINT(1) NULL DEFAULT 1 ,
-  `descricao_clientePJ` TEXT NULL ,
-  `credito_clientePJ` DECIMAL(9,2) NULL ,
-  PRIMARY KEY (`id_clientePJ`) )
-ENGINE = InnoDB
-COMMENT = 'dados da empresa que vai patrocinar a compra de produtos na ' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_brokers`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_brokers` (
-  `id_brokers` INT NOT NULL AUTO_INCREMENT ,
-  `site_brokers` VARCHAR(99) NOT NULL ,
-  `email_brokers` VARCHAR(99) NULL ,
-  `telefone_brokers` VARCHAR(16) NULL ,
-  `logotipo_brokers` VARCHAR(199) NULL ,
-  `descricao_brokers` TEXT NULL DEFAULT '1' ,
-  `status_brokers` TINYINT(1) NULL ,
-  PRIMARY KEY (`id_brokers`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_locadora`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_locadora` (
-  `id_locadora` INT NOT NULL AUTO_INCREMENT ,
-  `nome_locadora` VARCHAR(99) NOT NULL ,
-  `site_locadora` VARCHAR(99) NULL ,
-  `telefone_locadora` VARCHAR(16) NULL ,
-  `email_locadora` VARCHAR(199) NULL ,
-  `descricao_locadora` TEXT NULL ,
-  `status_locadora` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_locadora`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_classificacao`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_classificacao` (
-  `id_classificacao` INT NOT NULL AUTO_INCREMENT ,
-  `titulo_classificacao` VARCHAR(45) NOT NULL ,
-  `status_classificacao` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_classificacao`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_dependentePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePJ` (
-  `id_dependentePJ` INT NOT NULL AUTO_INCREMENT ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_classificacao` INT NOT NULL ,
-  `nome_dependentePJ` VARCHAR(99) NOT NULL ,
-  `dt_nascimento_dependentePJ` DATE NULL ,
-  `cpf_dependentePJ` VARCHAR(20) NOT NULL ,
-  `rg_dependentePJ` VARCHAR(15) NULL ,
-  `telefone_dependentePJ` VARCHAR(20) NULL ,
-  `celular_dependentePJ` VARCHAR(15) NULL ,
-  `email_dependentePJ` VARCHAR(99) NULL ,
-  `numero_passaporte_dependentePJ` VARCHAR(20) NULL ,
-  `dt_validade_passaporte_dependentePJ` DATE NULL ,
-  `foto_dependentePJ` VARCHAR(99) NULL ,
-  `copia_rg_dependentePJ` VARCHAR(99) NULL ,
-  `copia_cpf_dependentePJ` VARCHAR(99) NULL ,
-  `descricao_dependentePJ` TEXT NULL ,
-  `status_dependentePJ` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_dependentePJ`) ,
-  INDEX `fk_dependente_cliente` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_dependentePJ_tbl_classificacao1` (`id_classificacao` ASC) ,
-  CONSTRAINT `fk_dependente_cliente`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_dependentePJ_tbl_classificacao1`
-    FOREIGN KEY (`id_classificacao` )
-    REFERENCES `db_7brasil`.`tbl_classificacao` (`id_classificacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'Dados do funcionario da empresa (ClientePJ)';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_hotel`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_hotel` (
-  `id_hoteis` INT NOT NULL AUTO_INCREMENT ,
-  `nome_hotel` VARCHAR(99) NOT NULL ,
-  `endereco_hotel` VARCHAR(199) NOT NULL ,
-  `numero_hotel` VARCHAR(9) NULL ,
-  `cep_hotel` VARCHAR(20) NULL ,
-  `cidade_hotel` VARCHAR(45) NULL ,
-  `uf_hotel` VARCHAR(10) NULL ,
-  `telefone_hotel` VARCHAR(45) NULL ,
-  `email_hotel` VARCHAR(99) NULL ,
-  `descricao_hotel` TEXT NULL ,
-  `voucher_hotel` VARCHAR(199) NULL ,
-  `valor_hotel` DECIMAL(9,2) NULL ,
-  `valor_casa_hotel` DECIMAL(9,2) NULL COMMENT 'valor de lucro da 7brasil' ,
-  PRIMARY KEY (`id_hoteis`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cambio`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cambio` (
-  `id_cambio` INT NOT NULL AUTO_INCREMENT ,
-  `titulo_cambio` VARCHAR(45) NOT NULL ,
-  `descricao_cambio` TEXT NULL ,
-  `status_cambio` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_cambio`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela com nomes das moedas internacional';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_moeda`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_moeda` (
-  `id_moeda` INT NOT NULL AUTO_INCREMENT ,
-  `id_cambio` INT NOT NULL ,
-  `dt_moeda` DATETIME NOT NULL ,
-  `valor_moeda` DECIMAL(9,2) NOT NULL ,
-  PRIMARY KEY (`id_moeda`) ,
-  INDEX `fk_tbl_moeda_tbl_cambio1` (`id_cambio` ASC) ,
-  CONSTRAINT `fk_tbl_moeda_tbl_cambio1`
-    FOREIGN KEY (`id_cambio` )
-    REFERENCES `db_7brasil`.`tbl_cambio` (`id_cambio` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela com valor do cambio no dia da venda';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_carro`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_carro` (
-  `id_carros` INT NOT NULL AUTO_INCREMENT ,
-  `id_locadora` INT NOT NULL ,
-  `id_moeda` INT NOT NULL ,
-  `dt_inicio_carro` DATETIME NOT NULL ,
-  `dt_devolucao_carro` DATETIME NOT NULL ,
-  `local_incio_carro` VARCHAR(99) NOT NULL ,
-  `local_devolucao_carro` VARCHAR(99) NOT NULL ,
-  `voucher_carro` VARCHAR(199) NOT NULL ,
-  `descricao_carro` TEXT NULL ,
-  `valor_carro` DECIMAL(9,2) NOT NULL COMMENT 'Valor cobrado pela empresa \npara alugar o carro.\n' ,
-  `valor_casa_carro` DECIMAL(9,2) NOT NULL COMMENT 'valor do lucro\nda 7Brasil' ,
-  `taxa_carro` DECIMAL(9,2) NULL COMMENT 'Taxa extra cobrado pela \nempresa para alguma \neventualidade.' ,
-  PRIMARY KEY (`id_carros`) ,
-  INDEX `fk_carros_locadora` (`id_locadora` ASC) ,
-  INDEX `fk_tbl_carro_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_carros_locadora`
-    FOREIGN KEY (`id_locadora` )
-    REFERENCES `db_7brasil`.`tbl_locadora` (`id_locadora` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_carro_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'tabela da locação do carro';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_tipoComp`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_tipoComp` (
-  `id_tipocomp` INT NOT NULL AUTO_INCREMENT ,
-  `titulo_tipocomp` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id_tipocomp`) )
-ENGINE = InnoDB
-COMMENT = 'tabela para especificar se companhia é intermacional ou naci' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_compania`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_compania` (
-  `id_compania` INT NOT NULL AUTO_INCREMENT ,
-  `id_tipocomp` INT NOT NULL ,
-  `nome_compania` VARCHAR(99) NOT NULL ,
-  `logotipo_compania` VARCHAR(99) NULL ,
-  PRIMARY KEY (`id_compania`) ,
-  INDEX `fk_tbl_compania_tbl_tipoComp1` (`id_tipocomp` ASC) ,
-  CONSTRAINT `fk_tbl_compania_tbl_tipoComp1`
-    FOREIGN KEY (`id_tipocomp` )
-    REFERENCES `db_7brasil`.`tbl_tipoComp` (`id_tipocomp` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_agentes`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_agentes` (
-  `id_agente` INT NOT NULL AUTO_INCREMENT ,
-  `id_agencia` INT NOT NULL ,
-  `nome_agente` VARCHAR(99) NOT NULL ,
-  `email_agente` VARCHAR(99) NULL ,
-  `celular_agente` VARCHAR(15) NULL ,
-  `descricao_agente` TEXT NULL ,
-  `status_agente` TINYINT(1) NULL DEFAULT 1 ,
-  `porcentagem_agente` DOUBLE(9,2) NULL ,
-  PRIMARY KEY (`id_agente`) ,
-  INDEX `fk_agente_agencia` (`id_agencia` ASC) ,
-  CONSTRAINT `fk_agente_agencia`
-    FOREIGN KEY (`id_agencia` )
-    REFERENCES `db_7brasil`.`tbl_agencia` (`id_agencia` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_venda`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_venda` (
-  `id_venda` INT NOT NULL AUTO_INCREMENT ,
-  `id_usuario` INT NOT NULL ,
-  `id_moeda` INT NOT NULL ,
-  `id_agencia` INT NULL ,
-  `id_agente` INT NULL ,
-  `porcentagem_agencia` DOUBLE NULL ,
-  `porcentagem_casa` DOUBLE NOT NULL ,
-  `total_venda` DECIMAL(9,2) NOT NULL ,
-  `descricao_venda` TEXT NULL ,
-  `data_venda` DATETIME NULL ,
-  `status_venda` TINYINT(1) NULL DEFAULT 0 COMMENT '0 - Processando\n1 - Concluido\n2 - Cancelado' ,
-  `nm_processo_venda` VARCHAR(45) NOT NULL COMMENT 'campo para identificar\no processo da venda\nModelo:\nID_AGENTE.MES.ANO.ID_VENDA\nexemplo:\n001121345' ,
-  PRIMARY KEY (`id_venda`) ,
-  INDEX `fk_venda_agencia` (`id_agencia` ASC) ,
-  INDEX `fk_tbl_venda_tbl_agentes1` (`id_agente` ASC) ,
-  INDEX `fk_tbl_venda_tbl_usuario1` (`id_usuario` ASC) ,
-  INDEX `fk_tbl_venda_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_venda_agencia`
-    FOREIGN KEY (`id_agencia` )
-    REFERENCES `db_7brasil`.`tbl_agencia` (`id_agencia` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_venda_tbl_agentes1`
-    FOREIGN KEY (`id_agente` )
-    REFERENCES `db_7brasil`.`tbl_agentes` (`id_agente` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_venda_tbl_usuario1`
-    FOREIGN KEY (`id_usuario` )
-    REFERENCES `db_7brasil`.`tbl_usuario` (`id_usuario` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_venda_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela que ira armazenar todas as vendas da empresa';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_classe_voo`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_classe_voo` (
-  `id_classe` INT NOT NULL AUTO_INCREMENT ,
-  `titulo_classe` VARCHAR(45) NOT NULL ,
-  `descricao_classe` TEXT NULL ,
-  `status_classe` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_classe`) )
-ENGINE = InnoDB
-COMMENT = 'classes de passagens aérea';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_destino`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_destino` (
-  `id_destino` INT NOT NULL AUTO_INCREMENT ,
-  `nome_destino` VARCHAR(99) NOT NULL ,
-  `descricao_destino` TEXT NULL ,
-  `status_destino` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_destino`) )
-ENGINE = InnoDB
-COMMENT = 'Destino de viagem de passgem aérea';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_origem`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_origem` (
-  `id_origem` INT NOT NULL AUTO_INCREMENT ,
-  `nome_origem` VARCHAR(99) NOT NULL ,
-  `descricao_origem` TEXT NULL ,
-  `status_origem` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_origem`) )
-ENGINE = InnoDB
-COMMENT = 'origem de saida de uma passagem aérea';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_passagens`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_passagens` (
-  `id_passagens` INT NOT NULL AUTO_INCREMENT ,
-  `id_compania` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_classe` INT NOT NULL ,
-  `id_destino` INT NOT NULL ,
-  `id_origem` INT NOT NULL ,
-  `id_moeda` INT NOT NULL ,
-  `voo_passagens` VARCHAR(45) NOT NULL ,
-  `data_passagens` DATE NOT NULL ,
-  `saida_passagens` TIME NOT NULL ,
-  `chegada_passagens` TIME NOT NULL ,
-  `bagagem_passagens` INT(2) NULL ,
-  `assento_passagens` VARCHAR(45) NULL ,
-  `voucher_passagens` VARCHAR(99) NULL ,
-  `ticket_passagens` VARCHAR(45) NULL ,
-  `tarifa_passagens` DECIMAL(9,2) NOT NULL COMMENT 'Taxa de embarque da companhia' ,
-  `valor_casa_passagens` DECIMAL(9,2) NOT NULL COMMENT 'Margem de lucro da 7Brasil' ,
-  `tx_embarque_passagens` DECIMAL(9,2) NOT NULL ,
-  `tx_outras_passagens` DECIMAL(9,2) NULL COMMENT 'taxas extra' ,
-  `tx_repasse_passagens` VARCHAR(45) NULL COMMENT 'Esse campo é o \nDU/RAV\numa taxa repassada\ndas compania aéreas \npara a agencia' ,
-  PRIMARY KEY (`id_passagens`) ,
-  INDEX `fk_passagens_compania` (`id_compania` ASC) ,
-  INDEX `fk_tbl_passagens_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_passagens_tbl_classe_voo1` (`id_classe` ASC) ,
-  INDEX `fk_tbl_passagens_tbl_destino1` (`id_destino` ASC) ,
-  INDEX `fk_tbl_passagens_tbl_origem1` (`id_origem` ASC) ,
-  INDEX `fk_tbl_passagens_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_passagens_compania`
-    FOREIGN KEY (`id_compania` )
-    REFERENCES `db_7brasil`.`tbl_compania` (`id_compania` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_tbl_classe_voo1`
-    FOREIGN KEY (`id_classe` )
-    REFERENCES `db_7brasil`.`tbl_classe_voo` (`id_classe` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_tbl_destino1`
-    FOREIGN KEY (`id_destino` )
-    REFERENCES `db_7brasil`.`tbl_destino` (`id_destino` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_tbl_origem1`
-    FOREIGN KEY (`id_origem` )
-    REFERENCES `db_7brasil`.`tbl_origem` (`id_origem` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'Dados da passagem aérea\n';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_seguradora`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_seguradora` (
-  `id_seguradora` INT NOT NULL AUTO_INCREMENT ,
-  `nome_seguradora` VARCHAR(99) NOT NULL ,
-  `logo_seguradora` VARCHAR(199) NULL ,
-  PRIMARY KEY (`id_seguradora`) )
-ENGINE = InnoDB
-COMMENT = 'Dados da seguradora cadastra pela 7Brasil';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_tipoSeguro`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_tipoSeguro` (
-  `id_tipoSeguro` INT NOT NULL AUTO_INCREMENT ,
-  `nome_tipoSeguro` VARCHAR(99) NOT NULL ,
-  `id_seguradora` INT NOT NULL ,
-  PRIMARY KEY (`id_tipoSeguro`) ,
-  INDEX `fk_tipoSeguro_seguradora` (`id_seguradora` ASC) ,
-  CONSTRAINT `fk_tipoSeguro_seguradora`
-    FOREIGN KEY (`id_seguradora` )
-    REFERENCES `db_7brasil`.`tbl_seguradora` (`id_seguradora` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'Qual o tipo de seguro que a seguradora oferece';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_continente`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_continente` (
-  `id_continente` INT NOT NULL AUTO_INCREMENT ,
-  `nome_continente` VARCHAR(45) NOT NULL ,
-  `descricao_continente` TEXT NULL ,
-  PRIMARY KEY (`id_continente`) )
-ENGINE = InnoDB
-COMMENT = 'Dado do continente da viagem do assegurado';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_seguro`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_seguro` (
-  `id_seguro` INT NOT NULL AUTO_INCREMENT ,
-  `id_seguradora` INT NOT NULL ,
-  `id_tipoSeguro` INT NOT NULL ,
-  `id_continente` INT NOT NULL ,
-  `id_moeda` INT NOT NULL ,
-  `dt_inicio_seguro` DATE NOT NULL ,
-  `dt_fim_seguro` DATE NOT NULL ,
-  `valor_seguro` DECIMAL(9,2) NOT NULL ,
-  `valor_casa_seguro` DECIMAL(9,2) NOT NULL ,
-  `voucher_seguro` VARCHAR(199) NULL ,
-  PRIMARY KEY (`id_seguro`) ,
-  INDEX `fk_seguro_seguradora` (`id_seguradora` ASC) ,
-  INDEX `fk_seguro_tipoSeguro` (`id_tipoSeguro` ASC) ,
-  INDEX `fk_seguro_continente` (`id_continente` ASC) ,
-  INDEX `fk_tbl_seguro_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_seguro_seguradora`
-    FOREIGN KEY (`id_seguradora` )
-    REFERENCES `db_7brasil`.`tbl_seguradora` (`id_seguradora` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_seguro_tipoSeguro`
-    FOREIGN KEY (`id_tipoSeguro` )
-    REFERENCES `db_7brasil`.`tbl_tipoSeguro` (`id_tipoSeguro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_seguro_continente`
-    FOREIGN KEY (`id_continente` )
-    REFERENCES `db_7brasil`.`tbl_continente` (`id_continente` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_seguro_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'Informações de seguro oferecido pela empresa parceira de 7 b' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_tipoPagamento`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_tipoPagamento` (
-  `id_tipoPagamento` INT NOT NULL AUTO_INCREMENT ,
-  `titulo_tipoPagamento` VARCHAR(99) NOT NULL ,
-  `porcentagem_tipoPagamento` DOUBLE(2,2) NOT NULL ,
-  `dias_recebimento_tipoPagamento` INT(2) NOT NULL ,
-  `descricao_Pagamento` TEXT NULL ,
-  `status_tipoPagamento` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_tipoPagamento`) )
-ENGINE = InnoDB
-COMMENT = 'Formas de pagamento oferecido pela 7Brasil';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cartaoPJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cartaoPJ` (
-  `id_cartaoPJ` INT NOT NULL AUTO_INCREMENT ,
-  `id_clientePJ` INT NOT NULL ,
-  `numero_cartaoPJ` VARCHAR(20) NOT NULL ,
-  `bandeira_cartaoPJ` VARCHAR(45) NOT NULL ,
-  `dt_validade_cartaoPJ` DATE NOT NULL ,
-  `codigo_seguranca_cartaoPJ` INT(10) NOT NULL ,
-  PRIMARY KEY (`id_cartaoPJ`) ,
-  INDEX `fk_cartao_clientePJ` (`id_clientePJ` ASC) ,
-  CONSTRAINT `fk_cartao_clientePJ`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_departamento`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_departamento` (
-  `id_departamento` INT NOT NULL AUTO_INCREMENT ,
-  `id_dependente` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `codigo_centrocusto` VARCHAR(45) NULL COMMENT 'Código utilizado por algumas \nempresas para indentificar o departartamento (Centro de Custo)' ,
-  `nome_departmento` VARCHAR(60) NOT NULL ,
-  `descricao_departamento` TEXT NULL ,
-  `status_departamento` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_departamento`) ,
-  INDEX `fk_departamento_dependente` (`id_dependente` ASC) ,
-  INDEX `fk_tbl_departamento_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  CONSTRAINT `fk_departamento_dependente`
-    FOREIGN KEY (`id_dependente` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_departamento_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'departamento da empresa e do funcionario que vai viajar';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_clientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_clientePF` (
-  `id_clientePF` INT NOT NULL AUTO_INCREMENT ,
-  `id_classificacao` INT NOT NULL ,
-  `nome_clientePF` VARCHAR(99) NOT NULL ,
-  `dataNascimento_clientePF` DATE NULL ,
-  `rg_clientePF` VARCHAR(20) NULL ,
-  `cpf_clientePF` VARCHAR(20) NOT NULL ,
-  `endereco_cliente` VARCHAR(150) NULL ,
-  `numero_clientePF` VARCHAR(10) NULL ,
-  `bairro_clientePF` VARCHAR(45) NULL ,
-  `cidade_clientePF` VARCHAR(45) NULL ,
-  `complemento_clientePF` VARCHAR(20) NULL ,
-  `uf_clientePF` VARCHAR(15) NULL ,
-  `email_clientePF` VARCHAR(150) NULL ,
-  `telefone_clientePF` VARCHAR(15) NULL ,
-  `celular_clientePF` VARCHAR(15) NULL ,
-  `numero_passaporte_clientePF` VARCHAR(45) NULL ,
-  `dt_validadePassaporte_clientePF` DATE NULL ,
-  `copia_rg_clientePF` VARCHAR(199) NULL ,
-  `copia_cpf_clientePF` VARCHAR(199) NULL ,
-  `foto_clientePF` VARCHAR(199) NULL ,
-  `numero_fidelidade_clientePF` VARCHAR(99) NULL ,
-  `descricao_clientePF` TEXT NULL ,
-  `status_clientePF` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_clientePF`) ,
-  INDEX `fk_tbl_clientePF_tbl_classificacao1` (`id_classificacao` ASC) ,
-  CONSTRAINT `fk_tbl_clientePF_tbl_classificacao1`
-    FOREIGN KEY (`id_classificacao` )
-    REFERENCES `db_7brasil`.`tbl_classificacao` (`id_classificacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_dependentePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePF` (
-  `id_dependentePF` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  `id_classificacao` INT NOT NULL ,
-  `nome_dependentePF` VARCHAR(99) NOT NULL ,
-  `dt_nascimento_dependentePF` DATE NULL ,
-  `cpf_dependentePF` VARCHAR(20) NOT NULL ,
-  `rg_dependentePF` VARCHAR(20) NULL ,
-  `telefone_dependentePF` VARCHAR(15) NULL ,
-  `celular_dependentePF` VARCHAR(15) NULL ,
-  `email_dependentePF` VARCHAR(99) NULL ,
-  `numero_passaporte_dependentePF` VARCHAR(20) NULL ,
-  `dt_validade_passaporte_dependentePF` DATE NULL ,
-  `foto_dependentePF` VARCHAR(99) NULL ,
-  `copia_cpf_dependentePF` VARCHAR(99) NULL ,
-  `copia_rg_dependentePF` VARCHAR(99) NULL ,
-  `descricao_dependentePF` TEXT NULL ,
-  PRIMARY KEY (`id_dependentePF`) ,
-  INDEX `fk_dependentePF_clientePF` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_dependentePF_tbl_classificacao1` (`id_classificacao` ASC) ,
-  CONSTRAINT `fk_dependentePF_clientePF`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_dependentePF_tbl_classificacao1`
-    FOREIGN KEY (`id_classificacao` )
-    REFERENCES `db_7brasil`.`tbl_classificacao` (`id_classificacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_asseguradoPJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_asseguradoPJ` (
-  `id_seguro` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  `id_dependentePF` INT NOT NULL ,
-  PRIMARY KEY (`id_seguro`, `id_clientePJ`, `id_dependentePJ`) ,
-  INDEX `fk_assegurado_cliente` (`id_clientePJ` ASC) ,
-  INDEX `fk_assegurado_seguro` (`id_seguro` ASC) ,
-  INDEX `fk_assegurado_dependente` (`id_dependentePJ` ASC) ,
-  INDEX `fk_tbl_asseguradoPJ_tbl_dependentePF1` (`id_dependentePF` ASC) ,
-  CONSTRAINT `fk_assegurado_seguro`
-    FOREIGN KEY (`id_seguro` )
-    REFERENCES `db_7brasil`.`tbl_seguro` (`id_seguro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_assegurado_cliente`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_assegurado_dependente`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_asseguradoPJ_tbl_dependentePF1`
-    FOREIGN KEY (`id_dependentePF` )
-    REFERENCES `db_7brasil`.`tbl_dependentePF` (`id_dependentePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_participacao`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_participacao` (
-  `id_participacao` INT NOT NULL AUTO_INCREMENT ,
-  `titulo_participacao` VARCHAR(45) NOT NULL ,
-  `descricao_participacao` TEXT NULL ,
-  `status_participacao` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_participacao`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela para indetificar se o cliente é pagante e participant' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_asseguradoPF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_asseguradoPF` (
-  `id_seguro` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  PRIMARY KEY (`id_seguro`) ,
-  INDEX `fk_tbl_seguro_has_tbl_clientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_seguro_has_tbl_clientePF_tbl_seguro1` (`id_seguro` ASC) ,
-  INDEX `fk_tbl_asseguradoPF_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_asseguradoPF_tbl_participacao1` (`id_participacao` ASC) ,
-  CONSTRAINT `fk_tbl_seguro_has_tbl_clientePF_tbl_seguro1`
-    FOREIGN KEY (`id_seguro` )
-    REFERENCES `db_7brasil`.`tbl_seguro` (`id_seguro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_seguro_has_tbl_clientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_asseguradoPF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_asseguradoPF_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cartaoPF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cartaoPF` (
-  `tbl_cartaoPF` INT NOT NULL ,
-  `numero_cartaoPF` VARCHAR(20) NOT NULL ,
-  `bandeira_cartaoPF` VARCHAR(45) NOT NULL ,
-  `dt_validade_cartaoPF` DATE NOT NULL ,
-  `codigo_seguranca_cartaoPF` VARCHAR(10) NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  PRIMARY KEY (`tbl_cartaoPF`) ,
-  INDEX `fk_tbl_cartaPF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  CONSTRAINT `fk_tbl_cartaPF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`venda_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`venda_clientePJ` (
-  `id_venda` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  PRIMARY KEY (`id_venda`, `id_clientePJ`, `id_dependentePJ`) ,
-  INDEX `fk_tbl_venda_has_tbl_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_venda_has_tbl_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_venda_clientePJ_1_dependente` (`id_dependentePJ` ASC) ,
-  CONSTRAINT `fk_tbl_venda_has_tbl_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_venda_has_tbl_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_venda_clientePJ_1_dependente`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`venda_clientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`venda_clientePF` (
-  `id_venda` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  `id_dependentePF` INT NULL ,
-  PRIMARY KEY (`id_venda`, `id_clientePF`) ,
-  INDEX `fk_tbl_venda_has_tbl_clientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_venda_has_tbl_clientePF_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_venda_clientePF_1_dependentePF` (`id_dependentePF` ASC) ,
-  CONSTRAINT `fk_tbl_venda_has_tbl_clientePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_venda_has_tbl_clientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_venda_clientePF_1_dependentePF`
-    FOREIGN KEY (`id_dependentePF` )
-    REFERENCES `db_7brasil`.`tbl_dependentePF` (`id_dependentePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_brokers_hotel`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_brokers_hotel` (
-  `id_brokers` INT NOT NULL ,
-  `id_hoteis` INT NOT NULL ,
-  PRIMARY KEY (`id_brokers`, `id_hoteis`) ,
-  INDEX `fk_tbl_brokers_has_tbl_hotel_tbl_hotel1` (`id_hoteis` ASC) ,
-  INDEX `fk_tbl_brokers_has_tbl_hotel_tbl_brokers1` (`id_brokers` ASC) ,
-  CONSTRAINT `fk_tbl_brokers_has_tbl_hotel_tbl_brokers1`
-    FOREIGN KEY (`id_brokers` )
-    REFERENCES `db_7brasil`.`tbl_brokers` (`id_brokers` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_brokers_has_tbl_hotel_tbl_hotel1`
-    FOREIGN KEY (`id_hoteis` )
-    REFERENCES `db_7brasil`.`tbl_hotel` (`id_hoteis` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_formaPagamento`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_formaPagamento` (
-  `id_formaPagamento` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_tipoPagamento` INT NOT NULL ,
-  `valor_formaPagamento` DECIMAL(9,2) NOT NULL ,
-  `vezes_formaPagamento` INT(2) NOT NULL ,
-  PRIMARY KEY (`id_formaPagamento`) ,
-  INDEX `fk_tbl_formaPagamento_tbl_tipoPagamento1` (`id_tipoPagamento` ASC) ,
-  INDEX `fk_tbl_formaPagamento_tbl_venda1` (`id_venda` ASC) ,
-  CONSTRAINT `fk_tbl_formaPagamento_tbl_tipoPagamento1`
-    FOREIGN KEY (`id_tipoPagamento` )
-    REFERENCES `db_7brasil`.`tbl_tipoPagamento` (`id_tipoPagamento` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_formaPagamento_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_adicionar_cliente`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_adicionar_cliente` (
-  `id_adicionar` INT NOT NULL AUTO_INCREMENT ,
-  `id_dependentePJ` INT NOT NULL ,
-  `id_passagens` INT NOT NULL ,
-  PRIMARY KEY (`id_adicionar`) ,
-  INDEX `fk_tbl_adicionar_cliente_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  INDEX `fk_tbl_adicionar_cliente_tbl_passagens1` (`id_passagens` ASC) ,
-  CONSTRAINT `fk_tbl_adicionar_cliente_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_adicionar_cliente_tbl_passagens1`
-    FOREIGN KEY (`id_passagens` )
-    REFERENCES `db_7brasil`.`tbl_passagens` (`id_passagens` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'tabela usada para adicionar cliente cadastrado na reserva de' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_adicionaClientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_adicionaClientePF` (
-  `id_adicionaClientePF` INT NOT NULL AUTO_INCREMENT ,
-  `id_clientePF` INT NOT NULL ,
-  `id_passagens` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  PRIMARY KEY (`id_adicionaClientePF`) ,
-  INDEX `fk_tbl_adicionaClientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_adicionaClientePF_tbl_passagens1` (`id_passagens` ASC) ,
-  INDEX `fk_tbl_adicionaClientePF_tbl_participacao1` (`id_participacao` ASC) ,
-  INDEX `fk_tbl_adicionaClientePF_tbl_venda1` (`id_venda` ASC) ,
-  CONSTRAINT `fk_tbl_adicionaClientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_adicionaClientePF_tbl_passagens1`
-    FOREIGN KEY (`id_passagens` )
-    REFERENCES `db_7brasil`.`tbl_passagens` (`id_passagens` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_adicionaClientePF_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_adicionaClientePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'tabela usada para adicionar cliente pessoa fisica nas passag' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_filial`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_filial` (
-  `id_filial` INT NOT NULL AUTO_INCREMENT ,
-  `id_empresa` INT NOT NULL ,
-  `nome_fillial` VARCHAR(99) NOT NULL ,
-  `endereco_filial` VARCHAR(99) NULL ,
-  `numero_filial` VARCHAR(20) NULL ,
-  `complemento_filial` VARCHAR(20) NULL ,
-  `bairro_filial` VARCHAR(45) NULL ,
-  `cidade_filial` VARCHAR(45) NULL ,
-  `uf_filial` VARCHAR(45) NULL ,
-  `pais_fililal` VARCHAR(45) NULL ,
-  `descricao_filial` TEXT NULL ,
-  `status_fillal` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_filial`) ,
-  INDEX `fk_tbl_filial_tbl_empresa1` (`id_empresa` ASC) ,
-  CONSTRAINT `fk_tbl_filial_tbl_empresa1`
-    FOREIGN KEY (`id_empresa` )
-    REFERENCES `db_7brasil`.`tbl_empresa` (`id_empresa` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela das filiais da empresa';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_telefone`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_telefone` (
-  `id_telefone` INT NOT NULL AUTO_INCREMENT ,
-  `id_filial` INT NOT NULL ,
-  `numero_telefone` VARCHAR(20) NOT NULL ,
-  `descricao_telefone` TEXT NULL ,
-  `status_telefone` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_telefone`) ,
-  INDEX `fk_tbl_telefone_tbl_filial1` (`id_filial` ASC) ,
-  CONSTRAINT `fk_tbl_telefone_tbl_filial1`
-    FOREIGN KEY (`id_filial` )
-    REFERENCES `db_7brasil`.`tbl_filial` (`id_filial` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_grupo`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_grupo` (
-  `id_grupo` INT NOT NULL ,
-  `titulo_grupo` VARCHAR(45) NOT NULL ,
-  `descricao_grupo` TEXT NULL ,
-  `status_grupo` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_grupo`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'tabela de grupo de contas a pagar';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_subgrupo`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_subgrupo` (
-  `id_subgrupo` INT NOT NULL ,
-  `id_grupo` INT NOT NULL ,
-  `titulo_subgrupo` VARCHAR(65) NOT NULL ,
-  `descricao_subgrupo` TEXT NULL ,
-  `status_subgrupo` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_subgrupo`) ,
-  INDEX `fk_tbl_subgrupo_tbl_grupo1` (`id_grupo` ASC) ,
-  CONSTRAINT `fk_tbl_subgrupo_tbl_grupo1`
-    FOREIGN KEY (`id_grupo` )
-    REFERENCES `db_7brasil`.`tbl_grupo` (`id_grupo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'tabela de subgrupo de  grupo de contas a pagar da filial';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_contas`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_contas` (
-  `id_contas` INT NOT NULL AUTO_INCREMENT ,
-  `id_grupo` INT NOT NULL ,
-  `id_subgrupo` INT NOT NULL ,
-  `id_filial` INT NOT NULL ,
-  `valor_contas` DECIMAL(9,2) NOT NULL ,
-  `validade_conta` DATE NULL ,
-  `descricao_contas` TEXT NULL ,
-  `status_contas` TINYINT(1) NULL DEFAULT 0 COMMENT '0 - Pendente\n1 - Paga' ,
-  PRIMARY KEY (`id_contas`) ,
-  INDEX `fk_tbl_contas_tbl_grupo1` (`id_grupo` ASC) ,
-  INDEX `fk_tbl_contas_tbl_subgrupo1` (`id_subgrupo` ASC) ,
-  INDEX `fk_tbl_contas_tbl_filial1` (`id_filial` ASC) ,
-  CONSTRAINT `fk_tbl_contas_tbl_grupo1`
-    FOREIGN KEY (`id_grupo` )
-    REFERENCES `db_7brasil`.`tbl_grupo` (`id_grupo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_contas_tbl_subgrupo1`
-    FOREIGN KEY (`id_subgrupo` )
-    REFERENCES `db_7brasil`.`tbl_subgrupo` (`id_subgrupo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_contas_tbl_filial1`
-    FOREIGN KEY (`id_filial` )
-    REFERENCES `db_7brasil`.`tbl_filial` (`id_filial` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'tabela de contas a pagar de cada filial da empresa';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_email`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_email` (
-  `id_email` INT NOT NULL AUTO_INCREMENT ,
-  `id_filial` INT NOT NULL ,
-  `id_usuario` INT NOT NULL ,
-  `email_email` VARCHAR(99) NOT NULL ,
-  `descricao_email` TEXT NULL ,
-  `status_email` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_email`) ,
-  INDEX `fk_tbl_email_tbl_filial1` (`id_filial` ASC) ,
-  INDEX `fk_tbl_email_tbl_usuario1` (`id_usuario` ASC) ,
-  CONSTRAINT `fk_tbl_email_tbl_filial1`
-    FOREIGN KEY (`id_filial` )
-    REFERENCES `db_7brasil`.`tbl_filial` (`id_filial` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_email_tbl_usuario1`
-    FOREIGN KEY (`id_usuario` )
-    REFERENCES `db_7brasil`.`tbl_usuario` (`id_usuario` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'emails das filiais cadastrados';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_produtoOutros`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_produtoOutros` (
-  `id_produto` INT NOT NULL AUTO_INCREMENT ,
-  `id_moeda` INT NOT NULL ,
-  `titulo_produto` VARCHAR(99) NOT NULL ,
-  `valor_produto` DECIMAL(9,2) NOT NULL ,
-  `fornecedor_produto` VARCHAR(99) NULL ,
-  `comissao_produto` DOUBLE NULL ,
-  `descricao_produto` TEXT NULL ,
-  `dt_inicio_produto` DATETIME NULL ,
-  `dt_final_produto` DATETIME NULL ,
-  PRIMARY KEY (`id_produto`) ,
-  INDEX `fk_tbl_produtoDesconhecido_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_tbl_produtoDesconhecido_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela de produtos desconhecidos';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_adcionarDependentePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_adcionarDependentePF` (
-  `id_adcionarDependentePF` INT NOT NULL AUTO_INCREMENT ,
-  `id_dependentePF` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  PRIMARY KEY (`id_adcionarDependentePF`) ,
-  INDEX `fk_tbl_adcionarDependentePF_tbl_dependentePF1` (`id_dependentePF` ASC) ,
-  INDEX `fk_tbl_adcionarDependentePF_tbl_participacao1` (`id_participacao` ASC) ,
-  INDEX `fk_tbl_adcionarDependentePF_tbl_venda1` (`id_venda` ASC) ,
-  CONSTRAINT `fk_tbl_adcionarDependentePF_tbl_dependentePF1`
-    FOREIGN KEY (`id_dependentePF` )
-    REFERENCES `db_7brasil`.`tbl_dependentePF` (`id_dependentePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_adcionarDependentePF_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_adcionarDependentePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela para adicionar dependente do cliente na venda';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_ticket`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_ticket` (
-  `id_ticket` INT NOT NULL AUTO_INCREMENT ,
-  `nome_ticket` VARCHAR(45) NOT NULL ,
-  `descricao_ticket` TEXT NULL ,
-  `status_ticket` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_ticket`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_compraTicket`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_compraTicket` (
-  `id_compraTicket` INT NOT NULL AUTO_INCREMENT ,
-  `id_ticket` INT NOT NULL ,
-  `id_moeda` INT NOT NULL ,
-  `valor_compraTicket` DECIMAL(9,2) NOT NULL ,
-  `comissao_compraTicket` INT NOT NULL ,
-  `voucher_compraTicket` VARCHAR(99) NULL ,
-  `fornecedor_compraTicket` VARCHAR(99) NULL ,
-  PRIMARY KEY (`id_compraTicket`) ,
-  INDEX `fk_tbl_compraTicket_tbl_ticket1` (`id_ticket` ASC) ,
-  INDEX `fk_tbl_compraTicket_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_tbl_compraTicket_tbl_ticket1`
-    FOREIGN KEY (`id_ticket` )
-    REFERENCES `db_7brasil`.`tbl_ticket` (`id_ticket` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_compraTicket_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cliente_ticket`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cliente_ticket` (
-  `id_cliente_ticket` INT NOT NULL AUTO_INCREMENT ,
-  `id_venda` INT NOT NULL ,
-  `id_compraTicket` INT NOT NULL ,
-  `tbl_clientePF_id_clientePF` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  PRIMARY KEY (`id_cliente_ticket`, `id_venda`) ,
-  INDEX `fk_tbl_cliente_ticket_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_cliente_ticket_tbl_clientePF1` (`tbl_clientePF_id_clientePF` ASC) ,
-  INDEX `fk_tbl_cliente_ticket_tbl_compraTicket1` (`id_compraTicket` ASC) ,
-  INDEX `fk_tbl_cliente_ticket_tbl_participacao1` (`id_participacao` ASC) ,
-  CONSTRAINT `fk_tbl_cliente_ticket_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cliente_ticket_tbl_clientePF1`
-    FOREIGN KEY (`tbl_clientePF_id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cliente_ticket_tbl_compraTicket1`
-    FOREIGN KEY (`id_compraTicket` )
-    REFERENCES `db_7brasil`.`tbl_compraTicket` (`id_compraTicket` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cliente_ticket_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Para adicionar compra de ticket do cliente na venda';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_compania_cruzeiro`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_compania_cruzeiro` (
-  `id_compania_cruzeiro` INT NOT NULL ,
-  `nome_compania_cruzeiro` VARCHAR(99) NOT NULL ,
-  `descricao_compania_cruzeiro` TEXT NULL ,
-  `status_compania_cruzeiro` TINYINT(1) NULL DEFAULT 1 ,
-  PRIMARY KEY (`id_compania_cruzeiro`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela com nomes de compania de cruzeiro';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cruzeiro`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cruzeiro` (
-  `id_cruzeiro` INT NOT NULL AUTO_INCREMENT ,
-  `id_compania_cruzeiro` INT NOT NULL ,
-  `id_moeda` INT NOT NULL ,
-  `navio_cruzeiro` VARCHAR(99) NULL ,
-  `dt_inicio_cruzeiro` DATETIME NOT NULL ,
-  `dt_fim_cruzeiro` DATETIME NOT NULL ,
-  `rota_cruzeiro` VARCHAR(99) NULL ,
-  `nm_confirmacao_cruzeiro` VARCHAR(45) NULL ,
-  `tipo_cabine_cruzeiro` VARCHAR(45) NULL ,
-  `valor_cruzeiro` DECIMAL(9,2) NOT NULL ,
-  `comissao_cruzeiro` DECIMAL(9,2) NOT NULL ,
-  PRIMARY KEY (`id_cruzeiro`) ,
-  INDEX `fk_tbl_cruzeiro_tbl_compania_cruzeiro1` (`id_compania_cruzeiro` ASC) ,
-  INDEX `fk_tbl_cruzeiro_tbl_moeda1` (`id_moeda` ASC) ,
-  CONSTRAINT `fk_tbl_cruzeiro_tbl_compania_cruzeiro1`
-    FOREIGN KEY (`id_compania_cruzeiro` )
-    REFERENCES `db_7brasil`.`tbl_compania_cruzeiro` (`id_compania_cruzeiro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_tbl_moeda1`
-    FOREIGN KEY (`id_moeda` )
-    REFERENCES `db_7brasil`.`tbl_moeda` (`id_moeda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_dependentePF_ticket`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_dependentePF_ticket` (
-  `id_dependentePF_ticket` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_compraTicket` INT NOT NULL ,
-  `id_dependentePF` INT NOT NULL ,
-  PRIMARY KEY (`id_dependentePF_ticket`) ,
-  INDEX `fk_tbl_dependentePF_ticket_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_dependentePF_ticket_tbl_compraTicket1` (`id_compraTicket` ASC) ,
-  INDEX `fk_tbl_dependentePF_ticket_tbl_dependentePF1` (`id_dependentePF` ASC) ,
-  CONSTRAINT `fk_tbl_dependentePF_ticket_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_dependentePF_ticket_tbl_compraTicket1`
-    FOREIGN KEY (`id_compraTicket` )
-    REFERENCES `db_7brasil`.`tbl_compraTicket` (`id_compraTicket` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_dependentePF_ticket_tbl_dependentePF1`
-    FOREIGN KEY (`id_dependentePF` )
-    REFERENCES `db_7brasil`.`tbl_dependentePF` (`id_dependentePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela para compra de ticket de dependente pessoa fisica';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cruzeiro_clientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cruzeiro_clientePF` (
-  `id_cruzeiro_clientePF` INT NOT NULL ,
-  `id_cruzeiro` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  PRIMARY KEY (`id_cruzeiro_clientePF`, `id_cruzeiro`) ,
-  INDEX `fk_tbl_cruzeiro_clientePF_tbl_cruzeiro1` (`id_cruzeiro` ASC) ,
-  INDEX `fk_tbl_cruzeiro_clientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_cruzeiro_clientePF_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_cruzeiro_clientePF_tbl_participacao1` (`id_participacao` ASC) ,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_cruzeiro1`
-    FOREIGN KEY (`id_cruzeiro` )
-    REFERENCES `db_7brasil`.`tbl_cruzeiro` (`id_cruzeiro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cruzeiro_dependentePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cruzeiro_dependentePF` (
-  `id_cruzeiro_dependente` INT NOT NULL AUTO_INCREMENT ,
-  `id_cruzeiro` INT NOT NULL ,
-  `id_dependentePF` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  PRIMARY KEY (`id_cruzeiro_dependente`) ,
-  INDEX `fk_tbl_cruzeiro_dependentePF_tbl_cruzeiro1` (`id_cruzeiro` ASC) ,
-  INDEX `fk_tbl_cruzeiro_dependentePF_tbl_dependentePF1` (`id_dependentePF` ASC) ,
-  INDEX `fk_tbl_cruzeiro_dependentePF_tbl_venda1` (`id_venda` ASC) ,
-  CONSTRAINT `fk_tbl_cruzeiro_dependentePF_tbl_cruzeiro1`
-    FOREIGN KEY (`id_cruzeiro` )
-    REFERENCES `db_7brasil`.`tbl_cruzeiro` (`id_cruzeiro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_dependentePF_tbl_dependentePF1`
-    FOREIGN KEY (`id_dependentePF` )
-    REFERENCES `db_7brasil`.`tbl_dependentePF` (`id_dependentePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_dependentePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela para inclusão de dependete PF no cruzeiro';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_outroprod_clientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_outroprod_clientePF` (
-  `id_outroprod_clientePF` INT NOT NULL AUTO_INCREMENT ,
-  `id_produto` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  PRIMARY KEY (`id_outroprod_clientePF`) ,
-  INDEX `fk_tbl_outroprod_clientePF_tbl_produtoOutros1` (`id_produto` ASC) ,
-  INDEX `fk_tbl_outroprod_clientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_outroprod_clientePF_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_outroprod_clientePF_tbl_participacao1` (`id_participacao` ASC) ,
-  CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_produtoOutros1`
-    FOREIGN KEY (`id_produto` )
-    REFERENCES `db_7brasil`.`tbl_produtoOutros` (`id_produto` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_passagens_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_passagens_clientePJ` (
-  `id_passagens_clientePJ` INT NOT NULL ,
-  `id_passagens` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  PRIMARY KEY (`id_passagens_clientePJ`) ,
-  INDEX `fk_tbl_passagens_clientePJ_tbl_passagens1` (`id_passagens` ASC) ,
-  INDEX `fk_tbl_passagens_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_passagens_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_passagens_clientePJ_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_passagens1`
-    FOREIGN KEY (`id_passagens` )
-    REFERENCES `db_7brasil`.`tbl_passagens` (`id_passagens` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela usada para reserva de passagens aére para cliente Pes' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_cruzeiro_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_cruzeiro_clientePJ` (
-  `id_cruzeiro_clientePJ` INT NOT NULL AUTO_INCREMENT ,
-  `id_cruzeiro` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  PRIMARY KEY (`id_cruzeiro_clientePJ`) ,
-  INDEX `fk_tbl_cruzeiro_clientePJ_tbl_cruzeiro1` (`id_cruzeiro` ASC) ,
-  INDEX `fk_tbl_cruzeiro_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_cruzeiro_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_cruzeiro_clientePJ_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_cruzeiro1`
-    FOREIGN KEY (`id_cruzeiro` )
-    REFERENCES `db_7brasil`.`tbl_cruzeiro` (`id_cruzeiro` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_outroProd_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_outroProd_clientePJ` (
-  `id_outroProd_clientePJ` INT NOT NULL AUTO_INCREMENT ,
-  `id_produto` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  PRIMARY KEY (`id_outroProd_clientePJ`) ,
-  INDEX `fk_tbl_outroProd_clientePJ_tbl_produtoOutros1` (`id_produto` ASC) ,
-  INDEX `fk_tbl_outroProd_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_outroProd_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_outroProd_clientePJ_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_produtoOutros1`
-    FOREIGN KEY (`id_produto` )
-    REFERENCES `db_7brasil`.`tbl_produtoOutros` (`id_produto` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabele usada para adicionar outros produtos na venda de clie' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_ticket_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_ticket_clientePJ` (
-  `id_ticket_clientePJ` INT NOT NULL ,
-  `id_compraTicket` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  PRIMARY KEY (`id_ticket_clientePJ`) ,
-  INDEX `fk_tbl_ticket_clientePJ_tbl_compraTicket1` (`id_compraTicket` ASC) ,
-  INDEX `fk_tbl_ticket_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_ticket_clientePJ_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  INDEX `fk_tbl_ticket_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_compraTicket1`
-    FOREIGN KEY (`id_compraTicket` )
-    REFERENCES `db_7brasil`.`tbl_compraTicket` (`id_compraTicket` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_carro_clientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_carro_clientePF` (
-  `id_carro_clientePF` INT NOT NULL AUTO_INCREMENT ,
-  `id_carros` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  PRIMARY KEY (`id_carro_clientePF`) ,
-  INDEX `fk_tbl_carro_clientePF_tbl_carro1` (`id_carros` ASC) ,
-  INDEX `fk_tbl_carro_clientePF_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_carro_clientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  CONSTRAINT `fk_tbl_carro_clientePF_tbl_carro1`
-    FOREIGN KEY (`id_carros` )
-    REFERENCES `db_7brasil`.`tbl_carro` (`id_carros` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_carro_clientePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_carro_clientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela de reserva de carro para pessoa fisica';
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_carro_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_carro_clientePJ` (
-  `id_carro_clientePJ` INT NOT NULL ,
-  `id_carros` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  PRIMARY KEY (`id_carro_clientePJ`) ,
-  INDEX `fk_tbl_carro_clientePJ_tbl_carro1` (`id_carros` ASC) ,
-  INDEX `fk_tbl_carro_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_carro_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_carro_clientePJ_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  CONSTRAINT `fk_tbl_carro_clientePJ_tbl_carro1`
-    FOREIGN KEY (`id_carros` )
-    REFERENCES `db_7brasil`.`tbl_carro` (`id_carros` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_carro_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_carro_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_carro_clientePJ_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_hotel_clientePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_hotel_clientePF` (
-  `id_hotel_clientePF` INT NOT NULL ,
-  `id_hoteis` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePF` INT NOT NULL ,
-  `id_participacao` INT NOT NULL ,
-  PRIMARY KEY (`id_hotel_clientePF`) ,
-  INDEX `fk_tbl_hotel_clientePF_tbl_hotel1` (`id_hoteis` ASC) ,
-  INDEX `fk_tbl_hotel_clientePF_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_hotel_clientePF_tbl_clientePF1` (`id_clientePF` ASC) ,
-  INDEX `fk_tbl_hotel_clientePF_tbl_participacao1` (`id_participacao` ASC) ,
-  CONSTRAINT `fk_tbl_hotel_clientePF_tbl_hotel1`
-    FOREIGN KEY (`id_hoteis` )
-    REFERENCES `db_7brasil`.`tbl_hotel` (`id_hoteis` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_clientePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_clientePF_tbl_clientePF1`
-    FOREIGN KEY (`id_clientePF` )
-    REFERENCES `db_7brasil`.`tbl_clientePF` (`id_clientePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_clientePF_tbl_participacao1`
-    FOREIGN KEY (`id_participacao` )
-    REFERENCES `db_7brasil`.`tbl_participacao` (`id_participacao` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_hotel_depedentePF`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_hotel_depedentePF` (
-  `id_hotel_depedentePF` INT NOT NULL AUTO_INCREMENT ,
-  `id_hoteis` INT NOT NULL ,
-  `id_dependentePF_ticket` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  PRIMARY KEY (`id_hotel_depedentePF`) ,
-  INDEX `fk_tbl_hotel_depedentePF_tbl_hotel1` (`id_hoteis` ASC) ,
-  INDEX `fk_tbl_hotel_depedentePF_tbl_dependentePF1` (`id_dependentePF_ticket` ASC) ,
-  INDEX `fk_tbl_hotel_depedentePF_tbl_venda1` (`id_venda` ASC) ,
-  CONSTRAINT `fk_tbl_hotel_depedentePF_tbl_hotel1`
-    FOREIGN KEY (`id_hoteis` )
-    REFERENCES `db_7brasil`.`tbl_hotel` (`id_hoteis` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_depedentePF_tbl_dependentePF1`
-    FOREIGN KEY (`id_dependentePF_ticket` )
-    REFERENCES `db_7brasil`.`tbl_dependentePF` (`id_dependentePF` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_depedentePF_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela usada para cadastrar reserva de dependetes Pessoa Fis' /* comment truncated */;
-
-
--- -----------------------------------------------------
--- Table `db_7brasil`.`tbl_hotel_clientePJ`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `db_7brasil`.`tbl_hotel_clientePJ` (
-  `id_hotel_clientePJ` INT NOT NULL ,
-  `tbl_hotel_id_hoteis` INT NOT NULL ,
-  `id_venda` INT NOT NULL ,
-  `id_clientePJ` INT NOT NULL ,
-  `id_dependentePJ` INT NOT NULL ,
-  PRIMARY KEY (`id_hotel_clientePJ`) ,
-  INDEX `fk_tbl_hotel_clientePJ_tbl_hotel1` (`tbl_hotel_id_hoteis` ASC) ,
-  INDEX `fk_tbl_hotel_clientePJ_tbl_venda1` (`id_venda` ASC) ,
-  INDEX `fk_tbl_hotel_clientePJ_tbl_clientePJ1` (`id_clientePJ` ASC) ,
-  INDEX `fk_tbl_hotel_clientePJ_tbl_dependentePJ1` (`id_dependentePJ` ASC) ,
-  CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_hotel1`
-    FOREIGN KEY (`tbl_hotel_id_hoteis` )
-    REFERENCES `db_7brasil`.`tbl_hotel` (`id_hoteis` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_venda1`
-    FOREIGN KEY (`id_venda` )
-    REFERENCES `db_7brasil`.`tbl_venda` (`id_venda` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_clientePJ1`
-    FOREIGN KEY (`id_clientePJ` )
-    REFERENCES `db_7brasil`.`tbl_clientePJ` (`id_clientePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_dependentePJ1`
-    FOREIGN KEY (`id_dependentePJ` )
-    REFERENCES `db_7brasil`.`tbl_dependentePJ` (`id_dependentePJ` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-COMMENT = 'Tabela para reserva de hotel para cliente Pessoa Juridica';
-
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- phpMyAdmin SQL Dump
+-- version 3.5.8.1deb1
+-- http://www.phpmyadmin.net
+--
+-- Máquina: localhost
+-- Data de Criação: 28-Dez-2013 às 18:29
+-- Versão do servidor: 5.5.34-0ubuntu0.13.04.1
+-- versão do PHP: 5.4.9-4ubuntu2.4
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de Dados: `db_7brasil`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_adcionarDependentePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_adcionarDependentePF` (
+  `id_adcionarDependentePF` int(11) NOT NULL AUTO_INCREMENT,
+  `id_dependentePF` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  PRIMARY KEY (`id_adcionarDependentePF`),
+  KEY `fk_tbl_adcionarDependentePF_tbl_dependentePF1` (`id_dependentePF`),
+  KEY `fk_tbl_adcionarDependentePF_tbl_participacao1` (`id_participacao`),
+  KEY `fk_tbl_adcionarDependentePF_tbl_venda1` (`id_venda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela para adicionar dependente do cliente na venda' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_adicionaClientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_adicionaClientePF` (
+  `id_adicionaClientePF` int(11) NOT NULL AUTO_INCREMENT,
+  `id_clientePF` int(11) NOT NULL,
+  `id_passagens` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  PRIMARY KEY (`id_adicionaClientePF`),
+  KEY `fk_tbl_adicionaClientePF_tbl_clientePF1` (`id_clientePF`),
+  KEY `fk_tbl_adicionaClientePF_tbl_passagens1` (`id_passagens`),
+  KEY `fk_tbl_adicionaClientePF_tbl_participacao1` (`id_participacao`),
+  KEY `fk_tbl_adicionaClientePF_tbl_venda1` (`id_venda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela usada para adicionar cliente pessoa fisica nas passag' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_adicionar_cliente`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_adicionar_cliente` (
+  `id_adicionar` int(11) NOT NULL AUTO_INCREMENT,
+  `id_dependentePJ` int(11) NOT NULL,
+  `id_passagens` int(11) NOT NULL,
+  PRIMARY KEY (`id_adicionar`),
+  KEY `fk_tbl_adicionar_cliente_tbl_dependentePJ1` (`id_dependentePJ`),
+  KEY `fk_tbl_adicionar_cliente_tbl_passagens1` (`id_passagens`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela usada para adicionar cliente cadastrado na reserva de' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_agencia`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_agencia` (
+  `id_agencia` int(11) NOT NULL AUTO_INCREMENT,
+  `razaosocial_agencia` varchar(99) DEFAULT NULL,
+  `nomefantasia_agencia` varchar(99) NOT NULL,
+  `cnpj_agencia` varchar(45) NOT NULL,
+  `endereco_agencia` varchar(45) DEFAULT NULL,
+  `numero_agencia` varchar(10) DEFAULT NULL,
+  `bairro_agencia` varchar(45) DEFAULT NULL,
+  `cidade_agencia` varchar(45) DEFAULT NULL,
+  `uf_agencia` varchar(10) DEFAULT NULL,
+  `cep_agencia` varchar(15) DEFAULT NULL,
+  `site_agencia` varchar(99) DEFAULT NULL,
+  `email_agencia` varchar(99) DEFAULT NULL,
+  `telefone_agencia` varchar(15) DEFAULT NULL,
+  `descricao_agencia` text,
+  `status_agencia` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_agencia`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_agentes`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_agentes` (
+  `id_agente` int(11) NOT NULL AUTO_INCREMENT,
+  `id_agencia` int(11) NOT NULL,
+  `nome_agente` varchar(99) NOT NULL,
+  `email_agente` varchar(99) DEFAULT NULL,
+  `celular_agente` varchar(15) DEFAULT NULL,
+  `descricao_agente` text,
+  `status_agente` tinyint(1) DEFAULT '1',
+  `porcentagem_agente` double(9,2) DEFAULT NULL,
+  PRIMARY KEY (`id_agente`),
+  KEY `fk_agente_agencia` (`id_agencia`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_asseguradoPF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_asseguradoPF` (
+  `id_seguro` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  PRIMARY KEY (`id_seguro`),
+  KEY `fk_tbl_seguro_has_tbl_clientePF_tbl_clientePF1` (`id_clientePF`),
+  KEY `fk_tbl_seguro_has_tbl_clientePF_tbl_seguro1` (`id_seguro`),
+  KEY `fk_tbl_asseguradoPF_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_asseguradoPF_tbl_participacao1` (`id_participacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_asseguradoPJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_asseguradoPJ` (
+  `id_seguro` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  `id_dependentePF` int(11) NOT NULL,
+  PRIMARY KEY (`id_seguro`,`id_clientePJ`,`id_dependentePJ`),
+  KEY `fk_assegurado_cliente` (`id_clientePJ`),
+  KEY `fk_assegurado_seguro` (`id_seguro`),
+  KEY `fk_assegurado_dependente` (`id_dependentePJ`),
+  KEY `fk_tbl_asseguradoPJ_tbl_dependentePF1` (`id_dependentePF`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_brokers_hotel`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_brokers_hotel` (
+  `id_brokers` int(11) NOT NULL,
+  `id_hoteis` int(11) NOT NULL,
+  PRIMARY KEY (`id_brokers`,`id_hoteis`),
+  KEY `fk_tbl_brokers_has_tbl_hotel_tbl_hotel1` (`id_hoteis`),
+  KEY `fk_tbl_brokers_has_tbl_hotel_tbl_brokers1` (`id_brokers`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cambio`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cambio` (
+  `id_cambio` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_cambio` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_cambio` text COLLATE utf8_unicode_ci,
+  `status_cambio` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_cambio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela com nomes das moedas internacional' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_carro`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_carro` (
+  `id_carros` int(11) NOT NULL AUTO_INCREMENT,
+  `id_locadora` int(11) NOT NULL,
+  `id_moeda` int(11) NOT NULL,
+  `dt_inicio_carro` datetime NOT NULL,
+  `dt_devolucao_carro` datetime NOT NULL,
+  `local_incio_carro` varchar(99) NOT NULL,
+  `local_devolucao_carro` varchar(99) NOT NULL,
+  `voucher_carro` varchar(199) NOT NULL,
+  `descricao_carro` text,
+  `valor_carro` decimal(9,2) NOT NULL COMMENT 'Valor cobrado pela empresa \npara alugar o carro.\n',
+  `valor_casa_carro` decimal(9,2) NOT NULL COMMENT 'valor do lucro\nda 7Brasil',
+  `taxa_carro` decimal(9,2) DEFAULT NULL COMMENT 'Taxa extra cobrado pela \nempresa para alguma \neventualidade.',
+  PRIMARY KEY (`id_carros`),
+  KEY `fk_carros_locadora` (`id_locadora`),
+  KEY `fk_tbl_carro_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabela da locação do carro' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_carro_clientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_carro_clientePF` (
+  `id_carro_clientePF` int(11) NOT NULL AUTO_INCREMENT,
+  `id_carros` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  PRIMARY KEY (`id_carro_clientePF`),
+  KEY `fk_tbl_carro_clientePF_tbl_carro1` (`id_carros`),
+  KEY `fk_tbl_carro_clientePF_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_carro_clientePF_tbl_clientePF1` (`id_clientePF`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela de reserva de carro para pessoa fisica' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_carro_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_carro_clientePJ` (
+  `id_carro_clientePJ` int(11) NOT NULL,
+  `id_carros` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  PRIMARY KEY (`id_carro_clientePJ`),
+  KEY `fk_tbl_carro_clientePJ_tbl_carro1` (`id_carros`),
+  KEY `fk_tbl_carro_clientePJ_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_carro_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_carro_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cartaoPF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cartaoPF` (
+  `tbl_cartaoPF` int(11) NOT NULL,
+  `numero_cartaoPF` varchar(20) NOT NULL,
+  `bandeira_cartaoPF` varchar(45) NOT NULL,
+  `dt_validade_cartaoPF` date NOT NULL,
+  `codigo_seguranca_cartaoPF` varchar(10) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  PRIMARY KEY (`tbl_cartaoPF`),
+  KEY `fk_tbl_cartaPF_tbl_clientePF1` (`id_clientePF`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cartaoPJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cartaoPJ` (
+  `id_cartaoPJ` int(11) NOT NULL AUTO_INCREMENT,
+  `id_clientePJ` int(11) NOT NULL,
+  `numero_cartaoPJ` varchar(20) NOT NULL,
+  `bandeira_cartaoPJ` varchar(45) NOT NULL,
+  `dt_validade_cartaoPJ` date NOT NULL,
+  `codigo_seguranca_cartaoPJ` int(10) NOT NULL,
+  PRIMARY KEY (`id_cartaoPJ`),
+  KEY `fk_cartao_clientePJ` (`id_clientePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_classe_voo`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_classe_voo` (
+  `id_classe` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_classe` varchar(45) NOT NULL,
+  `descricao_classe` text,
+  `status_classe` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_classe`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='classes de passagens aérea' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_classificacao`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_classificacao` (
+  `id_classificacao` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_classificacao` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `status_classificacao` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_classificacao`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_classificacao`
+--
+
+INSERT INTO `tbl_classificacao` (`id_classificacao`, `titulo_classificacao`, `status_classificacao`) VALUES
+(1, 'Sr', 1),
+(2, 'Sra', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_clientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_clientePF` (
+  `id_clientePF` int(11) NOT NULL AUTO_INCREMENT,
+  `id_classificacao` int(11) NOT NULL,
+  `nome_clientePF` varchar(99) NOT NULL,
+  `dataNascimento_clientePF` date DEFAULT NULL,
+  `rg_clientePF` varchar(20) DEFAULT NULL,
+  `cpf_clientePF` varchar(20) NOT NULL,
+  `cep_clientePF` varchar(15) NOT NULL,
+  `endereco_clientePF` varchar(150) DEFAULT NULL,
+  `numero_clientePF` varchar(10) DEFAULT NULL,
+  `bairro_clientePF` varchar(45) DEFAULT NULL,
+  `cidade_clientePF` varchar(45) DEFAULT NULL,
+  `complemento_clientePF` varchar(20) DEFAULT NULL,
+  `uf_clientePF` varchar(15) DEFAULT NULL,
+  `pais_clientePF` varchar(20) NOT NULL,
+  `email_clientePF` varchar(150) DEFAULT NULL,
+  `telefone_clientePF` varchar(15) DEFAULT NULL,
+  `celular_clientePF` varchar(15) DEFAULT NULL,
+  `numero_passaporte_clientePF` varchar(45) DEFAULT NULL,
+  `dt_validadePassaporte_clientePF` date DEFAULT NULL,
+  `copia_rg_clientePF` varchar(199) DEFAULT NULL,
+  `copia_cpf_clientePF` varchar(199) DEFAULT NULL,
+  `foto_clientePF` varchar(199) DEFAULT NULL,
+  `numero_fidelidade_clientePF` varchar(99) DEFAULT NULL,
+  `descricao_clientePF` text CHARACTER SET utf8,
+  `status_clientePF` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_clientePF`),
+  KEY `fk_tbl_clientePF_tbl_classificacao1` (`id_classificacao`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Extraindo dados da tabela `tbl_clientePF`
+--
+
+INSERT INTO `tbl_clientePF` (`id_clientePF`, `id_classificacao`, `nome_clientePF`, `dataNascimento_clientePF`, `rg_clientePF`, `cpf_clientePF`, `cep_clientePF`, `endereco_clientePF`, `numero_clientePF`, `bairro_clientePF`, `cidade_clientePF`, `complemento_clientePF`, `uf_clientePF`, `pais_clientePF`, `email_clientePF`, `telefone_clientePF`, `celular_clientePF`, `numero_passaporte_clientePF`, `dt_validadePassaporte_clientePF`, `copia_rg_clientePF`, `copia_cpf_clientePF`, `foto_clientePF`, `numero_fidelidade_clientePF`, `descricao_clientePF`, `status_clientePF`) VALUES
+(6, 1, 'WESLEI ANDRADE SOUZA', '1980-10-20', '33.333.333-3', '999.999.999-99', '04431-000', 'Rua Maria Clotilde Martins Rocha', '1026', 'Jardim Selma', 'São Paulo', '', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456789', '2015-11-30', '/var/www/7brasil/skin/img/uploadedc63ae6bd0579e02be53f3ef9285f591d.jpg', '/var/www/7brasil/skin/img/uploaded/c94ab2f23a844a03dd72aea96d4597ef.png', '/var/www/7brasil/skin/img/uploadeddaf7fc2f9050c84ca08f976ed91d92b4.jpg', '1234561010', 'Descrição', 1),
+(7, 1, 'ARTHUR LIMA DE SOUZA', '2013-01-31', '12.222.222-2', '666.666.666-66', '04429-150', 'Rua Correio Paulistano', '202', 'Americanópolis', 'São Paulo', 'Casa 04', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456', '2016-10-25', '/var/www/7brasil/skin/img/uploaded/4d16a0cd1b9d6a90b0d67ad4bfb64588.png', '/var/www/7brasil/skin/img/uploaded/619b92173a9beb35a2daeca3aceaff32.jpg', '/var/www/7brasil/skin/img/uploaded/3893168b58c2d8fa948cdd3bf99f7960.JPG', '123456789123456789', 'Anjinho de Papai', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_clientePJ` (
+  `id_clientePJ` int(11) NOT NULL AUTO_INCREMENT,
+  `id_classificacao` int(11) NOT NULL,
+  `razaosocial_ClientePJ` varchar(99) DEFAULT NULL,
+  `nomefantasia_clientePJ` varchar(99) NOT NULL,
+  `cnpj_clientePJ` varchar(25) NOT NULL,
+  `logotipo_clientePJ` varchar(99) DEFAULT NULL,
+  `telefone_clientePJ` varchar(15) DEFAULT NULL,
+  `telefone2_clientePJ` varchar(15) NOT NULL,
+  `email_clientePJ` varchar(99) NOT NULL,
+  `endereco_clientePJ` varchar(99) DEFAULT NULL,
+  `numero_clientePJ` varchar(15) DEFAULT NULL,
+  `complemento_clientePJ` varchar(45) DEFAULT NULL,
+  `bairro_clientePJ` varchar(45) DEFAULT NULL,
+  `cidade_clientePJ` varchar(45) DEFAULT NULL,
+  `cep_clientePJ` varchar(15) NOT NULL,
+  `uf_clientePJ` varchar(15) DEFAULT NULL,
+  `pais_clientePJ` varchar(45) DEFAULT NULL,
+  `telefone_responsavel_clientePJ` varchar(15) DEFAULT NULL,
+  `nomeresponsavel_clientePJ` varchar(99) NOT NULL,
+  `rg_responsavel_clientePJ` varchar(20) DEFAULT NULL,
+  `email_responsavel_clientePJ` varchar(99) DEFAULT NULL,
+  `cpf_responsavel_clientePJ` varchar(20) DEFAULT NULL,
+  `status_clientePJ` tinyint(1) DEFAULT '1',
+  `descricao_clientePJ` text,
+  `credito_clientePJ` decimal(9,2) DEFAULT NULL,
+  PRIMARY KEY (`id_clientePJ`),
+  KEY `id_classificacao` (`id_classificacao`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='dados da empresa que vai patrocinar a compra de produtos na ' AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_clientePJ`
+--
+
+INSERT INTO `tbl_clientePJ` (`id_clientePJ`, `id_classificacao`, `razaosocial_ClientePJ`, `nomefantasia_clientePJ`, `cnpj_clientePJ`, `logotipo_clientePJ`, `telefone_clientePJ`, `telefone2_clientePJ`, `email_clientePJ`, `endereco_clientePJ`, `numero_clientePJ`, `complemento_clientePJ`, `bairro_clientePJ`, `cidade_clientePJ`, `cep_clientePJ`, `uf_clientePJ`, `pais_clientePJ`, `telefone_responsavel_clientePJ`, `nomeresponsavel_clientePJ`, `rg_responsavel_clientePJ`, `email_responsavel_clientePJ`, `cpf_responsavel_clientePJ`, `status_clientePJ`, `descricao_clientePJ`, `credito_clientePJ`) VALUES
+(2, 1, 'andwes solution', 'ANDWES SOLUTION ', '00.000.000/0000-00', '/var/www/7brasil/skin/img/uploaded/7f8de164a1bfc59289a92a15f1df0681.JPG', '(11)5555-5555', '(11)4444-4444', 'contato@andwes.com.br', 'Rua Correio Paulistano', '202', '', 'American?polis', 'S?o Paulo', '04429-150', 'SP', 'Brasil', NULL, 'Weslei Andrade Souza', '33.333.333-3', 'wesley1263@terra.com.br', '999.999.999-99', 1, 'Descri??o teste', 100000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cliente_ticket`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cliente_ticket` (
+  `id_cliente_ticket` int(11) NOT NULL AUTO_INCREMENT,
+  `id_venda` int(11) NOT NULL,
+  `id_compraTicket` int(11) NOT NULL,
+  `tbl_clientePF_id_clientePF` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  PRIMARY KEY (`id_cliente_ticket`,`id_venda`),
+  KEY `fk_tbl_cliente_ticket_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_cliente_ticket_tbl_clientePF1` (`tbl_clientePF_id_clientePF`),
+  KEY `fk_tbl_cliente_ticket_tbl_compraTicket1` (`id_compraTicket`),
+  KEY `fk_tbl_cliente_ticket_tbl_participacao1` (`id_participacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Para adicionar compra de ticket do cliente na venda' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_compania`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_compania` (
+  `id_compania` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tipocomp` int(11) NOT NULL,
+  `nome_compania` varchar(99) NOT NULL,
+  `logotipo_compania` varchar(99) DEFAULT NULL,
+  PRIMARY KEY (`id_compania`),
+  KEY `fk_tbl_compania_tbl_tipoComp1` (`id_tipocomp`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_compania_cruzeiro`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_compania_cruzeiro` (
+  `id_compania_cruzeiro` int(11) NOT NULL,
+  `nome_compania_cruzeiro` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_compania_cruzeiro` text COLLATE utf8_unicode_ci,
+  `status_compania_cruzeiro` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_compania_cruzeiro`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela com nomes de compania de cruzeiro';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_compraTicket`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_compraTicket` (
+  `id_compraTicket` int(11) NOT NULL AUTO_INCREMENT,
+  `id_ticket` int(11) NOT NULL,
+  `id_moeda` int(11) NOT NULL,
+  `valor_compraTicket` decimal(9,2) NOT NULL,
+  `comissao_compraTicket` int(11) NOT NULL,
+  `voucher_compraTicket` varchar(99) DEFAULT NULL,
+  `fornecedor_compraTicket` varchar(99) DEFAULT NULL,
+  PRIMARY KEY (`id_compraTicket`),
+  KEY `fk_tbl_compraTicket_tbl_ticket1` (`id_ticket`),
+  KEY `fk_tbl_compraTicket_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_contas`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_contas` (
+  `id_contas` int(11) NOT NULL AUTO_INCREMENT,
+  `id_grupo` int(11) NOT NULL,
+  `id_subgrupo` int(11) NOT NULL,
+  `id_filial` int(11) NOT NULL,
+  `valor_contas` decimal(9,2) NOT NULL,
+  `validade_conta` date DEFAULT NULL,
+  `descricao_contas` text COLLATE utf8_unicode_ci,
+  `status_contas` tinyint(1) DEFAULT '0' COMMENT '0 - Pendente\n1 - Paga',
+  PRIMARY KEY (`id_contas`),
+  KEY `fk_tbl_contas_tbl_grupo1` (`id_grupo`),
+  KEY `fk_tbl_contas_tbl_subgrupo1` (`id_subgrupo`),
+  KEY `fk_tbl_contas_tbl_filial1` (`id_filial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela de contas a pagar de cada filial da empresa' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_continente`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_continente` (
+  `id_continente` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_continente` varchar(45) NOT NULL,
+  `descricao_continente` text,
+  PRIMARY KEY (`id_continente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dado do continente da viagem do assegurado' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cruzeiro`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cruzeiro` (
+  `id_cruzeiro` int(11) NOT NULL AUTO_INCREMENT,
+  `id_compania_cruzeiro` int(11) NOT NULL,
+  `id_moeda` int(11) NOT NULL,
+  `navio_cruzeiro` varchar(99) DEFAULT NULL,
+  `dt_inicio_cruzeiro` datetime NOT NULL,
+  `dt_fim_cruzeiro` datetime NOT NULL,
+  `rota_cruzeiro` varchar(99) DEFAULT NULL,
+  `nm_confirmacao_cruzeiro` varchar(45) DEFAULT NULL,
+  `tipo_cabine_cruzeiro` varchar(45) DEFAULT NULL,
+  `valor_cruzeiro` decimal(9,2) NOT NULL,
+  `comissao_cruzeiro` decimal(9,2) NOT NULL,
+  PRIMARY KEY (`id_cruzeiro`),
+  KEY `fk_tbl_cruzeiro_tbl_compania_cruzeiro1` (`id_compania_cruzeiro`),
+  KEY `fk_tbl_cruzeiro_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cruzeiro_clientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cruzeiro_clientePF` (
+  `id_cruzeiro_clientePF` int(11) NOT NULL,
+  `id_cruzeiro` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  PRIMARY KEY (`id_cruzeiro_clientePF`,`id_cruzeiro`),
+  KEY `fk_tbl_cruzeiro_clientePF_tbl_cruzeiro1` (`id_cruzeiro`),
+  KEY `fk_tbl_cruzeiro_clientePF_tbl_clientePF1` (`id_clientePF`),
+  KEY `fk_tbl_cruzeiro_clientePF_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_cruzeiro_clientePF_tbl_participacao1` (`id_participacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cruzeiro_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cruzeiro_clientePJ` (
+  `id_cruzeiro_clientePJ` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cruzeiro` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  PRIMARY KEY (`id_cruzeiro_clientePJ`),
+  KEY `fk_tbl_cruzeiro_clientePJ_tbl_cruzeiro1` (`id_cruzeiro`),
+  KEY `fk_tbl_cruzeiro_clientePJ_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_cruzeiro_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_cruzeiro_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_cruzeiro_dependentePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_cruzeiro_dependentePF` (
+  `id_cruzeiro_dependente` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cruzeiro` int(11) NOT NULL,
+  `id_dependentePF` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  PRIMARY KEY (`id_cruzeiro_dependente`),
+  KEY `fk_tbl_cruzeiro_dependentePF_tbl_cruzeiro1` (`id_cruzeiro`),
+  KEY `fk_tbl_cruzeiro_dependentePF_tbl_dependentePF1` (`id_dependentePF`),
+  KEY `fk_tbl_cruzeiro_dependentePF_tbl_venda1` (`id_venda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela para inclusão de dependete PF no cruzeiro' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_departamento`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_departamento` (
+  `id_departamento` int(11) NOT NULL AUTO_INCREMENT,
+  `id_dependente` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `codigo_centrocusto` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Código utilizado por algumas \nempresas para indentificar o departartamento (Centro de Custo)',
+  `nome_departmento` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_departamento` text COLLATE utf8_unicode_ci,
+  `status_departamento` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_departamento`),
+  KEY `fk_departamento_dependente` (`id_dependente`),
+  KEY `fk_tbl_departamento_tbl_clientePJ1` (`id_clientePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='departamento da empresa e do funcionario que vai viajar' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_dependentePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_dependentePF` (
+  `id_dependentePF` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  `id_classificacao` int(11) NOT NULL,
+  `nome_dependentePF` varchar(99) NOT NULL,
+  `dt_nascimento_dependentePF` date DEFAULT NULL,
+  `cpf_dependentePF` varchar(20) NOT NULL,
+  `rg_dependentePF` varchar(20) DEFAULT NULL,
+  `telefone_dependentePF` varchar(15) DEFAULT NULL,
+  `celular_dependentePF` varchar(15) DEFAULT NULL,
+  `email_dependentePF` varchar(99) DEFAULT NULL,
+  `numero_passaporte_dependentePF` varchar(20) DEFAULT NULL,
+  `dt_validade_passaporte_dependentePF` date DEFAULT NULL,
+  `foto_dependentePF` varchar(99) DEFAULT NULL,
+  `copia_cpf_dependentePF` varchar(99) DEFAULT NULL,
+  `copia_rg_dependentePF` varchar(99) DEFAULT NULL,
+  `descricao_dependentePF` text,
+  PRIMARY KEY (`id_dependentePF`),
+  KEY `fk_dependentePF_clientePF` (`id_clientePF`),
+  KEY `fk_tbl_dependentePF_tbl_classificacao1` (`id_classificacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_dependentePF_ticket`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_dependentePF_ticket` (
+  `id_dependentePF_ticket` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_compraTicket` int(11) NOT NULL,
+  `id_dependentePF` int(11) NOT NULL,
+  PRIMARY KEY (`id_dependentePF_ticket`),
+  KEY `fk_tbl_dependentePF_ticket_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_dependentePF_ticket_tbl_compraTicket1` (`id_compraTicket`),
+  KEY `fk_tbl_dependentePF_ticket_tbl_dependentePF1` (`id_dependentePF`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela para compra de ticket de dependente pessoa fisica';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_dependentePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_dependentePJ` (
+  `id_dependentePJ` int(11) NOT NULL AUTO_INCREMENT,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_classificacao` int(11) NOT NULL,
+  `nome_dependentePJ` varchar(99) NOT NULL,
+  `dt_nascimento_dependentePJ` date DEFAULT NULL,
+  `cpf_dependentePJ` varchar(20) NOT NULL,
+  `rg_dependentePJ` varchar(15) DEFAULT NULL,
+  `telefone_dependentePJ` varchar(20) DEFAULT NULL,
+  `celular_dependentePJ` varchar(15) DEFAULT NULL,
+  `email_dependentePJ` varchar(99) DEFAULT NULL,
+  `numero_passaporte_dependentePJ` varchar(20) DEFAULT NULL,
+  `dt_validade_passaporte_dependentePJ` date DEFAULT NULL,
+  `foto_dependentePJ` varchar(99) DEFAULT NULL,
+  `copia_rg_dependentePJ` varchar(99) DEFAULT NULL,
+  `copia_cpf_dependentePJ` varchar(99) DEFAULT NULL,
+  `descricao_dependentePJ` text,
+  `status_dependentePJ` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_dependentePJ`),
+  KEY `fk_dependente_cliente` (`id_clientePJ`),
+  KEY `fk_tbl_dependentePJ_tbl_classificacao1` (`id_classificacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dados do funcionario da empresa (ClientePJ)' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_destino`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_destino` (
+  `id_destino` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_destino` varchar(99) NOT NULL,
+  `descricao_destino` text,
+  `status_destino` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_destino`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Destino de viagem de passgem aérea' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_email`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_email` (
+  `id_email` int(11) NOT NULL AUTO_INCREMENT,
+  `id_filial` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `email_email` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_email` text COLLATE utf8_unicode_ci,
+  `status_email` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_email`),
+  KEY `fk_tbl_email_tbl_filial1` (`id_filial`),
+  KEY `fk_tbl_email_tbl_usuario1` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='emails das filiais cadastrados' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_empresa`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_empresa` (
+  `id_empresa` int(11) NOT NULL AUTO_INCREMENT,
+  `razaosocial_empresa` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nomefantasia_empresa` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cnpj_empresa` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `descricao_empresa` text COLLATE utf8_unicode_ci,
+  `logotipo_empresa` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id_empresa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='dados da empresa central' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_filial`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_filial` (
+  `id_filial` int(11) NOT NULL AUTO_INCREMENT,
+  `id_empresa` int(11) NOT NULL,
+  `nome_fillial` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `endereco_filial` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `numero_filial` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `complemento_filial` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bairro_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cidade_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `uf_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pais_fililal` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `descricao_filial` text COLLATE utf8_unicode_ci,
+  `status_fillal` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_filial`),
+  KEY `fk_tbl_filial_tbl_empresa1` (`id_empresa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela das filiais da empresa' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_formaPagamento`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_formaPagamento` (
+  `id_formaPagamento` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_tipoPagamento` int(11) NOT NULL,
+  `valor_formaPagamento` decimal(9,2) NOT NULL,
+  `vezes_formaPagamento` int(2) NOT NULL,
+  PRIMARY KEY (`id_formaPagamento`),
+  KEY `fk_tbl_formaPagamento_tbl_tipoPagamento1` (`id_tipoPagamento`),
+  KEY `fk_tbl_formaPagamento_tbl_venda1` (`id_venda`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_grupo`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_grupo` (
+  `id_grupo` int(11) NOT NULL,
+  `titulo_grupo` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_grupo` text COLLATE utf8_unicode_ci,
+  `status_grupo` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_grupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela de grupo de contas a pagar';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_hotel`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_hotel` (
+  `id_hoteis` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_hotel` varchar(99) NOT NULL,
+  `endereco_hotel` varchar(199) NOT NULL,
+  `numero_hotel` varchar(9) DEFAULT NULL,
+  `cep_hotel` varchar(20) DEFAULT NULL,
+  `cidade_hotel` varchar(45) DEFAULT NULL,
+  `uf_hotel` varchar(10) DEFAULT NULL,
+  `telefone_hotel` varchar(45) DEFAULT NULL,
+  `email_hotel` varchar(99) DEFAULT NULL,
+  `descricao_hotel` text,
+  `voucher_hotel` varchar(199) DEFAULT NULL,
+  `valor_hotel` decimal(9,2) DEFAULT NULL,
+  `valor_casa_hotel` decimal(9,2) DEFAULT NULL COMMENT 'valor de lucro da 7brasil',
+  PRIMARY KEY (`id_hoteis`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_hotel_clientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_hotel_clientePF` (
+  `id_hotel_clientePF` int(11) NOT NULL,
+  `id_hoteis` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  PRIMARY KEY (`id_hotel_clientePF`),
+  KEY `fk_tbl_hotel_clientePF_tbl_hotel1` (`id_hoteis`),
+  KEY `fk_tbl_hotel_clientePF_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_hotel_clientePF_tbl_clientePF1` (`id_clientePF`),
+  KEY `fk_tbl_hotel_clientePF_tbl_participacao1` (`id_participacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_hotel_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_hotel_clientePJ` (
+  `id_hotel_clientePJ` int(11) NOT NULL,
+  `tbl_hotel_id_hoteis` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  PRIMARY KEY (`id_hotel_clientePJ`),
+  KEY `fk_tbl_hotel_clientePJ_tbl_hotel1` (`tbl_hotel_id_hoteis`),
+  KEY `fk_tbl_hotel_clientePJ_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_hotel_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_hotel_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela para reserva de hotel para cliente Pessoa Juridica';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_hotel_depedentePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_hotel_depedentePF` (
+  `id_hotel_depedentePF` int(11) NOT NULL AUTO_INCREMENT,
+  `id_hoteis` int(11) NOT NULL,
+  `id_dependentePF_ticket` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  PRIMARY KEY (`id_hotel_depedentePF`),
+  KEY `fk_tbl_hotel_depedentePF_tbl_hotel1` (`id_hoteis`),
+  KEY `fk_tbl_hotel_depedentePF_tbl_dependentePF1` (`id_dependentePF_ticket`),
+  KEY `fk_tbl_hotel_depedentePF_tbl_venda1` (`id_venda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela usada para cadastrar reserva de dependetes Pessoa Fis' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_locadora`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_locadora` (
+  `id_locadora` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_locadora` varchar(99) NOT NULL,
+  `site_locadora` varchar(99) DEFAULT NULL,
+  `telefone_locadora` varchar(16) DEFAULT NULL,
+  `email_locadora` varchar(199) DEFAULT NULL,
+  `descricao_locadora` text,
+  `status_locadora` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_locadora`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_moeda`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_moeda` (
+  `id_moeda` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cambio` int(11) NOT NULL,
+  `dt_moeda` datetime NOT NULL,
+  `valor_moeda` decimal(9,2) NOT NULL,
+  PRIMARY KEY (`id_moeda`),
+  KEY `fk_tbl_moeda_tbl_cambio1` (`id_cambio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela com valor do cambio no dia da venda' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_origem`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_origem` (
+  `id_origem` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_origem` varchar(99) NOT NULL,
+  `descricao_origem` text,
+  `status_origem` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_origem`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='origem de saida de uma passagem aérea' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_outroprod_clientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_outroprod_clientePF` (
+  `id_outroprod_clientePF` int(11) NOT NULL AUTO_INCREMENT,
+  `id_produto` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_participacao` int(11) NOT NULL,
+  PRIMARY KEY (`id_outroprod_clientePF`),
+  KEY `fk_tbl_outroprod_clientePF_tbl_produtoOutros1` (`id_produto`),
+  KEY `fk_tbl_outroprod_clientePF_tbl_clientePF1` (`id_clientePF`),
+  KEY `fk_tbl_outroprod_clientePF_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_outroprod_clientePF_tbl_participacao1` (`id_participacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_outroProd_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_outroProd_clientePJ` (
+  `id_outroProd_clientePJ` int(11) NOT NULL AUTO_INCREMENT,
+  `id_produto` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  PRIMARY KEY (`id_outroProd_clientePJ`),
+  KEY `fk_tbl_outroProd_clientePJ_tbl_produtoOutros1` (`id_produto`),
+  KEY `fk_tbl_outroProd_clientePJ_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_outroProd_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_outroProd_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabele usada para adicionar outros produtos na venda de clie' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_participacao`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_participacao` (
+  `id_participacao` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_participacao` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_participacao` text COLLATE utf8_unicode_ci,
+  `status_participacao` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_participacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela para indetificar se o cliente é pagante e participant' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_passagens`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_passagens` (
+  `id_passagens` int(11) NOT NULL AUTO_INCREMENT,
+  `id_compania` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_classe` int(11) NOT NULL,
+  `id_destino` int(11) NOT NULL,
+  `id_origem` int(11) NOT NULL,
+  `id_moeda` int(11) NOT NULL,
+  `voo_passagens` varchar(45) NOT NULL,
+  `data_passagens` date NOT NULL,
+  `saida_passagens` time NOT NULL,
+  `chegada_passagens` time NOT NULL,
+  `bagagem_passagens` int(2) DEFAULT NULL,
+  `assento_passagens` varchar(45) DEFAULT NULL,
+  `voucher_passagens` varchar(99) DEFAULT NULL,
+  `ticket_passagens` varchar(45) DEFAULT NULL,
+  `tarifa_passagens` decimal(9,2) NOT NULL COMMENT 'Taxa de embarque da companhia',
+  `valor_casa_passagens` decimal(9,2) NOT NULL COMMENT 'Margem de lucro da 7Brasil',
+  `tx_embarque_passagens` decimal(9,2) NOT NULL,
+  `tx_outras_passagens` decimal(9,2) DEFAULT NULL COMMENT 'taxas extra',
+  `tx_repasse_passagens` varchar(45) DEFAULT NULL COMMENT 'Esse campo é o \nDU/RAV\numa taxa repassada\ndas compania aéreas \npara a agencia',
+  PRIMARY KEY (`id_passagens`),
+  KEY `fk_passagens_compania` (`id_compania`),
+  KEY `fk_tbl_passagens_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_passagens_tbl_classe_voo1` (`id_classe`),
+  KEY `fk_tbl_passagens_tbl_destino1` (`id_destino`),
+  KEY `fk_tbl_passagens_tbl_origem1` (`id_origem`),
+  KEY `fk_tbl_passagens_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dados da passagem aérea\n' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_passagens_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_passagens_clientePJ` (
+  `id_passagens_clientePJ` int(11) NOT NULL,
+  `id_passagens` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  PRIMARY KEY (`id_passagens_clientePJ`),
+  KEY `fk_tbl_passagens_clientePJ_tbl_passagens1` (`id_passagens`),
+  KEY `fk_tbl_passagens_clientePJ_tbl_venda1` (`id_venda`),
+  KEY `fk_tbl_passagens_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_passagens_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela usada para reserva de passagens aére para cliente Pes';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_permissoes`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_permissoes` (
+  `id_permissoes` int(11) NOT NULL AUTO_INCREMENT,
+  `id_grupo` int(11) NOT NULL,
+  `class_permissoes` varchar(15) NOT NULL,
+  `method_permissoes` varchar(15) NOT NULL,
+  PRIMARY KEY (`id_permissoes`),
+  KEY `fk_tbl_permissoes_tbl_grupo1` (`id_grupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_produtoOutros`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_produtoOutros` (
+  `id_produto` int(11) NOT NULL AUTO_INCREMENT,
+  `id_moeda` int(11) NOT NULL,
+  `titulo_produto` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `valor_produto` decimal(9,2) NOT NULL,
+  `fornecedor_produto` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comissao_produto` double DEFAULT NULL,
+  `descricao_produto` text COLLATE utf8_unicode_ci,
+  `dt_inicio_produto` datetime DEFAULT NULL,
+  `dt_final_produto` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_produto`),
+  KEY `fk_tbl_produtoDesconhecido_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela de produtos desconhecidos' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_seguradora`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_seguradora` (
+  `id_seguradora` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_seguradora` varchar(99) NOT NULL,
+  `logo_seguradora` varchar(199) DEFAULT NULL,
+  PRIMARY KEY (`id_seguradora`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dados da seguradora cadastra pela 7Brasil' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_seguro`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_seguro` (
+  `id_seguro` int(11) NOT NULL AUTO_INCREMENT,
+  `id_seguradora` int(11) NOT NULL,
+  `id_tipoSeguro` int(11) NOT NULL,
+  `id_continente` int(11) NOT NULL,
+  `id_moeda` int(11) NOT NULL,
+  `dt_inicio_seguro` date NOT NULL,
+  `dt_fim_seguro` date NOT NULL,
+  `valor_seguro` decimal(9,2) NOT NULL,
+  `valor_casa_seguro` decimal(9,2) NOT NULL,
+  `voucher_seguro` varchar(199) DEFAULT NULL,
+  PRIMARY KEY (`id_seguro`),
+  KEY `fk_seguro_seguradora` (`id_seguradora`),
+  KEY `fk_seguro_tipoSeguro` (`id_tipoSeguro`),
+  KEY `fk_seguro_continente` (`id_continente`),
+  KEY `fk_tbl_seguro_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informações de seguro oferecido pela empresa parceira de 7 b' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_subgrupo`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_subgrupo` (
+  `id_subgrupo` int(11) NOT NULL,
+  `id_grupo` int(11) NOT NULL,
+  `titulo_subgrupo` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_subgrupo` text COLLATE utf8_unicode_ci,
+  `status_subgrupo` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_subgrupo`),
+  KEY `fk_tbl_subgrupo_tbl_grupo1` (`id_grupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela de subgrupo de  grupo de contas a pagar da filial';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_telefone`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_telefone` (
+  `id_telefone` int(11) NOT NULL AUTO_INCREMENT,
+  `id_filial` int(11) NOT NULL,
+  `numero_telefone` varchar(20) NOT NULL,
+  `descricao_telefone` text,
+  `status_telefone` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_telefone`),
+  KEY `fk_tbl_telefone_tbl_filial1` (`id_filial`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_ticket`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ticket` (
+  `id_ticket` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_ticket` varchar(45) NOT NULL,
+  `descricao_ticket` text,
+  `status_ticket` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_ticket`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_ticket_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ticket_clientePJ` (
+  `id_ticket_clientePJ` int(11) NOT NULL,
+  `id_compraTicket` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  PRIMARY KEY (`id_ticket_clientePJ`),
+  KEY `fk_tbl_ticket_clientePJ_tbl_compraTicket1` (`id_compraTicket`),
+  KEY `fk_tbl_ticket_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_ticket_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`),
+  KEY `fk_tbl_ticket_clientePJ_tbl_venda1` (`id_venda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_tipoComp`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tipoComp` (
+  `id_tipocomp` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_tipocomp` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id_tipocomp`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabela para especificar se companhia é intermacional ou naci' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_tipoPagamento`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tipoPagamento` (
+  `id_tipoPagamento` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_tipoPagamento` varchar(99) NOT NULL,
+  `porcentagem_tipoPagamento` double(2,2) NOT NULL,
+  `dias_recebimento_tipoPagamento` int(2) NOT NULL,
+  `descricao_Pagamento` text,
+  `status_tipoPagamento` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_tipoPagamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Formas de pagamento oferecido pela 7Brasil' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_tipoSeguro`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tipoSeguro` (
+  `id_tipoSeguro` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_tipoSeguro` varchar(99) NOT NULL,
+  `id_seguradora` int(11) NOT NULL,
+  PRIMARY KEY (`id_tipoSeguro`),
+  KEY `fk_tipoSeguro_seguradora` (`id_seguradora`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Qual o tipo de seguro que a seguradora oferece' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_usuario`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_usuario` (
+  `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `id_grupo` int(11) NOT NULL,
+  `id_empresa` int(11) NOT NULL,
+  `nome_usuario` varchar(199) NOT NULL,
+  `login_usuario` varchar(45) NOT NULL,
+  `senha_usuario` varchar(50) NOT NULL,
+  `status_usuario` tinyint(1) DEFAULT '1',
+  `porcentagem_usuario` double(9,2) DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`),
+  KEY `fk_usuario_grupo` (`id_grupo`),
+  KEY `fk_tbl_usuario_tbl_empresa1` (`id_empresa`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_venda`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_venda` (
+  `id_venda` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `id_moeda` int(11) NOT NULL,
+  `id_agencia` int(11) DEFAULT NULL,
+  `id_agente` int(11) DEFAULT NULL,
+  `porcentagem_agencia` double DEFAULT NULL,
+  `porcentagem_casa` double NOT NULL,
+  `total_venda` decimal(9,2) NOT NULL,
+  `descricao_venda` text COLLATE utf8_unicode_ci,
+  `data_venda` datetime DEFAULT NULL,
+  `status_venda` tinyint(1) DEFAULT '0' COMMENT '0 - Processando\n1 - Concluido\n2 - Cancelado',
+  `nm_processo_venda` varchar(45) COLLATE utf8_unicode_ci NOT NULL COMMENT 'campo para identificar\no processo da venda\nModelo:\nID_AGENTE.MES.ANO.ID_VENDA\nexemplo:\n001121345',
+  PRIMARY KEY (`id_venda`),
+  KEY `fk_venda_agencia` (`id_agencia`),
+  KEY `fk_tbl_venda_tbl_agentes1` (`id_agente`),
+  KEY `fk_tbl_venda_tbl_usuario1` (`id_usuario`),
+  KEY `fk_tbl_venda_tbl_moeda1` (`id_moeda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela que ira armazenar todas as vendas da empresa' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `venda_clientePF`
+--
+
+CREATE TABLE IF NOT EXISTS `venda_clientePF` (
+  `id_venda` int(11) NOT NULL,
+  `id_clientePF` int(11) NOT NULL,
+  `id_dependentePF` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_venda`,`id_clientePF`),
+  KEY `fk_tbl_venda_has_tbl_clientePF_tbl_clientePF1` (`id_clientePF`),
+  KEY `fk_tbl_venda_has_tbl_clientePF_tbl_venda1` (`id_venda`),
+  KEY `fk_venda_clientePF_1_dependentePF` (`id_dependentePF`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `venda_clientePJ`
+--
+
+CREATE TABLE IF NOT EXISTS `venda_clientePJ` (
+  `id_venda` int(11) NOT NULL,
+  `id_clientePJ` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
+  PRIMARY KEY (`id_venda`,`id_clientePJ`,`id_dependentePJ`),
+  KEY `fk_tbl_venda_has_tbl_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
+  KEY `fk_tbl_venda_has_tbl_clientePJ_tbl_venda1` (`id_venda`),
+  KEY `fk_venda_clientePJ_1_dependente` (`id_dependentePJ`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Limitadores para a tabela `tbl_adcionarDependentePF`
+--
+ALTER TABLE `tbl_adcionarDependentePF`
+  ADD CONSTRAINT `fk_tbl_adcionarDependentePF_tbl_dependentePF1` FOREIGN KEY (`id_dependentePF`) REFERENCES `tbl_dependentePF` (`id_dependentePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_adcionarDependentePF_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_adcionarDependentePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_adicionaClientePF`
+--
+ALTER TABLE `tbl_adicionaClientePF`
+  ADD CONSTRAINT `fk_tbl_adicionaClientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_adicionaClientePF_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_adicionaClientePF_tbl_passagens1` FOREIGN KEY (`id_passagens`) REFERENCES `tbl_passagens` (`id_passagens`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_adicionaClientePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_adicionar_cliente`
+--
+ALTER TABLE `tbl_adicionar_cliente`
+  ADD CONSTRAINT `fk_tbl_adicionar_cliente_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_adicionar_cliente_tbl_passagens1` FOREIGN KEY (`id_passagens`) REFERENCES `tbl_passagens` (`id_passagens`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_agentes`
+--
+ALTER TABLE `tbl_agentes`
+  ADD CONSTRAINT `fk_agente_agencia` FOREIGN KEY (`id_agencia`) REFERENCES `tbl_agencia` (`id_agencia`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_asseguradoPF`
+--
+ALTER TABLE `tbl_asseguradoPF`
+  ADD CONSTRAINT `fk_tbl_asseguradoPF_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_asseguradoPF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_seguro_has_tbl_clientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_seguro_has_tbl_clientePF_tbl_seguro1` FOREIGN KEY (`id_seguro`) REFERENCES `tbl_seguro` (`id_seguro`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_asseguradoPJ`
+--
+ALTER TABLE `tbl_asseguradoPJ`
+  ADD CONSTRAINT `fk_assegurado_cliente` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_assegurado_dependente` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_assegurado_seguro` FOREIGN KEY (`id_seguro`) REFERENCES `tbl_seguro` (`id_seguro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_asseguradoPJ_tbl_dependentePF1` FOREIGN KEY (`id_dependentePF`) REFERENCES `tbl_dependentePF` (`id_dependentePF`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_brokers_hotel`
+--
+ALTER TABLE `tbl_brokers_hotel`
+  ADD CONSTRAINT `fk_tbl_brokers_has_tbl_hotel_tbl_brokers1` FOREIGN KEY (`id_brokers`) REFERENCES `tbl_brokers` (`id_brokers`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_brokers_has_tbl_hotel_tbl_hotel1` FOREIGN KEY (`id_hoteis`) REFERENCES `tbl_hotel` (`id_hoteis`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_carro`
+--
+ALTER TABLE `tbl_carro`
+  ADD CONSTRAINT `fk_carros_locadora` FOREIGN KEY (`id_locadora`) REFERENCES `tbl_locadora` (`id_locadora`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_carro_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_carro_clientePF`
+--
+ALTER TABLE `tbl_carro_clientePF`
+  ADD CONSTRAINT `fk_tbl_carro_clientePF_tbl_carro1` FOREIGN KEY (`id_carros`) REFERENCES `tbl_carro` (`id_carros`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_carro_clientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_carro_clientePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_carro_clientePJ`
+--
+ALTER TABLE `tbl_carro_clientePJ`
+  ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_carro1` FOREIGN KEY (`id_carros`) REFERENCES `tbl_carro` (`id_carros`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_cartaoPF`
+--
+ALTER TABLE `tbl_cartaoPF`
+  ADD CONSTRAINT `fk_tbl_cartaPF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_cartaoPJ`
+--
+ALTER TABLE `tbl_cartaoPJ`
+  ADD CONSTRAINT `fk_cartao_clientePJ` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_clientePF`
+--
+ALTER TABLE `tbl_clientePF`
+  ADD CONSTRAINT `fk_tbl_clientePF_tbl_classificacao1` FOREIGN KEY (`id_classificacao`) REFERENCES `tbl_classificacao` (`id_classificacao`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_clientePJ`
+--
+ALTER TABLE `tbl_clientePJ`
+  ADD CONSTRAINT `tbl_clientePJ_ibfk_1` FOREIGN KEY (`id_classificacao`) REFERENCES `tbl_classificacao` (`id_classificacao`);
+
+--
+-- Limitadores para a tabela `tbl_cliente_ticket`
+--
+ALTER TABLE `tbl_cliente_ticket`
+  ADD CONSTRAINT `fk_tbl_cliente_ticket_tbl_clientePF1` FOREIGN KEY (`tbl_clientePF_id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cliente_ticket_tbl_compraTicket1` FOREIGN KEY (`id_compraTicket`) REFERENCES `tbl_compraTicket` (`id_compraTicket`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cliente_ticket_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cliente_ticket_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_compania`
+--
+ALTER TABLE `tbl_compania`
+  ADD CONSTRAINT `fk_tbl_compania_tbl_tipoComp1` FOREIGN KEY (`id_tipocomp`) REFERENCES `tbl_tipoComp` (`id_tipocomp`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_compraTicket`
+--
+ALTER TABLE `tbl_compraTicket`
+  ADD CONSTRAINT `fk_tbl_compraTicket_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_compraTicket_tbl_ticket1` FOREIGN KEY (`id_ticket`) REFERENCES `tbl_ticket` (`id_ticket`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_contas`
+--
+ALTER TABLE `tbl_contas`
+  ADD CONSTRAINT `fk_tbl_contas_tbl_filial1` FOREIGN KEY (`id_filial`) REFERENCES `tbl_filial` (`id_filial`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_contas_tbl_grupo1` FOREIGN KEY (`id_grupo`) REFERENCES `tbl_grupo` (`id_grupo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_contas_tbl_subgrupo1` FOREIGN KEY (`id_subgrupo`) REFERENCES `tbl_subgrupo` (`id_subgrupo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_cruzeiro`
+--
+ALTER TABLE `tbl_cruzeiro`
+  ADD CONSTRAINT `fk_tbl_cruzeiro_tbl_compania_cruzeiro1` FOREIGN KEY (`id_compania_cruzeiro`) REFERENCES `tbl_compania_cruzeiro` (`id_compania_cruzeiro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_cruzeiro_clientePF`
+--
+ALTER TABLE `tbl_cruzeiro_clientePF`
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_cruzeiro1` FOREIGN KEY (`id_cruzeiro`) REFERENCES `tbl_cruzeiro` (`id_cruzeiro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_cruzeiro_clientePJ`
+--
+ALTER TABLE `tbl_cruzeiro_clientePJ`
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_cruzeiro1` FOREIGN KEY (`id_cruzeiro`) REFERENCES `tbl_cruzeiro` (`id_cruzeiro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_cruzeiro_dependentePF`
+--
+ALTER TABLE `tbl_cruzeiro_dependentePF`
+  ADD CONSTRAINT `fk_tbl_cruzeiro_dependentePF_tbl_cruzeiro1` FOREIGN KEY (`id_cruzeiro`) REFERENCES `tbl_cruzeiro` (`id_cruzeiro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_dependentePF_tbl_dependentePF1` FOREIGN KEY (`id_dependentePF`) REFERENCES `tbl_dependentePF` (`id_dependentePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_cruzeiro_dependentePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_departamento`
+--
+ALTER TABLE `tbl_departamento`
+  ADD CONSTRAINT `fk_departamento_dependente` FOREIGN KEY (`id_dependente`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_departamento_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_dependentePF`
+--
+ALTER TABLE `tbl_dependentePF`
+  ADD CONSTRAINT `fk_dependentePF_clientePF` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_dependentePF_tbl_classificacao1` FOREIGN KEY (`id_classificacao`) REFERENCES `tbl_classificacao` (`id_classificacao`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_dependentePF_ticket`
+--
+ALTER TABLE `tbl_dependentePF_ticket`
+  ADD CONSTRAINT `fk_tbl_dependentePF_ticket_tbl_compraTicket1` FOREIGN KEY (`id_compraTicket`) REFERENCES `tbl_compraTicket` (`id_compraTicket`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_dependentePF_ticket_tbl_dependentePF1` FOREIGN KEY (`id_dependentePF`) REFERENCES `tbl_dependentePF` (`id_dependentePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_dependentePF_ticket_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_dependentePJ`
+--
+ALTER TABLE `tbl_dependentePJ`
+  ADD CONSTRAINT `fk_dependente_cliente` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_dependentePJ_tbl_classificacao1` FOREIGN KEY (`id_classificacao`) REFERENCES `tbl_classificacao` (`id_classificacao`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_email`
+--
+ALTER TABLE `tbl_email`
+  ADD CONSTRAINT `fk_tbl_email_tbl_filial1` FOREIGN KEY (`id_filial`) REFERENCES `tbl_filial` (`id_filial`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_email_tbl_usuario1` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_filial`
+--
+ALTER TABLE `tbl_filial`
+  ADD CONSTRAINT `fk_tbl_filial_tbl_empresa1` FOREIGN KEY (`id_empresa`) REFERENCES `tbl_empresa` (`id_empresa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_formaPagamento`
+--
+ALTER TABLE `tbl_formaPagamento`
+  ADD CONSTRAINT `fk_tbl_formaPagamento_tbl_tipoPagamento1` FOREIGN KEY (`id_tipoPagamento`) REFERENCES `tbl_tipoPagamento` (`id_tipoPagamento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_formaPagamento_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_hotel_clientePF`
+--
+ALTER TABLE `tbl_hotel_clientePF`
+  ADD CONSTRAINT `fk_tbl_hotel_clientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_clientePF_tbl_hotel1` FOREIGN KEY (`id_hoteis`) REFERENCES `tbl_hotel` (`id_hoteis`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_clientePF_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_clientePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_hotel_clientePJ`
+--
+ALTER TABLE `tbl_hotel_clientePJ`
+  ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_hotel1` FOREIGN KEY (`tbl_hotel_id_hoteis`) REFERENCES `tbl_hotel` (`id_hoteis`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_hotel_depedentePF`
+--
+ALTER TABLE `tbl_hotel_depedentePF`
+  ADD CONSTRAINT `fk_tbl_hotel_depedentePF_tbl_dependentePF1` FOREIGN KEY (`id_dependentePF_ticket`) REFERENCES `tbl_dependentePF` (`id_dependentePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_depedentePF_tbl_hotel1` FOREIGN KEY (`id_hoteis`) REFERENCES `tbl_hotel` (`id_hoteis`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_hotel_depedentePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_moeda`
+--
+ALTER TABLE `tbl_moeda`
+  ADD CONSTRAINT `fk_tbl_moeda_tbl_cambio1` FOREIGN KEY (`id_cambio`) REFERENCES `tbl_cambio` (`id_cambio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_outroprod_clientePF`
+--
+ALTER TABLE `tbl_outroprod_clientePF`
+  ADD CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_participacao1` FOREIGN KEY (`id_participacao`) REFERENCES `tbl_participacao` (`id_participacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_produtoOutros1` FOREIGN KEY (`id_produto`) REFERENCES `tbl_produtoOutros` (`id_produto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_outroprod_clientePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_outroProd_clientePJ`
+--
+ALTER TABLE `tbl_outroProd_clientePJ`
+  ADD CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_produtoOutros1` FOREIGN KEY (`id_produto`) REFERENCES `tbl_produtoOutros` (`id_produto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_outroProd_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_passagens`
+--
+ALTER TABLE `tbl_passagens`
+  ADD CONSTRAINT `fk_passagens_compania` FOREIGN KEY (`id_compania`) REFERENCES `tbl_compania` (`id_compania`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_tbl_classe_voo1` FOREIGN KEY (`id_classe`) REFERENCES `tbl_classe_voo` (`id_classe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_tbl_destino1` FOREIGN KEY (`id_destino`) REFERENCES `tbl_destino` (`id_destino`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_tbl_origem1` FOREIGN KEY (`id_origem`) REFERENCES `tbl_origem` (`id_origem`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_passagens_clientePJ`
+--
+ALTER TABLE `tbl_passagens_clientePJ`
+  ADD CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_passagens1` FOREIGN KEY (`id_passagens`) REFERENCES `tbl_passagens` (`id_passagens`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_passagens_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_permissoes`
+--
+ALTER TABLE `tbl_permissoes`
+  ADD CONSTRAINT `fk_tbl_permissoes_tbl_grupo1` FOREIGN KEY (`id_grupo`) REFERENCES `tbl_grupo` (`id_grupo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_produtoOutros`
+--
+ALTER TABLE `tbl_produtoOutros`
+  ADD CONSTRAINT `fk_tbl_produtoDesconhecido_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_seguro`
+--
+ALTER TABLE `tbl_seguro`
+  ADD CONSTRAINT `fk_seguro_continente` FOREIGN KEY (`id_continente`) REFERENCES `tbl_continente` (`id_continente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_seguro_seguradora` FOREIGN KEY (`id_seguradora`) REFERENCES `tbl_seguradora` (`id_seguradora`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_seguro_tipoSeguro` FOREIGN KEY (`id_tipoSeguro`) REFERENCES `tbl_tipoSeguro` (`id_tipoSeguro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_seguro_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_subgrupo`
+--
+ALTER TABLE `tbl_subgrupo`
+  ADD CONSTRAINT `fk_tbl_subgrupo_tbl_grupo1` FOREIGN KEY (`id_grupo`) REFERENCES `tbl_grupo` (`id_grupo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_telefone`
+--
+ALTER TABLE `tbl_telefone`
+  ADD CONSTRAINT `fk_tbl_telefone_tbl_filial1` FOREIGN KEY (`id_filial`) REFERENCES `tbl_filial` (`id_filial`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_ticket_clientePJ`
+--
+ALTER TABLE `tbl_ticket_clientePJ`
+  ADD CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_compraTicket1` FOREIGN KEY (`id_compraTicket`) REFERENCES `tbl_compraTicket` (`id_compraTicket`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_ticket_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_tipoSeguro`
+--
+ALTER TABLE `tbl_tipoSeguro`
+  ADD CONSTRAINT `fk_tipoSeguro_seguradora` FOREIGN KEY (`id_seguradora`) REFERENCES `tbl_seguradora` (`id_seguradora`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_usuario`
+--
+ALTER TABLE `tbl_usuario`
+  ADD CONSTRAINT `fk_tbl_usuario_tbl_empresa1` FOREIGN KEY (`id_empresa`) REFERENCES `tbl_empresa` (`id_empresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_usuario_grupo` FOREIGN KEY (`id_grupo`) REFERENCES `tbl_grupo` (`id_grupo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `tbl_venda`
+--
+ALTER TABLE `tbl_venda`
+  ADD CONSTRAINT `fk_tbl_venda_tbl_agentes1` FOREIGN KEY (`id_agente`) REFERENCES `tbl_agentes` (`id_agente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_venda_tbl_moeda1` FOREIGN KEY (`id_moeda`) REFERENCES `tbl_moeda` (`id_moeda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_venda_tbl_usuario1` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_venda_agencia` FOREIGN KEY (`id_agencia`) REFERENCES `tbl_agencia` (`id_agencia`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `venda_clientePF`
+--
+ALTER TABLE `venda_clientePF`
+  ADD CONSTRAINT `fk_tbl_venda_has_tbl_clientePF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_venda_has_tbl_clientePF_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_venda_clientePF_1_dependentePF` FOREIGN KEY (`id_dependentePF`) REFERENCES `tbl_dependentePF` (`id_dependentePF`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `venda_clientePJ`
+--
+ALTER TABLE `venda_clientePJ`
+  ADD CONSTRAINT `fk_tbl_venda_has_tbl_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tbl_venda_has_tbl_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_venda_clientePJ_1_dependente` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

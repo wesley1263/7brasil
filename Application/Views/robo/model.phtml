@@ -1,0 +1,56 @@
+<div class="form_controller">
+	<center><h2>Criar Model</h2></center>
+	<br />
+	<br />
+<?php
+
+$form->init('robo_controller','/robo/createModel');
+
+		$form->groupOpen();	
+		$form->input(array(
+						'name' =>'name_model',
+						'type' =>'text',
+						'placeholder' => 'Nome do Model',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'Nome Model',
+						'value' =>'',
+						'required' => true
+						));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+						'name' =>'name_table',
+						'type' =>'text',
+						'placeholder' => 'Nome da Tabela',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'Nome da Tabela',
+						'value' =>'',
+						'required' => true
+						));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+						'name' =>'primary',
+						'type' =>'text',
+						'placeholder' => 'ID da Tabela',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'ID da Tabela',
+						'value' =>'',
+						'required' => true
+						));
+		$form->groupClose();
+		
+		echo str_repeat('<br />',2);
+		
+	$form->groupOpen();		
+	$form->submit('Salvar','style="padding:2% 13%"',5,'btn-primary');
+	$form->groupClose();
+
+$form->close();
+?>
+</div>

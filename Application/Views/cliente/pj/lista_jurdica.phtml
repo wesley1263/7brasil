@@ -32,14 +32,22 @@
 	<div class="table-responsive">
 		<?php 
 			$table->t_init('class="table table-bordered"');
-			$table->t_head(array('<strong>Nome Fantasia</strong>','<strong>CNPJ</strong>','<strong>UF</strong>','<strong>TELEFONE</strong>','<strong>Editar</strong>','<strong>Excluir</strong>'));
+			$table->t_head(array('<strong>Nome Fantasia</strong>','<strong>CNPJ</strong>','<strong>UF</strong>','<strong>TELEFONE</strong>','<strong>LOGOTIPO</strong>','<strong>Editar</strong>','<strong>Excluir</strong>'));
 			foreach($clientes as $cliente){
+			$logo = explode('/', $cliente['logotipo_clientePJ']);
+				array_shift($logo);
+				array_shift($logo);
+				array_shift($logo);
+				array_shift($logo);
+				$logo = '/'.implode('/', $logo);
 			$table->t_row(array($cliente['nomefantasia_clientePJ'],
 								$cliente['cnpj_clientePJ'],
 								$cliente['uf_clientePJ'],
 								$cliente['telefone_clientePJ'],
-								'<center><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-								'<center><a href="#"><span class="glyphicon glyphicon-remove"></span></a></center>'
+								"<center><img src=".$logo." alt=".$cliente['nomefantasia_clientePJ']." class=\"img-rounded\" width='50'></center>",
+								
+								'<center><a href="/cliente/updateJuridica/id/'.$cliente['id_clientePJ'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+								'<center><a href="/cliente/deleteJuridica/id/'.$cliente['id_clientePJ'].'" onclick="return confirm(\'Deseja realmente remover '.$cliente['nomefantasia_clientePJ'].'\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
 								)
 						  );
 			}
