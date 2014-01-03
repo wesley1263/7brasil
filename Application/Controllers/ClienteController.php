@@ -71,13 +71,14 @@ class ClienteController extends OXE_Controller {
 		
 		$param = func_get_args();
 		$classif = new Classificacao();
+		$cartoes = new CartaoPF();
 		
 		$form = new FormStyle();
 		$data['title'] = 'Cadastro Clientes - Pessoa Física';
 		$data['form'] = $form;
 		$data['classif'] = $classif->list_all();
 		$data['clientes'] = $this->model->list_once($param[1]);
-		
+		$data['cartoes'] = $cartoes->findCliente($data['clientes'][0]['id_clientePF']);
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -196,12 +197,6 @@ class ClienteController extends OXE_Controller {
 		}
 		$ultimo = $this->model->max();
 		
-		
-// 		$this->dump($ultimo);
-// 		$this->dump($arr1);
-		
-		
-// 		exit();
 		
 		if($_FILES['copia_rg_clientePF']['error'] == UPLOAD_ERR_OK){
 			$extension = explode('.',$_FILES['copia_rg_clientePF']['name']);
@@ -347,7 +342,6 @@ class ClienteController extends OXE_Controller {
 		$Classificacao = new Classificacao();
 		$param = func_get_args();
 		$model = $model->list_once($param[1]);
-		echo $model[0]['logotipo_clientePJ'];
 		$form = new FormStyle();	
 		$data['title'] = 'Cadastrar Clientes - Pessoa Jurídica';
 		$data['form'] = $form;
@@ -364,8 +358,6 @@ class ClienteController extends OXE_Controller {
 	{
 		$model = new ClientePJ();
 		$clientePJ = $model->list_once($_POST['id_clientePJ']);
-		// $this->dump($_POST);
-		// $this->dump($_FILES);
 		
 		if($_FILES['logotipo_clientePJ']['size'] > 0){
 			unlink($clientePJ['logotipo_clientePJ']);

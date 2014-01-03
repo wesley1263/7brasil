@@ -41,9 +41,12 @@ class CartaoPF extends OXE_Model {
 		return $this->update($data,$this->_primary.' = '.$data['id_cartaoPF']);
 	}
 	
-	public function DescTables()
+	public function findCliente($id)
 	{
-		return $this->query("DESC $this->_name");
-	}	
+		return $this->select()
+					->from()
+					->where("id_clientePF = '$id'")
+					->result();
+	}
 	
 }

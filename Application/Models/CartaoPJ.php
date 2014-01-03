@@ -44,6 +44,8 @@ class CartaoPJ extends OXE_Model {
 	public function DescTables()
 	{
 		return $this->query("DESC $this->_name");
-	}	
+	}
+	
+		
 	
 }

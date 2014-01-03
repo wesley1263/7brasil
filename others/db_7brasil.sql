@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máquina: localhost
--- Data de Criação: 28-Dez-2013 às 18:29
+-- Data de Criação: 03-Jan-2014 às 13:03
 -- Versão do servidor: 5.5.34-0ubuntu0.13.04.1
 -- versão do PHP: 5.4.9-4ubuntu2.4
 
@@ -246,15 +246,23 @@ CREATE TABLE IF NOT EXISTS `tbl_carro_clientePJ` (
 --
 
 CREATE TABLE IF NOT EXISTS `tbl_cartaoPF` (
-  `tbl_cartaoPF` int(11) NOT NULL,
+  `id_cartaoPF` int(11) NOT NULL AUTO_INCREMENT,
   `numero_cartaoPF` varchar(20) NOT NULL,
   `bandeira_cartaoPF` varchar(45) NOT NULL,
   `dt_validade_cartaoPF` date NOT NULL,
   `codigo_seguranca_cartaoPF` varchar(10) NOT NULL,
   `id_clientePF` int(11) NOT NULL,
-  PRIMARY KEY (`tbl_cartaoPF`),
-  KEY `fk_tbl_cartaPF_tbl_clientePF1` (`id_clientePF`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_cartaoPF`),
+  KEY `id_clientePF` (`id_clientePF`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Extraindo dados da tabela `tbl_cartaoPF`
+--
+
+INSERT INTO `tbl_cartaoPF` (`id_cartaoPF`, `numero_cartaoPF`, `bandeira_cartaoPF`, `dt_validade_cartaoPF`, `codigo_seguranca_cartaoPF`, `id_clientePF`) VALUES
+(5, '987654321', 'Master Card', '2016-08-21', '305', 23),
+(6, '987654321', 'Visa', '2019-11-20', '304', 23);
 
 -- --------------------------------------------------------
 
@@ -342,15 +350,16 @@ CREATE TABLE IF NOT EXISTS `tbl_clientePF` (
   `status_clientePF` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_clientePF`),
   KEY `fk_tbl_clientePF_tbl_classificacao1` (`id_classificacao`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Extraindo dados da tabela `tbl_clientePF`
 --
 
 INSERT INTO `tbl_clientePF` (`id_clientePF`, `id_classificacao`, `nome_clientePF`, `dataNascimento_clientePF`, `rg_clientePF`, `cpf_clientePF`, `cep_clientePF`, `endereco_clientePF`, `numero_clientePF`, `bairro_clientePF`, `cidade_clientePF`, `complemento_clientePF`, `uf_clientePF`, `pais_clientePF`, `email_clientePF`, `telefone_clientePF`, `celular_clientePF`, `numero_passaporte_clientePF`, `dt_validadePassaporte_clientePF`, `copia_rg_clientePF`, `copia_cpf_clientePF`, `foto_clientePF`, `numero_fidelidade_clientePF`, `descricao_clientePF`, `status_clientePF`) VALUES
-(6, 1, 'WESLEI ANDRADE SOUZA', '1980-10-20', '33.333.333-3', '999.999.999-99', '04431-000', 'Rua Maria Clotilde Martins Rocha', '1026', 'Jardim Selma', 'São Paulo', '', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456789', '2015-11-30', '/var/www/7brasil/skin/img/uploadedc63ae6bd0579e02be53f3ef9285f591d.jpg', '/var/www/7brasil/skin/img/uploaded/c94ab2f23a844a03dd72aea96d4597ef.png', '/var/www/7brasil/skin/img/uploadeddaf7fc2f9050c84ca08f976ed91d92b4.jpg', '1234561010', 'Descrição', 1),
-(7, 1, 'ARTHUR LIMA DE SOUZA', '2013-01-31', '12.222.222-2', '666.666.666-66', '04429-150', 'Rua Correio Paulistano', '202', 'Americanópolis', 'São Paulo', 'Casa 04', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456', '2016-10-25', '/var/www/7brasil/skin/img/uploaded/4d16a0cd1b9d6a90b0d67ad4bfb64588.png', '/var/www/7brasil/skin/img/uploaded/619b92173a9beb35a2daeca3aceaff32.jpg', '/var/www/7brasil/skin/img/uploaded/3893168b58c2d8fa948cdd3bf99f7960.JPG', '123456789123456789', 'Anjinho de Papai', 1);
+(6, 1, 'WESLEI ANDRADE SOUZA', '1980-10-20', '33.333.333-3', '999.999.999-99', '04431-000', 'Rua Maria Clotilde Martins Rocha', '1026', 'Jardim Selma', 'São Paulo', 'casa 01', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456789', '2015-11-30', '/var/www/7brasil/skin/img/uploadedc63ae6bd0579e02be53f3ef9285f591d.jpg', '/var/www/7brasil/skin/img/uploaded/c94ab2f23a844a03dd72aea96d4597ef.png', '/var/www/7brasil/skin/img/uploadeddaf7fc2f9050c84ca08f976ed91d92b4.jpg', '1234561010', 'Descrição', 1),
+(7, 1, 'ARTHUR LIMA DE SOUZA ', '2013-01-31', '12.222.222-2', '666.666.666-66', '04429-150', 'Rua Correio Paulistano', '202', 'Americanópolis', 'São Paulo', 'Casa 04', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456', '2016-10-25', '/var/www/7brasil/skin/img/uploaded/4d16a0cd1b9d6a90b0d67ad4bfb64588.png', '/var/www/7brasil/skin/img/uploaded/619b92173a9beb35a2daeca3aceaff32.jpg', '/var/www/7brasil/skin/img/uploaded/3893168b58c2d8fa948cdd3bf99f7960.JPG', '123456789123456789', 'Anjinho de Papai', 1),
+(23, 1, 'RAQUEL LIMA ANDRADE', '1985-04-30', '44.444.444-4', '555.555.555-55', '04431-000', 'Rua Maria Clotilde Martins Rocha', '1026', 'Jardim Selma', 'São Paulo', '', 'SP', 'Brasil', 'raquel.lima.and@gmail.com', '(11) 5555-5555', '', '', '0000-00-00', NULL, NULL, NULL, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -361,7 +370,7 @@ INSERT INTO `tbl_clientePF` (`id_clientePF`, `id_classificacao`, `nome_clientePF
 CREATE TABLE IF NOT EXISTS `tbl_clientePJ` (
   `id_clientePJ` int(11) NOT NULL AUTO_INCREMENT,
   `id_classificacao` int(11) NOT NULL,
-  `razaosocial_ClientePJ` varchar(99) DEFAULT NULL,
+  `razaosocial_clientePJ` varchar(99) DEFAULT NULL,
   `nomefantasia_clientePJ` varchar(99) NOT NULL,
   `cnpj_clientePJ` varchar(25) NOT NULL,
   `logotipo_clientePJ` varchar(99) DEFAULT NULL,
@@ -386,14 +395,14 @@ CREATE TABLE IF NOT EXISTS `tbl_clientePJ` (
   `credito_clientePJ` decimal(9,2) DEFAULT NULL,
   PRIMARY KEY (`id_clientePJ`),
   KEY `id_classificacao` (`id_classificacao`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='dados da empresa que vai patrocinar a compra de produtos na ' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='dados da empresa que vai patrocinar a compra de produtos na ' AUTO_INCREMENT=4 ;
 
 --
 -- Extraindo dados da tabela `tbl_clientePJ`
 --
 
-INSERT INTO `tbl_clientePJ` (`id_clientePJ`, `id_classificacao`, `razaosocial_ClientePJ`, `nomefantasia_clientePJ`, `cnpj_clientePJ`, `logotipo_clientePJ`, `telefone_clientePJ`, `telefone2_clientePJ`, `email_clientePJ`, `endereco_clientePJ`, `numero_clientePJ`, `complemento_clientePJ`, `bairro_clientePJ`, `cidade_clientePJ`, `cep_clientePJ`, `uf_clientePJ`, `pais_clientePJ`, `telefone_responsavel_clientePJ`, `nomeresponsavel_clientePJ`, `rg_responsavel_clientePJ`, `email_responsavel_clientePJ`, `cpf_responsavel_clientePJ`, `status_clientePJ`, `descricao_clientePJ`, `credito_clientePJ`) VALUES
-(2, 1, 'andwes solution', 'ANDWES SOLUTION ', '00.000.000/0000-00', '/var/www/7brasil/skin/img/uploaded/7f8de164a1bfc59289a92a15f1df0681.JPG', '(11)5555-5555', '(11)4444-4444', 'contato@andwes.com.br', 'Rua Correio Paulistano', '202', '', 'American?polis', 'S?o Paulo', '04429-150', 'SP', 'Brasil', NULL, 'Weslei Andrade Souza', '33.333.333-3', 'wesley1263@terra.com.br', '999.999.999-99', 1, 'Descri??o teste', 100000.00);
+INSERT INTO `tbl_clientePJ` (`id_clientePJ`, `id_classificacao`, `razaosocial_clientePJ`, `nomefantasia_clientePJ`, `cnpj_clientePJ`, `logotipo_clientePJ`, `telefone_clientePJ`, `telefone2_clientePJ`, `email_clientePJ`, `endereco_clientePJ`, `numero_clientePJ`, `complemento_clientePJ`, `bairro_clientePJ`, `cidade_clientePJ`, `cep_clientePJ`, `uf_clientePJ`, `pais_clientePJ`, `telefone_responsavel_clientePJ`, `nomeresponsavel_clientePJ`, `rg_responsavel_clientePJ`, `email_responsavel_clientePJ`, `cpf_responsavel_clientePJ`, `status_clientePJ`, `descricao_clientePJ`, `credito_clientePJ`) VALUES
+(3, 1, 'andwes solution', 'ANDWES SOLUTION ', '00.000.000/0000-00', '/var/www/7brasil/skin/img/uploaded/0351fd6c020367cd3b67c48e6ed875b9.JPG', '(11)5622-2222', '(11)3333-3333', 'contato@andwes.com.br', 'Rua Correio Paulistano', '202', 'Casa 04', 'Americanópolis', 'São Paulo', '04429-150', 'SP', 'Brasil', NULL, 'Weslei Andrade Souza', '33.333.333-3', 'wesley1263@terra.com.br', '555.555.555-55', 1, 'descrição teste', 200000.00);
 
 -- --------------------------------------------------------
 
@@ -600,7 +609,7 @@ CREATE TABLE IF NOT EXISTS `tbl_departamento` (
 --
 
 CREATE TABLE IF NOT EXISTS `tbl_dependentePF` (
-  `id_dependentePF` int(11) NOT NULL,
+  `id_dependentePF` int(11) NOT NULL AUTO_INCREMENT,
   `id_clientePF` int(11) NOT NULL,
   `id_classificacao` int(11) NOT NULL,
   `nome_dependentePF` varchar(99) NOT NULL,
@@ -619,7 +628,14 @@ CREATE TABLE IF NOT EXISTS `tbl_dependentePF` (
   PRIMARY KEY (`id_dependentePF`),
   KEY `fk_dependentePF_clientePF` (`id_clientePF`),
   KEY `fk_tbl_dependentePF_tbl_classificacao1` (`id_classificacao`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `tbl_dependentePF`
+--
+
+INSERT INTO `tbl_dependentePF` (`id_dependentePF`, `id_clientePF`, `id_classificacao`, `nome_dependentePF`, `dt_nascimento_dependentePF`, `cpf_dependentePF`, `rg_dependentePF`, `telefone_dependentePF`, `celular_dependentePF`, `email_dependentePF`, `numero_passaporte_dependentePF`, `dt_validade_passaporte_dependentePF`, `foto_dependentePF`, `copia_cpf_dependentePF`, `copia_rg_dependentePF`, `descricao_dependentePF`) VALUES
+(1, 6, 1, 'JAVA LIMA DE SOUZA', '2012-03-02', '222.222.222-22', '22.222.222-2', '(11) 5622-2919', '(11) 8967-9860', 'java@andwes.com.br', '123456789', '2016-10-20', '/var/www/7brasil/skin/img/uploadedb818652565fcf3b651be0b5a878c9556jpg', '/var/www/7brasil/skin/img/uploaded618f80dcf3c0cb9dbc0385a2fd3c1f6cpng', '/var/www/7brasil/skin/img/uploadedd28f2b73a0841b9d0d35c9c8eee6472epng', 'Meu neguinho do Pai');
 
 -- --------------------------------------------------------
 
@@ -655,6 +671,14 @@ CREATE TABLE IF NOT EXISTS `tbl_dependentePJ` (
   `telefone_dependentePJ` varchar(20) DEFAULT NULL,
   `celular_dependentePJ` varchar(15) DEFAULT NULL,
   `email_dependentePJ` varchar(99) DEFAULT NULL,
+  `cep_dependentePJ` varchar(15) NOT NULL,
+  `endereco_dependentePJ` varchar(99) NOT NULL,
+  `numero_dependentePJ` varchar(15) NOT NULL,
+  `complemento_dependentePJ` varchar(20) NOT NULL,
+  `bairro_dependentePJ` varchar(99) NOT NULL,
+  `cidade_dependentePJ` varchar(60) NOT NULL,
+  `uf_dependentePJ` varchar(30) NOT NULL,
+  `pais_dependentePJ` varchar(60) NOT NULL,
   `numero_passaporte_dependentePJ` varchar(20) DEFAULT NULL,
   `dt_validade_passaporte_dependentePJ` date DEFAULT NULL,
   `foto_dependentePJ` varchar(99) DEFAULT NULL,
@@ -665,7 +689,14 @@ CREATE TABLE IF NOT EXISTS `tbl_dependentePJ` (
   PRIMARY KEY (`id_dependentePJ`),
   KEY `fk_dependente_cliente` (`id_clientePJ`),
   KEY `fk_tbl_dependentePJ_tbl_classificacao1` (`id_classificacao`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dados do funcionario da empresa (ClientePJ)' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Dados do funcionario da empresa (ClientePJ)' AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `tbl_dependentePJ`
+--
+
+INSERT INTO `tbl_dependentePJ` (`id_dependentePJ`, `id_clientePJ`, `id_classificacao`, `nome_dependentePJ`, `dt_nascimento_dependentePJ`, `cpf_dependentePJ`, `rg_dependentePJ`, `telefone_dependentePJ`, `celular_dependentePJ`, `email_dependentePJ`, `cep_dependentePJ`, `endereco_dependentePJ`, `numero_dependentePJ`, `complemento_dependentePJ`, `bairro_dependentePJ`, `cidade_dependentePJ`, `uf_dependentePJ`, `pais_dependentePJ`, `numero_passaporte_dependentePJ`, `dt_validade_passaporte_dependentePJ`, `foto_dependentePJ`, `copia_rg_dependentePJ`, `copia_cpf_dependentePJ`, `descricao_dependentePJ`, `status_dependentePJ`) VALUES
+(1, 3, 1, 'JAVA LIMA SOUZA', '1969-12-31', '333.333.333-33', '33.333.333-33', '(11) 1111-1111', '(55) 5555-5555', 'java@andwes.com.br', '04429-150', 'Rua Correio Paulistano', '202', '', 'Americanópolis', 'São Paulo', 'SP', 'Brasil', '123456789', '0000-00-00', '/var/www/7brasil/skin/img/uploaded/1cb316f1ff254f3364c37e01195dc0cc.jpg', NULL, NULL, '', 1);
 
 -- --------------------------------------------------------
 
@@ -1339,12 +1370,6 @@ ALTER TABLE `tbl_carro_clientePJ`
   ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_tbl_carro_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limitadores para a tabela `tbl_cartaoPF`
---
-ALTER TABLE `tbl_cartaoPF`
-  ADD CONSTRAINT `fk_tbl_cartaPF_tbl_clientePF1` FOREIGN KEY (`id_clientePF`) REFERENCES `tbl_clientePF` (`id_clientePF`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `tbl_cartaoPJ`
