@@ -123,8 +123,55 @@ class ClienteController extends OXE_Controller {
 			move_uploaded_file($_FILES['foto_clientePF']['tmp_name'], UPLOAD_PATH.$new.$file);
 			$_POST['foto_clientePF'] = UPLOAD_PATH.$new.$file;
 		}
-
+		
+		############# Iterando names de cartão de crédito  ###########
+			$n1 = 0;
+			$arr1 = array();
+			foreach($_POST as $key => $value){
+				if(is_array($value)){
+					if($key == 'numero_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['numero_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'codigo_seguranca_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['codigo_seguranca_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'bandeira_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['bandeira_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'dt_validade_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+						}
+					}
+					
+				}
+			}
+			############# Iterando names de cartão de crédito  ###########
+			
+			
+			unset($_POST['numero_cartaoPF']);
+			unset($_POST['codigo_seguranca_cartaoPF']);
+			unset($_POST['bandeira_cartaoPF']);
+			unset($_POST['dt_validade_cartaoPF']);
+		
 		if($this->model->update_cli($_POST)){
+			
 			$this->session->setFlashMessage('Cliente PF atualizado com sucesso','success');
 			$this->redirector('/cliente/fisica');
 		}else{
@@ -195,8 +242,6 @@ class ClienteController extends OXE_Controller {
 			if($_POST['dt_validadePassaporte_clientePF']){
 				$_POST['dt_validadePassaporte_clientePF'] = $this->dateToMysql($_POST['dt_validadePassaporte_clientePF']);
 		}
-		$ultimo = $this->model->max();
-		
 		
 		if($_FILES['copia_rg_clientePF']['error'] == UPLOAD_ERR_OK){
 			$extension = explode('.',$_FILES['copia_rg_clientePF']['name']);
