@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máquina: localhost
--- Data de Criação: 03-Jan-2014 às 13:03
+-- Data de Criação: 04-Jan-2014 às 18:48
 -- Versão do servidor: 5.5.34-0ubuntu0.13.04.1
 -- versão do PHP: 5.4.9-4ubuntu2.4
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Base de Dados: `db_7brasil`
 --
-
+ 
 -- --------------------------------------------------------
 
 --
@@ -248,21 +248,21 @@ CREATE TABLE IF NOT EXISTS `tbl_carro_clientePJ` (
 CREATE TABLE IF NOT EXISTS `tbl_cartaoPF` (
   `id_cartaoPF` int(11) NOT NULL AUTO_INCREMENT,
   `numero_cartaoPF` varchar(20) NOT NULL,
-  `bandeira_cartaoPF` varchar(45) NOT NULL,
   `dt_validade_cartaoPF` date NOT NULL,
   `codigo_seguranca_cartaoPF` varchar(10) NOT NULL,
   `id_clientePF` int(11) NOT NULL,
+  `id_tipoCartao` int(11) NOT NULL,
   PRIMARY KEY (`id_cartaoPF`),
   KEY `id_clientePF` (`id_clientePF`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Extraindo dados da tabela `tbl_cartaoPF`
 --
 
-INSERT INTO `tbl_cartaoPF` (`id_cartaoPF`, `numero_cartaoPF`, `bandeira_cartaoPF`, `dt_validade_cartaoPF`, `codigo_seguranca_cartaoPF`, `id_clientePF`) VALUES
-(5, '987654321', 'Master Card', '2016-08-21', '305', 23),
-(6, '987654321', 'Visa', '2019-11-20', '304', 23);
+INSERT INTO `tbl_cartaoPF` (`id_cartaoPF`, `numero_cartaoPF`, `dt_validade_cartaoPF`, `codigo_seguranca_cartaoPF`, `id_clientePF`, `id_tipoCartao`) VALUES
+(7, '12345678910', '2016-08-30', '305', 0, 1),
+(8, '987654321', '2014-05-25', '304', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -350,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `tbl_clientePF` (
   `status_clientePF` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_clientePF`),
   KEY `fk_tbl_clientePF_tbl_classificacao1` (`id_classificacao`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Extraindo dados da tabela `tbl_clientePF`
@@ -359,7 +359,7 @@ CREATE TABLE IF NOT EXISTS `tbl_clientePF` (
 INSERT INTO `tbl_clientePF` (`id_clientePF`, `id_classificacao`, `nome_clientePF`, `dataNascimento_clientePF`, `rg_clientePF`, `cpf_clientePF`, `cep_clientePF`, `endereco_clientePF`, `numero_clientePF`, `bairro_clientePF`, `cidade_clientePF`, `complemento_clientePF`, `uf_clientePF`, `pais_clientePF`, `email_clientePF`, `telefone_clientePF`, `celular_clientePF`, `numero_passaporte_clientePF`, `dt_validadePassaporte_clientePF`, `copia_rg_clientePF`, `copia_cpf_clientePF`, `foto_clientePF`, `numero_fidelidade_clientePF`, `descricao_clientePF`, `status_clientePF`) VALUES
 (6, 1, 'WESLEI ANDRADE SOUZA', '1980-10-20', '33.333.333-3', '999.999.999-99', '04431-000', 'Rua Maria Clotilde Martins Rocha', '1026', 'Jardim Selma', 'São Paulo', 'casa 01', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456789', '2015-11-30', '/var/www/7brasil/skin/img/uploadedc63ae6bd0579e02be53f3ef9285f591d.jpg', '/var/www/7brasil/skin/img/uploaded/c94ab2f23a844a03dd72aea96d4597ef.png', '/var/www/7brasil/skin/img/uploadeddaf7fc2f9050c84ca08f976ed91d92b4.jpg', '1234561010', 'Descrição', 1),
 (7, 1, 'ARTHUR LIMA DE SOUZA ', '2013-01-31', '12.222.222-2', '666.666.666-66', '04429-150', 'Rua Correio Paulistano', '202', 'Americanópolis', 'São Paulo', 'Casa 04', 'SP', 'Brasil', 'wesley1263@terra.com.br', '(11) 5555-5555', '(11) 6666-6666', '123456', '2016-10-25', '/var/www/7brasil/skin/img/uploaded/4d16a0cd1b9d6a90b0d67ad4bfb64588.png', '/var/www/7brasil/skin/img/uploaded/619b92173a9beb35a2daeca3aceaff32.jpg', '/var/www/7brasil/skin/img/uploaded/3893168b58c2d8fa948cdd3bf99f7960.JPG', '123456789123456789', 'Anjinho de Papai', 1),
-(23, 1, 'RAQUEL LIMA ANDRADE', '1985-04-30', '44.444.444-4', '555.555.555-55', '04431-000', 'Rua Maria Clotilde Martins Rocha', '1026', 'Jardim Selma', 'São Paulo', '', 'SP', 'Brasil', 'raquel.lima.and@gmail.com', '(11) 5555-5555', '', '', '0000-00-00', NULL, NULL, NULL, '', '', 1);
+(24, 1, 'RAQUEL LIMA ANDRADE', '1985-04-30', '33.333.333-3', '777.777.777-77', '04429-150', 'Rua Correio Paulistano', '202', 'Americanópolis', 'São Paulo', '', 'SP', 'Brasil', 'raquel.lima.and@gmail.com', '(11) 5555-5555', '(11) 9999-9999', '', '0001-11-30', NULL, NULL, NULL, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -1167,6 +1167,28 @@ CREATE TABLE IF NOT EXISTS `tbl_ticket_clientePJ` (
   KEY `fk_tbl_ticket_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`),
   KEY `fk_tbl_ticket_clientePJ_tbl_venda1` (`id_venda`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbl_tipoCartao`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tipoCartao` (
+  `id_tipoCartao` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo_tipoCartao` varchar(99) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `descricao_tipoCartao` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `status_tipoCartao` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_tipoCartao`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_tipoCartao`
+--
+
+INSERT INTO `tbl_tipoCartao` (`id_tipoCartao`, `titulo_tipoCartao`, `descricao_tipoCartao`, `status_tipoCartao`) VALUES
+(1, 'Master Card', 'Descrição Teste', 1),
+(2, 'VIsa', 'Descrição Teste', 1);
 
 -- --------------------------------------------------------
 
