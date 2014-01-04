@@ -9,6 +9,7 @@ use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
 use Application\Models\Classificacao;
 use Application\Models\CartaoPF;
+use Application\Models\TipoCartao;
 
 class ClienteController extends OXE_Controller {
 	
@@ -40,25 +41,27 @@ class ClienteController extends OXE_Controller {
 	{
 		$form = new FormStyle();
 		$table = new Table();
+		
 		$data['title'] = 'Gerenciar Clientes - Pessoa Física';
 		$data['form'] = $form;
 		$data['table'] = $table;
 		$data['clientes'] = $this->model->list_all();
 		
+		
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		// $this->view('template/cambio');
 		$this->view('cliente/pf/listaFisica',$data);
 		$this->view('template/footer');
 	}
 	
 	public function cadfisicaAction()
 	{
+		$tipoCartao = new TipoCartao();
 		$form = new FormStyle();
 		$data['title'] = 'Cadastro Clientes - Pessoa Física';
 		$data['form'] = $form;
-		
-		
+		$data['tipoCartoes'] = $tipoCartao->list_all();
+
 		$this->view('template/head',$data);
 		$this->view('template/header');
 		$this->view('template/cambio');
@@ -72,6 +75,7 @@ class ClienteController extends OXE_Controller {
 		$param = func_get_args();
 		$classif = new Classificacao();
 		$cartoes = new CartaoPF();
+		$tipoCartao = new TipoCartao();
 		
 		$form = new FormStyle();
 		$data['title'] = 'Cadastro Clientes - Pessoa Física';
@@ -79,6 +83,7 @@ class ClienteController extends OXE_Controller {
 		$data['classif'] = $classif->list_all();
 		$data['clientes'] = $this->model->list_once($param[1]);
 		$data['cartoes'] = $cartoes->findCliente($data['clientes'][0]['id_clientePF']);
+		$data['tipoCartoes'] = $tipoCartao->list_all();
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -89,12 +94,15 @@ class ClienteController extends OXE_Controller {
 	
 	public function saveUpdatePFAction()
 	{
+		
 		$model = $this->model->list_once($_POST['id_clientePF']);
 		$_POST['dt_validadePassaporte_clientePF'] = $this->dateToMysql($_POST['dt_validadePassaporte_clientePF']);
 		$_POST['dataNascimento_clientePF'] = $this->dateToMysql($_POST['dataNascimento_clientePF']);
 		$_POST['nome_clientePF'] = strtoupper($_POST['nome_clientePF']);
 		foreach($_POST as $key => $value){
+			if(!is_array($_POST)){
 			$_POST[$key] = strip_tags($value);
+			}
 		}
 
 		if($_FILES['copia_rg_clientePF']['size'] > 0){
@@ -129,12 +137,7 @@ class ClienteController extends OXE_Controller {
 			$arr1 = array();
 			foreach($_POST as $key => $value){
 				if(is_array($value)){
-					if($key == 'numero_cartaoPF'){
-						foreach($value as $v){
-							$n1++;
-							$arr1[$n1]['numero_cartaoPF'] = $v;
-						}
-					}
+					
 					
 					$n1 = 0;
 					if($key == 'codigo_seguranca_cartaoPF'){
@@ -145,10 +148,10 @@ class ClienteController extends OXE_Controller {
 					}
 					
 					$n1 = 0;
-					if($key == 'bandeira_cartaoPF'){
+					if($key == 'id_tipoCartao'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['bandeira_cartaoPF'] = $v;
+							$arr1[$n1]['id_tipoCartao'] = $v;
 						}
 					}
 					
@@ -160,18 +163,41 @@ class ClienteController extends OXE_Controller {
 						}
 					}
 					
+					
+					$n1 = 0;
+					if($key == 'id_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'numero_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['numero_cartaoPF'] = $v;
+						}
+					}
+					
 				}
 			}
 			############# Iterando names de cartão de crédito  ###########
 			
 			
 			unset($_POST['numero_cartaoPF']);
+			unset($_POST['id_cartaoPF']);
 			unset($_POST['codigo_seguranca_cartaoPF']);
-			unset($_POST['bandeira_cartaoPF']);
+			unset($_POST['id_tipoCartao']);
 			unset($_POST['dt_validade_cartaoPF']);
-		
-		if($this->model->update_cli($_POST)){
+			$cartoes = new CartaoPF();
 			
+		if($this->model->update_cli($_POST)){
+			foreach($arr1 as $key => $value){
+				if($cartoes->remove($value['id_cartaoPF'])){
+					$cartoes->add($value);
+				}
+			}
 			$this->session->setFlashMessage('Cliente PF atualizado com sucesso','success');
 			$this->redirector('/cliente/fisica');
 		}else{
@@ -212,10 +238,10 @@ class ClienteController extends OXE_Controller {
 					}
 					
 					$n1 = 0;
-					if($key == 'bandeira_cartaoPF'){
+					if($key == 'id_tipoCartao'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['bandeira_cartaoPF'] = $v;
+							$arr1[$n1]['id_tipoCartao'] = $v;
 						}
 					}
 					
@@ -234,7 +260,7 @@ class ClienteController extends OXE_Controller {
 			
 			unset($_POST['numero_cartaoPF']);
 			unset($_POST['codigo_seguranca_cartaoPF']);
-			unset($_POST['bandeira_cartaoPF']);
+			unset($_POST['id_tipoCartao']);
 			unset($_POST['dt_validade_cartaoPF']);
 			
 		$_POST['dataNascimento_clientePF'] = $this->dateToMysql($_POST['dataNascimento_clientePF']);

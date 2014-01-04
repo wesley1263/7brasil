@@ -219,15 +219,16 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="bandeira_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Bandeira do Cartão</label>
-				<div class="col-sm-3">
-				<input type="text" class="form-control bandeira_cartaoPF"  id="bandeira_cartaoPF" placeholder="Bandeira do Cartão" name="bandeira_cartaoPF[]">
-				</div>
-
-				
+				  <?php
+				  foreach($tipoCartoes as $cart){
+				  	$opt_cart[$cart['id_tipoCartao']] = $cart['titulo_tipoCartao'];
+				  }
+				  
+					 $form->select($opt_cart,'id_tipoCartao[]','Bandeira','1',2,3);
+				  ?>
 				<label for="dt_validade_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control dt_validade_cartaoPF"  id="dt_validade_cartaoPF" placeholder="Bandeira do Cartão" name="dt_validade_cartaoPF[]">
+				<input type="text" class="form-control dt_validade_cartaoPF"  id="dt_validade_cartaoPF" placeholder="Data de Validade" name="dt_validade_cartaoPF[]">
 				</div>
 			</div>
 			<hr />
@@ -330,7 +331,7 @@
 
 				newElem.find('.numero_cartaoPF').attr('id','numero_cartaoPF'+newNum).val('');
 				newElem.find('.codigo_seguranca_cartaoPF').attr('id','codigo_seguranca_cartaoPF'+newNum).val('');
-				newElem.find('.bandeira_cartaoPF').attr('id','bandeira_cartaoPF'+newNum).val('');
+				newElem.find('.id_tipoCartao').attr('id','id_tipoCartao'+newNum);
 				newElem.find('.dt_validade_cartaoPF').attr('id','dt_validade_cartaoPF'+newNum).val('');
 
 				

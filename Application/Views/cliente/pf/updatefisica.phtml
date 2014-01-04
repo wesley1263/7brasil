@@ -166,7 +166,7 @@
 		?>
 		<div id="cloneDiv<?=$num?>" class="cartoes">
 			<div class="form-group">
-				<input type="hidden" name="id_cartaoPF" value="<?=$cartao['id_cartaoPF']?>" />
+				<input type="hidden" name="id_cartaoPF[]" value="<?=$cartao['id_cartaoPF']?>" />
 				<label for="numero_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
 				<div class="col-sm-3">
 				<input type="text" class="form-control numero_cartaoPF" value="<?=$cartao['numero_cartaoPF']?>" id="numero_cartaoPF<?=$num?>" placeholder="Número Cartão" name="numero_cartaoPF[]">
@@ -179,10 +179,14 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="bandeira_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Bandeira do Cartão</label>
-				<div class="col-sm-3">
-				<input type="text" class="form-control bandeira_cartaoPF" value="<?=$cartao['bandeira_cartaoPF']?>" id="bandeira_cartaoPF<?=$num?>" placeholder="Bandeira do Cartão" name="bandeira_cartaoPF[]">
-				</div>
+				
+				 <?php
+				  foreach($tipoCartoes as $cart){
+				  	$opt_cart[$cart['id_tipoCartao']] = $cart['titulo_tipoCartao'];
+				  }
+				  
+					 $form->select($opt_cart,'id_tipoCartao[]','Bandeira',$cartao['id_tipoCartao'],2,3);
+				  ?>
 
 				
 				<label for="dt_validade_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
@@ -194,7 +198,7 @@
 			</div>
 		<?php endforeach; 
 		if(!$cartoes): ?>
-			<div id="cloneDiv" class="cartoes">
+			<div id="cloneDiv1" class="cartoes">
 			<div class="form-group">
 				<input type="hidden" name="id_cartaoPF" value="" />
 				<label for="numero_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
