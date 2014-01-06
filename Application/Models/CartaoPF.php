@@ -36,6 +36,12 @@ class CartaoPF extends OXE_Model {
 		return $this->delete($id);
 	}
 	
+	public function del($id_cliente)
+	{
+		
+		return $this->query("DELETE FROM $this->_name WHERE id_clientePF = $id_cliente");
+	}
+	
 	public function alter(array $data)
 	{
 		return $this->update($data,$this->_primary.' = '.$data['id_cartaoPF']);

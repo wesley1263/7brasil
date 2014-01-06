@@ -166,7 +166,7 @@
 		?>
 		<div id="cloneDiv<?=$num?>" class="cartoes">
 			<div class="form-group">
-				<input type="hidden" name="id_cartaoPF[]" value="<?=$cartao['id_cartaoPF']?>" />
+				<input type="hidden" name="id_cartaoPF[]" value="<?=$cartao['id_cartaoPF']?>" id="id_cartaoPF<?=$num?>" class="id_cartaoPF" />
 				<label for="numero_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
 				<div class="col-sm-3">
 				<input type="text" class="form-control numero_cartaoPF" value="<?=$cartao['numero_cartaoPF']?>" id="numero_cartaoPF<?=$num?>" placeholder="Número Cartão" name="numero_cartaoPF[]">
@@ -200,7 +200,7 @@
 		if(!$cartoes): ?>
 			<div id="cloneDiv1" class="cartoes">
 			<div class="form-group">
-				<input type="hidden" name="id_cartaoPF" value="" />
+				<input type="hidden" name="id_cartaoPF" value="" id="id_cartaoPF" class="id_cartaoPF" />
 				<label for="numero_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
 				<div class="col-sm-3">
 				<input type="text" class="form-control numero_cartaoPF" value="" id="numero_cartaoPF" placeholder="Número Cartão" name="numero_cartaoPF[]">
@@ -213,10 +213,13 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="bandeira_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Bandeira do Cartão</label>
-				<div class="col-sm-3">
-				<input type="text" class="form-control bandeira_cartaoPF" value="" id="bandeira_cartaoPF" placeholder="Bandeira do Cartão" name="bandeira_cartaoPF[]">
-				</div>
+				<?php
+				  foreach($tipoCartoes as $cart){
+				  	$opt_cart[$cart['id_tipoCartao']] = $cart['titulo_tipoCartao'];
+				  }
+				  
+					 $form->select($opt_cart,'id_tipoCartao[]','Bandeira','1',2,3);
+				  ?>
 
 				
 				<label for="dt_validade_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
@@ -243,8 +246,6 @@
 		<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"><?=($clientes[0]['descricao_clientePF'])?></textarea>
 		</div>
 		
-		<label for="status_clientePF" style="color: #797676;" class="col-sm-2 control-label">Status</label>
-	  
 	    <?php $form->select(array('1'=>'ATIVO','0'=>'INATIVO'),'status_clientePF','Status',$clientes[0]['status_clientePF']); ?>
 	    
 	  </div>	
@@ -271,7 +272,7 @@
 		 jQuery("#celular_clientePF").mask("(99) 9999-9999");
 		 jQuery("#dataNascimento_clientePF").mask("99/99/9999");
 		 jQuery("#dt_validadePassaporte_clientePF").mask("99/99/9999");
-		
+		jQuery('#dt_validade_cartaoPF').mask('99/99/9999');
 	
 		 jQuery("#cep_clientePF").blur(function(){
 		 var cep = jQuery(this).val();
@@ -311,8 +312,9 @@
 			});
 			
 			
+			
 			jQuery('#bt_add_ct').click(function(){
-
+				
 				num = jQuery('.cartoes').length;
 				newNum = new Number(num + 1);
 
@@ -322,6 +324,7 @@
 				newElem.find('.codigo_seguranca_cartaoPF').attr('id','codigo_seguranca_cartaoPF'+newNum).val('');
 				newElem.find('.bandeira_cartaoPF').attr('id','bandeira_cartaoPF'+newNum).val('');
 				newElem.find('.dt_validade_cartaoPF').attr('id','dt_validade_cartaoPF'+newNum).val('');
+				newElem.find('.id_cartaoPF').attr('id','id_cartaoPF'+newNum).val('');
 				
 				jQuery('#cloneDiv'+num).after(newElem);
 				jQuery('#bt_del_ct').attr('disabled',false);
@@ -330,8 +333,22 @@
 			});
 
 			jQuery('#bt_del_ct').click(function(){
+			    num = jQuery('.cartoes').length;
+				
 				if(confirm('Deseja realmente remover esse cartão ?')){
-				var num = jQuery('.cartoes').length;
+				
+				id_cartaoPF = jQuery('#cloneDiv'+num).find("#id_cartaoPF"+num).val();
+				
+				jQuery.ajax({
+					url: '/cliente/delAjaxCartaoPF',
+					type: 'post',
+					dataType: 'html',
+					data: {id_cartaoPF : id_cartaoPF},
+					success: function(data){
+						alert(data);
+					}
+				});
+				
 				jQuery('#cloneDiv'+num).slideUp('slow',function(){
 					jQuery('#cloneDiv'+num).remove();
 					if(num - 1 === 1){
@@ -343,7 +360,7 @@
 				}
 			});
 			
-			jQuery('#bt_del_ct').attr('disabled',true);
+			// jQuery('#bt_del_ct').attr('disabled',true);
 			
 	});
 </script>

@@ -136,7 +136,7 @@ class ClienteController extends OXE_Controller {
 			$n1 = 0;
 			$arr1 = array();
 			foreach($_POST as $key => $value){
-				if(is_array($value)){
+				if(is_array($value) && count($value) > 0){
 					
 					
 					$n1 = 0;
@@ -180,6 +180,8 @@ class ClienteController extends OXE_Controller {
 						}
 					}
 					
+				}else{
+					$arr1 = null;
 				}
 			}
 			############# Iterando names de cartão de crédito  ###########
@@ -190,14 +192,27 @@ class ClienteController extends OXE_Controller {
 			unset($_POST['codigo_seguranca_cartaoPF']);
 			unset($_POST['id_tipoCartao']);
 			unset($_POST['dt_validade_cartaoPF']);
+			if(!is_null($arr1)){
+				foreach($arr1 as $key => $value){
+					$arr1[$key]['id_clientePF'] = $_POST['id_clientePF'];
+				}
+				
+			}
+// 			
 			$cartoes = new CartaoPF();
 			
 		if($this->model->update_cli($_POST)){
-			foreach($arr1 as $key => $value){
-				if($cartoes->remove($value['id_cartaoPF'])){
-					$cartoes->add($value);
-				}
+		
+				foreach($arr1 as $key => $value){
+					if($value['numero_cartaoPF'] =! null){
+						if($value['id_cartaoPF'] == null){
+							$cartoes->add($value);
+						}else{
+							$cartoes->alter($value);
+						}
+					}
 			}
+			
 			$this->session->setFlashMessage('Cliente PF atualizado com sucesso','success');
 			$this->redirector('/cliente/fisica');
 		}else{
@@ -221,7 +236,7 @@ class ClienteController extends OXE_Controller {
 			$n1 = 0;
 			$arr1 = array();
 			foreach($_POST as $key => $value){
-				if(is_array($value)){
+				if(is_array($value) && count($value) > 0){
 					if($key == 'numero_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
@@ -458,6 +473,13 @@ class ClienteController extends OXE_Controller {
 			$this->redirector('/cliente/juridica');
 		}
 		 
+	}
+	
+	public function delAjaxCartaoPFAction()
+	{
+		$id = $_POST['id_cartaoPF'];
+		$CartaoPF = new CartaoPF();
+		return $CartaoPF->remove($id);
 	}
 	
 	
