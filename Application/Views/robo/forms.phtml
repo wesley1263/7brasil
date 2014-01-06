@@ -1,0 +1,44 @@
+<div class="form_controller">
+	<center><h2>Criar Formulários</h2></center>
+	<br />
+	<br />
+<?php
+
+$form->init('robo_forms','/robo/createForms');
+
+		$form->groupOpen();	
+		$form->input(array(
+						'name' =>'name_model',
+						'type' =>'text',
+						'placeholder' => 'Nome da Model',
+						'num_label' =>'3',
+						'num_input' =>'5',
+						'label' =>'Model',
+						'value' =>'',
+						'required' => true
+						));
+		$form->groupClose();
+		
+		
+		$form->groupOpen();	
+		$form->input(array(
+						'name' =>'name_controller',
+						'type' =>'text',
+						'placeholder' => 'Nome do Controller',
+						'num_label' =>'3',
+						'num_input' =>'5',
+						'label' =>'Controller',
+						'value' =>'',
+						'required' => true
+						));
+		$form->groupClose();
+		
+		echo str_repeat('<br />',2);
+		
+	$form->groupOpen();		
+	$form->submit('Salvar','style="padding:2% 13%"',5,'btn-primary');
+	$form->groupClose();
+
+$form->close();
+?>
+</div>

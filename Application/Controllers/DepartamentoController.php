@@ -61,7 +61,9 @@ class DepartamentoController extends OXE_Controller{
 		
 		####### Se existir id deve ser insert ############
 			if($_POST['id_departamento'] == null){
+				############# Verifica se existe departamento ###############
 				if(!$this->model->findDepart($_POST)){
+					######## Insert novo departamento #######
 					if($this->model->add($_POST)){
 						$this->session->setFlashMessage('Departamento cadastro com sucesso','success');
 						$this->redirector('/departamento');
