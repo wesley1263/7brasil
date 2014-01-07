@@ -80,6 +80,14 @@
 				'value' => '',
 				'required' => false
 				));
+				if(isset($locadoras[0]['logotipo_locadora'])){
+					$img = explode('/',$locadoras[0]['logotipo_locadora']);
+					array_shift($img);
+					array_shift($img);
+					array_shift($img);
+					array_shift($img);
+				}
+				echo isset($locadoras) ? "<img src=\"/".implode('/', $img)."\" width=\"100\" alt=\"".$locadoras[0]['nome_locadora']."\" class=\"img-thumbnail\">" : null;
 		$form->groupClose();
 		
 		$form->groupOpen();
