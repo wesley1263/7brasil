@@ -58,7 +58,7 @@ class $controller extends OXE_Controller{
 	{
 				
 		\$data['title'] = 'Titulo da Pagina';
-		\$data['departamentos'] = \$this->model->selectAll();
+		\$data['{$file}s'] = \$this->model->list_all();
 		\$data['form'] = \$this->form;
 		\$data['table'] = \$this->table;
 		\$data['session'] = \$this->session;
@@ -78,7 +78,6 @@ class $controller extends OXE_Controller{
 		}
 		
 		\$data['title'] = 'Titulo da Pagina';
-		\$data['departamentos'] = \$this->model->selectAll();
 		\$data['form'] = \$this->form;
 		\$data['table'] = \$this->table;
 		\$data['session'] = \$this->session;
@@ -91,22 +90,41 @@ class $controller extends OXE_Controller{
 	
 	public function save{$name}Action()
 	{
-		
+		\$this->dump($_POST);
 	}
 	
 	public function delete{$name}Action()
 	{
-		
+		\$param = func_get_args();
+		if(\$this->model->remove(\$param[1])){
+			\$this->session->setFlashMessage('$name removido do sistema','success');
+			\$this->redirector('/$file');
+		}
 	}
 }
 			
 html;
+
+$form = "<?php
+	if(isset(\$_SESSION['success'])){
+		echo '<div class=\"alert alert-success\">'.\$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset(\$_SESSION['error'])){
+		echo '<div class=\"alert alert-danger\">'.\$this->session->getFlashMessage('error').'</div>';
+	}
+	
+
+	\$form->init('form_$file','/$file/save{$name}');";
+
+
+
 		if(file_put_contents(CONTROLLER_PATH.$controller.'.php',$control)){
 			chmod(CONTROLLER_PATH.$controller.'.php', 0777);
 			if(mkdir($dir)){
 				chmod($dir, 0777);
 				file_put_contents($dir.DIRECTORY_SEPARATOR.'index.phtml', 'content list all here');
-				file_put_contents($dir.DIRECTORY_SEPARATOR.'cad'.$name.'.phtml', 'Form content here');
+				file_put_contents($dir.DIRECTORY_SEPARATOR.'cad'.$name.'.phtml', $form);
 				chmod($dir.DIRECTORY_SEPARATOR.'cad'.$name.'.phtml',0777);
 				echo 'Controller criado com sucesso';
 			}
@@ -236,17 +254,37 @@ model;
 					
 					foreach($model->DescTables() as $key => $values){
 						
-					$this->dump($values);
-						if(preg_match("/varchar/",$values['Type'])){
-							$inputs[] = $this->formInput('text', $values['Field']);
-							
-						}else if(preg_match("/text/", $values['Type'])){
-							$inputs[] = $this->formSelect($values['Field']);
+						if(preg_match("/^(varchar)|(decimal)|(datetime)/",$values['Type'])){
+							$inputs['text'][] = $this->formInput('text', $values['Field']);
+						}else if(preg_match("/^(int)/",$values['Type'])){
+							$inputs['hidden'][] = $this->formInput('hidden', $values['Field']);
+						}else if(preg_match("/^(text)/",$values['Type'])){
+							$inputs['textarea'][] = $this->formSelect($values['Field']);
 						}
 						
 					}
 					
-					$this->dump($inputs);
+					//$this->dump($inputs);
+					foreach($inputs['hidden'] as $key => $value){
+						file_put_contents($view, $value."\n",FILE_APPEND);
+					}
+					
+					foreach($inputs['text'] as $key => $value){
+						file_put_contents($view,$value."\n",FILE_APPEND);
+					}
+					
+					foreach($inputs['textarea'] as $key => $value){
+						file_put_contents($view,$value,FILE_APPEND);
+					}
+					$content = "echo str_repeat('<br />',3);
+								\$form->groupOpen();		
+								\$form->submit('Salvar','style=\"padding:5% 13%\"');
+								\$form->groupClose();"."\n".
+								"\$form->close();";
+								
+					if(file_put_contents($view,$content,FILE_APPEND)){
+						echo "Formulário criado com sucesso";
+					}
 				}
 				
 			}
@@ -259,13 +297,14 @@ model;
 	private function formInput($type, $name,$required = 'true')
 	{
 		$return = "
+			\$form->groupOpen();	
 			\$form->input(array(
 				'name' =>'$name',
 				'type' =>'$type',
 				'placeholder' => '$name',
-				'num_label' =>'3',
+				'num_label' =>'2',
 				'num_input' =>'5',
-				'label' =>'Controller',
+				'label' =>'$name',
 				'value' =>'',
 				'required' => $required
 				));

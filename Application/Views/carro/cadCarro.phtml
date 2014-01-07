@@ -1,1 +1,162 @@
-Form content here
+<?php
+	if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+	
+
+	$form->init('form_carro','/carro/saveCarro');
+
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_carros',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_locadora',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_moeda',
+				'type' =>'hidden',
+				'placeholder' => 'id_moeda',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'dt_inicio_carro',
+				'type' =>'text',
+				'placeholder' => 'dt_inicio_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'dt_inicio_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'dt_devolucao_carro',
+				'type' =>'text',
+				'placeholder' => 'dt_devolucao_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'dt_devolucao_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'local_incio_carro',
+				'type' =>'text',
+				'placeholder' => 'local_incio_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'local_incio_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'local_devolucao_carro',
+				'type' =>'text',
+				'placeholder' => 'local_devolucao_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'local_devolucao_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'voucher_carro',
+				'type' =>'text',
+				'placeholder' => 'voucher_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'voucher_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_carro',
+				'type' =>'text',
+				'placeholder' => 'valor_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'valor_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_casa_carro',
+				'type' =>'text',
+				'placeholder' => 'valor_casa_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'valor_casa_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'taxa_carro',
+				'type' =>'text',
+				'placeholder' => 'taxa_carro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'taxa_carro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+$form->textarea('descricao_carro','descricao_carro','','descricao_carro',2,8);
+echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();

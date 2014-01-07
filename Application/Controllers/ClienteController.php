@@ -9,6 +9,7 @@ use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
 use Application\Models\Classificacao;
 use Application\Models\CartaoPF;
+use Application\Models\CartaoPJ;
 use Application\Models\TipoCartao;
 
 class ClienteController extends OXE_Controller {
@@ -389,7 +390,9 @@ class ClienteController extends OXE_Controller {
 		$model = new ClientePJ();
 		$_POST['nomefantasia_clientePJ'] = strtoupper($_POST['nomefantasia_clientePJ']);
 		foreach($_POST as $key => $value){
-			$_POST[$key] = strip_tags($value);
+			if(!is_array($value)){
+				$_POST[$key] = strip_tags($value);
+			}
 		}
 		
 		if($_FILES['logotipo_clientePJ']['error'] == UPLOAD_ERR_OK){
@@ -401,9 +404,65 @@ class ClienteController extends OXE_Controller {
 			}
 		}
 		
+		$n1 = 0;
+			$arr1 = array();
+			foreach($_POST as $key => $value){
+				if(is_array($value) && count($value) > 0){
+						
+					if($key == 'numero_cartaoPJ'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['numero_cartaoPJ'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'codigo_seguranca_cartaoPJ'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['codigo_seguranca_cartaoPJ'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'id_tipoCartao'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_tipoCartao'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'dt_validade_cartaoPJ'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['dt_validade_cartaoPJ'] = $this->dateToMysql($v);
+						}
+					}
+					
+				}
+			}
+			############# Iterando names de cartão de crédito  ###########
+			
+			
+			unset($_POST['numero_cartaoPJ']);
+			unset($_POST['codigo_seguranca_cartaoPJ']);
+			unset($_POST['id_tipoCartao']);
+			unset($_POST['dt_validade_cartaoPJ']);
+		
+		// $this->dump($arr1);
+		// exit;
+			$CartaoPJ = new CartaoPJ();
 		
 		if(!$model->findCNPJ($_POST['cnpj_clientePJ'])){
 			if($model->insert_cli($_POST)){
+				foreach($arr1 as $key => $value){
+					$arr1[$key]['id_clientePJ'] = $_POST['id_clientePJ'];
+				}
+				
+				foreach($arr1 as $key => $value){
+					$CartaoPJ->add($value);
+				}
 			$this->session->setFlashMessage('Empresa cadastrada com sucesso','success');
 			$this->redirector('/cliente/juridica');
 			}else{

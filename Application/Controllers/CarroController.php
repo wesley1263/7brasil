@@ -20,6 +20,7 @@ class CarroController extends OXE_Controller{
 	{
 				
 		$data['title'] = 'Titulo da Pagina';
+		$data['carros'] = $this->model->list_all();
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
@@ -51,12 +52,16 @@ class CarroController extends OXE_Controller{
 	
 	public function saveCarroAction()
 	{
-		
+		$this->dump($_POST);
 	}
 	
 	public function deleteCarroAction()
 	{
-		
+		$param = func_get_args();
+		if($this->model->remove($param[1])){
+			$this->session->setFlashMessage('Carro removido do sistema','success');
+			$this->redirector('/carro');
+		}
 	}
 }
 			

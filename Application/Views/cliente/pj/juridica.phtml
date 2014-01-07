@@ -217,6 +217,49 @@
 						));	
 		$form->groupClose();		
 								
+		echo '<hr>';
+		?>
+		<fieldset id="cartao_credito">
+	<center><h3>Cartões de Crédito</h3></center>
+	<br>
+		<div id="cloneDiv1" class="cartoes">
+			<div class="form-group">
+				<label for="numero_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control numero_cartaoPJ" id="numero_cartaoPJ" placeholder="Número Cartão" name="numero_cartaoPJ[]">
+				</div>
+				
+				<label for="codigo_seguranca_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Código Segurança</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control codigo_seguranca_cartaoPF" id="codigo_seguranca_cartaoPF" placeholder="Número Cartão" name="codigo_seguranca_cartaoPJ[]">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				  <label for="id_tipoCartao[]" style="color: #797676;" class="col-sm-2 control-label">Bandeira</label> <div class="col-sm-3">
+				  	<select class="form-control" name="id_tipoCartao[]">
+				  		<option value="1" selected="">Master Card</option>
+				  		<option value="2">Visa</option>
+				  	</select>
+				  		</div>				
+				  		
+				  	<label for="dt_validade_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control dt_validade_cartaoPJ" id="dt_validade_cartaoPJ" placeholder="Data de Validade" name="dt_validade_cartaoPJ[]">
+				</div>
+			</div>
+			<hr>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-5 col-sm-10">
+				<button type="button" style="padding: 5px 20px" id="bt_add_ct" title="Adicionar novo Cartão de Crédito" class="btn btn-warning bt_add_ct"><span class="glyphicon glyphicon-plus"></span></button>
+				<button type="button" style="padding: 5px 20px" id="bt_del_ct" title="Remover Cartão de Crédito" class="btn btn-danger bt_del_ct" disabled="disabled"><span class="glyphicon glyphicon-remove"></span></button>
+				</div>
+				</div>
+			
+	</fieldset>
+		<?php						
 		echo '<hr>';						
 		
 		######### Nome responsavel	############	
@@ -317,6 +360,7 @@
 		jQuery("#cnpj_clientePJ").mask('99.999.999/9999-99');
 		jQuery("#rg_responsavel_clientePJ").mask('99.999.999-9');
 		jQuery("#cpf_responsavel_clientePJ").mask('999.999.999-99');
+		jQuery("#dt_validade_cartaoPJ").mask('99/99/9999');
 		
 		
 		jQuery("#cep_clientePJ").blur(function(){
@@ -341,6 +385,45 @@
 				});
 			}
 		});
+		
+		
+		
+		jQuery('#bt_add_ct').click(function(){
+
+				num = jQuery('.cartoes').length;
+				newNum = new Number(num + 1);
+
+				var newElem = jQuery('#cloneDiv'+num).clone().attr('id','cloneDiv'+newNum).fadeIn('slow');
+
+				newElem.find('.numero_cartaoPJ').attr('id','numero_cartaoPJ'+newNum).val('');
+				newElem.find('.codigo_seguranca_cartaoPJ').attr('id','codigo_seguranca_cartaoPJ'+newNum).val('');
+				newElem.find('.id_tipoCartao').attr('id','id_tipoCartao'+newNum);
+				newElem.find('.dt_validade_cartaoPJ').attr('id','dt_validade_cartaoPJ'+newNum).val('');
+
+				
+				jQuery('#cloneDiv'+num).after(newElem);
+				jQuery('#bt_del_ct').attr('disabled',false);
+				jQuery('#dt_validade_cartaoPJ'+newNum).mask('99/99/9999');
+				
+			});
+			
+			
+			jQuery('#bt_del_ct').click(function(){
+				if(confirm('Deseja realmente remover esse cartão ?')){
+				var num = jQuery('.cartoes').length;
+				jQuery('#cloneDiv'+num).slideUp('slow',function(){
+					jQuery('#cloneDiv'+num).remove();
+					if(num - 1 === 1){
+						jQuery('#bt_del_ct').attr('disabled',true);
+					}else{
+						jQuery('#bt_del_ct').attr('disabled',false);
+						}
+					});
+				}
+			});
+			
+			jQuery('#bt_del_ct').attr('disabled',true);
+			
 		
 		
 	});
