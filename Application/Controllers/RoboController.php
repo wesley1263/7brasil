@@ -65,7 +65,7 @@ class $controller extends OXE_Controller{
 				
 		\$this->view('template/head',\$data);
 		\$this->view('template/header');
-		\$this->view('$name/index',\$data);
+		\$this->view('$file/index',\$data);
 		\$this->view('template/footer');	
 		
 	}
@@ -231,10 +231,22 @@ model;
 				}else{
 					$namespace = "Application\Models\\$model";
 					$model = new $namespace();
-				
+					$inputs = array();
+					
+					
 					foreach($model->DescTables() as $key => $values){
-						$this->dump($values);
+						
+					$this->dump($values);
+						if(preg_match("/varchar/",$values['Type'])){
+							$inputs[] = $this->formInput('text', $values['Field']);
+							
+						}else if(preg_match("/text/", $values['Type'])){
+							$inputs[] = $this->formSelect($values['Field']);
+						}
+						
 					}
+					
+					$this->dump($inputs);
 				}
 				
 			}
@@ -242,6 +254,30 @@ model;
 		
 		
 		
+	}
+	
+	private function formInput($type, $name,$required = 'true')
+	{
+		$return = "
+			\$form->input(array(
+				'name' =>'$name',
+				'type' =>'$type',
+				'placeholder' => '$name',
+				'num_label' =>'3',
+				'num_input' =>'5',
+				'label' =>'Controller',
+				'value' =>'',
+				'required' => $required
+				));
+		\$form->groupClose();";
+		
+		return $return;
+	}
+	
+	
+	public function formSelect($name)
+	{
+		return "\$form->textarea('$name','$name','','$name',2,8);";
 	}
 
 }
