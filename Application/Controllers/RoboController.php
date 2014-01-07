@@ -90,7 +90,7 @@ class $controller extends OXE_Controller{
 	
 	public function save{$name}Action()
 	{
-		\$this->dump($_POST);
+		\$this->dump(\$_POST);
 	}
 	
 	public function delete{$name}Action()

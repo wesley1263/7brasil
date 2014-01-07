@@ -188,5 +188,27 @@ namespace Vendor\Core;
 	 {
 	 	echo '<pre>'.print_r($array,1).'</pre>';
 	 }
+	 
+	 
+	 /**
+	 * upload - Method to uploading files
+	 * @access public
+	 * @return String
+	 * @author Weslei A. Souza
+	 * @copyright	Copyright (c) 2013, ANDWES Solutions.
+	 * */
+	 public function upload($filename){
+	 	
+	 	if($_FILES[$filename]['size'] > 0 && $_FILES[$filename]['error'] == UPLOAD_ERR_OK){
+			$file = explode('.',$_FILES['logotipo_locadora']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES[$filename]['tmp_name'],UPLOAD_PATH.$name.$ext);
+			return $_POST[$filename] = UPLOAD_PATH.$name.$ext;
+			
+		}else{
+			return $_FILES[$filename]['error'];
+		}
+	 }
  }
  

@@ -47,10 +47,18 @@ class FormStyle {
 		echo  $this->_hidden = $return;
 	}
 	
-	public function submit($value, $extra = null, $num_sub = 5, $class_btn = 'btn-default')
+	public function submit($value, $extra = null, $num_sub = 5,$pos = 5, $class_btn = 'btn-default')
 	{
-		$this-> _button = '<div class="col-sm-offset-5 col-sm-'.$num_sub.'">';
+		$this-> _button = '<div class="col-sm-offset-'.$pos.' col-sm-'.$num_sub.'">';
      	$this-> _button .= '<button type="submit" '.$extra.' class="btn '.$class_btn.'">'.$value.'</button>';
+    	$this-> _button .= '</div>';
+		echo $this-> _button;
+	}
+	
+	public function button($value, $extra = null, $num_sub = 5,$pos = 5 , $class_btn = 'btn-default')
+	{
+		$this-> _button = '<div class="col-sm-offset-'.$pos.' col-sm-'.$num_sub.'">';
+     	$this-> _button .= '<button type="button" '.$extra.' class="btn '.$class_btn.'">'.$value.'</button>';
     	$this-> _button .= '</div>';
 		echo $this-> _button;
 	}

@@ -1,0 +1,107 @@
+<?php
+	echo '<h3>Cadastro de Locadoras</h3>';
+	
+	$id = isset($locadoras) ? $locadoras[0]['id_locadora']: null;
+	
+	$form->init('form_locadora','/locadora/saveLocadora');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_locadora',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_locadora',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' => isset($locadoras) ? $locadoras[0]['nome_locadora']: null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'site_locadora',
+				'type' =>'text',
+				'placeholder' => 'Site',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Site',
+				'value' => isset($locadoras) ? $locadoras[0]['site_locadora']: null,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'telefone_locadora',
+				'type' =>'text',
+				'placeholder' => 'Telefone',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Telefone',
+				'value' => isset($locadoras) ? $locadoras[0]['telefone_locadora']: null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'email_locadora',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Email',
+				'value' => isset($locadoras) ? $locadoras[0]['email_locadora']: null,
+				'required' => false
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+			$form->input(array(
+				'name' =>'logotipo_locadora',
+				'type' =>'file',
+				'placeholder' => 'Logotipo',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Logotipo',
+				'value' => '',
+				'required' => false
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();
+		$form->select(array('1' =>'Ativo','0' =>'Inativo'),'status_locadora','Status',isset($locadoras) ? $locadoras[0]['status_locadora']: 1);
+		$form->groupClose();
+		
+$form->textarea('descricao_locadora','Descrição',isset($locadoras) ? $locadoras[0]['descricao_locadora']: null,'Descrição',2,5);
+
+echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit(isset($locadoras) ? 'Atualizar': 'Salvar','style="padding:5% 13%"',10,5);
+		$form->groupClose();
+$form->close();
+?>
+<script>
+	jQuery(function(){
+		
+		jQuery('#telefone_locadora').mask('(99) 9999-9999');
+		jQuery('#nome_locadora').css('text-transform','uppercase');
+		jQuery('#nome_locadora').submit(function(){
+			jQuery(this).val().toUpperCase();
+		});
+				
+	});
+</script>
