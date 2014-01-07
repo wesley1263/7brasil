@@ -30,7 +30,7 @@
 		$table->t_row(array(
 						$loc['nome_locadora'],
 						$loc['telefone_locadora'],
-						($loc['telefone_locadora'] != 1)? 'Ativo' : 'Inativo',
+						$loc['status_locadora'] == '1' ? 'Ativo' : 'Inativo',
 						'<center><a href="/locadora/cadLocadora/id/'.$loc['id_locadora'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
 						'<center><a href="/locadora/deleteLocadora/id/'.$loc['id_locadora'].'" onclick=" return confirm(\'Deseja realmente remover '.$loc['nome_locadora'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
 						));
