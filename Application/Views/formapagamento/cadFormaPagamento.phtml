@@ -1,0 +1,82 @@
+<?php
+	if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+	
+
+	$form->init('form_formapagamento','/formapagamento/saveFormaPagamento');
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_venda',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_tipoPagamento',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_formaPagamento',
+				'type' =>'text',
+				'placeholder' => 'Forma de Pagamento',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Forma de Pagamento',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'vezes_formaPagamento',
+				'type' =>'text',
+				'placeholder' => 'Quantidade de parcelas',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Quantidade',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_formaPagamento',
+				'type' =>'text',
+				'placeholder' => 'Valor do Pagamento',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+echo str_repeat('<br />',3);
+								$form->groupOpen();		
+								$form->submit('Salvar','style="padding:5% 13%"');
+								$form->groupClose();
+$form->close();

@@ -118,12 +118,43 @@ $form = "<?php
 	\$form->init('form_$file','/$file/save{$name}');";
 
 
+$index = <<<index
+<a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<form class="navbar-form navbar-right" role="search">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Teste" name="teste">
+		</div>
+		<div class="form-group">
+			<select name="id_cliente" class="form-control">
+				<option>Locadora</option>
+				<option value="3">ANDWES SOLUTION </option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<?php 
+	\$table->t_init('class="table table-bordered"');
+	\$table->t_head(array('Teste','Teste','Status','Editar','Remover'));
+	\$table->t_row(array(
+						'teste',
+						'teste',
+						'Ativo',
+						'<center><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+						'<center><a href="#" onclick=" return confirm(\'Deseja realmente remover ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+						));
+	\$table->generate();
+	?>
+</div>
+
+index;
 
 		if(file_put_contents(CONTROLLER_PATH.$controller.'.php',$control)){
 			chmod(CONTROLLER_PATH.$controller.'.php', 0777);
 			if(mkdir($dir)){
 				chmod($dir, 0777);
-				file_put_contents($dir.DIRECTORY_SEPARATOR.'index.phtml', 'content list all here');
+				file_put_contents($dir.DIRECTORY_SEPARATOR.'index.phtml', $index);
 				file_put_contents($dir.DIRECTORY_SEPARATOR.'cad'.$name.'.phtml', $form);
 				chmod($dir.DIRECTORY_SEPARATOR.'cad'.$name.'.phtml',0777);
 				echo 'Controller criado com sucesso';

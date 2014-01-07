@@ -1,0 +1,74 @@
+<?php
+	$form->init('form_tipopagamento','/tipoPagamento/saveTipoPagamento');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_tipoPagamento',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => isset($tipopagamentos)? $tipopagamentos[0]['id_tipoPagamento'] : null,
+				'required' => false
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+				$form->input(array(
+						'name' =>'titulo_tipoPagamento',
+						'type' =>'text',
+						'placeholder' => 'Titulo do Tipo',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'Titúlo',
+						'value' => isset($tipopagamentos)? $tipopagamentos[0]['titulo_tipoPagamento'] : null,
+						'required' => true
+						));
+				$form->groupClose();
+				
+				
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'porcentagem_tipoPagamento',
+				'type' =>'text',
+				'placeholder' => 'Porcetagem de Desconto',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Porcetagem',
+				'value' => isset($tipopagamentos)? $tipopagamentos[0]['porcentagem_tipoPagamento'] : null,
+				'required' => true
+				));
+				
+				
+			$form->input(array(
+				'name' =>'dias_recebimento_tipoPagamento',
+				'type' =>'text',
+				'placeholder' => 'Dias de recebimento',
+				'num_label' =>'1',
+				'num_input' =>'2',
+				'label' =>'Dias',
+				'value' => isset($tipopagamentos)? $tipopagamentos[0]['dias_recebimento_tipoPagamento'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select(array('1' => 'Ativo','0'=>'Inativo'),'status_tipoPagamento','Status',isset($tipopagamentos)? $tipopagamentos[0]['status_tipoPagamento'] : 1);
+		$form->groupClose();
+
+		$form->textarea('descricao_Pagamento','Descrição',isset($tipopagamentos)? $tipopagamentos[0]['descricao_Pagamento'] : null,'Descrição',2,5);
+
+		echo str_repeat('<br />',3);
+
+		$form->groupOpen();		
+		$form->submit(isset($tipopagamentos)? 'Atualizar' :'Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();
+
+?>
+
+<script>
+	jQuery(function(){
+		// jQuery('#porcentagem_tipoPagamento').mask('99.99');
+	});
+</script>
