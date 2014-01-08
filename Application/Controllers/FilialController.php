@@ -59,9 +59,6 @@ class FilialController extends OXE_Controller{
 			$_POST[$key] = strip_tags($value);
 		}
 		
-		// $this->model->findFilial($_POST['nome_filial']);
-		// exit;
-		
 		if($_POST['id_filial'] == null){
 			if(count($this->model->findFilial($_POST['nome_filial'])) == 0){
 				if($this->model->add($_POST)){

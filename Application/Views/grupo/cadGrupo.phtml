@@ -1,0 +1,42 @@
+<?php
+	$id = isset($grupos) ? $grupos[0]['id_grupo'] : null;
+
+	$form->init('form_grupo','/grupo/saveGrupo');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_grupo',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'titulo_grupo',
+				'type' =>'text',
+				'placeholder' => 'Titúlo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Titúlo Grupo',
+				'value' => isset($grupos) ? $grupos[0]['titulo_grupo'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_grupo','Status',isset($grupos) ? $grupos[0]['status_grupo'] : 1,2,3);	
+		$form->groupClose();
+
+
+		$form->textarea('descricao_grupo','Descrição',isset($grupos) ? $grupos[0]['descricao_grupo'] : null,'Descrição',2,5);
+
+		echo str_repeat('<br />',3);
+			$form->groupOpen();		
+			$form->submit('Salvar','style="padding:5% 13%"');
+			$form->groupClose();
+	$form->close();
