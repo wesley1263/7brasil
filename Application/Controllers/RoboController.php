@@ -106,19 +106,19 @@ class $controller extends OXE_Controller{
 html;
 
 $form = "<?php
-	if(isset(\$_SESSION['success'])){
+	\$form->init('form_$file','/$file/save{$name}');";
+
+
+$index = <<<index
+<?php
+if(isset(\$_SESSION['success'])){
 		echo '<div class=\"alert alert-success\">'.\$this->session->getFlashMessage('success').'</div>';
 	}
 	
 	if(isset(\$_SESSION['error'])){
 		echo '<div class=\"alert alert-danger\">'.\$this->session->getFlashMessage('error').'</div>';
 	}
-	
-
-	\$form->init('form_$file','/$file/save{$name}');";
-
-
-$index = <<<index
+?>
 <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
 	<form class="navbar-form navbar-right" role="search">
 		<div class="form-group">

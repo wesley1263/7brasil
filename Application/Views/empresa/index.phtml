@@ -1,0 +1,26 @@
+<div class="lista_empresa">
+	<?php 
+	if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+	
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Razao','Nome Fantasia','CNPJ','Logo','Editar'));
+	foreach($empresas as $emp){
+	$img = explode('/',$emp['logotipo_empresa']);
+	$img = array_slice($img, 4);
+			$table->t_row(array(
+					$emp['razaosocial_empresa'],
+					$emp['nomefantasia_empresa'],
+					$emp['cnpj_empresa'],
+					"<center><img src='/".implode('/', $img)."' width='50' alt=\"Logotipo\" class=\"img-rounded\"></center>",
+					'<center><a href="/empresa/cadEmpresa/id/1"><span class="glyphicon glyphicon-pencil"></span></a></center>'
+					));
+	}
+	$table->generate();
+	?>
+</div>

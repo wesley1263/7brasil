@@ -1,0 +1,94 @@
+<button type="button"  class="btn btn-default" id="bt_voltar">Voltar</button>
+
+<?php
+
+$id = isset($empresas) ? $empresas[0]['id_empresa'] : null;
+	$form->init('form_empresa','/empresa/saveEmpresa');
+			$form->groupOpen();	
+			$form->input(array(	
+				'name' =>'id_empresa',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'razaosocial_empresa',
+				'type' =>'text',
+				'placeholder' => 'Razão Social',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Razão Social',
+				'value' => isset($empresas) ? $empresas[0]['razaosocial_empresa'] : null,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nomefantasia_empresa',
+				'type' =>'text',
+				'placeholder' => 'Nome Fantasia',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome Fantasia',
+				'value' => isset($empresas) ? $empresas[0]['nomefantasia_empresa'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cnpj_empresa',
+				'type' =>'text',
+				'placeholder' => 'CNPJ',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'CNPJ',
+				'value' =>isset($empresas) ? $empresas[0]['cnpj_empresa'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'logotipo_empresa',
+				'type' =>'file',
+				'placeholder' => 'Logotipo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Logotipo',
+				'value' => '',
+				'required' => false
+				));
+				if(isset($empresas)){
+					$img = explode('/', $empresas[0]['logotipo_empresa']);
+					$img = array_slice($img,4);
+					echo "<img src='/".implode('/', $img)."' width='80' alt=\"Logotipo\" class=\"img-rounded\">";
+				}
+		$form->groupClose();
+		
+		$form->textarea('descricao_empresa','Descrição',isset($empresas) ? $empresas[0]['descricao_empresa'] : null,'Descrição',2,5);
+
+
+echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();
+?>
+<script>
+	jQuery(function(){
+		jQuery('#cnpj_empresa').mask('99.999.999/9999-99');
+		jQuery('#nomefantasia_empresa').css('text-transform','uppercase');
+		jQuery("#bt_voltar").click(function(){
+			location.href="/empresa";
+		});
+	});
+</script>
