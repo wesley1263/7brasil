@@ -1,0 +1,138 @@
+<?php
+$id = isset($filiais) ? $filiais[0]['id_filial'] : null;
+	$form->init('form_filial','/filial/saveFilial');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_filial',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+		$form->groupClose();
+			
+			foreach($empresa as $emp){
+				$opt_emp[$emp['id_empresa']] = $emp['nomefantasia_empresa'];
+			}
+			
+			$form->groupOpen();	
+			$form->select($opt_emp,'id_empresa','Empresa',1,2,3);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_filial',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' => isset($filiais) ? $filiais[0]['nome_filial'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'endereco_filial',
+				'type' =>'text',
+				'placeholder' => 'Endereço',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Endereço',
+				'value' => isset($filiais) ? $filiais[0]['endereco_filial'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'numero_filial',
+				'type' =>'text',
+				'placeholder' => 'Número',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Número',
+				'value' => isset($filiais) ? $filiais[0]['numero_filial'] : null,
+				'required' => true
+				));
+		// $form->groupClose();
+// 
+			// $form->groupOpen();	
+			$form->input(array(
+				'name' =>'complemento_filial',
+				'type' =>'text',
+				'placeholder' => 'Complemento',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Complemento',
+				'value' => isset($filiais) ? $filiais[0]['complemento_filial'] : null,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'bairro_filial',
+				'type' =>'text',
+				'placeholder' => 'Bairro',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Bairro',
+				'value' => isset($filiais) ? $filiais[0]['bairro_filial'] : null,
+				'required' => false
+				));
+
+
+			$form->input(array(
+				'name' =>'cidade_filial',
+				'type' =>'text',
+				'placeholder' => 'Cidade',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Cidade',
+				'value' => isset($filiais) ? $filiais[0]['cidade_filial'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'uf_filial',
+				'type' =>'text',
+				'placeholder' => 'UF',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'UF',
+				'value' => isset($filiais) ? $filiais[0]['uf_filial'] : null,
+				'required' => true
+				));
+		// $form->groupClose();
+// 
+			// $form->groupOpen();	
+			$form->input(array(
+				'name' =>'pais_filial',
+				'type' =>'text',
+				'placeholder' => 'País',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'País',
+				'value' => isset($filiais) ? $filiais[0]['pais_filial'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+			$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_filial','Status',isset($filiais) ? $filiais[0]['status_filial'] : 1,2,3);
+		$form->groupClose();
+		
+$form->textarea('descricao_filial','Descrição',isset($filiais) ? $filiais[0]['descricao_filial'] : null,'Descrição',2,5);
+
+echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();

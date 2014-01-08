@@ -1,0 +1,2 @@
+08/01/2014 - tbl_filial -> alterar campo: nome_fillial 
+08/01/2014 - tbl_filial -> alterar campo: status_filial 
