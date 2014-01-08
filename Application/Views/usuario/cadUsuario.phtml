@@ -1,0 +1,102 @@
+<?php
+	$form->init('form_usuario','/usuario/saveUsuario');
+		$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_usuario',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+				
+				$form->input(array(
+				'name' =>'id_empresa',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+			
+			foreach($grupo as $gp){
+				$opt_gp[$gp['id_grupo']] = $gp['titulo_grupo'];
+			}
+			$form->groupOpen();	
+			$form->select($opt_gp,'id_grupo','Grupo',1,2,3);
+			$form->groupClose();
+		
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_usuario',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'login_usuario',
+				'type' =>'text',
+				'placeholder' => 'Login',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Login',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'senha_usuario',
+				'type' =>'password',
+				'placeholder' => 'Senha',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Senha',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'porcentagem_usuario',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_usuario','Status',1,2,3);
+		$form->groupClose();
+		
+echo str_repeat('<br />',1);
+				$form->groupOpen();		
+				$form->submit('Salvar','style="padding:5% 13%"');
+				$form->groupClose();
+$form->close();
+?>
+<script>
+	jQuery(function(){
+		jQuery('#nome_usuario').css('text-transform','uppercase');
+	});
+</script>
