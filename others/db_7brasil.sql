@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máquina: localhost
--- Data de Criação: 04-Jan-2014 às 18:48
+-- Data de Criação: 09-Jan-2014 às 18:56
 -- Versão do servidor: 5.5.34-0ubuntu0.13.04.1
 -- versão do PHP: 5.4.9-4ubuntu2.4
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Base de Dados: `db_7brasil`
 --
- 
+
 -- --------------------------------------------------------
 
 --
@@ -79,22 +79,31 @@ CREATE TABLE IF NOT EXISTS `tbl_adicionar_cliente` (
 
 CREATE TABLE IF NOT EXISTS `tbl_agencia` (
   `id_agencia` int(11) NOT NULL AUTO_INCREMENT,
-  `razaosocial_agencia` varchar(99) DEFAULT NULL,
-  `nomefantasia_agencia` varchar(99) NOT NULL,
-  `cnpj_agencia` varchar(45) NOT NULL,
-  `endereco_agencia` varchar(45) DEFAULT NULL,
-  `numero_agencia` varchar(10) DEFAULT NULL,
-  `bairro_agencia` varchar(45) DEFAULT NULL,
-  `cidade_agencia` varchar(45) DEFAULT NULL,
-  `uf_agencia` varchar(10) DEFAULT NULL,
-  `cep_agencia` varchar(15) DEFAULT NULL,
-  `site_agencia` varchar(99) DEFAULT NULL,
-  `email_agencia` varchar(99) DEFAULT NULL,
-  `telefone_agencia` varchar(15) DEFAULT NULL,
-  `descricao_agencia` text,
+  `razaosocial_agencia` varchar(99) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nomefantasia_agencia` varchar(99) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `cnpj_agencia` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `endereco_agencia` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `numero_agencia` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `complemento_agencia` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `bairro_agencia` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cidade_agencia` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `uf_agencia` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cep_agencia` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `site_agencia` varchar(99) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email_agencia` varchar(99) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telefone_agencia` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `logotipo_agencia` varchar(99) NOT NULL,
+  `descricao_agencia` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `status_agencia` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_agencia`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `tbl_agencia`
+--
+
+INSERT INTO `tbl_agencia` (`id_agencia`, `razaosocial_agencia`, `nomefantasia_agencia`, `cnpj_agencia`, `endereco_agencia`, `numero_agencia`, `complemento_agencia`, `bairro_agencia`, `cidade_agencia`, `uf_agencia`, `cep_agencia`, `site_agencia`, `email_agencia`, `telefone_agencia`, `logotipo_agencia`, `descricao_agencia`, `status_agencia`) VALUES
+(1, 'MILESSIS TURISMO', 'MILESSIS TURISMO', '00.000.000/0000-00', 'Avenida Rio Branco', '156', '1º  andar', 'Centro', 'Rio de Janeiro', 'RJ', '20040-003', 'http://www.milessisturismo.com.br/', 'contato@milessisturismo.com.br', '(11) 5555-5555', '/var/www/7brasil/skin/img/uploaded/5524ad8a411afb73a4f39298ee3a03fd.png', 'descrição teste 2', 1);
 
 -- --------------------------------------------------------
 
@@ -154,6 +163,30 @@ CREATE TABLE IF NOT EXISTS `tbl_asseguradoPJ` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `tbl_brokers`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_brokers` (
+  `id_brokers` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_brokers` varchar(99) NOT NULL,
+  `site_brokers` varchar(99) NOT NULL,
+  `telefone_brokers` varchar(20) DEFAULT NULL,
+  `logotipo_brokers` varchar(99) DEFAULT NULL,
+  `descricao_brokers` text,
+  `status_brokers` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id_brokers`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_brokers`
+--
+
+INSERT INTO `tbl_brokers` (`id_brokers`, `nome_brokers`, `site_brokers`, `telefone_brokers`, `logotipo_brokers`, `descricao_brokers`, `status_brokers`) VALUES
+(1, 'BEST 7 BOOKING', 'http://www.best7booking.com', '(11) 5555-5555', '/var/www/7brasil/skin/img/uploaded/b1cedfa5829bc8ec9b70e538753d27ed.png', 'descrição teste', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tbl_brokers_hotel`
 --
 
@@ -177,7 +210,14 @@ CREATE TABLE IF NOT EXISTS `tbl_cambio` (
   `descricao_cambio` text COLLATE utf8_unicode_ci,
   `status_cambio` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_cambio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela com nomes das moedas internacional' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela com nomes das moedas internacional' AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_cambio`
+--
+
+INSERT INTO `tbl_cambio` (`id_cambio`, `titulo_cambio`, `descricao_cambio`, `status_cambio`) VALUES
+(1, 'DOLLAR USA', 'Dolar americano dos estado unidos', 1);
 
 -- --------------------------------------------------------
 
@@ -503,7 +543,14 @@ CREATE TABLE IF NOT EXISTS `tbl_continente` (
   `nome_continente` varchar(45) NOT NULL,
   `descricao_continente` text,
   PRIMARY KEY (`id_continente`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dado do continente da viagem do assegurado' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Dado do continente da viagem do assegurado' AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_continente`
+--
+
+INSERT INTO `tbl_continente` (`id_continente`, `nome_continente`, `descricao_continente`) VALUES
+(1, 'EUROPEU', 'europa do sul');
 
 -- --------------------------------------------------------
 
@@ -591,14 +638,14 @@ CREATE TABLE IF NOT EXISTS `tbl_cruzeiro_dependentePF` (
 
 CREATE TABLE IF NOT EXISTS `tbl_departamento` (
   `id_departamento` int(11) NOT NULL AUTO_INCREMENT,
-  `id_dependente` int(11) NOT NULL,
+  `id_dependentePJ` int(11) NOT NULL,
   `id_clientePJ` int(11) NOT NULL,
   `codigo_centrocusto` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Código utilizado por algumas \nempresas para indentificar o departartamento (Centro de Custo)',
   `nome_departmento` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_departamento` text COLLATE utf8_unicode_ci,
   `status_departamento` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_departamento`),
-  KEY `fk_departamento_dependente` (`id_dependente`),
+  KEY `fk_departamento_dependente` (`id_dependentePJ`),
   KEY `fk_tbl_departamento_tbl_clientePJ1` (`id_clientePJ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='departamento da empresa e do funcionario que vai viajar' AUTO_INCREMENT=1 ;
 
@@ -744,7 +791,14 @@ CREATE TABLE IF NOT EXISTS `tbl_empresa` (
   `descricao_empresa` text COLLATE utf8_unicode_ci,
   `logotipo_empresa` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='dados da empresa central' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='dados da empresa central' AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `tbl_empresa`
+--
+
+INSERT INTO `tbl_empresa` (`id_empresa`, `razaosocial_empresa`, `nomefantasia_empresa`, `cnpj_empresa`, `descricao_empresa`, `logotipo_empresa`) VALUES
+(1, 'Agência 7Brasil LTDA', '7BRASIL AGENCIA', '11.111.111/1144-44', 'Descrição da empresa', '/var/www/7brasil/skin/img/uploaded/6283c7a4c0fb0ff1b3d501243645a854.');
 
 -- --------------------------------------------------------
 
@@ -755,19 +809,27 @@ CREATE TABLE IF NOT EXISTS `tbl_empresa` (
 CREATE TABLE IF NOT EXISTS `tbl_filial` (
   `id_filial` int(11) NOT NULL AUTO_INCREMENT,
   `id_empresa` int(11) NOT NULL,
-  `nome_fillial` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `nome_filial` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
   `endereco_filial` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
   `numero_filial` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `complemento_filial` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `bairro_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cidade_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `uf_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `pais_fililal` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pais_filial` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `descricao_filial` text COLLATE utf8_unicode_ci,
-  `status_fillal` tinyint(1) DEFAULT '1',
+  `status_filial` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_filial`),
   KEY `fk_tbl_filial_tbl_empresa1` (`id_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela das filiais da empresa' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabela das filiais da empresa' AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_filial`
+--
+
+INSERT INTO `tbl_filial` (`id_filial`, `id_empresa`, `nome_filial`, `endereco_filial`, `numero_filial`, `complemento_filial`, `bairro_filial`, `cidade_filial`, `uf_filial`, `pais_filial`, `descricao_filial`, `status_filial`) VALUES
+(1, 1, '7 BRASIL RJ', 'rua da 7 brasil no rio de janeiro', '150', '2 º andar', 'leblon', 'Rio de Janeiro', 'RJ', 'Brasil', 'descrição teste', 1),
+(2, 1, '7 BRASIL SP', 'Rua da 7 brasil em são paulo', '122', '2º Andar', 'Tremember', 'São Paulo', 'SP', 'Brasil', 'descrição teste2', 1);
 
 -- --------------------------------------------------------
 
@@ -793,12 +855,20 @@ CREATE TABLE IF NOT EXISTS `tbl_formaPagamento` (
 --
 
 CREATE TABLE IF NOT EXISTS `tbl_grupo` (
-  `id_grupo` int(11) NOT NULL,
+  `id_grupo` int(11) NOT NULL AUTO_INCREMENT,
   `titulo_grupo` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_grupo` text COLLATE utf8_unicode_ci,
   `status_grupo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_grupo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela de grupo de contas a pagar';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tabela de grupo de contas a pagar' AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_grupo`
+--
+
+INSERT INTO `tbl_grupo` (`id_grupo`, `titulo_grupo`, `descricao_grupo`, `status_grupo`) VALUES
+(1, 'AGENTE', 'Agentes da agencia 7 brasil', 1),
+(2, 'FINANCEIRO', 'descrição teste', 1);
 
 -- --------------------------------------------------------
 
@@ -850,12 +920,12 @@ CREATE TABLE IF NOT EXISTS `tbl_hotel_clientePF` (
 
 CREATE TABLE IF NOT EXISTS `tbl_hotel_clientePJ` (
   `id_hotel_clientePJ` int(11) NOT NULL,
-  `tbl_hotel_id_hoteis` int(11) NOT NULL,
+  `id_hotel` int(11) NOT NULL,
   `id_venda` int(11) NOT NULL,
   `id_clientePJ` int(11) NOT NULL,
   `id_dependentePJ` int(11) NOT NULL,
   PRIMARY KEY (`id_hotel_clientePJ`),
-  KEY `fk_tbl_hotel_clientePJ_tbl_hotel1` (`tbl_hotel_id_hoteis`),
+  KEY `fk_tbl_hotel_clientePJ_tbl_hotel1` (`id_hotel`),
   KEY `fk_tbl_hotel_clientePJ_tbl_venda1` (`id_venda`),
   KEY `fk_tbl_hotel_clientePJ_tbl_clientePJ1` (`id_clientePJ`),
   KEY `fk_tbl_hotel_clientePJ_tbl_dependentePJ1` (`id_dependentePJ`)
@@ -890,10 +960,19 @@ CREATE TABLE IF NOT EXISTS `tbl_locadora` (
   `site_locadora` varchar(99) DEFAULT NULL,
   `telefone_locadora` varchar(16) DEFAULT NULL,
   `email_locadora` varchar(199) DEFAULT NULL,
+  `logotipo_locadora` varchar(199) NOT NULL,
   `descricao_locadora` text,
   `status_locadora` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_locadora`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Extraindo dados da tabela `tbl_locadora`
+--
+
+INSERT INTO `tbl_locadora` (`id_locadora`, `nome_locadora`, `site_locadora`, `telefone_locadora`, `email_locadora`, `logotipo_locadora`, `descricao_locadora`, `status_locadora`) VALUES
+(4, 'LOCALIZA AUTOMOVEIS', 'http://www.seminovoslocaliza.com.br/site/', '(11) 4444-4444', 'contato@seminovoslocaliza.com.br', '/var/www/7brasil/skin/img/uploaded/5f0dc703c12cdffeb2dbfed89e2fa3ae.gif', 'Localiza automoveis locadora', 1),
+(5, 'RENT CAR', 'http://www.rental-line.com.br/', '(11) 6666-6666', 'contato@rental-line.com.br/', '/var/www/7brasil/skin/img/uploaded/574537cfcb04e417f5496ca26a195159.jpg', 'Rent Car descrição', 1);
 
 -- --------------------------------------------------------
 
@@ -1076,8 +1155,16 @@ CREATE TABLE IF NOT EXISTS `tbl_seguradora` (
   `id_seguradora` int(11) NOT NULL AUTO_INCREMENT,
   `nome_seguradora` varchar(99) NOT NULL,
   `logo_seguradora` varchar(199) DEFAULT NULL,
+  `status_seguradora` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_seguradora`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Dados da seguradora cadastra pela 7Brasil' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Dados da seguradora cadastra pela 7Brasil' AUTO_INCREMENT=4 ;
+
+--
+-- Extraindo dados da tabela `tbl_seguradora`
+--
+
+INSERT INTO `tbl_seguradora` (`id_seguradora`, `nome_seguradora`, `logo_seguradora`, `status_seguradora`) VALUES
+(1, 'ALLIANZ', '/var/www/7brasil/skin/img/uploaded/bade43e70ebbeb0fb97f63431445ff63.gif', 1);
 
 -- --------------------------------------------------------
 
@@ -1147,7 +1234,14 @@ CREATE TABLE IF NOT EXISTS `tbl_ticket` (
   `descricao_ticket` text,
   `status_ticket` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_ticket`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_ticket`
+--
+
+INSERT INTO `tbl_ticket` (`id_ticket`, `nome_ticket`, `descricao_ticket`, `status_ticket`) VALUES
+(1, 'UCF LAS VEGAS', 'Tickets de desconto para entrada no ufc.', 1);
 
 -- --------------------------------------------------------
 
@@ -1200,7 +1294,15 @@ CREATE TABLE IF NOT EXISTS `tbl_tipoComp` (
   `id_tipocomp` int(11) NOT NULL AUTO_INCREMENT,
   `titulo_tipocomp` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_tipocomp`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabela para especificar se companhia é intermacional ou naci' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='tabela para especificar se companhia é intermacional ou naci' AUTO_INCREMENT=5 ;
+
+--
+-- Extraindo dados da tabela `tbl_tipoComp`
+--
+
+INSERT INTO `tbl_tipoComp` (`id_tipocomp`, `titulo_tipocomp`) VALUES
+(1, 'NACIONAL'),
+(3, 'INTERNACIONAL');
 
 -- --------------------------------------------------------
 
@@ -1211,12 +1313,21 @@ CREATE TABLE IF NOT EXISTS `tbl_tipoComp` (
 CREATE TABLE IF NOT EXISTS `tbl_tipoPagamento` (
   `id_tipoPagamento` int(11) NOT NULL AUTO_INCREMENT,
   `titulo_tipoPagamento` varchar(99) NOT NULL,
-  `porcentagem_tipoPagamento` double(2,2) NOT NULL,
+  `porcentagem_tipoPagamento` varchar(6) NOT NULL,
   `dias_recebimento_tipoPagamento` int(2) NOT NULL,
   `descricao_Pagamento` text,
   `status_tipoPagamento` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_tipoPagamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Formas de pagamento oferecido pela 7Brasil' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Formas de pagamento oferecido pela 7Brasil' AUTO_INCREMENT=4 ;
+
+--
+-- Extraindo dados da tabela `tbl_tipoPagamento`
+--
+
+INSERT INTO `tbl_tipoPagamento` (`id_tipoPagamento`, `titulo_tipoPagamento`, `porcentagem_tipoPagamento`, `dias_recebimento_tipoPagamento`, `descricao_Pagamento`, `status_tipoPagamento`) VALUES
+(1, 'DINHEIRO', '0', 0, 'Dinheiro vivo', 1),
+(2, 'BOLETO ', '0', 0, 'Pagamento pelo boleto bancario', 1),
+(3, 'CARTãO DE CRéDITO', '5', 30, '', 1);
 
 -- --------------------------------------------------------
 
@@ -1246,11 +1357,19 @@ CREATE TABLE IF NOT EXISTS `tbl_usuario` (
   `login_usuario` varchar(45) NOT NULL,
   `senha_usuario` varchar(50) NOT NULL,
   `status_usuario` tinyint(1) DEFAULT '1',
-  `porcentagem_usuario` double(9,2) DEFAULT NULL,
+  `porcentagem_usuario` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
   KEY `fk_usuario_grupo` (`id_grupo`),
   KEY `fk_tbl_usuario_tbl_empresa1` (`id_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `tbl_usuario`
+--
+
+INSERT INTO `tbl_usuario` (`id_usuario`, `id_grupo`, `id_empresa`, `nome_usuario`, `login_usuario`, `senha_usuario`, `status_usuario`, `porcentagem_usuario`) VALUES
+(1, 1, 1, 'WESLEI ANDRADE', 'wesley1263', 'e10adc3949ba59abbe56e057f20f883e', 1, '10'),
+(2, 2, 1, 'RAQUEL LIMA ANDRADE', 'raquel1263', 'e10adc3949ba59abbe56e057f20f883e', 1, '');
 
 -- --------------------------------------------------------
 
@@ -1478,8 +1597,8 @@ ALTER TABLE `tbl_cruzeiro_dependentePF`
 -- Limitadores para a tabela `tbl_departamento`
 --
 ALTER TABLE `tbl_departamento`
-  ADD CONSTRAINT `fk_departamento_dependente` FOREIGN KEY (`id_dependente`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tbl_departamento_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_tbl_departamento_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `tbl_departamento_ibfk_1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`);
 
 --
 -- Limitadores para a tabela `tbl_dependentePF`
@@ -1538,7 +1657,6 @@ ALTER TABLE `tbl_hotel_clientePF`
 ALTER TABLE `tbl_hotel_clientePJ`
   ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_clientePJ1` FOREIGN KEY (`id_clientePJ`) REFERENCES `tbl_clientePJ` (`id_clientePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_dependentePJ1` FOREIGN KEY (`id_dependentePJ`) REFERENCES `tbl_dependentePJ` (`id_dependentePJ`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_hotel1` FOREIGN KEY (`tbl_hotel_id_hoteis`) REFERENCES `tbl_hotel` (`id_hoteis`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_tbl_hotel_clientePJ_tbl_venda1` FOREIGN KEY (`id_venda`) REFERENCES `tbl_venda` (`id_venda`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
