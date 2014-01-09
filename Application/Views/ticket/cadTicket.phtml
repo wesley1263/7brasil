@@ -1,0 +1,41 @@
+<?php
+$id = isset($tickets) ? $tickets[0]['id_ticket'] : null;
+		$form->init('form_ticket','/ticket/saveTicket');
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_ticket',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $id,
+			'required' => false
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'nome_ticket',
+			'type' =>'text',
+			'placeholder' => 'Nome',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Nome',
+			'value' => isset($tickets) ? $tickets[0]['nome_ticket'] : null,
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_ticket','Status',isset($tickets) ? $tickets[0]['status_ticket'] : 1);
+		$form->groupClose();
+		
+		$form->textarea('descricao_ticket','Descrição',isset($tickets) ? $tickets[0]['descricao_ticket'] : null,'Descrição',2,8);echo str_repeat('<br />',3);
+	
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+		
+		$form->close();
