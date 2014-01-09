@@ -1,0 +1,29 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/seguradora/cadSeguradora" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<br />
+	<br />
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Nome','Logo','Status','Editar','Remover'));
+	foreach($seguradoras as $seg){
+		$img = explode('/',$seg['logo_seguradora']);
+				$img = array_slice($img,4);
+		$table->t_row(array(
+					$seg['nome_seguradora'],
+					"<center><img src='/".implode('/', $img)."' width='50' alt=\"Logotipo\" class=\"img-rounded\"></center>",
+					$seg['status_seguradora'] == 1 ? 'Ativo' : 'Inativo',
+					'<center><a href="/seguradora/cadSeguradora/id/'.$seg['id_seguradora'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+					'<center><a href="/seguradora/deleteSeguradora/id/'.$seg['id_seguradora'].'" onclick=" return confirm(\'Deseja realmente remover '.$seg['nome_seguradora'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+					));
+	}
+	$table->generate();
+	?>
+</div>
