@@ -46,4 +46,12 @@ class Agencia extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}	
 	
+	public function findAgencia($cnpj)
+	{
+		return $this->select()
+					->from()
+					->where("cnpj_agencia = '$cnpj'")
+					->result();					
+	}
+	
 }

@@ -90,6 +90,15 @@ class $controller extends OXE_Controller{
 	
 	public function save{$name}Action()
 	{
+		\$_POST[''] = strtoupper(\$_POST['']);
+		foreach(\$_POST as \$key => \$value){
+			\$_POST[\$key] = strip_tags(\$value);
+		}
+		
+		if(\$_POST[''] == null){
+			
+		}
+		
 		\$this->dump(\$_POST);
 	}
 	
@@ -112,14 +121,14 @@ $form = "<?php
 $index = <<<index
 <?php
 if(isset(\$_SESSION['success'])){
-		echo '<div class=\"alert alert-success\">'.\$this->session->getFlashMessage('success').'</div>';
+		echo '<div class="alert alert-success">'.\$this->session->getFlashMessage('success').'</div>';
 	}
 	
 	if(isset(\$_SESSION['error'])){
-		echo '<div class=\"alert alert-danger\">'.\$this->session->getFlashMessage('error').'</div>';
+		echo '<div class="alert alert-danger">'.\$this->session->getFlashMessage('error').'</div>';
 	}
 ?>
-<a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+<a href="/$file/cad{$name}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
 	<form class="navbar-form navbar-right" role="search">
 		<div class="form-group">
 			<input type="text" class="form-control" placeholder="Teste" name="teste">

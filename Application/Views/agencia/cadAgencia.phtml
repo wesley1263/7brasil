@@ -1,0 +1,255 @@
+<?php
+$id = isset($agencias) ? $agencias[0]['id_agencia']: null;
+echo '<fieldset id="form_agencia">';
+	$form->init('form_agencia','/agencia/saveAgencia');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_agencia',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'razaosocial_agencia',
+				'type' =>'text',
+				'placeholder' => 'Razão Social',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Razão Social',
+				'value' => isset($agencias) ? $agencias[0]['razaosocial_agencia']: null,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nomefantasia_agencia',
+				'type' =>'text',
+				'placeholder' => 'Nome Fantasia',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'* Nome Fantasia',
+				'value' => isset($agencias) ? $agencias[0]['nomefantasia_agencia']: null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cnpj_agencia',
+				'type' =>'text',
+				'placeholder' => 'CNPJ',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'* CNPJ',
+				'value' => isset($agencias) ? $agencias[0]['cnpj_agencia']: null,
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'logotipo_agencia',
+				'type' =>'file',
+				'placeholder' => 'Logotipo',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'* Logo',
+				'value' => '',
+				'required' => false
+				));
+				if(isset($agencias)){
+					$img = explode('/',$agencias[0]['logotipo_agencia']);
+					$img = array_slice($img,4);
+					echo "<img src='/".implode('/', $img)."' width='150' alt=\"Logotipo\" class=\"img-rounded\">";
+				}
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			echo '<div id="msg_cep"></div>';
+			$form->input(array(
+				'name' =>'cep_agencia',
+				'type' =>'text',
+				'placeholder' => 'CEP',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'* CEP',
+				'value' => isset($agencias) ? $agencias[0]['cep_agencia']: null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'endereco_agencia',
+				'type' =>'text',
+				'placeholder' => 'Endereço',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'* Endereço',
+				'value' => isset($agencias) ? $agencias[0]['endereco_agencia']: null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'numero_agencia',
+				'type' =>'text',
+				'placeholder' => 'Número',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'* Número',
+				'value' => isset($agencias) ? $agencias[0]['numero_agencia']: null,
+				'required' => true
+				));
+
+			$form->input(array(
+				'name' =>'complemento_agencia',
+				'type' =>'text',
+				'placeholder' => 'Complemento',
+				'num_label' =>'1',
+				'num_input' =>'2',
+				'label' => 'Complemento',
+				'value' => isset($agencias) ? $agencias[0]['complemento_agencia']: null,
+				'required' => false
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'bairro_agencia',
+				'type' =>'text',
+				'placeholder' => 'Bairro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Bairro',
+				'value' => isset($agencias) ? $agencias[0]['bairro_agencia']: null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cidade_agencia',
+				'type' =>'text',
+				'placeholder' => 'Cidade',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Cidade',
+				'value' => isset($agencias) ? $agencias[0]['cidade_agencia']: null,
+				'required' => true
+				));
+
+			$form->input(array(
+				'name' =>'uf_agencia',
+				'type' =>'text',
+				'placeholder' => 'UF',
+				'num_label' =>'1',
+				'num_input' =>'2',
+				'label' =>'UF',
+				'value' => isset($agencias) ? $agencias[0]['uf_agencia']: null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'site_agencia',
+				'type' =>'text',
+				'placeholder' => 'Site',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Site',
+				'value' => isset($agencias) ? $agencias[0]['site_agencia']: null,
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'email_agencia',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'* Email',
+				'value' => isset($agencias) ? $agencias[0]['email_agencia']: null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'telefone_agencia',
+				'type' =>'text',
+				'placeholder' => 'Telefone',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'* Telefone',
+				'value' => isset($agencias) ? $agencias[0]['telefone_agencia']: null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_agencia','Status',isset($agencias) ? $agencias[0]['status_agencia']: 1);
+			$form->groupClose();
+			
+		$form->textarea('descricao_agencia','Descrição',isset($agencias) ? $agencias[0]['descricao_agencia']: null,'Descrição',2,5);
+		
+		echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();
+echo '</fieldset>';
+?>
+
+<script>
+	jQuery(function(){
+		jQuery('#telefone_agencia').mask('(99) 9999-9999');
+		jQuery('#cnpj_agencia').mask('99.999.999/9999-99');
+		jQuery('#cep_agencia').mask('99999-999');
+		
+		jQuery("#cep_agencia").blur(function(){
+		 var cep = jQuery(this).val();
+		 if(cep != ''){
+		 	jQuery.ajax({
+		 		url: '/cliente/findCep',
+		 		type: 'post',
+		 		dataType: 'json',
+		 		data: {cep:jQuery(this).val()},
+		 		beforeSend: function(){
+		 			jQuery('#form_agencia').attr('disabled',true);
+		 		},
+		 		success: function(data){
+		 			if(data != '0'){
+		 			jQuery('#fs_form_pf').attr('disabled',false);
+		 			jQuery('#endereco_agencia').val(data.endereco);
+		 			jQuery('#bairro_agencia').val(data.bairro);
+		 			jQuery('#cidade_agencia').val(data.cidade	);
+		 			jQuery('#uf_agencia').val(data.uf);
+		 			jQuery('#msg_cep').html('');
+		 			jQuery('#form_agencia').attr('disabled',false);
+		 			jQuery('#numero_agencia').focus();
+		 			}else{
+			 			jQuery('#form_agencia').attr('disabled',false);
+		 				jQuery('#msg_cep').html('CEP Não encontrado!');
+		 				jQuery('#endereco_agencia').focus();
+		 			}
+		 			
+		 		}
+		 	});
+		 }
+		 	
+		 });
+	});
+</script>
