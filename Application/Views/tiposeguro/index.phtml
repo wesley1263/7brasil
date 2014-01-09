@@ -1,0 +1,26 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/tipoSeguro/cadTipoSeguro" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<br />
+	<br />
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Tipo','Seguradora','Editar','Remover'));
+	foreach($tiposeguros as $ts){
+		$table->t_row(array(
+					$ts['nome_tipoSeguro'],
+					$ts['nome_seguradora'],
+					'<center><a href="/tipoSeguro/cadTipoSeguro/id/'.$ts['id_tipoSeguro'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+					'<center><a href="/tipoSeguro/deleteTipoSeguro/id/'.$ts['id_tipoSeguro'].'" onclick=" return confirm(\'Deseja realmente remover '.$ts['nome_tipoSeguro'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+					));
+	}
+	$table->generate();
+	?>
+</div>

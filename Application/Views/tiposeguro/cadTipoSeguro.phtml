@@ -1,0 +1,47 @@
+<?php
+	
+	$id = isset($tipoSeguros) ? $tipoSeguros[0]['id_tipoSeguro'] : null;
+		$form->init('form_tipoSeguro','/tipoSeguro/saveTipoSeguro');
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_tipoSeguro',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $id,
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		foreach($seguradora as $seg){
+			$opt_seg[$seg['id_seguradora']] = $seg['nome_seguradora'];
+		}
+		
+		$form->select($opt_seg,'id_seguradora','Seguradora',isset($tipoSeguros) ? $tipoSeguros[0]['id_seguradora'] : 1,2,3);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'nome_tipoSeguro',
+			'type' =>'text',
+			'placeholder' => 'Nome',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Nome',
+			'value' => isset($tipoSeguros) ? $tipoSeguros[0]['nome_tipoSeguro'] : null,
+			'required' => true
+			));
+		$form->groupClose();
+		
+		echo str_repeat('<br />',3);
+		
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+		
+		
+		$form->close();
