@@ -102,8 +102,10 @@ $form->close();
 		jQuery('#nome_usuario').css('text-transform','uppercase');
 		jQuery('[name=id_grupo]').on('change',function(){
 			if(jQuery(this).val() != '1'){
-			jQuery('#porcentagem_usuario').val('');
-			jQuery('#porcentagem_usuario').attr('disabled',true);
+				jQuery('#porcentagem_usuario').val('');
+				jQuery('#porcentagem_usuario').attr('disabled',true);
+			}else{
+				jQuery('#porcentagem_usuario').attr('disabled',false);
 			}
 		});
 		
