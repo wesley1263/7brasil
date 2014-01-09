@@ -1,0 +1,45 @@
+<?php
+	
+	$id = isset($participacaos) ? $participacaos[0]['id_participacao'] : null;
+	
+	$form->init('form_participacao','/participacao/saveParticipacao');
+			
+			
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_participacao',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $id,
+			'required' => false
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'titulo_participacao',
+			'type' =>'text',
+			'placeholder' => 'Titulo',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Titulo',
+			'value' => isset($participacaos) ? $participacaos[0]['titulo_participacao'] : null,
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_participacao','Status',isset($participacaos) ? $participacaos[0]['status_participacao'] : 1);
+		$form->groupClose();
+
+		
+		$form->textarea('descricao_participacao','Descrição',isset($participacaos) ? $participacaos[0]['descricao_participacao'] : null,'Descrição',2,5);
+		
+		echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();

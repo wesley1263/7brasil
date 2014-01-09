@@ -1,0 +1,26 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/participacao/cadParticipacao" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<br />
+	<br />
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Titulo','Status','Editar','Remover'));
+	foreach($participacaos as $part){
+	$table->t_row(array(
+				$part['titulo_participacao'],
+				$part['status_participacao'] == 1 ? 'Ativo' : 'Inativo',
+				'<center><a href="/participacao/cadParticipacao/id/'.$part['id_participacao'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+				'<center><a href="/participacao/deleteParticipacao/id/'.$part['id_participacao'].'" onclick=" return confirm(\'Deseja realmente remover '.$part['titulo_participacao'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+				));
+	}
+	$table->generate();
+	?>
+</div>
