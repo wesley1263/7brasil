@@ -1,0 +1,85 @@
+<?php
+$id = isset($brokers) ? $brokers[0]['id_brokers']:null;
+	$form->init('form_brokers','/brokers/saveBrokers');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_brokers',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>$id,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_brokers',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' => isset($brokers) ? $brokers[0]['nome_brokers']:null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'site_brokers',
+				'type' =>'text',
+				'placeholder' => 'Site',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Site',
+				'value' => isset($brokers) ? $brokers[0]['site_brokers']:null,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'telefone_brokers',
+				'type' =>'text',
+				'placeholder' => 'Telefone',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Telefone',
+				'value' => isset($brokers) ? $brokers[0]['telefone_brokers']:null,
+				'required' => false
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'logotipo_brokers',
+				'type' =>'file',
+				'placeholder' => 'Logotipo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Logotipo',
+				'value' =>'',
+				'required' => false
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_brokers','Status',isset($brokers) ? $brokers[0]['status_brokers']:1,2,3);
+			$form->groupClose();
+		
+$form->textarea('descricao_brokers','Descrição',isset($brokers) ? $brokers[0]['descricao_brokers']:null,'Descrição',2,5);
+
+echo str_repeat('<br />',3);
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+$form->close();
+?>
+<script>
+	jQuery(function(){
+		jQuery("#telefone_brokers").mask('(99) 9999-9999');
+	});
+</script>

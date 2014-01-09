@@ -1,0 +1,42 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/brokers/cadBrokers" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<form class="navbar-form navbar-right" role="search">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Teste" name="teste">
+		</div>
+		<div class="form-group">
+			<select name="id_cliente" class="form-control">
+				<option>Locadora</option>
+				<option value="3">ANDWES SOLUTION </option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Nome','Site','Logo','Status','Editar','Remover'));
+	foreach($brokers as $bro){
+			$img = explode('/',$bro['logotipo_brokers']);
+			$img = array_slice($img,4);
+		$table->t_row(array(
+				$bro['nome_brokers'],
+				$bro['site_brokers'],
+				"<center><img src='/".implode('/', $img)."' width='50' alt=\"Logotipo\" class=\"img-rounded\"></center>",
+				$bro['status_brokers'] == '1' ? 'Ativo' : 'Inativo',
+				'<center><a href="/brokers/cadBrokers/id/'.$bro['id_brokers'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+				'<center><a href="/brokers/deleteBrokers/id/'.$bro['id_brokers'].'" onclick=" return confirm(\'Deseja realmente remover '.$bro['nome_brokers'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+				));
+	}
+	$table->generate();
+	?>
+</div>
