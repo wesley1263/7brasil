@@ -1,0 +1,43 @@
+<?php
+		$form->init('form_cambio','/cambio/saveCambio');
+		$id = isset($cambios) ? $cambios[0]['id_cambio']: null;
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_cambio',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => false
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'titulo_cambio',
+				'type' =>'text',
+				'placeholder' => 'Titulo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Titulo',
+				'value' => isset($cambios) ? $cambios[0]['titulo_cambio']: null,
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_cambio','Status',isset($cambios) ? $cambios[0]['status_cambio']: 1);
+		$form->groupClose();
+		
+		$form->textarea('descricao_cambio','Descrição',isset($cambios) ? $cambios[0]['descricao_cambio']: null,'Descrição',2,5);
+		
+		echo str_repeat('<br />',3);
+		
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+		
+		$form->close();

@@ -1,0 +1,38 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/cambio/cadCambio" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<form class="navbar-form navbar-right" role="search">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Teste" name="teste">
+		</div>
+		<div class="form-group">
+			<select name="id_cliente" class="form-control">
+				<option>Locadora</option>
+				<option value="3">ANDWES SOLUTION </option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Titulo','Status','Editar','Remover'));
+	foreach($cambios as $cam){
+		$table->t_row(array(
+					$cam['titulo_cambio'],
+					$cam['status_cambio'] == 1 ? 'Ativo' : 'Inativo',
+					'<center><a href="/cambio/cadCambio/id/'.$cam['id_cambio'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+					'<center><a href="/cambio/deleteCambio/id/'.$cam['id_cambio'].'" onclick=" return confirm(\'Deseja realmente remover '.$cam['titulo_cambio'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+					));
+	}
+	$table->generate();
+	?>
+</div>
