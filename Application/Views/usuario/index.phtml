@@ -29,7 +29,7 @@ if(isset($_SESSION['success'])){
 		$table->t_row(array(
 							$user['nome_usuario'],
 							$user['login_usuario'],
-							'teste',
+							$user['titulo_grupo'],
 							$user['status_usuario'] == 1 ? 'Ativo' : 'Inativo',
 							'<center><a href="/usuario/cadUsuario/id/'.$user['id_usuario'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
 							'<center><a href="/usuario/deleteUsuario/id/'.$user['id_usuario'].'" onclick=" return confirm(\'Deseja realmente remover '.$user['nome_usuario'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'

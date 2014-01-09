@@ -15,8 +15,10 @@ class Usuario extends OXE_Model {
 	
 	public function list_all()
 	{
-		return $this->fetchAll();
+		$query = "SELECT grup.*,user.* FROM tbl_usuario AS user INNER JOIN tbl_grupo AS grup ON (user.id_grupo = grup.id_grupo) WHERE TRUE";
+		return $this->query($query);
 	}
+	
 	
 	public function list_once($id)
 	{

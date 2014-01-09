@@ -18,7 +18,6 @@ class UsuarioController extends OXE_Controller{
 	
 	public function indexAction()
 	{
-				
 		$data['title'] = 'Titulo da Pagina';
 		$data['usuarios'] = $this->model->list_all();
 		$data['grupo'] = $this->model->getGrupo();
@@ -56,7 +55,6 @@ class UsuarioController extends OXE_Controller{
 	{
 		$id = $this->model->getEmpresa();
 		$_POST['nome_usuario'] = strtoupper($_POST['nome_usuario']);
-		$_POST['senha_usuario'] = md5($_POST['senha_usuario']);
 		
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
@@ -65,6 +63,7 @@ class UsuarioController extends OXE_Controller{
 		
 		if($_POST['id_usuario'] == null){
 			if(count($this->model->findUsuario($_POST['nome_usuario'])) == 0){
+				$_POST['senha_usuario'] = md5($_POST['senha_usuario']);
 				if($this->model->add($_POST)){
 					$this->session->setFlashMessage('Usuário cadastro com sucesso','success');
 					$this->redirector('/usuario');
@@ -74,6 +73,11 @@ class UsuarioController extends OXE_Controller{
 				$this->redirector('/usuario');
 			}
 		}else{
+				if(empty($_POST['senha_usuario'])){
+					unset($_POST['senha_usuario']);
+				}else{
+					$_POST['senha_usuario'] = md5($_POST['senha_usuario']);
+				}
 			if($this->model->alter($_POST)){
 					$this->session->setFlashMessage('Dados de Usuário atualizado com sucesso','success');
 					$this->redirector('/usuario');
