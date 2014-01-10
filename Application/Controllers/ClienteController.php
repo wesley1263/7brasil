@@ -17,6 +17,7 @@ class ClienteController extends OXE_Controller {
 	public function init()
 	{
 		$this->model = new ClientePF();
+		$this->model2 = new ClientePJ();
 		$this->session = new Session();
 	}
 	
@@ -478,18 +479,20 @@ class ClienteController extends OXE_Controller {
 	
 	public function updateJuridicaAction()
 	{
-		$model2 = new ClientePJ();
+		$model = new ClientePJ();
 		$Classificacao = new Classificacao();
 		$param = func_get_args();
-		$model = $model2->list_once($param[1]);
 		$form = new FormStyle();
 		$cartao = new TipoCartao();
+		$cards = new CartaoPJ();
 				
 		$data['title'] = 'Cadastrar Clientes - Pessoa Jurídica';
 		$data['form'] = $form;
-		$data['clientes'] = $model;
+		$data['clientes'] = $model->list_once($param[1]);
 		$data['classificacao'] = $Classificacao->list_all();
 		$data['cartao'] = $cartao->list_all();
+		$data['cards'] = $cards->listCartCli($param[1]);
+		
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -499,8 +502,7 @@ class ClienteController extends OXE_Controller {
 	
 	public function saveUpdateJuridicaAction()
 	{
-		$model = new ClientePJ();
-		$clientePJ = $model->list_once($_POST['id_clientePJ']);
+		$clientePJ = $this->model2->list_once($_POST['id_clientePJ']);
 		
 		if($_FILES['logotipo_clientePJ']['size'] > 0){
 			unlink($clientePJ['logotipo_clientePJ']);
@@ -515,8 +517,7 @@ class ClienteController extends OXE_Controller {
 			$n1 = 0;
 			$arr1 = array();
 			foreach($_POST as $key => $value){
-				if(is_array($value) && count($value) > 0){
-					
+				if(is_array($value)){
 					
 					$n1 = 0;
 					if($key == 'id_cartaoPJ'){
@@ -526,14 +527,32 @@ class ClienteController extends OXE_Controller {
 						}
 					}
 					
-					
 					$n1 = 0;
-					if($key == 'codigo_seguranca_cartaoPF'){
+					if($key == 'numero_cartaoPJ'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['codigo_seguranca_cartaoPF'] = $v;
+							$arr1[$n1]['numero_cartaoPJ'] = $v;
 						}
 					}
+					
+					
+					$n1 = 0;
+					if($key == 'codigo_seguranca_cartaoPJ'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['codigo_seguranca_cartaoPJ'] = $v;
+						}
+					}
+					
+					
+					$n1 = 0;
+					if($key == 'id_tipoCartao'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_tipoCartao'] = $v;
+						}
+					}
+					
 					
 					$n1 = 0;
 					if($key == 'id_tipoCartao'){
@@ -544,36 +563,19 @@ class ClienteController extends OXE_Controller {
 					}
 					
 					$n1 = 0;
-					if($key == 'dt_validade_cartaoPF'){
+					if($key == 'dt_validade_cartaoPJ'){
 						foreach($value as $v){
-							$n1++;
-							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+							if($v != null){
+								$n1++;
+								$arr1[$n1]['dt_validade_cartaoPJ'] = $this->dateToMysql($v);
+							}
 						}
 					}
 					
 					
-					$n1 = 0;
-					if($key == 'id_cartaoPF'){
-						foreach($value as $v){
-							$n1++;
-							$arr1[$n1]['id_cartaoPF'] = $v;
-						}
-					}
-					
-					$n1 = 0;
-					if($key == 'numero_cartaoPF'){
-						foreach($value as $v){
-							$n1++;
-							$arr1[$n1]['numero_cartaoPF'] = $v;
-						}
-					}
-					
-				}else{
-					$arr1 = null;
 				}
 			}
 			############# Iterando names de cartão de crédito  ###########
-			
 			
 			unset($_POST['numero_cartaoPJ']);
 			unset($_POST['id_cartaoPJ']);
@@ -581,49 +583,50 @@ class ClienteController extends OXE_Controller {
 			unset($_POST['id_tipoCartao']);
 			unset($_POST['dt_validade_cartaoPJ']);
 			
-			$this->dump($_POST);
-			$this->dump($arr1);
-			exit;
+			
+			######### Atribuindo id_clientePJ no array do cartão #############
 			if(!is_null($arr1)){
 				foreach($arr1 as $key => $value){
 					$arr1[$key]['id_clientePJ'] = $_POST['id_clientePJ'];
 				}
-				
 			}
-// 			
-			$cartoes = new CartaoPF();
+			######### Atribuindo id_clientePJ no array do cartão #############
 			
-		if($this->model->update_cli($_POST)){
-		
+			$cartoes = new CartaoPJ();
+			
+			if($this->model2->update_cli($_POST)){
 				foreach($arr1 as $key => $value){
-					if($value['numero_cartaoPJ'] =! null){
+					if($value['numero_cartaoPJ'] != null){
+						
 						if($value['id_cartaoPJ'] == null){
 							$cartoes->add($value);
 						}else{
 							$cartoes->alter($value);
-						}
 					}
+				}else{
+					unset($value);
+				}
 			}
 			$this->session->setFlashMessage('Dados de Empresa atualizado com sucesso.','success');
 			$this->redirector('/cliente/juridica');
-		// if($model->update_cli($_POST)){
-			// $this->session->setFlashMessage('Dados de Empresa atualizado com sucesso.','success');
-			// $this->redirector('/cliente/juridica');
-		// }
 		}
 	}
 	public function deleteJuridicaAction()
 	{
 		$param = func_get_args();
 		
-		$model = new ClientePJ();
-		$cliente = $model->list_once($param[1]);
-		
-		if($model->delete_cli($param[1])){
-			unlink($cliente[0]['logotipo_clientePJ']);
-			$this->session->setFlashMessage('Empresa removida do sistema com sucesso.','success');
-			$this->redirector('/cliente/juridica');
-		}
+		$cliente = $this->model2->list_once($param[1]);
+		$CartaoPJ = new CartaoPJ();
+			if($this->model2->delete_cli($param[1])){
+				###Deletando todos os cartões do cliente PJ ###
+				if(count($CartaoPJ->listCartCli($param[1])) == 0){
+					$CartaoPJ->deleteCartao($param[1]);
+				}
+				###Deletando todos os cartões do cliente PJ ###
+				unlink($cliente[0]['logotipo_clientePJ']);
+				$this->session->setFlashMessage('Empresa removida do sistema com sucesso.','success');
+				$this->redirector('/cliente/juridica');
+			}
 		 
 	}
 	

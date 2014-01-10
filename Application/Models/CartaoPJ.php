@@ -46,6 +46,20 @@ class CartaoPJ extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}
 	
+	public function deleteCartao($id)
+	{
+		$query = "DELETE FROM tbl_cartaoPJ WHERE id_clientePJ = '$id'";
+		return $this->query($query);
+	}
+	
+	
+	public function listCartCli($id)
+	{
+		return $this->select()
+					->from()
+					->where("id_clientePJ = '$id'")
+					->result();
+	}
 		
 	
 }
