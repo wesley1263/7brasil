@@ -160,7 +160,9 @@ class ClienteController extends OXE_Controller {
 					if($key == 'dt_validade_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
+							if($v != null){
 							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+							}
 						}
 					}
 					
@@ -198,16 +200,21 @@ class ClienteController extends OXE_Controller {
 				
 			}
 			
+			
 			$cartoes = new CartaoPF();
 			
 		if($this->model->update_cli($_POST)){
 		
 				foreach($arr1 as $key => $value){
+					if($value['numero_cartaoPF'] != null){
 						if($value['id_cartaoPF'] == null){
 							$cartoes->add($value);
 						}else{
 							$cartoes->alter($value);
 						}
+					}else{
+						unset($value);
+					}
 			}
 			
 			$this->session->setFlashMessage('Cliente PF atualizado com sucesso','success');
@@ -233,7 +240,7 @@ class ClienteController extends OXE_Controller {
 			$n1 = 0;
 			$arr1 = array();
 			foreach($_POST as $key => $value){
-				if(is_array($value) && count($value) > 0){
+				if(is_array($value)){
 					if($key == 'numero_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
@@ -260,8 +267,10 @@ class ClienteController extends OXE_Controller {
 					$n1 = 0;
 					if($key == 'dt_validade_cartaoPF'){
 						foreach($value as $v){
-							$n1++;
-							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+							if($v != null){
+								$n1++;
+								$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+							}
 						}
 					}
 					
@@ -338,11 +347,23 @@ class ClienteController extends OXE_Controller {
 	public function deleteClientePFAction()
 	{
 		$param = func_get_args();
+		$cartao = new CartaoPF();
+		$card = $cartao->findCliente($param[1]);
+		
+		
 		if($this->model->delete_cli($param[1])){
+			if(count($card) != 0){
+				$cartao->del($param[1]);
+			}
 			$this->session->setFlashMessage('Cliente PF removido do sistema','success');
 			$this->redirector('/cliente/fisica');
 		}
 	}
+	
+	
+	################################################################################
+	######################### Cliente Pessoa Juridica  #############################
+	################################################################################
 	
 	public function juridicaAction()
 	{
@@ -597,7 +618,6 @@ class ClienteController extends OXE_Controller {
 			if($this->model2->update_cli($_POST)){
 				foreach($arr1 as $key => $value){
 					if($value['numero_cartaoPJ'] != null){
-						
 						if($value['id_cartaoPJ'] == null){
 							$cartoes->add($value);
 						}else{
