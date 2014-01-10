@@ -139,7 +139,6 @@ class ClienteController extends OXE_Controller {
 			foreach($_POST as $key => $value){
 				if(is_array($value) && count($value) > 0){
 					
-					
 					$n1 = 0;
 					if($key == 'codigo_seguranca_cartaoPF'){
 						foreach($value as $v){
@@ -181,8 +180,6 @@ class ClienteController extends OXE_Controller {
 						}
 					}
 					
-				}else{
-					$arr1 = null;
 				}
 			}
 			############# Iterando names de cartão de crédito  ###########
@@ -199,19 +196,17 @@ class ClienteController extends OXE_Controller {
 				}
 				
 			}
-// 			
+			
 			$cartoes = new CartaoPF();
 			
 		if($this->model->update_cli($_POST)){
 		
 				foreach($arr1 as $key => $value){
-					if($value['numero_cartaoPF'] =! null){
 						if($value['id_cartaoPF'] == null){
 							$cartoes->add($value);
 						}else{
 							$cartoes->alter($value);
 						}
-					}
 			}
 			
 			$this->session->setFlashMessage('Cliente PF atualizado com sucesso','success');
