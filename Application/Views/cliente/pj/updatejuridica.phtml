@@ -3,6 +3,8 @@
 		<h3 style="color: #c7187d">Atualizar dados de Empresa</h3>
 		<br />
 <?php
+
+
 	$form->init('form_cli_pj','/cliente/saveUpdateJuridica');	
 		echo '<input type="hidden" name = "id_clientePJ" value="'.$clientes[0]['id_clientePJ'].'">';
 		######## Logotipo ##########
@@ -207,8 +209,56 @@
 						'required' => true
 						));	
 		$form->groupClose();		
-								
+			$num = 0;	
+				echo '<hr>';
+		?>
+		<fieldset id="cartao_credito">
+	<center><h3>Cartões de Crédito</h3></center>
+	<br>
+	<?php foreach($clientes as $cli): 
+		$num ++;
+		?>
+		<div id="cloneDiv<?=$num?>" class="cartoes">
+			<div class="form-group">
+				<input type="hidden" name="id_cartaoPJ[]" value="<?=$cli['id_cartaoPJ']?>" />
+				<label for="numero_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control numero_cartaoPJ" id="numero_cartaoPJ" placeholder="Número Cartão" name="numero_cartaoPJ[]" value="<?=$cli['numero_cartaoPJ']?>">
+				</div>
+				
+				<label for="codigo_seguranca_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Código Segurança</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control codigo_seguranca_cartaoPF" id="codigo_seguranca_cartaoPF" placeholder="Número Cartão" name="codigo_seguranca_cartaoPJ[]" value="<?=$cli['codigo_seguranca_cartaoPJ']?>">
+					</div>
+			</div>
+			
+			<div class="form-group">
+				 	<?php 
+				  	foreach($cartao as $cart){
+				  		$opt_cart[$cart['id_tipoCartao']] = $cart['titulo_tipoCartao'];
+				  	}
+				  	$form->select($opt_cart,'id_tipoCartao[]','Tipo Cartão',$cli['id_tipoCartao']);
+				  	?>			
+				  		
+				  	<label for="dt_validade_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
+				<div class="col-sm-3">
+				<input type="text" class="form-control dt_validade_cartaoPJ" id="dt_validade_cartaoPJ" placeholder="Data de Validade" name="dt_validade_cartaoPJ[]" value="<?=date('d/m/Y',strtotime($cli['dt_validade_cartaoPJ'])) ?>" >
+				</div>
+			</div>
+			<hr>
+			</div>
+			<?php endforeach; ?>
+			<div class="form-group">
+				<div class="col-sm-offset-5 col-sm-10">
+				<button type="button" style="padding: 5px 20px" id="bt_add_ct" title="Adicionar novo Cartão de Crédito" class="btn btn-warning bt_add_ct"><span class="glyphicon glyphicon-plus"></span></button>
+				<button type="button" style="padding: 5px 20px" id="bt_del_ct" title="Remover Cartão de Crédito" class="btn btn-danger bt_del_ct" disabled="disabled"><span class="glyphicon glyphicon-remove"></span></button>
+				</div>
+				</div>
+			
+	</fieldset>
+		<?php						
 		echo '<hr>';						
+		
 		
 		######### Nome responsavel	############
 		foreach($classificacao as $class){
@@ -336,6 +386,55 @@
 			}
 		});
 		
+		
+		
+		jQuery('#bt_add_ct').click(function(){
+
+				num = jQuery('.cartoes').length;
+				newNum = new Number(num + 1);
+
+				var newElem = jQuery('#cloneDiv'+num).clone().attr('id','cloneDiv'+newNum).fadeIn('slow');
+
+				newElem.find('.numero_cartaoPJ').attr('id','numero_cartaoPJ'+newNum).val('');
+				newElem.find('.codigo_seguranca_cartaoPJ').attr('id','codigo_seguranca_cartaoPJ'+newNum).val('');
+				newElem.find('.id_tipoCartao').attr('id','id_tipoCartao'+newNum);
+				newElem.find('.dt_validade_cartaoPJ').attr('id','dt_validade_cartaoPJ'+newNum).val('');
+
+				
+				jQuery('#cloneDiv'+num).after(newElem);
+				jQuery('#bt_del_ct').attr('disabled',false);
+				jQuery('#dt_validade_cartaoPJ'+newNum).mask('99/99/9999');
+				
+			});
+			
+			
+			jQuery('#bt_del_ct').click(function(){
+				if(confirm('Deseja realmente remover esse cartão ?')){
+				var num = jQuery('.cartoes').length;
+				
+				id_cartaoPJ = jQuery('#cloneDiv'+num).find("#id_cartaoPJ"+num).val();
+				
+				jQuery.ajax({
+					url: '/cliente/delAjaxCartaoPJ',
+					type: 'post',
+					dataType: 'html',
+					data: {id_cartaoPF : id_cartaoPF},
+					success: function(data){
+						
+					}
+				});
+				jQuery('#cloneDiv'+num).slideUp('slow',function(){
+					jQuery('#cloneDiv'+num).remove();
+					if(num - 1 === 1){
+						jQuery('#bt_del_ct').attr('disabled',true);
+					}else{
+						jQuery('#bt_del_ct').attr('disabled',false);
+						}
+					});
+				}
+			});
+			
+			jQuery('#bt_del_ct').attr('disabled',true);
 		
 	});
 </script>

@@ -403,7 +403,7 @@ class ClienteController extends OXE_Controller {
 				$_POST['logotipo_clientePJ'] = $arq;
 			}
 		}
-		
+
 		$n1 = 0;
 			$arr1 = array();
 			foreach($_POST as $key => $value){
@@ -450,14 +450,14 @@ class ClienteController extends OXE_Controller {
 			unset($_POST['id_tipoCartao']);
 			unset($_POST['dt_validade_cartaoPJ']);
 		
-		// $this->dump($arr1);
-		// exit;
-			$CartaoPJ = new CartaoPJ();
+
+		$CartaoPJ = new CartaoPJ();
 		
 		if(!$model->findCNPJ($_POST['cnpj_clientePJ'])){
-			if($model->insert_cli($_POST)){
+			$id = $model->insert_cli($_POST);
+			if($id){
 				foreach($arr1 as $key => $value){
-					$arr1[$key]['id_clientePJ'] = $_POST['id_clientePJ'];
+					$arr1[$key]['id_clientePJ'] = $id;
 				}
 				
 				foreach($arr1 as $key => $value){
@@ -483,15 +483,18 @@ class ClienteController extends OXE_Controller {
 	
 	public function updateJuridicaAction()
 	{
-		$model = new ClientePJ();
+		$model2 = new ClientePJ();
 		$Classificacao = new Classificacao();
 		$param = func_get_args();
-		$model = $model->list_once($param[1]);
-		$form = new FormStyle();	
+		$model = $model2->list_once($param[1]);
+		$form = new FormStyle();
+		$cartao = new TipoCartao();
+				
 		$data['title'] = 'Cadastrar Clientes - Pessoa Jurídica';
 		$data['form'] = $form;
 		$data['clientes'] = $model;
-		$data['classificacao'] = $Classificacao->list_all();;
+		$data['classificacao'] = $Classificacao->list_all();
+		$data['cartao'] = $cartao->list_all();
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -513,12 +516,107 @@ class ClienteController extends OXE_Controller {
 			$_POST['logotipo_clientePJ'] = UPLOAD_PATH.$new_file.$extension;
 		}
 		
-		if($model->update_cli($_POST)){
+		############# Iterando names de cartão de crédito  ###########
+			$n1 = 0;
+			$arr1 = array();
+			foreach($_POST as $key => $value){
+				if(is_array($value) && count($value) > 0){
+					
+					
+					$n1 = 0;
+					if($key == 'id_cartaoPJ'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_cartaoPJ'] = $v;
+						}
+					}
+					
+					
+					$n1 = 0;
+					if($key == 'codigo_seguranca_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['codigo_seguranca_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'id_tipoCartao'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_tipoCartao'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'dt_validade_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
+						}
+					}
+					
+					
+					$n1 = 0;
+					if($key == 'id_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_cartaoPF'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'numero_cartaoPF'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['numero_cartaoPF'] = $v;
+						}
+					}
+					
+				}else{
+					$arr1 = null;
+				}
+			}
+			############# Iterando names de cartão de crédito  ###########
+			
+			
+			unset($_POST['numero_cartaoPJ']);
+			unset($_POST['id_cartaoPJ']);
+			unset($_POST['codigo_seguranca_cartaoPJ']);
+			unset($_POST['id_tipoCartao']);
+			unset($_POST['dt_validade_cartaoPJ']);
+			
+			$this->dump($_POST);
+			$this->dump($arr1);
+			exit;
+			if(!is_null($arr1)){
+				foreach($arr1 as $key => $value){
+					$arr1[$key]['id_clientePJ'] = $_POST['id_clientePJ'];
+				}
+				
+			}
+// 			
+			$cartoes = new CartaoPF();
+			
+		if($this->model->update_cli($_POST)){
+		
+				foreach($arr1 as $key => $value){
+					if($value['numero_cartaoPJ'] =! null){
+						if($value['id_cartaoPJ'] == null){
+							$cartoes->add($value);
+						}else{
+							$cartoes->alter($value);
+						}
+					}
+			}
 			$this->session->setFlashMessage('Dados de Empresa atualizado com sucesso.','success');
 			$this->redirector('/cliente/juridica');
+		// if($model->update_cli($_POST)){
+			// $this->session->setFlashMessage('Dados de Empresa atualizado com sucesso.','success');
+			// $this->redirector('/cliente/juridica');
+		// }
 		}
 	}
-
 	public function deleteJuridicaAction()
 	{
 		$param = func_get_args();
@@ -537,8 +635,21 @@ class ClienteController extends OXE_Controller {
 	public function delAjaxCartaoPFAction()
 	{
 		$id = $_POST['id_cartaoPF'];
-		$CartaoPF = new CartaoPF();
-		return $CartaoPF->remove($id);
+		if($id != null){
+			$CartaoPF = new CartaoPF();
+			return $CartaoPF->remove($id);
+		}
+			
+	}
+	
+	public function delAjaxCartaoPJAction()
+	{
+		$id = $_POST['id_cartaoPJ'];
+		if($id != null){
+			$CartaoPJ = new CartaoPJ();
+			return $CartaoPJ->remove($id);
+		}
+			
 	}
 	
 	
