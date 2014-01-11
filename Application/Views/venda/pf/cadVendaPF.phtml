@@ -1,0 +1,117 @@
+<div class="venda">
+	
+
+       <?php 
+       $form->init('form_addClientePF','addClientePF','post');
+		
+	  
+	    $form->input(array(
+				'name' =>'cpf_clientePF',
+				'type' =>'text',
+				'placeholder' => 'CPF do Cliente',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'CPF',
+				'value' => '',
+				'required' => false
+				));
+				
+		echo '<button type="button" id="bt_findCliente" data-toggle="modal" data-target="#myModal" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Buscar</button>';
+		echo ' ';
+		echo '<button type="button" id="bt_addNew" class="btn btn-primary"><i class="glyphicon glyphicon-user"></i> Novo</button>';
+		$form->groupClose();
+
+       ?>
+       
+      	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Cliente Cadastrado</h4>
+				</div>
+				<div class="modal-body">
+					<div id="id_PF"></div>
+					<div id="nome_PF"></div>
+					<div id="cpf_PF"></div>
+					<div id="dataNascimento_PF"></div>
+					<div id="endereco_PF"></div>
+					<div id="telefone_PF"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+					<button type="button" id="bt_incluir" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+       
+      </div>
+        
+        <?php $form->close(); ?>
+   
+<script>
+	jQuery(function(){
+		
+		//Eventos de cliques
+		jQuery('#bt_addNew').click(function(){
+			location.href="/cliente/cadfisica";
+		});
+		
+		jQuery('#bt_findCliente').click(function(){
+			var nomeCli = jQuery('#nome_clientePF').val();
+			var cpfCli = jQuery('#cpf_clientePF').val();
+			
+			jQuery.ajax({
+				url: '/venda/findClientePF',
+				type: 'post',
+				dataType: 'json',
+				data: {nome: nomeCli, cpf: cpfCli},
+				success: function(data){
+					jQuery('#id_PF').html(data[0].id_clientePF);
+					jQuery('#cpf_PF').html('CPF: ' +data[0].cpf_clientePF);
+					jQuery('#dataNascimento_PF').html('Data de Nasc: ' +format_data(data[0].dataNascimento_clientePF));
+					jQuery('#nome_PF').html('Nome: ' +data[0].nome_clientePF);
+					jQuery('#endereco_PF').html('Endereço: ' +data[0].endereco_clientePF);
+					jQuery('#telefone_PF').html('Telefone: ' +data[0].telefone_clientePF);
+				}
+			});
+		});
+		
+		
+		jQuery('#bt_incluir').click(function(){
+			jQuery.post('/venda/addClientePF',{id_clientePF : jQuery('#id_PF').text()},function(data){
+				alert(data);
+			})
+		});
+		
+		jQuery('#bt_findCliente').attr('disabled',true);
+		
+			
+			jQuery('#cpf_clientePF').keypress(function(){
+				if(jQuery(this).val().length > 0){
+					jQuery('#bt_findCliente').attr('disabled',false);
+				}else{
+					jQuery('#bt_findCliente').attr('disabled',true);
+					
+				}
+			});
+		
+		//Mascarando campos
+		jQuery('#cpf_clientePF').mask('999.999.999-99');
+		
+		
+		function format_data(data){
+					var dia = data.split("-")[2];
+					var mes = data.split("-")[1];
+					var ano = data.split('-')[0];
+					
+					return dia + '/' + mes + '/' + ano;
+				}
+		
+	});
+</script>

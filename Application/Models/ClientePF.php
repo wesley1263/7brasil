@@ -43,12 +43,22 @@ class ClientePF extends OXE_Model {
 	
 	public function findClientePF($cpf)
 	{
-		$query = $this->select('cpf_clientePF')
+		return  $this->select('cpf_clientePF')
 					  ->from($this->_name)
 					  ->where("cpf_clientePF = '$cpf'")
 					  ->result();
 					  
-					  return $query;
+					 
+	}
+	
+	public function findClienteCPF($cpf)
+	{
+		return  $this->select()
+					  ->from($this->_name)
+					  ->where("cpf_clientePF = '$cpf'")
+					  ->result();
+					  
+					 
 	}
 	
 	public function showTable()

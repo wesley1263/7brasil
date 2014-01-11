@@ -1,0 +1,21 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<div class="row">
+	<div class="col-md-6"><a href="/venda/cadVendaPF" id="bt_pf" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Nova Venda PF</a></div>
+	<div class="col-md-6"><a href="/venda/cadVendaPJ" id="bt_pj" class="btn btn-warning"><span class="glyphicon glyphicon-plus-sign"></span> Nova Venda PJ</a></div>
+
+	
+</div>
+<script>
+	jQuery(function(){
+		jQuery('#bt_pj').css('float','right');
+		jQuery('#bt_pj,#bt_pf').css('padding','5%');
+	});
+</script>
