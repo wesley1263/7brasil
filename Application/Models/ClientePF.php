@@ -20,10 +20,8 @@ class ClientePF extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					->from($this->_name)
-					->where($this->_primary." = '$id'")
-					->result();
+		$query = "SELECT * FROM $this->_name WHERE $this->_primary = '$id'";
+		return $this->query($query);
 	}
 	
 	public function insert_cli(array $data)

@@ -39,8 +39,13 @@ class VendaController extends OXE_Controller{
 			
 		$clientePF = new ClientePF();
 		
-		if($_SESSION){
-			$this->dump($_SESSION);
+		if(isset($_SESSION['id_clientePF'])){
+			// $this->dump($_SESSION['id_clientePF']);
+			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
+				$clientes[] = $clientePF->list_once($value);
+			}
+			$data['clientes'] = $clientes;
+			// $data['clientes'] = array();
 		}
 		
 		$data['title'] = '7 Brasil - Vendas';
@@ -55,25 +60,42 @@ class VendaController extends OXE_Controller{
 		$this->view('template/footer');
 	}
 	
-	public function cadVendaPJAction()
-	{
-		
-		$data['title'] = '7 Brasil - Vendas';
-				
-		
-		$data['form'] = $this->form;
-		$data['table'] = $this->table;
-		$data['session'] = $this->session;
-				
-		$this->view('template/head',$data);
-		$this->view('template/header');
-		$this->view('venda/pj/cadVendaPJ',$data);
-		$this->view('template/footer');
-	}
-	
+
 	public function addClientePFAction()
 	{
-		$_SESSION['id_clientePF'][] = $_POST['id_clientePF'];
+		$this->dump($_POST);
+		if($_POST['id_PF'] != null){
+			if(in_array($_POST['id_PF']['id'], $_SESSION['id_clientePF'])){
+				$this->session->setFlashMessage('Cliente já foi Adicionado a lista de venda!.','error');
+				$this->redirector('/venda/cadVendaPF');
+				exit();
+			}
+			$_SESSION['id_clientePF']['id'][] = $_POST['id_PF'];
+			$_SESSION['id_clientePF']['participacao'][] = $_POST['id_participacao'];
+			$this->session->setFlashMessage('Cliente Adicionado a lista de venda.','success');
+			$this->redirector('/venda/cadVendaPF');
+		}else{
+			$this->session->setFlashMessage('Cliente não encontrado!','error');
+			$this->redirector('/venda/cadVendaPF');
+		}	
+		
+	}
+	
+	public function addDependenteAction()
+	{
+		echo json_encode($this->model->getDependentes($_POST['id_cliente']));
+	}
+
+	public function deleteClientePFAction()
+	{
+		$param = func_get_args();
+		foreach($_SESSION['id_clientePF'] as $key => $value){
+			if($value == $param[1]){
+				unset($_SESSION['id_clientePF'][$key]);
+			}
+		}
+		$this->session->setFlashMessage('Cliente removido da lista de venda','success');
+		$this->redirector('/venda/cadVendaPF');
 	}
 	
 	public function saveVendaAction()
@@ -96,6 +118,27 @@ class VendaController extends OXE_Controller{
 			echo json_encode($clientePF->findClienteCPF($_POST['cpf']));
 		
 	}
+	
+		#####################################
+		############ Cliente PJ #############
+		#####################################
+	
+		public function cadVendaPJAction()
+	{
+		
+		$data['title'] = '7 Brasil - Vendas';
+				
+		
+		$data['form'] = $this->form;
+		$data['table'] = $this->table;
+		$data['session'] = $this->session;
+				
+		$this->view('template/head',$data);
+		$this->view('template/header');
+		$this->view('venda/pj/cadVendaPJ',$data);
+		$this->view('template/footer');
+	}
+	
 	
 	
 	

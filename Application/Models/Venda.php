@@ -46,4 +46,11 @@ class Venda extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}	
 	
+	public function getDependentes($id)
+	{
+		return $this->select()
+					->from('tbl_dependentePF')
+					->where("id_clientePF = '$id'")
+					->result();
+	}
 }

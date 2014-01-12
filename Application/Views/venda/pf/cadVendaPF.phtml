@@ -1,10 +1,18 @@
 <div class="venda">
 	
 
-       <?php 
+       <?php
+       if(isset($_SESSION['success'])){
+       	echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+       }
+	   
+	    if(isset($_SESSION['error'])){
+       	echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+       }
+		// session_destroy();
+		// $this->dump($_SESSION);
        $form->init('form_addClientePF','addClientePF','post');
 		
-	  
 	    $form->input(array(
 				'name' =>'cpf_clientePF',
 				'type' =>'text',
@@ -21,9 +29,9 @@
 		echo '<button type="button" id="bt_addNew" class="btn btn-primary"><i class="glyphicon glyphicon-user"></i> Novo</button>';
 		$form->groupClose();
 
-       ?>
+        $form->close(); ?>
        
-      	<!-- Modal -->
+      	<!-- Modal cliente Pessoa Física -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -34,25 +42,75 @@
 					<h4 class="modal-title" id="myModalLabel">Cliente Cadastrado</h4>
 				</div>
 				<div class="modal-body">
-					<div id="id_PF"></div>
-					<div id="nome_PF"></div>
-					<div id="cpf_PF"></div>
-					<div id="dataNascimento_PF"></div>
-					<div id="endereco_PF"></div>
-					<div id="telefone_PF"></div>
+						<form method="post" action="/venda/addClientePF">
+						<input id="id_PF" name="id_PF" type="hidden">
+						<select name="id_participacao">
+							<option value="2">Pagante e Participante</option>
+							<option value="1">Pagante</option>
+						</select>
+						<br />
+						<div id="nome_PF"></div>
+						<div id="cpf_PF"></div>
+						<div id="dataNascimento_PF"></div>
+						<div id="endereco_PF"></div>
+						<div id="telefone_PF"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
-					<button type="button" id="bt_incluir" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+					<button type="submit" id="bt_incluir" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+					</form>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-
+	
+	
+	
+	   	<!-- Modal dependente cliente -->
+	<div class="modal fade" id="modalDependente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Dependentes</h4>
+				</div>
+				<div class="modal-body">
+						<select name="id_dependentePF">
+							
+						</select>
+						
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+					<button type="button" id="bt_incluirDependente" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	<br />
+	<br />
+	<br />
+	<table class="table table-condensed">
+		<?php if(isset($clientes)): 
+			foreach($clientes as $key => $value):
+				foreach($value as $k => $v){
+			?>
+			<tr class="warning">
+				<td><?=$v['nome_clientePF']?></td>
+				<td><a href="#"  class="btn btn-info bt_part" id_cliente="<?=$v['id_clientePF']?>" data-toggle="modal" data-target="#modalDependente"><span class="glyphicon glyphicon-plus-sign"></span> Dependentes</a></td>
+				<td><a href="/venda/deleteClientePF/id/<?=$v['id_clientePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_clientePF']?> da lista de venda?')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
+			</tr>
+		<?php 
+				}
+			endforeach;
+		endif; ?>
+	</table>
        
       </div>
         
-        <?php $form->close(); ?>
    
 <script>
 	jQuery(function(){
@@ -62,6 +120,8 @@
 			location.href="/cliente/cadfisica";
 		});
 		
+		
+		//evento de buscar cliente montar o modal 
 		jQuery('#bt_findCliente').click(function(){
 			var nomeCli = jQuery('#nome_clientePF').val();
 			var cpfCli = jQuery('#cpf_clientePF').val();
@@ -72,39 +132,53 @@
 				dataType: 'json',
 				data: {nome: nomeCli, cpf: cpfCli},
 				success: function(data){
-					jQuery('#id_PF').html(data[0].id_clientePF);
-					jQuery('#cpf_PF').html('CPF: ' +data[0].cpf_clientePF);
-					jQuery('#dataNascimento_PF').html('Data de Nasc: ' +format_data(data[0].dataNascimento_clientePF));
-					jQuery('#nome_PF').html('Nome: ' +data[0].nome_clientePF);
-					jQuery('#endereco_PF').html('Endereço: ' +data[0].endereco_clientePF);
-					jQuery('#telefone_PF').html('Telefone: ' +data[0].telefone_clientePF);
+					if(data == ''){
+						jQuery(".modal-body").html('<h2>Cliente não foi encontrado!</h2>');
+						jQuery("#bt_incluir").attr('disabled',true);
+					}
+						jQuery('#id_PF').val(data[0].id_clientePF);
+						jQuery('#cpf_PF').html('CPF: ' +data[0].cpf_clientePF);
+						jQuery('#dataNascimento_PF').html('Data de Nasc: ' +format_data(data[0].dataNascimento_clientePF));
+						jQuery('#nome_PF').html('Nome: ' +data[0].nome_clientePF);
+						jQuery('#endereco_PF').html('Endereço: ' +data[0].endereco_clientePF);
+						jQuery('#telefone_PF').html('Telefone: ' +data[0].telefone_clientePF);
+						jQuery("#bt_incluir").attr('disabled',false);
 				}
 			});
 		});
 		
 		
-		jQuery('#bt_incluir').click(function(){
-			jQuery.post('/venda/addClientePF',{id_clientePF : jQuery('#id_PF').text()},function(data){
-				alert(data);
-			})
-		});
-		
-		jQuery('#bt_findCliente').attr('disabled',true);
+			//Evento para desabilitar botão de busca
+			jQuery('#bt_findCliente').attr('disabled',true);
 		
 			
+			//Evento para bloquear botão de busca enquanto campo cpf estiver vázio			
 			jQuery('#cpf_clientePF').keypress(function(){
 				if(jQuery(this).val().length > 0){
 					jQuery('#bt_findCliente').attr('disabled',false);
-				}else{
-					jQuery('#bt_findCliente').attr('disabled',true);
-					
 				}
+			});
+		
+			//Evento para buscar dependentes do cliente pessoa física
+			jQuery('.bt_part').click(function(){
+				var id_cliente = jQuery(this).attr('id_cliente');
+				jQuery.ajax({
+					url: '/venda/addDependente',
+					type: 'post',
+					dataType: 'json',
+					data: {id_cliente : id_cliente},
+					success: function(data){
+						for(var i = 0; i < data.length; i++ ){
+							jQuery('[name=id_dependentePF]').html('<option valeu="'+data[i].id_dependentePF+'">'+data[i].nome_dependentePF+'</otpion>');
+						}
+					}
+				});
 			});
 		
 		//Mascarando campos
 		jQuery('#cpf_clientePF').mask('999.999.999-99');
 		
-		
+		//Função para formatar data no padrão brasileiro
 		function format_data(data){
 					var dia = data.split("-")[2];
 					var mes = data.split("-")[1];
