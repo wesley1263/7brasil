@@ -23,12 +23,21 @@ class DependentePF extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		$query= "SELECT dep.*,cli.* 
+		if(is_array($id)){
+			$query = "SELECT dep.*,cli.* 
+				FROM tbl_dependentePF AS dep 
+				INNER JOIN tbl_clientePF AS cli 
+				ON (cli.id_clientePF = dep.id_clientePF) 
+				WHERE TRUE AND dep.id_dependentePF IN (".implode(',',$id).")";
+		}else{
+			$query= "SELECT dep.*,cli.* 
 				FROM tbl_dependentePF AS dep 
 				INNER JOIN tbl_clientePF AS cli 
 				ON (cli.id_clientePF = dep.id_clientePF) 
 				WHERE TRUE 
-				AND (dep.id_dependentePF = '$id')";
+				AND dep.id_dependentePF = '$id'";
+		}
+		
 				
 		return $this->query($query);
 	}

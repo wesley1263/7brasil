@@ -8,6 +8,7 @@ use Application\Models\Venda;
 use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
 use Application\Models\DependentePF;
+use Application\Models\Participacao;
 
 class VendaController extends OXE_Controller{
 		
@@ -40,6 +41,7 @@ class VendaController extends OXE_Controller{
 			
 		$clientePF = new ClientePF();
 		$dependente = new DependentePF();
+		$participacao = new Participacao();
 		
 		if(isset($_SESSION['id_clientePF'])){
 			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
@@ -49,10 +51,14 @@ class VendaController extends OXE_Controller{
 		}
 		
 		####### Iterando sessão de dependentes #############
+		$depArray = array();
 		if(isset($_SESSION['dependentes'])){
 			foreach($_SESSION['dependentes'] as $key => $value){
-				$data['dependentes'] = $this->model->getDependentes($key);
+				if(count($value) != null){
+					$depArray[] = $dependente->list_once($value);
+				}
 			}
+			$data['dependentes'] = $depArray;
 		}
 		####### Iterando sessão de dependentes #############
 		
@@ -61,6 +67,7 @@ class VendaController extends OXE_Controller{
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
+		$data['participacao'] = $participacao->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -95,14 +102,28 @@ class VendaController extends OXE_Controller{
 	
 	public function addDependenteAction()
 	{
-		
 		if(count($_POST['id_dependentePF']) != 0){
-			
 			$_SESSION['dependentes'][$_POST['id_clientePF']] = $_POST['id_dependentePF'];
 			$this->session->setFlashMessage('Dependente adicionado à lista de venda.','success');
 			$this->redirector('/venda/cadVendaPF');
 		}
-		
+	}
+
+	public function deleteDependenteAction()
+	{
+		$param = func_get_args();
+	foreach($_SESSION['dependentes'] as $key => $value){
+		if($key == $param[1]){
+			foreach($value as $K => $val){
+				if($val == $param[3]){
+					unset($_SESSION['dependentes'][$key][$K]);
+				}
+			}
+		}
+	}
+		// unset($_SESSION['dependentes'][$param[1]][$param[3]]);
+		$this->session->setFlashMessage('Dependente adicionado  lista de venda','success');
+		$this->redirector('/venda/cadVendaPF');
 	}
 
 	public function deleteClientePFAction()

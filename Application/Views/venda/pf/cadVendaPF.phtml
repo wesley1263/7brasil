@@ -12,6 +12,10 @@
 
 		 // session_destroy();
 		$this->dump($_SESSION);
+		
+		// if(isset($dependentes))
+		// $this->dump($dependentes);
+		
        $form->init('form_addClientePF','addClientePF','post');
 		
 	    $form->input(array(
@@ -45,11 +49,14 @@
 				<div class="modal-body">
 						<form method="post" action="/venda/addClientePF">
 						<input id="id_PF" name="id_PF" type="hidden">
-						<select name="id_participacao">
-							<option value="2">Pagante e Participante</option>
-							<option value="1">Pagante</option>
-						</select>
+						<!-- <select name="id_participacao"> -->
+							<?php foreach($participacao as $part):  ?>
+								<input type="radio" name="id_participacao" value="<?=$part['id_participacao']?>"><?=$part['titulo_participacao']?>&nbsp;&nbsp;
+								<!--<option value="<?=$part['id_participacao']?>"><?=$part['titulo_participacao']?></option> -->
+							<?php endforeach;  ?>
+						<!-- </select> -->
 						<br />
+						<hr />
 						<div id="nome_PF"></div>
 						<div id="cpf_PF"></div>
 						<div id="dataNascimento_PF"></div>
@@ -96,17 +103,36 @@
 	<table class="table table-condensed">
 		<?php if(isset($clientes)): 
 			foreach($clientes as $key => $value):
+				
 				foreach($value as $k => $v){
+					$nome_cli[$v['id_clientePF']] = $v['nome_clientePF'];
 			?>
 			<tr class="warning">
 				<td><?=$v['nome_clientePF']?></td>
+				<td>Cliente</td>
 				<td><a href="#"  class="btn btn-info bt_part" id_cliente="<?=$v['id_clientePF']?>" data-toggle="modal" data-target="#modalDependente"><span class="glyphicon glyphicon-plus-sign"></span> Dependentes</a></td>
 				<td><a href="/venda/deleteClientePF/id/<?=$v['id_clientePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_clientePF']?> da lista de venda?')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
 			</tr>
 		<?php 
 				}
 			endforeach;
-		endif; ?>
+		endif; 
+		
+		if(isset($dependentes)):
+			foreach($dependentes as $key => $value): 
+				foreach($value as $k =>  $v){
+			?>
+			<tr class="success">
+				<td><?=$v['nome_dependentePF'] ?></td>
+				<td>Dependente</td>
+				<td><?=$nome_cli[$v['id_clientePF']]?></td>
+				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependentePF']?> da lista de venda?')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>
+			</tr>
+			<?php 
+				}
+			endforeach;	
+		endif;	
+		?>
 	</table>
        
       </div>
