@@ -48,9 +48,7 @@ class Venda extends OXE_Model {
 	
 	public function getDependentes($id)
 	{
-		return $this->select()
-					->from('tbl_dependentePF')
-					->where("id_clientePF = '$id'")
-					->result();
+		$query = "SELECT * FROM tbl_dependentePF WHERE id_clientePF = '$id'";
+		return $this->query($query);
 	}
 }

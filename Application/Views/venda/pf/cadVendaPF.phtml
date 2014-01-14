@@ -9,8 +9,9 @@
 	    if(isset($_SESSION['error'])){
        	echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
        }
-		// session_destroy();
-		// $this->dump($_SESSION);
+
+		 // session_destroy();
+		$this->dump($_SESSION);
        $form->init('form_addClientePF','addClientePF','post');
 		
 	    $form->input(array(
@@ -24,7 +25,7 @@
 				'required' => false
 				));
 				
-		echo '<button type="button" id="bt_findCliente" data-toggle="modal" data-target="#myModal" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Buscar</button>';
+		echo '<button type="button" id="bt_findCliente"  data-toggle="modal" data-target="#myModal" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Buscar</button>';
 		echo ' ';
 		echo '<button type="button" id="bt_addNew" class="btn btn-primary"><i class="glyphicon glyphicon-user"></i> Novo</button>';
 		$form->groupClose();
@@ -77,14 +78,13 @@
 					<h4 class="modal-title" id="myModalLabel">Dependentes</h4>
 				</div>
 				<div class="modal-body">
-						<select name="id_dependentePF">
-							
-						</select>
+				<form method="post" action="/venda/addDependente">
+				<div class="dependentePF">	</div>
 						
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
-					<button type="button" id="bt_incluirDependente" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+					<button type="submit" id="bt_incluirDependente" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+					</form>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -163,17 +163,30 @@
 			jQuery('.bt_part').click(function(){
 				var id_cliente = jQuery(this).attr('id_cliente');
 				jQuery.ajax({
-					url: '/venda/addDependente',
+					url: '/venda/findDependente',
 					type: 'post',
 					dataType: 'json',
 					data: {id_cliente : id_cliente},
 					success: function(data){
-						for(var i = 0; i < data.length; i++ ){
-							jQuery('[name=id_dependentePF]').html('<option valeu="'+data[i].id_dependentePF+'">'+data[i].nome_dependentePF+'</otpion>');
+						jQuery("#bt_incluirDependente").attr('disabled',false);
+						if(data.length){
+							jQuery('.dependentePF').html('');
+							jQuery('.dependentePF').append('<input type="hidden" name="id_clientePF" value="'+data[0].id_clientePF+'"/>');
+							for(var i = 0; i < data.length; i++ ){
+								jQuery('.dependentePF').append('<input type="checkbox" name="id_dependentePF[]" value="'+data[i].id_dependentePF+'"/> '+data[i].nome_dependentePF + '<br />');
+							}
+						}else{
+							jQuery(".dependentePF").html('<h3>Esse cliente não tem dependente!</h3>');
+							jQuery("#bt_incluirDependente").attr('disabled',true);
 						}
+						
 					}
 				});
 			});
+		
+		jQuery('#bt_sairDependente').click(function(){
+			
+		});
 		
 		//Mascarando campos
 		jQuery('#cpf_clientePF').mask('999.999.999-99');

@@ -7,6 +7,7 @@ use Vendor\Library\Session\Session;
 use Application\Models\Venda;
 use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
+use Application\Models\DependentePF;
 
 class VendaController extends OXE_Controller{
 		
@@ -38,15 +39,22 @@ class VendaController extends OXE_Controller{
 	{
 			
 		$clientePF = new ClientePF();
+		$dependente = new DependentePF();
 		
 		if(isset($_SESSION['id_clientePF'])){
-			// $this->dump($_SESSION['id_clientePF']);
 			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
 				$clientes[] = $clientePF->list_once($value);
 			}
 			$data['clientes'] = $clientes;
-			// $data['clientes'] = array();
 		}
+		
+		####### Iterando sessão de dependentes #############
+		if(isset($_SESSION['dependentes'])){
+			foreach($_SESSION['dependentes'] as $key => $value){
+				$data['dependentes'] = $this->model->getDependentes($key);
+			}
+		}
+		####### Iterando sessão de dependentes #############
 		
 		$data['title'] = '7 Brasil - Vendas';
 		
@@ -63,7 +71,6 @@ class VendaController extends OXE_Controller{
 
 	public function addClientePFAction()
 	{
-		$this->dump($_POST);
 		if($_POST['id_PF'] != null){
 			if(in_array($_POST['id_PF']['id'], $_SESSION['id_clientePF'])){
 				$this->session->setFlashMessage('Cliente já foi Adicionado a lista de venda!.','error');
@@ -81,17 +88,31 @@ class VendaController extends OXE_Controller{
 		
 	}
 	
-	public function addDependenteAction()
+	public function findDependenteAction()
 	{
 		echo json_encode($this->model->getDependentes($_POST['id_cliente']));
+	}
+	
+	public function addDependenteAction()
+	{
+		
+		if(count($_POST['id_dependentePF']) != 0){
+			
+			$_SESSION['dependentes'][$_POST['id_clientePF']] = $_POST['id_dependentePF'];
+			$this->session->setFlashMessage('Dependente adicionado à lista de venda.','success');
+			$this->redirector('/venda/cadVendaPF');
+		}
+		
 	}
 
 	public function deleteClientePFAction()
 	{
 		$param = func_get_args();
-		foreach($_SESSION['id_clientePF'] as $key => $value){
+		foreach($_SESSION['id_clientePF']['id'] as $key => $value){
 			if($value == $param[1]){
-				unset($_SESSION['id_clientePF'][$key]);
+				unset($_SESSION['id_clientePF']['id'][$key]);
+				unset($_SESSION['id_clientePF']['participacao'][$key]);
+				unset($_SESSION['dependentes'][$value]);
 			}
 		}
 		$this->session->setFlashMessage('Cliente removido da lista de venda','success');
