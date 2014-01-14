@@ -9,8 +9,8 @@ class Session {
 	}
 	 
 	public function setSession($key,$value = null){
-		if(is_array($key)){
-			foreach($key as $keys => $values){
+		if(is_array($value)){
+			foreach($value as $keys => $values){
 				$_SESSION[$keys] = $values;
 			}
 		}else{

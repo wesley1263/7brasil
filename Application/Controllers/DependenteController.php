@@ -77,8 +77,6 @@ class DependenteController extends OXE_Controller{
 		if($_POST['dt_validade_passaporte_dependentePF']){
 		$_POST['dt_validade_passaporte_dependentePF'] = $this->dateToMysql($_POST['dt_validade_passaporte_dependentePF']);
 		}
-		$this->dump($_POST);
-		exit();
 
 		
 		if($_FILES['foto_dependentePF']['size'] > 0){
