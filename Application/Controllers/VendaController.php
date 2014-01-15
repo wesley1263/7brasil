@@ -9,6 +9,7 @@ use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
 use Application\Models\DependentePF;
 use Application\Models\Participacao;
+use Application\Models\Locadora;
 
 class VendaController extends OXE_Controller{
 		
@@ -42,6 +43,7 @@ class VendaController extends OXE_Controller{
 		$clientePF = new ClientePF();
 		$dependente = new DependentePF();
 		$participacao = new Participacao();
+		$locadora = new Locadora();
 		
 		if(isset($_SESSION['id_clientePF'])){
 			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
@@ -68,6 +70,7 @@ class VendaController extends OXE_Controller{
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
 		$data['participacao'] = $participacao->list_all();
+		$data['locadoras'] = $locadora->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

@@ -100,6 +100,176 @@
 	<br />
 	<br />
 	<br />
+	
+	   	<!-- Modal de aluguel de carros -->
+	<div class="modal fade" id="modalCarros" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Aluguel de Carros</h4>
+				</div>
+				<div class="modal-body">
+					<div class="carroPF">	
+						<?php 
+						$form->init('formAddCarro','post','#');
+						
+						$form->groupOpen();
+						foreach($locadoras as $loc){
+							$opt_loc[$loc['id_locadora']] = $loc['nome_locadora'];
+						}
+						$form->select($opt_loc,'id_locadora','Locadora',1,2,5);
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'dt_inicio_carro',
+							'type' =>'text',
+							'placeholder' => 'Data de início',
+							'num_label' =>'2',
+							'num_input' =>'3',
+							'label' =>'Início',
+							'value' => '',
+							'required' => false
+							));
+							
+						$form->input(array(
+							'name' =>'dt_devolucao_carro',
+							'type' =>'text',
+							'placeholder' => 'Data de Devolução',
+							'num_label' =>'2',
+							'num_input' =>'3',
+							'label' =>'Devolução',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'local_incio_carro',
+							'type' =>'text',
+							'placeholder' => 'Local de retirada',
+							'num_label' =>'2',
+							'num_input' =>'8',
+							'label' =>'Retirada',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'local_devolucao_carro',
+							'type' =>'text',
+							'placeholder' => 'Local de Devolução',
+							'num_label' =>'2',
+							'num_input' =>'8',
+							'label' =>'Devolução',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'voucher_carro',
+							'type' =>'file',
+							'placeholder' => 'Data do aluguel',
+							'num_label' =>'2',
+							'num_input' =>'8',
+							'label' =>'Devolução',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'valor_carro',
+							'type' =>'text',
+							'placeholder' => 'Valor do Aluguel',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Aluguel',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'valor_casa_carro',
+							'type' =>'text',
+							'placeholder' => 'Comissão da Casa',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Comissão',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'taxa_carro',
+							'type' =>'text',
+							'placeholder' => 'Taxas Extras',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Taxas',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						
+						// $form->textarea('descricao_carro','Descrição','',2,5);					
+						// $form->submit('Salvar');
+
+						$form->close();						
+						?>
+					</div><!-- div carroPF-->
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirCarro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	   	<!-- Modal de aluguel de carros -->
+	
+	
+	<!-- Tela de botoes de produtos-->
+	<div class="venda_produtos">
+		<div class="vend_produtos_left">
+			<br />
+			<br />
+			<p><a href="#" title="Reserva de Hoteis" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> HOTEIS</a></p>
+			<br />
+			<p><a href="#"  data-toggle="modal" data-target="#modalCarros" title="Aluguel de carros" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CARROS</a></p>
+			<br />
+			<p><a href="#" title="Reservar passagens aéreas" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> PASSAGENS</a></p>
+		</div>
+		
+		<div class="vend_produtos_right">
+			<br />
+			<br />
+			<p><a href="#" title="Contratar Seguro para viagem" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> SEGURO</a></p>
+			<br />
+			<p><a href="#" title="Compra de tickets" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> TICKETS</a></p>
+			<br />
+			<p><a href="#" title="Compra de cruzeiros atlânticos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CRUZEIROS</a></p>
+			<br />
+			<p><a href="#" title="Outros Produtos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> Outros</a></p>
+		</div>
+	</div>
+	<!-- Tela de botoes de produtos-->
+	<hr />
+	
+	<hr />
+	<br />
 	<table class="table table-condensed">
 		<?php if(isset($clientes)): 
 			foreach($clientes as $key => $value):
