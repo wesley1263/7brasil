@@ -24,14 +24,19 @@ if(isset($_SESSION['success'])){
 	</form>
 	<?php 
 	$table->t_init('class="table table-bordered"');
-	$table->t_head(array('Teste','Teste','Status','Editar','Remover'));
+	$table->t_head(array('Moeda','Cambio','Dia','Editar','Remover'));
+	foreach($moedas as $moe){
+		$nome_moe[$moe['id_cambio']] = $moe['titulo_cambio'];
+	}
+	foreach($cambios as $cam):
 	$table->t_row(array(
-						'teste',
-						'teste',
-						'Ativo',
-						'<center><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-						'<center><a href="#" onclick=" return confirm(\'Deseja realmente remover ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+						$nome_moe[$cam['id_cambio']],
+						$cam['valor_moeda'],
+						date('d/m/Y',strtotime($cam['dt_moeda'])),
+						'<center><a href="/moeda/cadMoeda/id/'.$cam['id_moeda'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+						'<center><a href="/moeda/deleteMoeda/id/'.$cam['id_moeda'].'" onclick=" return confirm(\'Deseja realmente remover cambio do dia?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
 						));
+	endforeach;
 	$table->generate();
 	?>
 </div>

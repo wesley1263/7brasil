@@ -1,0 +1,67 @@
+<?php
+$id = isset($cambios) ? $cambios[0]['id_moeda']: null;
+
+			
+			$form->init('form_moeda','/moeda/saveMoeda');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_moeda',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			foreach($moedas as $cam){
+			$opt_ca[$cam['id_cambio']] = $cam['titulo_cambio'];
+			}
+			$form->select($opt_ca,'id_cambio','Moeda',isset($cambios) ? $cambios[0]['id_cambio']: null);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'dt_moeda',
+				'type' =>'text',
+				'placeholder' => 'Data do Cambio',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Data',
+				'value' => isset($cambios) ? date('d/m/Y',strtotime($cambios[0]['dt_moeda'])): date('d/m/Y'),
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_moeda',
+				'type' =>'text',
+				'placeholder' => 'Valor do Cambio',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Valor',
+				'value' => isset($cambios) ? $cambios[0]['valor_moeda']: null,
+				'required' => true
+				));
+			$form->groupClose();
+		echo str_repeat('<br />',3);
+			
+			
+			$form->groupOpen();		
+			$form->submit('Salvar','style="padding:5% 13%"');
+			$form->groupClose();
+			
+			
+			$form->close();
+?>
+<script>
+jQuery(function(){
+	
+	jQuery('#dt_moeda').mask('99/99/9999');
+	jQuery("#valor_moeda").maskMoney({thousands:'', decimal:'.'});
+});
+</script>

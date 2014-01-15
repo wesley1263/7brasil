@@ -114,7 +114,7 @@
 				<div class="modal-body">
 					<div class="carroPF">	
 						<?php 
-						$form->init('formAddCarro','post','#');
+						$form->init('formAddCarro','post','/carro/saveCarro');
 						
 						$form->groupOpen();
 						foreach($locadoras as $loc){
@@ -141,7 +141,7 @@
 							'placeholder' => 'Data de Devolução',
 							'num_label' =>'2',
 							'num_input' =>'3',
-							'label' =>'Devolução',
+							'label' =>'Fim',
 							'value' => '',
 							'required' => false
 							));	
@@ -177,10 +177,10 @@
 						$form->input(array(
 							'name' =>'voucher_carro',
 							'type' =>'file',
-							'placeholder' => 'Data do aluguel',
+							'placeholder' => '',
 							'num_label' =>'2',
 							'num_input' =>'8',
-							'label' =>'Devolução',
+							'label' =>'Voucher',
 							'value' => '',
 							'required' => false
 							));	
@@ -228,12 +228,13 @@
 						// $form->textarea('descricao_carro','Descrição','',2,5);					
 						// $form->submit('Salvar');
 
-						$form->close();						
+											
 						?>
 					</div><!-- div carroPF-->
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirCarro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close();	 ?>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -386,6 +387,16 @@
 		
 		//Mascarando campos
 		jQuery('#cpf_clientePF').mask('999.999.999-99');
+		
+		
+		//Funções para o modal Carros
+		jQuery('#dt_inicio_carro').mask('99/99/9999');
+		jQuery('#dt_devolucao_carro').mask('99/99/9999');
+		jQuery("#valor_carro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_carro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#taxa_carro").maskMoney({thousands:'', decimal:'.'});
+		//Funções para o modal Carros
+		
 		
 		//Função para formatar data no padrão brasileiro
 		function format_data(data){

@@ -52,6 +52,12 @@ class CarroController extends OXE_Controller{
 	
 	public function saveCarroAction()
 	{
+		foreach($_POST as $key => $value){
+			if($key == 'dt_inicio_carro' || $key == 'dt_devolucao_carro'){
+				$this->dateToMysql($value);
+			}
+			$_POST[$key] = strip_tags($value);
+		}
 		$this->dump($_POST);
 	}
 	
@@ -62,6 +68,12 @@ class CarroController extends OXE_Controller{
 			$this->session->setFlashMessage('Carro removido do sistema','success');
 			$this->redirector('/carro');
 		}
+	}
+	
+	private function dateToMysql($date)
+	{
+		$date = explode("/",$date);
+		return $date[2].'-'.$date[1].'-'.$date[0];
 	}
 }
 			

@@ -26,6 +26,8 @@ class MoedaController extends OXE_Controller{
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
+		$data['cambios'] = $this->model->list_all();
+		$data['moedas'] = $this->cambio->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -38,15 +40,15 @@ class MoedaController extends OXE_Controller{
 	{
 		$param = func_get_args();
 		if($param){
-			$data['moedas'] = $this->model->list_once($param[1]);
+			$data['cambios'] = $this->model->list_once($param[1]);
 		}
 		
 		$data['title'] = 'Titulo da Pagina';
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
-		$data['cambios'] = $this->cambio->list_all();
-				
+		$data['moedas'] = $this->cambio->list_all();
+		
 		$this->view('template/head',$data);
 		$this->view('template/header');
 		$this->view('moeda/cadMoeda',$data);
@@ -55,16 +57,23 @@ class MoedaController extends OXE_Controller{
 	
 	public function saveMoedaAction()
 	{
-		$_POST[''] = strtoupper($_POST['']);
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
 		}
 		
-		if($_POST[''] == null){
-			
+		$_POST['dt_moeda'] = $this->dateToMysql($_POST['dt_moeda']).' '.date('H:i:s');
+		if($_POST['id_moeda'] == null){
+			if($this->model->add($_POST)){
+				$this->session->setFlashMessage('Valor de cambio adicionado com sucesso.','success');
+				$this->redirector('/moeda');
+			}
+		}else{
+			if($this->model->alter($_POST)){
+				$this->session->setFlashMessage('Valor de cambio alterado com sucesso.','success');
+				$this->redirector('/moeda');
+			}
 		}
 		
-		$this->dump($_POST);
 	}
 	
 	public function deleteMoedaAction()
@@ -74,6 +83,12 @@ class MoedaController extends OXE_Controller{
 			$this->session->setFlashMessage('Moeda removido do sistema','success');
 			$this->redirector('/moeda');
 		}
+	}
+	
+	private function dateToMysql($date)
+	{
+		$data = explode('/',$date);
+		return $data[2].'-'.$data[1].'-'.$data[0];
 	}
 }
 			
