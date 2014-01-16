@@ -10,6 +10,7 @@ use Application\Models\ClientePJ;
 use Application\Models\DependentePF;
 use Application\Models\Participacao;
 use Application\Models\Locadora;
+use Application\Models\Carro;
 
 class VendaController extends OXE_Controller{
 		
@@ -44,6 +45,7 @@ class VendaController extends OXE_Controller{
 		$dependente = new DependentePF();
 		$participacao = new Participacao();
 		$locadora = new Locadora();
+		$carro = new Carro();
 		
 		if(isset($_SESSION['id_clientePF'])){
 			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
@@ -71,6 +73,7 @@ class VendaController extends OXE_Controller{
 		$data['session'] = $this->session;
 		$data['participacao'] = $participacao->list_all();
 		$data['locadoras'] = $locadora->list_all();
+		$data['carros'] = $carro->getCambio();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
