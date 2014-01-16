@@ -52,13 +52,35 @@ class CarroController extends OXE_Controller{
 	
 	public function saveCarroAction()
 	{
+		
+		if($_FILES['voucher_carro']['size'] > 0 && $_FILES['voucher_carro']['error'] == UPLOAD_ERR_OK){
+			$file = explode('/',$_FILES['voucher_carro']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_carro']['tmp_name'], UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_carro'] = UPLOAD_PATH.$name.$ext;
+		}
 		foreach($_POST as $key => $value){
-			if($key == 'dt_inicio_carro' || $key == 'dt_devolucao_carro'){
-				$this->dateToMysql($value);
-			}
 			$_POST[$key] = strip_tags($value);
 		}
-		$this->dump($_POST);
+		$_POST['dt_inicio_carro'] = $this->dateToMysql($_POST['dt_inicio_carro']);
+		$_POST['dt_devolucao_carro'] = $this->dateToMysql($_POST['dt_devolucao_carro']);
+		$id_cliente = $_POST['id_clientePF'];
+		unset($_POST['id_clientePF']);
+		
+		if($_POST['id_carro'] == null){
+			$ok = $this->model->add($_POST);
+			if($ok){
+				$_SESSION['carros'][$id_cliente][] = $ok;
+				$this->session->setFlashMessage('Aluguel de carro adicionado a listan de venda','success');
+				$this->redirector('/venda/CadVendaPF');
+			}
+		}else{
+			if($this->model->alter($_POST)){
+				$this->session->setFlashMessage('Aluguel de carro alterado a listan de venda','success');
+				$this->redirector('/venda/CadVendaPF');
+			}
+		}
 	}
 	
 	public function deleteCarroAction()
@@ -66,7 +88,7 @@ class CarroController extends OXE_Controller{
 		$param = func_get_args();
 		if($this->model->remove($param[1])){
 			$this->session->setFlashMessage('Carro removido do sistema','success');
-			$this->redirector('/carro');
+			$this->redirector('/venda/CadVenda');
 		}
 	}
 	

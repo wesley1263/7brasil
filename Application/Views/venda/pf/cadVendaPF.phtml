@@ -114,13 +114,33 @@
 				<div class="modal-body">
 					<div class="carroPF">	
 						<?php 
-						$form->init('formAddCarro','post','/carro/saveCarro');
+						$form->init('formAddCarro','/carro/saveCarro','post');
 						
 						$form->groupOpen();
 						foreach($locadoras as $loc){
 							$opt_loc[$loc['id_locadora']] = $loc['nome_locadora'];
 						}
 						$form->select($opt_loc,'id_locadora','Locadora',1,2,5);
+						$form->groupClose();
+
+						$form->groupOpen();
+						foreach($carros as $car){
+							$op_car[$car['id_cambio']] = $car['titulo_cambio'];
+						}
+						$op_car['0'] = 'REAL BR';
+						$form->select($op_car,'id_moeda','Moeda',0,2,5);
+						$form->groupClose();
+						
+						
+						$form->groupOpen();
+						if(isset($clientes)){
+							foreach($clientes as $key => $value){
+								foreach($value as $k => $v){
+									$opt_cli[$v['id_clientePF']] = $v['nome_clientePF'];
+								}
+							}
+						}
+						$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
 						$form->groupClose();
 						
 						$form->groupOpen();
@@ -132,7 +152,7 @@
 							'num_input' =>'3',
 							'label' =>'Início',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));
 							
 						$form->input(array(
@@ -143,7 +163,7 @@
 							'num_input' =>'3',
 							'label' =>'Fim',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));	
 						$form->groupClose();
 						
@@ -156,7 +176,7 @@
 							'num_input' =>'8',
 							'label' =>'Retirada',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));	
 						$form->groupClose();
 						
@@ -169,7 +189,7 @@
 							'num_input' =>'8',
 							'label' =>'Devolução',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));	
 						$form->groupClose();
 						
@@ -182,7 +202,7 @@
 							'num_input' =>'8',
 							'label' =>'Voucher',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));	
 						$form->groupClose();
 						
@@ -195,7 +215,7 @@
 							'num_input' =>'4',
 							'label' =>'Aluguel',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));	
 						$form->groupClose();
 						
@@ -208,7 +228,7 @@
 							'num_input' =>'4',
 							'label' =>'Comissão',
 							'value' => '',
-							'required' => false
+							'required' => true
 							));	
 						$form->groupClose();
 						
@@ -224,17 +244,14 @@
 							'required' => false
 							));	
 						$form->groupClose();
-						
-						// $form->textarea('descricao_carro','Descrição','',2,5);					
-						// $form->submit('Salvar');
-
-											
-						?>
+						 ?>
+						 <label>Descrição</label>
+						 <textarea name="descricao_carro" class="form-control" rows="3"></textarea>
 					</div><!-- div carroPF-->
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirCarro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-				<?php $form->close();	 ?>
+				<?php $form->close(); ?>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -274,7 +291,6 @@
 	<table class="table table-condensed">
 		<?php if(isset($clientes)): 
 			foreach($clientes as $key => $value):
-				
 				foreach($value as $k => $v){
 					$nome_cli[$v['id_clientePF']] = $v['nome_clientePF'];
 			?>
