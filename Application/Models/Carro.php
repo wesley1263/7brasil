@@ -48,9 +48,8 @@ class Carro extends OXE_Model {
 	
 	public function getCambio()
 	{
-		return $this->select(array('moe.*','cam.*'))
-					->from('tbl_moeda','moe')
-					->join(array('tbl_cambio'=>'cam'),'cam.id_cambio = moe.id_cambio')
+		return $this->select()
+					->from('tbl_cambio')
 					->result();
 	}
 	
