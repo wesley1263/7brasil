@@ -47,12 +47,16 @@ class VendaController extends OXE_Controller{
 		$locadora = new Locadora();
 		$carro = new Carro();
 		
+		########### Interando sessão de cliente ################
 		if(isset($_SESSION['id_clientePF'])){
 			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
 				$clientes[] = $clientePF->list_once($value);
 			}
 			$data['clientes'] = $clientes;
 		}
+		########### Interando sessão de cliente ################
+		
+		
 		
 		####### Iterando sessão de dependentes #############
 		$depArray = array();
@@ -65,6 +69,14 @@ class VendaController extends OXE_Controller{
 			$data['dependentes'] = $depArray;
 		}
 		####### Iterando sessão de dependentes #############
+		
+		
+		############### Iteração de Sessão de Carros##########
+		if(isset($_SESSION['carros'])){
+			$data['vcarros'] = $_SESSION['carros'];
+		}
+		############### Iteração de Sessão de Carros##########
+		
 		
 		$data['title'] = '7 Brasil - Vendas';
 		

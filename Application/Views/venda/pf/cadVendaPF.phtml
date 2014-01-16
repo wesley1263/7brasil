@@ -133,6 +133,7 @@
 						
 						
 						$form->groupOpen();
+						$opt_cli = array();
 						if(isset($clientes)){
 							foreach($clientes as $key => $value){
 								foreach($value as $k => $v){
@@ -156,12 +157,36 @@
 							));
 							
 						$form->input(array(
+							'name' =>'hora_inicio_carro',
+							'type' =>'text',
+							'placeholder' => 'Horário de início',
+							'num_label' =>'2',
+							'num_input' =>'3',
+							'label' =>'Hora Início',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();	
+						$form->input(array(
 							'name' =>'dt_devolucao_carro',
 							'type' =>'text',
 							'placeholder' => 'Data de Devolução',
 							'num_label' =>'2',
 							'num_input' =>'3',
 							'label' =>'Fim',
+							'value' => '',
+							'required' => true
+							));	
+							
+							$form->input(array(
+							'name' =>'hora_devolucao_carro',
+							'type' =>'text',
+							'placeholder' => 'Horário de Devolução',
+							'num_label' =>'2',
+							'num_input' =>'3',
+							'label' =>'Hora Fim',
 							'value' => '',
 							'required' => true
 							));	
@@ -289,6 +314,8 @@
 	<hr />
 	<br />
 	<table class="table table-condensed">
+		
+			<!-- Cliente da Lista de venda -->
 		<?php if(isset($clientes)): 
 			foreach($clientes as $key => $value):
 				foreach($value as $k => $v){
@@ -304,7 +331,7 @@
 				}
 			endforeach;
 		endif; 
-		
+		///Dependentes da lista de venda
 		if(isset($dependentes)):
 			foreach($dependentes as $key => $value): 
 				foreach($value as $k =>  $v){
@@ -318,7 +345,14 @@
 			<?php 
 				}
 			endforeach;	
+		endif;
+		
+		
+			### Popula locadoras de carros ###
+		if(isset($vcarros) && count($vcarros) != 0):
+			
 		endif;	
+			### Popula locadoras de carros ###
 		?>
 	</table>
        
@@ -408,6 +442,8 @@
 		//Funções para o modal Carros
 		jQuery('#dt_inicio_carro').mask('99/99/9999');
 		jQuery('#dt_devolucao_carro').mask('99/99/9999');
+		jQuery('#hora_inicio_carro').mask('99:99');
+		jQuery('#hora_devolucao_carro').mask('99:99');
 		jQuery("#valor_carro").maskMoney({thousands:'', decimal:'.'});
 		jQuery("#valor_casa_carro").maskMoney({thousands:'', decimal:'.'});
 		jQuery("#taxa_carro").maskMoney({thousands:'', decimal:'.'});

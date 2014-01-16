@@ -15,7 +15,10 @@ class Moeda extends OXE_Model {
 	
 	public function list_all()
 	{
-		return $this->fetchAll();
+		return $this->select()
+					->from()
+					->order_by('dt_moeda','DESC')
+					->result();
 	}
 	
 	public function list_once($id)

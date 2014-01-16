@@ -6,7 +6,7 @@ use Vendor\Core\OXE_Model;
 class Carro extends OXE_Model {
 		
 	protected $_name = 'tbl_carro';
-	protected $_primary = 'id_carro';
+	protected $_primary = 'id_carros';
 	
 	public function __construct()
 	{
@@ -20,10 +20,8 @@ class Carro extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					 ->from($this->_name)
-					 ->where($this->_primary.' = '.$id)
-					 ->result();
+		$query = "SELECT * FROM $this->_name WHERE $this->_primary = $id";
+		return $this->query($query);
 	}
 	
 	public function add(array $data)
