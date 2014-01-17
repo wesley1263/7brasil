@@ -350,6 +350,22 @@
 		
 			### Popula locadoras de carros ###
 		if(isset($vcarros) && count($vcarros) != 0):
+			foreach($vcarros as $key => $value){
+			echo '<tr class="success">';
+				echo '<td>'.$opt_loc[$value['id_locadora'][0]].'</td>';	
+				echo '<td>'.$opt_cli[$key].'</td>';
+				$total = 0;
+				foreach($value as $k => $v){
+					if($k == 'valor_carro' || $k == 'valor_casa' || $k == 'valor_taxa'){
+						foreach($v as $val){
+							$total += $val;
+						}
+					}
+				}
+			echo '<td> R$ '.number_format($total,2,',','.').'</td>';	
+			echo '<td><a href="#" onclick="return confirm(\'Deseja remover da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+			echo '</tr>';
+			}
 			
 		endif;	
 			### Popula locadoras de carros ###

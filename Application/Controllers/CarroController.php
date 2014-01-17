@@ -95,10 +95,11 @@ class CarroController extends OXE_Controller{
 	public function deleteCarroAction()
 	{
 		$param = func_get_args();
-		if($this->model->remove($param[1])){
-			$this->session->setFlashMessage('Carro removido do sistema','success');
-			$this->redirector('/venda/CadVenda');
-		}
+		$this->dump($param);
+		// if($this->model->remove($param[1])){
+			// $this->session->setFlashMessage('Carro removido do sistema','success');
+			// $this->redirector('/venda/CadVenda');
+		// }
 	}
 	
 	private function dateToMysql($date)
