@@ -63,10 +63,9 @@ class CarroController extends OXE_Controller{
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
 		}
-		$_POST['dt_inicio_carro'] = $this->dateToMysql($_POST['dt_inicio_carro']).' '.$_POST['hora_inicio_carro'];
-		$_POST['dt_devolucao_carro'] = $this->dateToMysql($_POST['dt_devolucao_carro']).' '.$_POST['hora_devolucao_carro'];
+		$_POST['dt_inicio_carro'] = $_POST['dt_inicio_carro'].' '.$_POST['hora_inicio_carro'];
+		$_POST['dt_devolucao_carro'] = $_POST['dt_devolucao_carro'].' '.$_POST['hora_devolucao_carro'];
 		$id_cliente = $_POST['id_clientePF'];
-		unset($_POST['id_clientePF']);
 		unset($_POST['hora_inicio_carro']);
 		unset($_POST['hora_devolucao_carro']);
 		
@@ -76,11 +75,6 @@ class CarroController extends OXE_Controller{
 			$ok = $this->model->add($_POST);
 			if($ok){
 				$_SESSION['carros'][$id_cliente]['id_carro'][] = $ok;
-				$_SESSION['carros'][$id_cliente]['id_locadora'][] = $_POST['id_locadora'];
-				$_SESSION['carros'][$id_cliente]['valor_carro'][] = $_POST['valor_carro'];
-				$_SESSION['carros'][$id_cliente]['valor_casa'][] = $_POST['valor_casa_carro'];
-				$_SESSION['carros'][$id_cliente]['valor_taxa'][] = $_POST['taxa_carro'];
-				
 				$this->session->setFlashMessage('Aluguel de carro adicionado a listan de venda','success');
 				$this->redirector('/venda/CadVendaPF');
 			}
@@ -94,12 +88,18 @@ class CarroController extends OXE_Controller{
 	
 	public function deleteCarroAction()
 	{
-		$param = func_get_args();
-		$this->dump($param);
-		// if($this->model->remove($param[1])){
-			// $this->session->setFlashMessage('Carro removido do sistema','success');
-			// $this->redirector('/venda/CadVenda');
-		// }
+		$param  = func_get_args();
+		
+		if(in_array($param[1], $_SESSION['carros'][$param[3]]['id_carro'])){
+			$key = array_search($param[1], $_SESSION['carros'][$param[3]]['id_carro']);
+			unset($_SESSION['carros'][$param[3]]['id_carro'][$key]);
+			
+			if($this->model->remove($param[1])){
+				$this->session->setFlashMessage('Carro removido do sistema','success');
+				$this->redirector('/venda/CadVendaPF');
+			}
+		}
+			
 	}
 	
 	private function dateToMysql($date)

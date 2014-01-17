@@ -73,7 +73,13 @@ class VendaController extends OXE_Controller{
 		
 		############### Iteração de Sessão de Carros##########
 		if(isset($_SESSION['carros'])){
-			$data['vcarros'] = $_SESSION['carros'];
+			$arrayCarro = array();
+			foreach($_SESSION['carros'] as $key => $value){
+				foreach($value['id_carro'] as $k => $v){
+					$arrayCarro[] = $carro->list_once($v);
+				}
+			}
+			$data['vCarros'] = $arrayCarro;
 		}
 		############### Iteração de Sessão de Carros##########
 		
@@ -139,11 +145,21 @@ class VendaController extends OXE_Controller{
 			}
 		}
 	}
-		// unset($_SESSION['dependentes'][$param[1]][$param[3]]);
 		$this->session->setFlashMessage('Dependente adicionado  lista de venda','success');
 		$this->redirector('/venda/cadVendaPF');
 	}
-
+	
+	public function listCarroAction()
+	{
+		$Carro = new Carro();
+		$id_carro = $_SESSION['carros'][$_POST['id_cliente']]['id_carro'];
+		$array = array();
+		foreach($id_carro as $key => $value){
+			$array[]= $Carro->list_once($value);
+		}
+		echo json_encode($array);
+	}
+	
 	public function deleteClientePFAction()
 	{
 		$param = func_get_args();
