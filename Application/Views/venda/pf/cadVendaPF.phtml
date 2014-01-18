@@ -94,6 +94,8 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	
+	   
+	
 	<br />
 	<br />
 	<br />
@@ -279,6 +281,330 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	   	<!-- Modal de aluguel de carros -->
+	   	
+	   	
+	   	
+	   		<!-- Modal Hotel -->
+	<div class="modal fade" id="modalHotel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Hotel</h4>
+				</div>
+				<div class="modal-body">
+						<?php
+			$form->init('form_hotel','/hotel/saveHotel');
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_hoteis',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => false
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$opt_bro['0'] = 'NENHUM';
+			foreach($brokers as $key => $value){
+				$opt_bro[$value['id_brokers']] = $value['nome_brokers'];
+			}
+			$form->select($opt_bro,'id_brokers','Brokers',0,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();
+			
+			$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$opt_moe['0'] = 'Real BR';
+			foreach($moedas as $key => $value){
+				$opt_moe[$value['id_cambio']] = $value['titulo_cambio'];
+			}
+			$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_hotel',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Nome',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();
+			echo ' <div id="checkbox" class="checkbox"><input type="checkbox" name="is_br" id="is_br" value="nothing"><span>Internacional</span></div>';
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cep_hotel',
+				'type' =>'text',
+				'placeholder' => 'CEP',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'CEP',
+				'value' =>'',
+				'required' => false
+				));
+				echo '<div id="msg_cep"></div>';
+			$form->groupClose();
+		
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'endereco_hotel',
+				'type' =>'text',
+				'placeholder' => 'Endereço',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Endereço',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'numero_hotel',
+				'type' =>'text',
+				'placeholder' => 'Número',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Número',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cidade_hotel',
+				'type' =>'text',
+				'placeholder' => 'Cidade',
+				'num_label' =>'2',
+				'num_input' =>'6',
+				'label' =>'Cidade',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'uf_hotel',
+				'type' =>'text',
+				'placeholder' => 'UF',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'UF',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'telefone_hotel',
+				'type' =>'text',
+				'placeholder' => 'Telefone',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Telefone',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'email_hotel',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Email',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'voucher_hotel',
+				'type' =>'file',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'7',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_hotel',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+			// $form->groupClose();
+// 
+			// $form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_casa_hotel',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		?>
+		<label>Descrição</label>
+		<textarea name="descricao_hotel" class="form-control" rows="3"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirHotel" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- Modal Hotel -->
+	
+	
+		   	<!-- Modal Seguro -->
+	<div class="modal fade" id="modalSeguro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Seguros</h4>
+				</div>
+				<div class="modal-body">
+			<?php
+		$form->init('form_seguro','/seguro/saveSeguro');
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_seguro',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		foreach($seguradoras as $key => $value){
+			$opt_seg[$value['id_seguradora']] = $value['nome_seguradora'];
+		}
+		$form->select($opt_seg,'id_seguradora','Seguradora',1,2,8);
+		$form->groupClose();
+
+		$form->groupOpen();
+		foreach($tipoSeguros as $key => $value){
+			$opt_tip[$value['id_tipoSeguro']] = $value['nome_tipoSeguro'];
+		}	
+		$form->select($opt_tip,'id_tipoSeguro','Tipo',1,2,5);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		foreach($continentes as $key => $value){
+			$opt_cont[$value['id_continente']] = $value['nome_continente'];
+		}
+		$form->select($opt_cont,'id_continente','Continente',1,2,5);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		foreach($moedas as $key => $value){
+			$opt_moe[$value['id_cambio']] = $value['titulo_cambio'];
+		}
+		$form->select($opt_moe,'id_moeda','Moeda',1,2,5);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_seguro',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_casa_seguro',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'voucher_seguro',
+				'type' =>'file',
+				'placeholder' => 'Voucher',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		?>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		   	<!-- Modal Seguro -->
+	
+	
 	
 	
 	<!-- Tela de botoes de produtos-->
@@ -286,7 +612,7 @@
 		<div class="vend_produtos_left">
 			<br />
 			<br />
-			<p><a href="#" title="Reserva de Hoteis" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> HOTEIS</a></p>
+			<p><a href="#" title="Reserva de Hoteis" data-toggle="modal" data-target="#modalHotel" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> HOTEIS</a></p>
 			<br />
 			<p><a href="#"  data-toggle="modal" data-target="#modalCarros" title="Aluguel de carros" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CARROS</a></p>
 			<br />
@@ -296,7 +622,7 @@
 		<div class="vend_produtos_right">
 			<br />
 			<br />
-			<p><a href="#" title="Contratar Seguro para viagem" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> SEGURO</a></p>
+			<p><a href="#" data-toggle="modal" data-target="#modalSeguro" title="Contratar Seguro para viagem" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> SEGURO</a></p>
 			<br />
 			<p><a href="#" title="Compra de tickets" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> TICKETS</a></p>
 			<br />
@@ -319,7 +645,7 @@
 					$nome_cli[$v['id_clientePF']] = $v['nome_clientePF'];
 			?>
 			<tr class="warning">
-				<td><?=$v['nome_clientePF']?></td>
+				<td><?='Cliente: '.$v['nome_clientePF']?></td>
 				<td>Cliente</td>
 				<td><a href="#"  class="btn btn-info bt_part" id_cliente="<?=$v['id_clientePF']?>" data-toggle="modal" data-target="#modalDependente"><span class="glyphicon glyphicon-plus-sign"></span> Dependentes</a></td>
 				<td><a href="/venda/deleteClientePF/id/<?=$v['id_clientePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_clientePF']?> da lista de venda?')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
@@ -334,7 +660,7 @@
 				foreach($value as $k =>  $v){
 			?>
 			<tr class="success">
-				<td><?=$v['nome_dependentePF'] ?></td>
+				<td><?='Dependente: '.$v['nome_dependentePF'] ?></td>
 				<td>Dependente</td>
 				<td><?=$nome_cli[$v['id_clientePF']]?></td>
 				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependentePF']?> da lista de venda?')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>
@@ -355,7 +681,7 @@
 					$total += $v['valor_casa_carro'];
 					$total += $v['taxa_carro'];
 					
-					echo '<td>'.$opt_loc[$v['id_locadora']].'</td>';
+					echo '<td>Carro: '.$opt_loc[$v['id_locadora']].'</td>';
 					echo '<td>'.$opt_cli[$v['id_clientePF']].'</td>';
 					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
 			 		echo '<td><a href="/carro/deleteCarro/id/'.$v['id_carros'].'/cli/'.$v['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse carro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
@@ -366,6 +692,44 @@
 			
 		endif;	
 			### Popula locadoras de carros ###
+			
+			
+		########## Popula hoteis ##############	
+		if(isset($hoteis)){
+			foreach($hoteis as $key => $value){
+				echo '<tr class="danger">';
+				$total = 0;
+				foreach($value as $chave => $valor){
+					echo '<td>Hotel: '.$valor['nome_hotel'].'</td>';
+					echo '<td>'.$opt_cli[$valor['id_clientePF']].'</td>';
+					$total += $valor['valor_hotel'];
+					$total += $valor['valor_casa_hotel'];
+					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+			 		echo '<td><a href="/hotel/deleteHotel/id/'.$valor['id_hoteis'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Hotel da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				}
+				echo '</tr>';
+			}
+		}
+		########## Popula hoteis ##############	
+		
+		
+		########## Popula Seguros ##############
+		if(isset($seguros)){
+			foreach($seguros as $key => $value){
+			echo '<tr class="warning">';
+					$total = 0;
+				foreach($value as $chave => $valor){
+					echo '<td> Seguradora: '.$opt_seg[$valor['id_seguradora']].' - '.$opt_tip[$valor['id_tipoSeguro']].'</td>';
+					echo '<td>'.$opt_cli[$valor['id_clientePF']].'</td>';
+					$total += $valor['valor_seguro'];
+					$total += $valor['valor_casa_seguro'];
+					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+					echo '<td><a href="/seguro/deleteSeguro/id/'.$valor['id_seguro'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Seguro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				}	
+			echo '</tr>';	
+			}
+		}	
+		########## Popula Seguros ##############	
 		?>
 	</table>
        
@@ -406,6 +770,7 @@
 				}
 			});
 		});
+		//evento de buscar cliente montar o modal 
 		
 		
 			//Evento para desabilitar botão de busca
@@ -453,6 +818,7 @@
 		
 		
 		//Funções para o modal Carros
+		
 		// jQuery('#dt_inicio_carro').mask('99/99/9999');
 		// jQuery('#dt_devolucao_carro').mask('99/99/9999');
 		// jQuery('#hora_inicio_carro').mask('99:99');
@@ -466,8 +832,65 @@
 			}else{
 				jQuery('#bt_incluirCarro').attr('disabled',false);
 			}
-		
 		//Funções para o modal Carros
+		
+		
+		//Funções do modal de hotel
+		jQuery('#cep_hotel').mask('99999-999');
+		jQuery('#checkbox').css('margin-left','17%');
+		jQuery("#valor_hotel").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_hotel").maskMoney({thousands:'', decimal:'.'});
+		jQuery('#is_br').click(function(){
+			if(jQuery('#is_br:checked').length > 0){
+				jQuery('#cep_hotel').attr('disabled',true);
+			}else{
+				jQuery('#cep_hotel').attr('disabled',false);
+			}
+		});
+		if(jQuery('[name=id_clientePF]').find('option').length == 0){
+			jQuery('#bt_incluirHotel').attr('disabled',true);
+		}else{
+			jQuery('#bt_incluirHotel').attr('disabled',false);
+		}
+		
+		jQuery("#cep_hotel").blur(function(){
+		 var cep = jQuery(this).val();
+		 if(cep != ''){
+		 	jQuery.ajax({
+		 		url: '/cliente/findCep',
+		 		type: 'post',
+		 		dataType: 'json',
+		 		data: {cep:jQuery(this).val()},
+		 		success: function(data){
+		 			if(data != '0'){
+		 			jQuery('#endereco_hotel').val(data.endereco);
+		 			jQuery('#cidade_hotel').val(data.cidade	);
+		 			jQuery('#uf_hotel').val(data.uf);
+		 			jQuery('#numero_hotel').focus();
+		 			}else{
+		 				jQuery('#msg_cep').html('CEP Não encontrado!');
+		 			}
+		 			
+		 		}
+		 	});
+		 }
+		 	
+		 });
+		
+		//Funções do modal de hotel
+		
+		
+		//Funções do modal de Seguro
+		jQuery('#valor_seguro').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_casa_seguro').maskMoney({thousands:'', decimal:'.'});
+		if(jQuery('[name=id_clientePF]').find('option').length == 0){
+			jQuery('#bt_incluirSeguro').attr('disabled',true);
+		}else{
+			jQuery('#bt_incluirSeguro').attr('disabled',false);
+			
+		}
+		//Funções do modal de Seguro
+		
 		
 		
 		//Função para formatar data no padrão brasileiro

@@ -1,0 +1,125 @@
+<?php
+		$form->init('form_seguro','/seguro/saveSeguro');
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_seguro',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_clientePF',
+				'type' =>'hidden',
+				'placeholder' => 'id_clientePF',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'id_clientePF',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_seguradora',
+				'type' =>'hidden',
+				'placeholder' => 'id_seguradora',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'id_seguradora',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_tipoSeguro',
+				'type' =>'hidden',
+				'placeholder' => 'id_tipoSeguro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'id_tipoSeguro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_continente',
+				'type' =>'hidden',
+				'placeholder' => 'id_continente',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'id_continente',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_moeda',
+				'type' =>'hidden',
+				'placeholder' => 'id_moeda',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'id_moeda',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_seguro',
+				'type' =>'text',
+				'placeholder' => 'valor_seguro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'valor_seguro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_casa_seguro',
+				'type' =>'text',
+				'placeholder' => 'valor_casa_seguro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'valor_casa_seguro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'voucher_seguro',
+				'type' =>'text',
+				'placeholder' => 'voucher_seguro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'voucher_seguro',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+		
+		$form->close();

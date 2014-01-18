@@ -1,5 +1,4 @@
 <?php
-
 use Vendor\Core\OXE_Controller;
 use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
@@ -11,6 +10,14 @@ use Application\Models\DependentePF;
 use Application\Models\Participacao;
 use Application\Models\Locadora;
 use Application\Models\Carro;
+use Application\Models\Brokers;
+use Application\Models\Moeda;
+use Application\Models\Cambio;
+use Application\Models\Hotel;
+use Application\Models\Seguradora;
+use Application\Models\TipoSeguro;
+use Application\Models\Continente;
+use Application\Models\Seguro;
 
 class VendaController extends OXE_Controller{
 		
@@ -40,13 +47,21 @@ class VendaController extends OXE_Controller{
 	
 	public function cadVendaPFAction()
 	{
-			
+		### Estanciar as classess ###	
 		$clientePF = new ClientePF();
 		$dependente = new DependentePF();
 		$participacao = new Participacao();
 		$locadora = new Locadora();
 		$carro = new Carro();
-		
+		$brokers = new Brokers();
+		$Moeda = new Moeda();
+		$cambio = new Cambio();
+		$seguradora = new Seguradora();
+		$tipoSeguro = new TipoSeguro();
+		$continente = new Continente();
+		### Estanciar as classess ###	
+
+				
 		########### Interando sessão de cliente ################
 		if(isset($_SESSION['id_clientePF'])){
 			foreach($_SESSION['id_clientePF']['id'] as $key => $value){
@@ -83,6 +98,37 @@ class VendaController extends OXE_Controller{
 		}
 		############### Iteração de Sessão de Carros##########
 		
+		############### Iteração de Sessão de Hotel##########
+		if(isset($_SESSION['hotel'])){
+			$arrayHotel = array();
+			$hotel = new Hotel();
+			foreach($_SESSION['hotel'] as $key => $value){
+				foreach($value as $k => $v){
+					foreach($v as $chave => $valor){
+					$arrayHotel[] = $hotel->list_once($valor);
+					}
+				}
+			}
+			$data['hoteis'] = $arrayHotel;
+		}
+		############### Iteração de Sessão de Hotel##########
+		
+		
+		############### Iteração de Sessão de Seguro##########
+		if(isset($_SESSION['seguro'])){
+			$seguro = new Seguro();
+			$arraySeguro = array();
+			foreach($_SESSION['seguro'] as $key => $value){
+				foreach($value as $k => $val){
+					foreach($val as $chave => $valor){
+						$arraySeguro[] = $seguro->list_once($valor);
+					}
+				}
+			}
+			$data['seguros'] = $arraySeguro;
+		}
+		############### Iteração de Sessão de Seguro##########
+		
 		
 		$data['title'] = '7 Brasil - Vendas';
 		
@@ -92,6 +138,11 @@ class VendaController extends OXE_Controller{
 		$data['participacao'] = $participacao->list_all();
 		$data['locadoras'] = $locadora->list_all();
 		$data['carros'] = $carro->getCambio();
+		$data['brokers'] = $brokers->list_all();
+		$data['moedas'] = $cambio->list_all();
+		$data['seguradoras'] = $seguradora->list_all();
+		$data['tipoSeguros'] = $tipoSeguro->list_all();
+		$data['continentes'] = $continente->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

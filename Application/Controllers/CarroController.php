@@ -54,7 +54,7 @@ class CarroController extends OXE_Controller{
 	{
 		
 		if($_FILES['voucher_carro']['size'] > 0 && $_FILES['voucher_carro']['error'] == UPLOAD_ERR_OK){
-			$file = explode('/',$_FILES['voucher_carro']['name']);
+			$file = explode('.',$_FILES['voucher_carro']['name']);
 			$ext = '.'.end($file);
 			$name = md5(time().$file[0]);
 			move_uploaded_file($_FILES['voucher_carro']['tmp_name'], UPLOAD_PATH.$name.$ext);
