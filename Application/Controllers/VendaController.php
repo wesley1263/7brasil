@@ -18,6 +18,8 @@ use Application\Models\Seguradora;
 use Application\Models\TipoSeguro;
 use Application\Models\Continente;
 use Application\Models\Seguro;
+use Application\Models\Ticket;
+use Application\Models\CompraTicket;
 
 class VendaController extends OXE_Controller{
 		
@@ -59,6 +61,8 @@ class VendaController extends OXE_Controller{
 		$seguradora = new Seguradora();
 		$tipoSeguro = new TipoSeguro();
 		$continente = new Continente();
+		$ticket = new Ticket();
+		$CompraTicket = new CompraTicket();
 		### Estanciar as classess ###	
 
 				
@@ -97,6 +101,23 @@ class VendaController extends OXE_Controller{
 			$data['vCarros'] = $arrayCarro;
 		}
 		############### Iteração de Sessão de Carros##########
+		
+		############### Iteração de Sessão de Tickets##########
+		if(isset($_SESSION['tickets'])){
+			$arrayTicket = array();
+			foreach($_SESSION['tickets'] as $key => $value){
+				foreach($value['id_tickets'] as $k => $v){
+					$arrayTicket[] = $CompraTicket->list_once($v);
+				}
+			}
+			$data['compraTickets'] = $arrayTicket;
+		}
+		
+		############### Iteração de Sessão de Tickets##########
+		
+		
+		
+		
 		
 		############### Iteração de Sessão de Hotel##########
 		if(isset($_SESSION['hotel'])){
@@ -143,6 +164,7 @@ class VendaController extends OXE_Controller{
 		$data['seguradoras'] = $seguradora->list_all();
 		$data['tipoSeguros'] = $tipoSeguro->list_all();
 		$data['continentes'] = $continente->list_all();
+		$data['tickets'] = $ticket->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

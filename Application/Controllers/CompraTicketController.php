@@ -52,24 +52,44 @@ class CompraTicketController extends OXE_Controller{
 	
 	public function saveCompraTicketAction()
 	{
-		$_POST[''] = strtoupper($_POST['']);
+		if($_FILES['voucher_compraTicket']['size'] > 0 && $_FILES['voucher_compraTicket']['error'] == UPLOAD_ERR_OK){
+			
+			$file = explode('.',$_FILES['voucher_compraTicket']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_compraTicket']['tmp_name'], UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_compraTicket'] = UPLOAD_PATH.$name.$ext;
+		}
+		
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
 		}
 		
-		if($_POST[''] == null){
-			
+		if($_POST['id_compraTicket'] == null){
+			$id = $this->model->add($_POST);
+			if($id){
+				$_SESSION['tickets'][$_POST['id_clientePF']]['id_tickets'][] = $id;
+				$this->session->setFlashMessage('Ticket Adicionado a lista de Venda.','success');
+				$this->redirector('/venda/cadVendaPF');
+			}
 		}
-		
-		$this->dump($_POST);
 	}
 	
 	public function deleteCompraTicketAction()
 	{
 		$param = func_get_args();
+		$id = $param[1];
+		$id_cliente = $param[3];
+		$file  = $this->model->list_once($id);
+		if(in_array($id,$_SESSION['tickets'][$id_cliente]['id_tickets'])){
+			$key = array_search($id,$_SESSION['tickets'][$id_cliente]['id_tickets']);
+			unset($_SESSION['tickets'][$id_cliente]['id_tickets'][$key]);
+			unlink($file[0]['voucher_compraTicket']);
+		}
+		
 		if($this->model->remove($param[1])){
-			$this->session->setFlashMessage('CompraTicket removido do sistema','success');
-			$this->redirector('/compraticket');
+			$this->session->setFlashMessage('CompraTicket removido da lista venda','success');
+			$this->redirector('/venda/cadVendaPF');
 		}
 	}
 }

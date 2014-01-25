@@ -87,7 +87,7 @@ abstract class OXE_Database extends PDO {
 		try{
 			$db = $this->prepare("SELECT * FROM {$this->_name} WHERE $cond");
 			$db->execute();
-			return $db->fetch($cond);
+			return $db->fetch(PDO::FETCH_ASSOC);
 		}catch(PDOException $e){
 			exit($e->getMessage());
 		}

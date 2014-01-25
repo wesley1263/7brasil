@@ -13,8 +13,8 @@
 		 // session_destroy();
 		$this->dump($_SESSION);
 		
-		// if(isset($dependentes))
-		// $this->dump($dependentes);
+		if(isset($compraTickets))
+		$this->dump($compraTickets);
 		
        $form->init('form_addClientePF','addClientePF','post');
 		
@@ -603,6 +603,121 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 		   	<!-- Modal Seguro -->
+		   
+		   
+		   
+		   
+		   
+		   	<!-- Modal Tickets -->
+	<div class="modal fade" id="modalTicket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Tickets</h4>
+				</div>
+				<div class="modal-body">
+						<?php
+			$form->init('form_compraticket','/compraTicket/saveCompraTicket');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_compraTicket',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();
+			foreach($tickets as $key => $value){
+				$opt_tic[$value['id_ticket']] = $value['nome_ticket'];
+			}	
+			$form->select($opt_tic,'id_ticket','Ticket',1,2,8);
+			$form->groupClose();
+
+
+			$form->groupOpen();	
+			foreach($moedas as $key => $value){
+				$opt_moe[$value['id_cambio']] = $value['titulo_cambio'];
+			}
+			$form->select($opt_moe,'id_moeda','Moeda',1,2,5);
+			$form->groupClose();
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_compraTicket',
+				'type' =>'text',
+				'placeholder' => 'Valor da compra',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'comissao_compraTicket',
+				'type' =>'text',
+				'placeholder' => 'Comissão em porcentagem',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'voucher_compraTicket',
+				'type' =>'file',
+				'placeholder' => 'Voucher',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'fornecedor_compraTicket',
+				'type' =>'text',
+				'placeholder' => 'Nome Fornecedor',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Fornecedor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+						?>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirTicket" class="btn btn-primary">
+						<i class="glyphicon glyphicon-plus-sign"></i> Incluir
+					</button>
+					<?php $form->close(); ?>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+		   	<!-- Modal Tickets -->
 	
 	
 	
@@ -624,7 +739,7 @@
 			<br />
 			<p><a href="#" data-toggle="modal" data-target="#modalSeguro" title="Contratar Seguro para viagem" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> SEGURO</a></p>
 			<br />
-			<p><a href="#" title="Compra de tickets" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> TICKETS</a></p>
+			<p><a href="#" title="Compra de tickets" data-toggle="modal" data-target="#modalTicket" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> TICKETS</a></p>
 			<br />
 			<p><a href="#" title="Compra de cruzeiros atlânticos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CRUZEIROS</a></p>
 			<br />
@@ -729,7 +844,23 @@
 			echo '</tr>';	
 			}
 		}	
-		########## Popula Seguros ##############	
+		########## Popula Seguros ##############
+			
+		########## Popula Tickets ##############	
+		if(isset($compraTickets)){
+			$total = 0;
+			foreach($compraTickets as $key => $value){
+				echo '<tr class="warning">';
+					echo '<td> Tickets: '.$opt_tic[$value['id_ticket']].'</td>';
+					echo '<td>'.$opt_cli[$value['id_clientePF']].'</td>';
+					$total += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
+					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+					echo '<td><a href="/compraTicket/deleteCompraTicket/id/'.$value['id_compraTicket'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Ticket da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				echo '</tr>';
+			}
+		}
+		########## Popula Tickets ##############
+			
 		?>
 	</table>
        
@@ -891,6 +1022,18 @@
 		}
 		//Funções do modal de Seguro
 		
+		
+		//Funções do Modal de Tickets
+		jQuery('#valor_compraTicket').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#comissao_compraTicket').maskMoney({thousands:'', decimal:'.'});
+		if(jQuery('[name=id_clientePF]').find('option').length == 0){
+			jQuery('#bt_incluirTicket').attr('disabled',true);
+		}else{
+			jQuery('#bt_incluirTicket').attr('disabled',false);
+			
+		}
+		
+		//Funções do Modal de Tickets
 		
 		
 		//Função para formatar data no padrão brasileiro
