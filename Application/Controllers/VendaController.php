@@ -22,6 +22,7 @@ use Application\Models\Ticket;
 use Application\Models\CompraTicket;
 use Application\Models\CompaniaCruzeiro;
 use Application\Models\Cruzeiro;
+use Application\Models\ProdutoOutros;
 
 class VendaController extends OXE_Controller{
 		
@@ -67,6 +68,7 @@ class VendaController extends OXE_Controller{
 		$CompraTicket = new CompraTicket();
 		$companiaCruzeiro = new CompaniaCruzeiro();
 		$cruzeiro = new Cruzeiro();
+		$ProdutoOutros = new ProdutoOutros();
 		### Estanciar as classess ###	
 
 				
@@ -169,6 +171,20 @@ class VendaController extends OXE_Controller{
 		############### Iteração de Sessão de Cruzeiros ##########
 		
 		
+		############### Iteração de Sessão de Outro Produtos ##########
+		if(isset($_SESSION['produtos'])){
+			$arrayProdutos = array();
+			foreach($_SESSION['produtos'] as $key => $value){
+				foreach($value['id_produtos'] as $chave => $valor){
+					$arrayProdutos[] = $ProdutoOutros->list_once($valor);
+					$arrayProdutos[$chave]['id_clientePF'] = $key;
+				}
+			}
+			$data['produtos'] = $arrayProdutos;
+		}
+		############### Iteração de Sessão de Outro Produtos ##########
+		
+		
 		$data['title'] = '7 Brasil - Vendas';
 		
 		$data['form'] = $this->form;
@@ -260,6 +276,9 @@ class VendaController extends OXE_Controller{
 				unset($_SESSION['id_clientePF']['id'][$key]);
 				unset($_SESSION['id_clientePF']['participacao'][$key]);
 				unset($_SESSION['dependentes'][$value]);
+				if(count($_SESSION['id_clientePF']['id']) == 0){
+					unset($_SESSION['id_clientePF']);
+				}
 			}
 		}
 		$this->session->setFlashMessage('Cliente removido da lista de venda','success');

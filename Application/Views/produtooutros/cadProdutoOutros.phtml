@@ -1,0 +1,101 @@
+<?php
+		$form->init('form_produtooutros','/produtooutros/saveProdutoOutros');
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_produto',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_moeda',
+			'type' =>'hidden',
+			'placeholder' => 'id_moeda',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'id_moeda',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'titulo_produto',
+			'type' =>'text',
+			'placeholder' => 'titulo_produto',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'titulo_produto',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'valor_produto',
+			'type' =>'text',
+			'placeholder' => 'Valor',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'valor_produto',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'fornecedor_produto',
+			'type' =>'text',
+			'placeholder' => 'Fornecedor',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Fornecedor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dt_inicio_produto',
+			'type' =>'date',
+			'placeholder' => 'Início',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Início',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dt_final_produto',
+			'type' =>'date',
+			'placeholder' => 'Final',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Final',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		$form->textarea('descricao_produto','descricao_produto','','descricao_produto',2,8);
+		echo str_repeat('<br />',3);
+		
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+		
+		$form->close();

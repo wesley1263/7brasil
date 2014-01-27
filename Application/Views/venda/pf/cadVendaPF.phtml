@@ -896,6 +896,133 @@
 		   	<!-- Modal Cruzeiros -->
 		   	
 		   	
+		   	
+		<!-- Modal Outros Produtos -->
+	<div class="modal fade" id="modalProdutos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Outros Produtos</h4>
+				</div>
+				<div class="modal-body">
+		<?php 
+		$form->init('form_produtooutros','/produtoOutros/saveProdutoOutros');
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_produto',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+		$form->groupClose();
+		
+		$form->groupOpen();
+		$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'titulo_produto',
+			'type' =>'text',
+			'placeholder' => 'Título',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Título',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'valor_produto',
+			'type' =>'text',
+			'placeholder' => 'Valor',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Valor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+				
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'comissao_produto',
+			'type' =>'text',
+			'placeholder' => 'Comissão',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Comissão',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'fornecedor_produto',
+			'type' =>'text',
+			'placeholder' => 'Fornecedor',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Fornecedor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dt_inicio_produto',
+			'type' =>'date',
+			'placeholder' => 'Início',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Início',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dt_final_produto',
+			'type' =>'date',
+			'placeholder' => 'Final',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Final',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+				?>
+				<label>Descrição</label>
+						 <textarea name="descricao_produto" class="form-control" rows="3"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirProdutos" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		<!-- Modal Outros Produtos -->
+		   	
+		   	
 	
 	
 	
@@ -921,7 +1048,7 @@
 			<br />
 			<p><a href="#" data-toggle="modal" data-target="#modalCruzeiro" title="Compra de cruzeiros atlânticos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CRUZEIROS</a></p>
 			<br />
-			<p><a href="#" title="Outros Produtos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> Outros</a></p>
+			<p><a href="#" data-toggle="modal" data-target="#modalProdutos" title="Outros Produtos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> Outros</a></p>
 		</div>
 	</div>
 	<!-- Tela de botoes de produtos-->
@@ -1026,8 +1153,8 @@
 			
 		########## Popula Tickets ##############	
 		if(isset($compraTickets)){
-			$total = 0;
 			foreach($compraTickets as $key => $value){
+			$total = 0;
 				echo '<tr class="warning">';
 					echo '<td> Tickets: '.$opt_tic[$value['id_ticket']].'</td>';
 					echo '<td>'.$opt_cli[$value['id_clientePF']].'</td>';
@@ -1057,6 +1184,21 @@
 			}
 		}
 		########## Popula Cruzeiro ##############
+		
+		########## Popula Produtos ##############
+		if(isset($produtos)){
+			foreach($produtos as $key => $value){
+			$total = 0;
+				echo '<tr class="warning">';
+				echo '<td>Produto: '.$value['titulo_produto'].' -  '.$opt_cli[$value['id_clientePF']].'</td>';
+				echo '<td>De: '.date('d/m/Y',strtotime($value['dt_inicio_produto'])).' Àté: '.date('d/m/Y',strtotime($value['dt_final_produto'])).'</td>';
+				$total += $value['valor_produto'] + $value['comissao_produto'];
+				echo '<td> R$ '.number_format($total,2,',','.').'</td>';
+				echo '<td><a href="/produtoOutros/deleteprodutoOutros/id/'.$value['id_produto'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Produto da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				echo '</tr>';
+			}
+		}
+		########## Popula Produtos ##############
 			
 		?>
 	</table>
@@ -1243,6 +1385,17 @@
 			
 		}
 		//Funções do Modal de Cruzeiro
+		
+		//Funções do Modal de Outros Produtos
+		jQuery('#valor_produto').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#comissao_produto').maskMoney({thousands:'', decimal:'.'});
+		if(jQuery('[name=id_clientePF]').find('option').length == 0){
+			jQuery('#bt_incluirProdutos').attr('disabled',true);
+		}else{
+			jQuery('#bt_incluirProdutos').attr('disabled',false);
+			
+		}
+		//Funções do Modal de Outros Produtos
 		
 		
 		//Função para formatar data no padrão brasileiro
