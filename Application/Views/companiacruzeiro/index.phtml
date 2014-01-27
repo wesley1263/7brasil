@@ -1,0 +1,27 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/companiaCruzeiro/cadCompaniaCruzeiro" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+<br />
+<br />
+<br />
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Nome','Status','Editar','Remover'));
+	foreach($companiaCruzeiros as $value){
+		$table->t_row(array(
+				$value['nome_compania_cruzeiro'],
+				$value['status_compania_cruzeiro'] == '1'? 'Ativo' : 'Inativo',
+				'<center><a href="/companiaCruzeiro/cadCompaniaCruzeiro/id/'.$value['id_compania_cruzeiro'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+				'<center><a href="/companiaCruzeiro/deleteCompaniaCruzeiro/id/'.$value['id_compania_cruzeiro'].'" onclick=" return confirm(\'Deseja realmente remover Compania de Cruzeiro?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+				));
+	}
+	$table->generate();
+	?>
+</div>

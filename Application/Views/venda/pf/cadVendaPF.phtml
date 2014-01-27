@@ -13,8 +13,8 @@
 		 // session_destroy();
 		$this->dump($_SESSION);
 		
-		if(isset($compraTickets))
-		$this->dump($compraTickets);
+		// if(isset($compraTickets))
+		// $this->dump($compraTickets);
 		
        $form->init('form_addClientePF','addClientePF','post');
 		
@@ -718,6 +718,184 @@
 	</div><!-- /.modal -->
 
 		   	<!-- Modal Tickets -->
+		   	
+		   	
+		   	
+		   	<!-- Modal Cruzeirps -->
+	<div class="modal fade" id="modalCruzeiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Cruzeiro</h4>
+				</div>
+				<div class="modal-body">
+				<?php
+				
+				$form->init('form_cruzeiro','/cruzeiro/saveCruzeiro');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_cruzeiro',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();
+			$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			foreach($companiasCruzeiro as $comp){
+				$opt_comp[$comp['id_compania_cruzeiro']] = $comp['nome_compania_cruzeiro'];
+			}
+			$form->select($opt_comp,'id_compania_cruzeiro','Companias',1,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'navio_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Navio',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'navio',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_inicio_cruzeiro',
+				'type' =>'date',
+				'placeholder' => 'Inicio',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Início',
+				'value' =>'',
+				'required' => true
+				));
+		// $form->groupClose();
+// 
+		// $form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_fim_cruzeiro',
+				'type' =>'date',
+				'placeholder' => 'Fim',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Fim',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'rota_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Rota',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Rota',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'nm_confirmacao_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Número de Confirmação',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Número',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'tipo_cabine_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Tipo de Cabine',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Cabine',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Valor do Cruzeiro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+				$form->input(array(
+						'name' =>'comissao_cruzeiro',
+						'type' =>'text',
+						'placeholder' => 'Comissão',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'Comissão',
+						'value' =>'',
+						'required' => true
+						));
+				$form->groupClose();
+				
+				
+				$form->groupOpen();	
+				$form->input(array(
+						'name' =>'voucher_cruzeiro',
+						'type' =>'file',
+						'placeholder' => 'Voucher',
+						'num_label' =>'2',
+						'num_input' =>'8',
+						'label' =>'Voucher',
+						'value' =>'',
+						'required' => false
+						));
+				$form->groupClose();
+				
+				?>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirCruzeiro" class="btn btn-primary">
+						<i class="glyphicon glyphicon-plus-sign"></i> Incluir
+					</button>
+					<?php $form->close(); ?>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+		   	<!-- Modal Cruzeiros -->
+		   	
+		   	
 	
 	
 	
@@ -741,7 +919,7 @@
 			<br />
 			<p><a href="#" title="Compra de tickets" data-toggle="modal" data-target="#modalTicket" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> TICKETS</a></p>
 			<br />
-			<p><a href="#" title="Compra de cruzeiros atlânticos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CRUZEIROS</a></p>
+			<p><a href="#" data-toggle="modal" data-target="#modalCruzeiro" title="Compra de cruzeiros atlânticos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CRUZEIROS</a></p>
 			<br />
 			<p><a href="#" title="Outros Produtos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> Outros</a></p>
 		</div>
@@ -856,10 +1034,29 @@
 					$total += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
 					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
 					echo '<td><a href="/compraTicket/deleteCompraTicket/id/'.$value['id_compraTicket'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Ticket da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				
 				echo '</tr>';
 			}
 		}
 		########## Popula Tickets ##############
+		
+		
+		########## Popula Cruzeiro ##############
+		if(isset($cruzeiros)){
+			$total = 0;
+			foreach($cruzeiros as $key => $value){
+				echo '<tr class="warning">';
+				
+				echo '<td> Cruzeiro: '.$opt_comp[$value['id_compania_cruzeiro']].' - De: '.date('d/m/Y',strtotime($value['dt_inicio_cruzeiro'])).' Até: '.date('d/m/Y',strtotime($value['dt_fim_cruzeiro'])).' </td>';
+				echo '<td>'.$opt_cli[$value['id_clientePF']].'</td>';
+				$total += $value['valor_cruzeiro'] + $value['comissao_cruzeiro'];
+				echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+				echo '<td><a href="/cruzeiro/deleteCruzeiro/id/'.$value['id_cruzeiro'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Cruzeiro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				
+				echo '</tr>';
+			}
+		}
+		########## Popula Cruzeiro ##############
 			
 		?>
 	</table>
@@ -1034,6 +1231,18 @@
 		}
 		
 		//Funções do Modal de Tickets
+		
+		
+		//Funções do Modal de Cruzeiro
+		jQuery('#valor_cruzeiro').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#comissao_cruzeiro').maskMoney({thousands:'', decimal:'.'});
+		if(jQuery('[name=id_clientePF]').find('option').length == 0){
+			jQuery('#bt_incluirCruzeiro').attr('disabled',true);
+		}else{
+			jQuery('#bt_incluirCruzeiro').attr('disabled',false);
+			
+		}
+		//Funções do Modal de Cruzeiro
 		
 		
 		//Função para formatar data no padrão brasileiro

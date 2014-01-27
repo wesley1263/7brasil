@@ -20,6 +20,8 @@ use Application\Models\Continente;
 use Application\Models\Seguro;
 use Application\Models\Ticket;
 use Application\Models\CompraTicket;
+use Application\Models\CompaniaCruzeiro;
+use Application\Models\Cruzeiro;
 
 class VendaController extends OXE_Controller{
 		
@@ -63,6 +65,8 @@ class VendaController extends OXE_Controller{
 		$continente = new Continente();
 		$ticket = new Ticket();
 		$CompraTicket = new CompraTicket();
+		$companiaCruzeiro = new CompaniaCruzeiro();
+		$cruzeiro = new Cruzeiro();
 		### Estanciar as classess ###	
 
 				
@@ -151,6 +155,20 @@ class VendaController extends OXE_Controller{
 		############### Iteração de Sessão de Seguro##########
 		
 		
+		############### Iteração de Sessão de Cruzeiros ##########
+		if(isset($_SESSION['cruzeiros'])){
+			$arrayCruzeiro = array();
+			foreach($_SESSION['cruzeiros'] as $key => $value){
+				foreach($value['id_cruzeiro'] as $chave => $valor){
+					$arrayCruzeiro[] = $cruzeiro->list_once($valor);
+				}
+			}
+			
+			$data['cruzeiros'] = $arrayCruzeiro;
+		}
+		############### Iteração de Sessão de Cruzeiros ##########
+		
+		
 		$data['title'] = '7 Brasil - Vendas';
 		
 		$data['form'] = $this->form;
@@ -165,6 +183,7 @@ class VendaController extends OXE_Controller{
 		$data['tipoSeguros'] = $tipoSeguro->list_all();
 		$data['continentes'] = $continente->list_all();
 		$data['tickets'] = $ticket->list_all();
+		$data['companiasCruzeiro'] = $companiaCruzeiro->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

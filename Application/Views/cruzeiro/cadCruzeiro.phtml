@@ -1,0 +1,141 @@
+<?php
+			$form->init('form_cruzeiro','/cruzeiro/saveCruzeiro');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_cruzeiro',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();
+			$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			foreach($companiasCruzeiro as $comp){
+				$opt_comp[$comp['id_compania_cruzeiro']] = $comp['nome_compania_cruzeiro'];
+			}
+			$form->select($opt_comp,'id_compania_cruzeiro','Companias de Cruziero',1);
+			$form->groupClose();
+
+			$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+			$form->groupClose();
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'navio_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Navio',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'navio',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_inicio_cruzeiro',
+				'type' =>'date',
+				'placeholder' => 'Inicio',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Início',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_fim_cruzeiro',
+				'type' =>'date',
+				'placeholder' => 'Fim',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Fim',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'rota_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Rota',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Rota',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'nm_confirmacao_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Número de Confirmação',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Número',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'tipo_cabine_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Tipo de Cabine',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Cabine',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Valor do Cruzeiro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'comissao_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		echo str_repeat('<br />',3);
+		
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+			
+			$form->close();
