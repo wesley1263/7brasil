@@ -1,0 +1,62 @@
+<?php
+			$form->init('form_compania','/compania/saveCompania');
+			
+			$id = isset($companias) ? $companias['id_compania'] : null;
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_compania',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			foreach($tipoComp as $comp){
+				$opt_comp[$comp['id_tipocomp']] = $comp['titulo_tipocomp']; 
+			}
+			$form->select($opt_comp,'id_tipocomp','Tipo Companias',isset($companias) ? $companias['id_tipocomp'] : 1,2,4);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_compania',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' => isset($companias) ? $companias['nome_compania'] : null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'logotipo_compania',
+				'type' =>'file',
+				'placeholder' => 'Logotipo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Logotipo',
+				'value' =>'',
+				'required' => isset($companias['logotipo_compania']) ? false : true
+				));
+				if(isset($companias['logotipo_compania'])){
+					$img = explode('/', $companias['logotipo_compania']);
+					$img = array_splice($img,4);
+					echo "<img src='/".implode('/', $img)."' width='80' />";
+				}
+			$form->groupClose();
+			echo str_repeat('<br />',3);
+			
+			$form->groupOpen();		
+			$form->submit('Salvar','style="padding:5% 13%"');
+			$form->groupClose();
+
+			$form->close();

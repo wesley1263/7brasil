@@ -177,7 +177,6 @@ class VendaController extends OXE_Controller{
 			foreach($_SESSION['produtos'] as $key => $value){
 				foreach($value['id_produtos'] as $chave => $valor){
 					$arrayProdutos[] = $ProdutoOutros->list_once($valor);
-					$arrayProdutos[$chave]['id_clientePF'] = $key;
 				}
 			}
 			$data['produtos'] = $arrayProdutos;

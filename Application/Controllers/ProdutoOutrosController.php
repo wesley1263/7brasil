@@ -57,7 +57,6 @@ class ProdutoOutrosController extends OXE_Controller{
 			$_POST[$key] = strip_tags($value);
 		}
 		$id_cliente = $_POST['id_clientePF'];
-		unset($_POST['id_clientePF']);
 		if($_POST['id_produto'] == null){
 			$id = $this->model->add($_POST);
 			if($id){
@@ -78,9 +77,9 @@ class ProdutoOutrosController extends OXE_Controller{
 		if(in_array($id, $_SESSION['produtos'][$id_cliente]['id_produtos'])){
 			$key = array_search($id, $_SESSION['produtos'][$id_cliente]['id_produtos']);
 			unset($_SESSION['produtos'][$id_cliente]['id_produtos'][$key]);
-			if(count($_SESSION['produtos'][$id_cliente]['id_produtos']) == 0){
-				unset($_SESSION['produtos']);
-			}
+			// if(count($_SESSION['produtos'][$id_cliente]['id_produtos']) == 0){
+				// unset($_SESSION['produtos']);
+			// }
 			
 			if($this->model->remove($param[1])){
 				$this->session->setFlashMessage('ProdutoOutros removido do sistema','success');

@@ -1,0 +1,36 @@
+<?php
+		$form->init('form_classe','/classe/saveClasse');
+		$id  = isset($classes) ? $classes['id_classe'] : null;
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_classe',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $id,
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'titulo_classe',
+			'type' =>'text',
+			'placeholder' => 'Título',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Título',
+			'value' => isset($classes) ? $classes['titulo_classe'] : null,
+			'required' => true
+			));
+		$form->groupClose();
+		$form->textarea('descricao_classe','Descriço',isset($classes) ? $classes['descricao_classe'] : nul,'Descriço',2,5);
+		echo str_repeat('<br />',3);
+		
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		$form->groupClose();
+
+		$form->close();

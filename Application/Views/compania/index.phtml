@@ -1,0 +1,32 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/compania/cadCompania" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<br />
+	<br />
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Nome','Tipo','Logotipo','Editar','Remover'));
+	foreach($tipoComp as $tipo){
+		$opt_tip[$tipo['id_tipocomp']] = $tipo['titulo_tipocomp'];
+	}
+	foreach($companias as $comp){
+		$img = explode('/', $comp['logotipo_compania']);
+		$img = array_splice($img,4);
+		$table->t_row(array(
+			$comp['nome_compania'],
+			$opt_tip[$comp['id_tipocomp']],
+			"<center><img src='/".implode('/', $img)."' width='50' alt=\"Logotipo\" class=\"img-rounded\"></center>",
+			'<center><a href="/compania/cadCompania/id/'.$comp['id_compania'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+			'<center><a href="/compania/deleteCompania/id/'.$comp['id_compania'].'" onclick=" return confirm(\'Deseja realmente remover ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+			));
+	}
+	$table->generate();
+	?>
+</div>
