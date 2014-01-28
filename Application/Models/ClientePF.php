@@ -45,8 +45,6 @@ class ClientePF extends OXE_Model {
 					  ->from($this->_name)
 					  ->where("cpf_clientePF = '$cpf'")
 					  ->result();
-					  
-					 
 	}
 	
 	public function findClienteCPF($cpf)
@@ -67,5 +65,10 @@ class ClientePF extends OXE_Model {
 	public function max()
 	{
 		return $this->query("SELECT MAX(id_clientePF) AS id_clientePF FROM $this->_name");
+	}
+	
+	public function lista_one($id)
+	{
+		return $this->fetch($this->_primary.' = '.$id);
 	}
 }

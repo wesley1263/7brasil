@@ -11,7 +11,7 @@
        }
 
 		 // session_destroy();
-		$this->dump($_SESSION);
+		// $this->dump($_SESSION);
 		
 		// if(isset($compraTickets))
 		// $this->dump($compraTickets);
@@ -49,8 +49,14 @@
 				<div class="modal-body">
 						<form method="post" action="/venda/addClientePF">
 						<input id="id_PF" name="id_PF" type="hidden">
-							<?php foreach($participacao as $part):  ?>
-								<input type="radio" name="id_participacao" value="<?=$part['id_participacao']?>"><?=$part['titulo_participacao']?>&nbsp;&nbsp;
+							<?php foreach($participacao as $part): 
+							if($part['id_participacao'] == 3){
+								$ckecked = 'checked';
+							}else{
+								$ckecked = null;
+							}
+							 ?>
+								<input type="radio" name="id_participacao" <?=$ckecked; ?> value="<?=$part['id_participacao']?>"><?=$part['titulo_participacao']?>&nbsp;&nbsp;
 							<?php endforeach;  ?>
 						<br />
 						<hr />
@@ -94,7 +100,8 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	
-	   
+	
+		   
 	
 	<br />
 	<br />
@@ -721,7 +728,7 @@
 		   	
 		   	
 		   	
-		   	<!-- Modal Cruzeirps -->
+		   	<!-- Modal Cruzeiros -->
 	<div class="modal fade" id="modalCruzeiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -1021,8 +1028,584 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 		<!-- Modal Outros Produtos -->
+		
+		
+	  	<!-- Modal Passagens -->
+	<div class="modal fade" id="modalPassagens" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Passagem Aérea</h4>
+				</div>
+				<div class="modal-body">
+				<?php
+		$form->init('form_passagens','/passagens/savePassagens');
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_passagens',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+
+		$form->groupOpen();
+		$form->select($opt_cli,'id_clientePF','Cliente',1,2,8);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		foreach($companias as $comp){
+			$opt_comp[$comp['id_compania']] = $comp['nome_compania'];
+		}
+		$form->select($opt_comp,'id_compania','Compania',1,2,8);
+		echo '<td><a href="/compania/cadCompania" title="Adicionar nova Compania caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+		$form->groupClose();
+
+
+		$form->groupOpen();	
+		foreach($classes as $class){
+			$opt_class[$class['id_classe']] = $class['titulo_classe'];
+		}
+		$form->select($opt_class,'id_classe','Classe',1,2,8);
+		echo '<td><a href="/classe/cadClasse" title="Adicionar nova classe caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+		$form->groupClose();
+
+		
+		
+		$form->groupOpen();	
+		foreach($origens as $orig){
+			$opt_orig[$orig['id_origem']] = $orig['nome_origem'];
+		}
+		$form->select($opt_orig,'id_origem','Origem',1,2,6);	
+		echo '<td><a href="/origem/cadOrigem" title="Adicionar novo origem caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+		$form->groupClose();
+		
+		
+		
+		$form->groupOpen();	
+		foreach($destinos as $dest){
+		$opt_dest[$dest['id_destino']] = $dest['nome_destino'];
+		}
+		$form->select($opt_dest,'id_destino','Destino',1,2,6);
+		echo '<td><a href="/destino/cadDestino" title="Adicionar novo destino caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+				
+		$form->groupClose();
+
+
+		$form->groupOpen();	
+		$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'bagagem_passagens',
+			'type' =>'text',
+			'placeholder' => 'Bagagens',
+			'num_label' =>'2',
+			'num_input' =>'4',
+			'label' =>'Bagagens',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'data_passagens',
+			'type' =>'date',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'4',
+			'label' =>'Data',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'saida_passagens',
+			'type' =>'time',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'4',
+			'label' =>'Saida',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'chegada_passagens',
+			'type' =>'time',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'4',
+			'label' =>'Chegada',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'voo_passagens',
+			'type' =>'text',
+			'placeholder' => 'Voo',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Voo',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+			// $form->groupOpen();	
+			// $form->input(array(
+				// 'name' =>'assento_passagens',
+				// 'type' =>'text',
+				// 'placeholder' => 'assento_passagens',
+				// 'num_label' =>'2',
+				// 'num_input' =>'5',
+				// 'label' =>'assento_passagens',
+				// 'value' =>'',
+				// 'required' => true
+				// ));
+		// $form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'voucher_passagens',
+				'type' =>'file',
+				'placeholder' => 'Voucher',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'ticket_passagens',
+				'type' =>'text',
+				'placeholder' => 'Ticket',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Ticket',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tarifa_passagens',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_casa_passagens',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tx_embarque_passagens',
+				'type' =>'text',
+				'placeholder' => 'Taxa de Enbarque',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Embarque',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tx_outras_passagens',
+				'type' =>'text',
+				'placeholder' => 'Taxa Extra',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Extra',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tx_repasse_passagens',
+				'type' =>'text',
+				'placeholder' => 'Taxa de Repasse',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Repasse',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+				?>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	  	<!-- Modal Passagens -->
 		   	
 		   	
+	
+	
+	
+		<!-- Modal Finalização de Venda -->
+	<div class="modal fade" id="modalFinaliza" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Finalizar Venda</h4>
+				</div>
+				<div class="modal-body">
+						
+					<!-- Todos os Produtos -->
+					<div class="panel-group" id="accordion">
+						<!-- Aba de cliente-->
+						<?php if(isset($_SESSION['id_clientePF']) && count($_SESSION['id_clientePF']) > 0): ?>
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Clientes</a>
+					      </h4>
+					    </div>
+					    <div id="collapseOne" class="panel-collapse collapse in">
+					      <div class="panel-body">
+					       <?php 
+					       
+					       	$arrayClientePF = array();
+							   foreach($_SESSION['id_clientePF']['id'] as $id){
+							   		$arrayClientePF[] = $clientesPF->lista_one($id);
+							   }
+							foreach($arrayClientePF as $cliente):
+					       ?>
+					       <div class="list-group">
+							  <a href="#" class="list-group-item">
+							    <h4 class="list-group-item-heading"><?=$cliente['nome_clientePF']?></h4>
+							    <p class="list-group-item-text">DATA NASC.: <?=date('d/m/Y',strtotime($cliente['dataNascimento_clientePF']))?></p>
+					       
+							    <p class="list-group-item-text">CPF: <?=$cliente['cpf_clientePF']?></p>
+							    <p class="list-group-item-text">RG: <?=$cliente['rg_clientePF']?></p>
+							    <p class="list-group-item-text">TELEFONE: <?=$cliente['telefone_clientePF']?></p>
+							    <p class="list-group-item-text">ENDEREÇO: <?=$cliente['endereco_clientePF']?></p>
+							  </a>
+							</div>
+						<?php endforeach; ?>	
+							
+					      </div>
+					    </div>
+					  </div>
+					  <?php endif; ?>
+						<!-- Aba de cliente-->
+					  
+					  <?php if(isset($dependentes) && count($dependentes) > 0): 
+					  	$arrayDependentes = array();
+						foreach($dependentes as $key => $value){
+							foreach($value as $dep){
+								$arrayDependentes[] = $dep;
+							}
+						}
+						// $this->dump($arrayDependentes);
+					  	?>
+						<!-- Aba de Dependentes-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Dependentes</a>
+					      </h4>
+					    </div>
+					    <div id="collapseTwo" class="panel-collapse collapse">
+					      <div class="panel-body">
+					    
+					    <?php foreach($arrayDependentes as $key => $value): 
+					    	$hoje = new DateTime();
+							$niver = new DateTime($value['dt_nascimento_dependentePF']);
+							$anos = $niver->diff($hoje);
+					    	?>
+					    <!-- lista de Dependentes -->
+					      	 <div class="list-group">
+							  <a href="#" class="list-group-item">
+							    <h4 class="list-group-item-heading"><?=$value['nome_dependentePF']?></h4>
+							    <p class="list-group-item-text">CPF: <?=$value['cpf_dependentePF']?></p>
+							    <p class="list-group-item-text">RG: <?=$value['rg_dependentePF']?></p>
+							    <p class="list-group-item-text">DATA NASC.: <?=date('d/m/Y',strtotime($value['dt_nascimento_dependentePF']))?></p>
+							    <p class="list-group-item-text">IDADE: <?=$anos->format('%y')?> Anos</p>
+							    <p class="list-group-item-text">DEPENDENTE DE: <?=$opt_cli[$value['id_clientePF']]?></p>
+							  </a>
+							</div>
+					    <?php endforeach; ?>
+					       </div>
+					    </div>
+					    <!-- lista de Dependentes -->
+					  </div>
+						<!-- Aba de Dependentes-->
+					  <?php endif; ?>
+					  
+					  <!-- Todos Produtos -->
+					  <div id="todos_produtos">
+					  
+					  <?php if(isset($passagens)): ?>
+					  <!-- Aba de Passagens-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTen">Passagens<a>
+					      </h4>
+					    </div>
+					    <div id="collapseTen" class="panel-collapse collapse">
+					      <div class="panel-body">
+					      Tudo sobre Passagens
+					      </div>
+					    </div>
+					  </div>
+						<!-- Aba de Passagens-->
+					  <?php endif; ?>
+					  
+					  
+					  
+					  
+					  
+					  
+					  <?php if(isset($hoteis)){ 
+					  	$arrayHotel = array();
+						foreach($hoteis as $key => $value){
+							foreach($value as $hot){
+								$arrayHotel[] = $hot;
+							}
+						}
+					  	?>
+						<!-- Aba de Hoteis-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Hoteis</a>
+					      </h4>
+					    </div>
+					    <div id="collapseThree" class="panel-collapse collapse">
+					      <div class="panel-body">
+					       <?php foreach($arrayHotel as $hotel): 
+					       	$total_hotel = 0;
+					       	?>
+								<div class="list-group">
+								  <a href="#" class="list-group-item">
+								    <h4 class="list-group-item-heading">HOTEL: <?=$hotel['nome_hotel']?></h4>
+								    <p class="list-group-item-text">ENDEREÇO: <strong><?=$hotel['endereco_hotel']?></strong></p>
+								    <p class="list-group-item-text">UF: <strong><?=$hotel['uf_hotel']?></strong></p>
+								    <p class="list-group-item-text">TEL.: <strong><?=$hotel['telefone_hotel']?></strong></p>
+								    <p class="list-group-item-text">BROKERS:<strong> <?=$hotel['id_brokers'] != 0 ? $opt_bro[$hotel['id_brokers']] : 'NENHUM' ?></strong></p>
+								    <p class="list-group-item-text">CAMBIO: <strong><?=$hotel['id_moeda'] == 0 ? 'REAL BR' : $opt_moe[$hotel['id_moeda']] ?></strong></p>
+								    <p class="list-group-item-text">RESERVADO PARA: <strong><?=$opt_cli[$hotel['id_clientePF']]?></strong></p>
+								    <?php $total_hotel += $hotel['valor_hotel'] + $hotel['valor_casa_hotel']; ?>
+								    <p class="list-group-item-text">TOTAL: R$ <strong><?=number_format($total_hotel,2,',','.'); ?></strong></p>
+								  </a>
+								</div>
+							<?php endforeach; ?>
+					       </div>
+					    </div>
+					  </div>
+						<!-- Aba de Hoteis-->
+						<?php } ?>
+						
+						
+						
+						
+						
+						<?php if(isset($vCarros)): 
+						$arrayCarros = array();
+						foreach($vCarros as $key => $value){
+							$arrayCarros[] = $value;
+						}	
+							?>
+						<!-- Aba de Carros-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Carros<a>
+					      </h4>
+					    </div>
+					    <div id="collapseFour" class="panel-collapse collapse">
+					      <div class="panel-body">
+							<?php foreach($arrayCarros as $value):
+								foreach($value as $car){
+									$total_carro = 0;
+							 ?>
+							<div class="list-group">
+							  <a href="#" class="list-group-item">
+							    <h4 class="list-group-item-heading">LOCADORA: <?=$opt_loc[$car['id_locadora']]?></h4>
+							    <p class="list-group-item-text">INICIO: <strong><?=date('d/m/Y - H:i',strtotime($car['dt_inicio_carro']))?>hs</strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y - H:i',strtotime($car['dt_devolucao_carro']))?>hs</strong></p>
+							    <p class="list-group-item-text">LOCAL INICIO: <strong><?=$car['local_incio_carro']?></strong></p>
+							    <p class="list-group-item-text">LOCAL DEVOLUÇÃO: <strong><?=$car['local_devolucao_carro']?></strong></p>
+							    <?php $total_carro += $car['valor_carro'] + $car['valor_casa_carro'] + $car['taxa_carro']; ?>
+							    <p class="list-group-item-text">TOTAL R$ <strong><?=number_format($total_carro,2,',','.')?></strong></p>
+							    <p class="list-group-item-text">LOCADO PARA: <strong><?=$opt_cli[$car['id_clientePF']]?></strong></p>
+							  </a>
+							</div>
+					      <?php 
+							}
+					      endforeach; ?>
+
+					      </div>
+					    </div>
+					  </div>
+						<!-- Aba de Carros-->
+						<?php endif; ?>
+						
+						<?php if(isset($seguros)): 
+						$arraySeguro = array();
+							foreach($seguros as $key => $value){
+								foreach($value as $seguro){
+									$arraySeguro[] = $seguro;
+								}
+							}
+							$this->dump($arraySeguro);	
+						?>
+						<!-- Aba de Seguro-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Seguros<a>
+					      </h4>
+					    </div>
+					    <div id="collapseSix" class="panel-collapse collapse">
+					      <div class="panel-body">
+					      
+					      <?php foreach($arraySeguro as $seg): 
+					      	$total_seguro = 0;
+					      	?>
+					      	<div class="list-group">
+							  <a href="#" class="list-group-item">
+							    <h4 class="list-group-item-heading">SEGURADORA: <?=$opt_seg[$seg['id_seguradora']]?></h4>
+							    <p class="list-group-item-text">TIPO DE SEGURO: <strong><?=$opt_tip[$seg['id_tipoSeguro']]?></strong></p>
+							    <p class="list-group-item-text">CONTINENTE: <strong><?=$opt_cont[$seg['id_continente']]?></strong></p>
+							    <p class="list-group-item-text">MOEDA: <strong><?=$opt_moe[$seg['id_moeda']]?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($seg['dt_inicio_seguro']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($seg['dt_fim_seguro']))?></strong></p>
+							  	<?php $total_seguro += $seg['valor_seguro'] + $seg['valor_casa_seguro'] ?>
+							    <p class="list-group-item-text">TOTAL R$: <strong><?=number_format($total_seguro,2,',','.')?></strong></p>
+							  </a>
+							</div>
+					      <?php endforeach; ?>
+					      
+					      
+					      </div>
+					    </div>
+					  </div>
+						<!-- Aba de Seguro-->
+					  <?php endif; ?>
+					  
+					  <?php if(isset($compraTickets) && count($compraTickets) > 0): ?>
+					  <!-- Aba de Tickets-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">Tickets<a>
+					      </h4>
+					    </div>
+					    <div id="collapseSeven" class="panel-collapse collapse">
+					      <div class="panel-body">
+					      Tudo sobre Tickets
+					      </div>
+					    </div>
+					  </div>
+						<!-- Aba de Tickets-->
+						<?php endif; ?>
+						
+						<?php if(isset($cruzeiros)): ?>
+						<!-- Aba de Cruzeiros-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight">Cruzeiros<a>
+					      </h4>
+					    </div>
+					    <div id="collapseEight" class="panel-collapse collapse">
+					      <div class="panel-body">
+					      Tudo sobre Cruzeiros
+					      </div>
+					    </div>
+					  </div>
+						<!-- Aba de Cruzeiros-->
+						<?php endif; ?>
+						
+						<?php if(isset($produtos)): ?>
+						<!-- Aba de Outros-->
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine">Outros<a>
+					      </h4>
+					    </div>
+					    <div id="collapseNine" class="panel-collapse collapse">
+					      <div class="panel-body">
+					      Tudo sobre Outros
+					      </div>
+					    </div>
+					  </div>
+						<!-- Aba de Cruzeiros-->
+						<?php endif; ?>
+					 </div> <!-- Todos Produtos -->
+					  
+					</div>
+					
+					<!-- Todos os Produtos -->
+						
+						
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" id="bt_cancel" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-down"></i> Cancelar</button>
+					<button type="button" id="bt_finalizaVenda" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-up"></i> Confirmar</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	   
+		   	<!-- Modal Finalização de Venda -->
+	
+	
+	
+	
 	
 	
 	
@@ -1036,7 +1619,7 @@
 			<br />
 			<p><a href="#"  data-toggle="modal" data-target="#modalCarros" title="Aluguel de carros" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CARROS</a></p>
 			<br />
-			<p><a href="#" title="Reservar passagens aéreas" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> PASSAGENS</a></p>
+			<p><a href="#"  data-toggle="modal" data-target="#modalPassagens" title="Reservar passagens aéreas" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> PASSAGENS</a></p>
 		</div>
 		
 		<div class="vend_produtos_right">
@@ -1057,7 +1640,7 @@
 	<hr />
 	<br />
 	<table class="table table-condensed">
-		
+		<?php $total_geral = 0 ?>
 			<!-- Cliente da Lista de venda -->
 		<?php if(isset($clientes)): 
 			foreach($clientes as $key => $value):
@@ -1079,10 +1662,16 @@
 			foreach($dependentes as $key => $value): 
 				foreach($value as $k =>  $v){
 			?>
-			<tr class="success">
-				<td><?='Dependente: '.$v['nome_dependentePF'] ?></td>
+			<tr class="warning">
+				<?php
+				$hoje = new DateTime();
+				$niver = new DateTime($v['dt_nascimento_dependentePF']);
+				
+				$anos = $niver->diff($hoje);
+				 ?>
+				<td><?='Dependente: '.$v['nome_dependentePF'].' -  '.$anos->format('%y').' Anos de idade' ?></td>
 				<td>Dependente</td>
-				<td><?=$nome_cli[$v['id_clientePF']]?></td>
+				<td><?=$nome_cli[$v['id_clientePF']]?> </td>
 				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependentePF']?> da lista de venda?')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>
 			</tr>
 			<?php 
@@ -1094,16 +1683,14 @@
 			### Popula locadoras de carros ###
 		if(isset($vCarros) && count($vCarros) != 0):
 			foreach($vCarros as $key => $value){
-			echo '<tr class="success">';
-				$total = 0;
+			echo '<tr class="warning">';
+				$total_carro = 0;
 				foreach($value as $k => $v){
-					$total += $v['valor_carro'];
-					$total += $v['valor_casa_carro'];
-					$total += $v['taxa_carro'];
-					
+					$total_carro += $v['valor_carro'] + $v['valor_casa_carro'] + $v['taxa_carro'];
+					$total_geral += $total_carro;
 					echo '<td>Carro: '.$opt_loc[$v['id_locadora']].'</td>';
 					echo '<td>'.$opt_cli[$v['id_clientePF']].'</td>';
-					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+					echo '<td>R$ '.number_format($total_carro,2,',','.').'</td>';
 			 		echo '<td><a href="/carro/deleteCarro/id/'.$v['id_carros'].'/cli/'.$v['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse carro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
 				}
 					
@@ -1117,14 +1704,14 @@
 		########## Popula hoteis ##############	
 		if(isset($hoteis)){
 			foreach($hoteis as $key => $value){
-				echo '<tr class="danger">';
-				$total = 0;
+				echo '<tr class="warning">';
+				$total_hotel = 0;
 				foreach($value as $chave => $valor){
 					echo '<td>Hotel: '.$valor['nome_hotel'].'</td>';
 					echo '<td>'.$opt_cli[$valor['id_clientePF']].'</td>';
-					$total += $valor['valor_hotel'];
-					$total += $valor['valor_casa_hotel'];
-					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+					$total_hotel += $valor['valor_hotel'] + $valor['valor_casa_hotel'];
+					$total_geral += $total_hotel;
+					echo '<td>R$ '.number_format($total_hotel,2,',','.').'</td>';
 			 		echo '<td><a href="/hotel/deleteHotel/id/'.$valor['id_hoteis'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Hotel da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
 				}
 				echo '</tr>';
@@ -1137,13 +1724,13 @@
 		if(isset($seguros)){
 			foreach($seguros as $key => $value){
 			echo '<tr class="warning">';
-					$total = 0;
+					$total_seguro = 0;
 				foreach($value as $chave => $valor){
 					echo '<td> Seguradora: '.$opt_seg[$valor['id_seguradora']].' - '.$opt_tip[$valor['id_tipoSeguro']].'</td>';
 					echo '<td>'.$opt_cli[$valor['id_clientePF']].'</td>';
-					$total += $valor['valor_seguro'];
-					$total += $valor['valor_casa_seguro'];
-					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+					$total_seguro += $valor['valor_seguro'] + $valor['valor_casa_seguro'];
+					$total_geral += $total_seguro;
+					echo '<td>R$ '.number_format($total_seguro,2,',','.').'</td>';
 					echo '<td><a href="/seguro/deleteSeguro/id/'.$valor['id_seguro'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Seguro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
 				}	
 			echo '</tr>';	
@@ -1154,12 +1741,13 @@
 		########## Popula Tickets ##############	
 		if(isset($compraTickets)){
 			foreach($compraTickets as $key => $value){
-			$total = 0;
+			$total_tickets = 0;
 				echo '<tr class="warning">';
 					echo '<td> Tickets: '.$opt_tic[$value['id_ticket']].'</td>';
 					echo '<td>'.$opt_cli[$value['id_clientePF']].'</td>';
-					$total += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
-					echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+					$total_tickets += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
+					$total_geral += $total_tickets;
+					echo '<td>R$ '.number_format($total_tickets,2,',','.').'</td>';
 					echo '<td><a href="/compraTicket/deleteCompraTicket/id/'.$value['id_compraTicket'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Ticket da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
 				
 				echo '</tr>';
@@ -1170,40 +1758,70 @@
 		
 		########## Popula Cruzeiro ##############
 		if(isset($cruzeiros)){
-			$total = 0;
+			$total_cruzeiro = 0;
 			foreach($cruzeiros as $key => $value){
 				echo '<tr class="warning">';
 				
 				echo '<td> Cruzeiro: '.$opt_comp[$value['id_compania_cruzeiro']].' - De: '.date('d/m/Y',strtotime($value['dt_inicio_cruzeiro'])).' Até: '.date('d/m/Y',strtotime($value['dt_fim_cruzeiro'])).' </td>';
 				echo '<td>'.$opt_cli[$value['id_clientePF']].'</td>';
-				$total += $value['valor_cruzeiro'] + $value['comissao_cruzeiro'];
-				echo '<td>R$ '.number_format($total,2,',','.').'</td>';
+				$total_cruzeiro += $value['valor_cruzeiro'] + $value['comissao_cruzeiro'];
+				$total_geral += $total_cruzeiro;
+				echo '<td>R$ '.number_format($total_cruzeiro,2,',','.').'</td>';
 				echo '<td><a href="/cruzeiro/deleteCruzeiro/id/'.$value['id_cruzeiro'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Cruzeiro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
 				
 				echo '</tr>';
 			}
 		}
 		########## Popula Cruzeiro ##############
+		
+		
+		
 		########## Popula Produtos ##############
 		if(isset($produtos)){
 			foreach($produtos as $key => $value){
-			$total = 0;
+			$total_produto = 0;
 				echo '<tr class="warning">';
 				echo '<td>Produto: '.$value['titulo_produto'].' -  '.$opt_cli[$value['id_clientePF']].'</td>';
 				echo '<td>De: '.date('d/m/Y',strtotime($value['dt_inicio_produto'])).' Àté: '.date('d/m/Y',strtotime($value['dt_final_produto'])).'</td>';
-				$total += $value['valor_produto'] + $value['comissao_produto'];
-				echo '<td> R$ '.number_format($total,2,',','.').'</td>';
+				$total_produto += $value['valor_produto'] + $value['comissao_produto'];
+				$total_geral += $total_produto;
+				echo '<td> R$ '.number_format($total_produto,2,',','.').'</td>';
 				echo '<td><a href="/produtoOutros/deleteprodutoOutros/id/'.$value['id_produto'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Produto da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
 				echo '</tr>';
 			}
 		}
 		########## Popula Produtos ##############
+		
+		
+		########## Popula Passagens ##############
+		if(isset($passagens)){
+			foreach($passagens as $key => $value){
+				$total_passagem = 0;
+				echo '<tr class="warning">';
+				echo '<td>'.$opt_comp[$value['id_compania']].'  -   '.$opt_class[$value['id_classe']].'</td>';
+				echo '<td>  '.$opt_cli[$value['id_clientePF']].'</td>';
+				$total_passagem += $value['tarifa_passagens'] + $value['valor_casa_passagens'] + $value['tx_embarque_passagens'] + $value['tx_outras_passagens'] + $value['tx_repasse_passagens'];
+				$total_geral += $total_passagem; 
+				echo '<td>'.number_format($total_passagem,2,',','.').'</td>';
+				echo '<td><a href="/passagens/deletePassagens/id/'.$value['id_passagens'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover essa passagem da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				echo '</tr>';
+			}
+		}
+		########## Popula Passagens ##############
 			
 		?>
+		<tr class="success">
+			<td><strong style="font-size: 20px;">Total Geral:</strong></td>
+			<td></td>
+			<td></td>
+			<td><strong style="font-size: 20px;">R$ <?=number_format($total_geral,2,',','.')?></strong></td>
+		</tr>
 	</table>
-       
+       <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalFinaliza">Finalizar Venda</button>
       </div>
-        
+       <br /> 
+       <br /> 
+       <br /> 
    
 <script>
 	jQuery(function(){
@@ -1212,6 +1830,7 @@
 		jQuery('#bt_addNew').click(function(){
 			location.href="/cliente/cadfisica";
 		});
+		
 		
 		
 		//evento de buscar cliente montar o modal 
@@ -1395,6 +2014,33 @@
 			
 		}
 		//Funções do Modal de Outros Produtos
+		
+		
+		
+		//Funções do Modal de passagens
+		jQuery('#tarifa_passagens').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_casa_passagens').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#tx_embarque_passagens').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#tx_outras_passagens').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#tx_repasse_passagens').maskMoney({thousands:'', decimal:'.'});
+		
+		if(jQuery('[name=id_clientePF]').find('option').length == 0){
+			jQuery('#bt_incluirPassagens').attr('disabled',true);
+		}else{
+			jQuery('#bt_incluirPassagens').attr('disabled',false);
+			
+		}
+		//Funções do Modal de passagens
+		
+		
+		//Funções de todos produtos
+		if(jQuery('#todos_produtos').find('panel').length == 0){
+			jQuery('#bt_finalizaVenda').attr('disabled',true);
+		}else{
+			jQuery('#bt_finalizaVenda').attr('disabled',false);
+			
+		}
+		//Funções de todos produtos
 		
 		
 		//Função para formatar data no padrão brasileiro

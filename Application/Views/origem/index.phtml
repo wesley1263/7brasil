@@ -1,0 +1,25 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/origem/cadOrigem" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<br />
+	<br />
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Nome','Editar','Remover'));
+	foreach($origens as $orig){
+		$table->t_row(array(
+				$orig['nome_origem'],
+				'<center><a href="/origem/cadOrigem/id/'.$orig['id_origem'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+				'<center><a href="/origem/deleteOrigem/id/'.$orig['id_origem'].'" onclick=" return confirm(\'Deseja realmente remover '.$orig['nome_origem'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+				));
+	}
+		$table->generate();
+	?>
+</div>

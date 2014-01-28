@@ -23,6 +23,11 @@ use Application\Models\CompraTicket;
 use Application\Models\CompaniaCruzeiro;
 use Application\Models\Cruzeiro;
 use Application\Models\ProdutoOutros;
+use Application\Models\Compania;
+use Application\Models\Origem;
+use Application\Models\Destino;
+use Application\Models\Classe;
+use Application\Models\Passagens;
 
 class VendaController extends OXE_Controller{
 		
@@ -69,6 +74,11 @@ class VendaController extends OXE_Controller{
 		$companiaCruzeiro = new CompaniaCruzeiro();
 		$cruzeiro = new Cruzeiro();
 		$ProdutoOutros = new ProdutoOutros();
+		$compania = new Compania();
+		$origem = new Origem();
+		$destino = new Destino();
+		$classe = new Classe();
+		$passagens = new Passagens();
 		### Estanciar as classess ###	
 
 				
@@ -184,11 +194,29 @@ class VendaController extends OXE_Controller{
 		############### Iteração de Sessão de Outro Produtos ##########
 		
 		
+		############### Iteração de Sessão Passagens ##########
+		if(isset($_SESSION['passagens'])){
+			$arrayPassagens = array();
+			foreach($_SESSION['passagens'] as $key => $value){
+				foreach($value['id_passagens'] as $valor){
+					$arrayPassagens[] = $passagens->list_once($valor);
+				}
+			}
+			$data['passagens'] = $arrayPassagens;
+		}
+		############### Iteração de Sessão Passagens ##########
+		
+		
+		
+		
+		
+		
 		$data['title'] = '7 Brasil - Vendas';
 		
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
+		$data['clientesPF'] = $clientePF;
 		$data['participacao'] = $participacao->list_all();
 		$data['locadoras'] = $locadora->list_all();
 		$data['carros'] = $carro->getCambio();
@@ -199,6 +227,10 @@ class VendaController extends OXE_Controller{
 		$data['continentes'] = $continente->list_all();
 		$data['tickets'] = $ticket->list_all();
 		$data['companiasCruzeiro'] = $companiaCruzeiro->list_all();
+		$data['companias'] = $compania->list_all();
+		$data['origens'] = $origem->list_all();
+		$data['destinos'] = $destino->list_all();
+		$data['classes'] = $classe->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

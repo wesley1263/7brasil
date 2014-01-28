@@ -1,0 +1,47 @@
+<?php
+		$form->init('form_origem','/origem/saveOrigem');
+		$id = isset($origems)? $origems['id_origem'] : null;
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_origem',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $id,
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'nome_origem',
+			'type' =>'text',
+			'placeholder' => 'Nome',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Nome',
+			'value' => isset($origems)? $origems['nome_origem'] : null,
+			'required' => true
+			));
+		$form->groupClose();
+		$form->textarea('descricao_origem','Descrição', isset($origems)? $origems['descricao_origem'] : null,'Descrição',2,5);
+		
+		echo str_repeat('<br />',3);
+		
+		$form->groupOpen();		
+		$form->submit('Salvar');
+		echo '<button class="btn btn-default" id="bt_voltar">Voltar</button>';
+		$form->groupClose();
+
+		$form->close();
+		?>
+		
+<script>
+	jQuery(function(){
+		jQuery('#bt_voltar').click(function(){
+			location.href="/origem";
+		});
+	});
+</script>

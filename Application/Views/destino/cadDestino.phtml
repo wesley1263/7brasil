@@ -1,9 +1,9 @@
 <?php
-		$form->init('form_classe','/classe/saveClasse');
-		$id  = isset($classes) ? $classes['id_classe'] : null;
+		$form->init('form_destino','/destino/saveDestino');
+		$id = isset($destinos) ? $destinos['id_destino'] : null;
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'id_classe',
+			'name' =>'id_destino',
 			'type' =>'hidden',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -16,17 +16,18 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'titulo_classe',
+			'name' =>'nome_destino',
 			'type' =>'text',
-			'placeholder' => 'Título',
+			'placeholder' => 'Nome',
 			'num_label' =>'2',
 			'num_input' =>'5',
-			'label' =>'Título',
-			'value' => isset($classes) ? $classes['titulo_classe'] : null,
+			'label' =>'Nome',
+			'value' => isset($destinos) ? $destinos['nome_destino'] : null,
 			'required' => true
 			));
 		$form->groupClose();
-		$form->textarea('descricao_classe','Descriço',isset($classes) ? $classes['descricao_classe'] : null,'Descriço',2,5);
+		
+		$form->textarea('descricao_destino','Descrição', isset($destinos) ? $destinos['descricao_destino'] : null,'Descrição',2,5);
 		echo str_repeat('<br />',3);
 		
 		$form->groupOpen();		
