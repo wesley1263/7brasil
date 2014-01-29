@@ -28,6 +28,11 @@ use Application\Models\Origem;
 use Application\Models\Destino;
 use Application\Models\Classe;
 use Application\Models\Passagens;
+use Application\Models\Agencia;
+use Application\Models\Agente;
+use Application\Models\TipoPagamento;
+use Application\Models\CartaoPF;
+use Application\Models\TipoCartao;
 
 class VendaController extends OXE_Controller{
 		
@@ -79,6 +84,11 @@ class VendaController extends OXE_Controller{
 		$destino = new Destino();
 		$classe = new Classe();
 		$passagens = new Passagens();
+		$agencia = new Agencia();
+		$agente = new Agente();
+		$tipoPagamento = new TipoPagamento();
+		$cartaoPF = new CartaoPF();
+		$tipoCartao = new TipoCartao();
 		### Estanciar as classess ###	
 
 				
@@ -231,6 +241,11 @@ class VendaController extends OXE_Controller{
 		$data['origens'] = $origem->list_all();
 		$data['destinos'] = $destino->list_all();
 		$data['classes'] = $classe->list_all();
+		$data['agencias'] = $agencia->list_all();
+		$data['agentes'] = $agente->list_all();
+		$data['tipoPagamento'] = $tipoPagamento->list_all();
+		$data['cartaoPF'] = $cartaoPF;
+		$data['tipoCartao'] = $tipoCartao->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -284,7 +299,7 @@ class VendaController extends OXE_Controller{
 			}
 		}
 	}
-		$this->session->setFlashMessage('Dependente adicionado  lista de venda','success');
+		$this->session->setFlashMessage('Dependente removido da lista de venda','success');
 		$this->redirector('/venda/cadVendaPF');
 	}
 	
@@ -318,16 +333,17 @@ class VendaController extends OXE_Controller{
 	
 	public function saveVendaAction()
 	{
-		$_POST[''] = strtoupper($_POST['']);
+		
+		// if($_POST['id_venda'] == null){
+// 			
+		// }
 		foreach($_POST as $key => $value){
-			$_POST[$key] = strip_tags($value);
+			if($_POST[$key] == null){
+				unset($_POST[$key]);
+			}
 		}
-		
-		if($_POST[''] == null){
-			
-		}
-		
 		$this->dump($_POST);
+		$this->dump($_SESSION);
 	}
 
 	public function findClientePFAction()
@@ -335,6 +351,13 @@ class VendaController extends OXE_Controller{
 		$clientePF = new ClientePF();
 			echo json_encode($clientePF->findClienteCPF($_POST['cpf']));
 		
+	}
+	
+	public function getAgenteAction()
+	{
+		$id_agencia = $_POST['id_agencia'];
+		$agente = new Agente();
+		echo json_encode($agente->getAgencia($id_agencia));
 	}
 	
 		#####################################

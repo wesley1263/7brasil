@@ -1,0 +1,103 @@
+<?php
+
+$id = isset($agentes) ? $agentes['id_agente'] : null;
+
+			$form->init('form_agente','/agente/saveAgente');
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_agente',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			foreach($agencias as $key => $value){
+				$opt_agenc[$value['id_agencia']] = $value['nomefantasia_agencia'];
+			}
+			$form->select($opt_agenc,'id_agencia','Agencia',isset($agentes) ? $agentes['id_agencia'] : 1,2,5);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_agente',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Nome',
+				'value' => isset($agentes) ? $agentes['nome_agente'] : null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'email_agente',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Email',
+				'value' => isset($agentes) ? $agentes['email_agente'] : null,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'celular_agente',
+				'type' =>'text',
+				'placeholder' => 'Celular',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Celular',
+				'value' => isset($agentes) ? $agentes['celular_agente'] : null,
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'porcentagem_agente',
+				'type' =>'number',
+				'placeholder' => 'Porcentagem',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Porcentagem',
+				'value' => isset($agentes) ? $agentes['porcentagem_agente'] : null,
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_agente','Status',isset($agentes) ? $agentes['status_agente'] : 1);
+			$form->groupClose();
+			
+			$form->textarea('descricao_agente','Descrição',isset($agentes) ? $agentes['descricao_agente'] : null,'Descrição',2,8);
+			
+			echo str_repeat('<br />',3);
+			
+			$form->groupOpen();		
+			$form->submit('Salvar');
+			echo '<input type="button" id="bt_voltar" value="Voltar" class="btn btn-default" />';
+			$form->groupClose();
+	
+			$form->close();
+			?>
+			
+<script>
+	jQuery(function(){
+		jQuery('#celular_agente').mask('(99) 9999-9999');
+		
+		jQuery('#bt_voltar').click(function(){
+			location.href="/agente";
+		});
+	});
+</script>

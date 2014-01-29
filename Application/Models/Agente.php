@@ -3,10 +3,10 @@ namespace Application\Models;
 
 use Vendor\Core\OXE_Model;
 
-class TipoPagamento extends OXE_Model {
+class Agente extends OXE_Model {
 		
-	protected $_name = 'tbl_tipoPagamento';
-	protected $_primary = 'id_tipoPagamento';
+	protected $_name = 'tbl_agentes';
+	protected $_primary = 'id_agente';
 	
 	public function __construct()
 	{
@@ -20,10 +20,7 @@ class TipoPagamento extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					 ->from($this->_name)
-					 ->where($this->_primary.' = '.$id)
-					 ->result();
+		return $this->fetch($this->_primary.' = '.$id);
 	}
 	
 	public function add(array $data)
@@ -38,7 +35,7 @@ class TipoPagamento extends OXE_Model {
 	
 	public function alter(array $data)
 	{
-		return $this->update($data,$this->_primary.' = '.$data['id_tipoPagamento']);
+		return $this->update($data,$this->_primary.' = '.$data['id_agente']);
 	}
 	
 	public function DescTables()
@@ -46,13 +43,19 @@ class TipoPagamento extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}	
 	
-	public function findTipo($titulo)
+	public function findAgente($name)
 	{
 		return $this->select()
 					->from()
-					->where("titulo_tipoPagamento = '$titulo'")
+					->where("nome_agente = '$name'")
 					->result();
 	}
 	
-	
+	public function getAgencia($id)
+	{
+		return $this->select()
+					->from()
+					->where("id_agencia = $id")
+					->result();
+	}
 }

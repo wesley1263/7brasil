@@ -54,4 +54,11 @@ class Agencia extends OXE_Model {
 					->result();					
 	}
 	
+	public function getAgente()
+	{
+		return $this->select(array('agente.*','agencia.*'))
+					->form($this->_name,'agencia')
+					->join(array('tbl_agente'=>'agente'),'agente.id_agencia = agencia.id_agencias')
+					->console();
+	}
 }
