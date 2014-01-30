@@ -33,6 +33,7 @@ use Application\Models\Agente;
 use Application\Models\TipoPagamento;
 use Application\Models\CartaoPF;
 use Application\Models\TipoCartao;
+use Application\Models\ClienteTicket;
 
 class VendaController extends OXE_Controller{
 		
@@ -42,6 +43,12 @@ class VendaController extends OXE_Controller{
 		$this->table = new Table();
 		$this->form = new FormStyle();
 		$this->model = new Venda();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()
@@ -333,17 +340,138 @@ class VendaController extends OXE_Controller{
 	
 	public function saveVendaAction()
 	{
+		########### Instanciar classes necessárias #########
+		$agencia = new Agencia();
+		$agente = new Agente();
+		$venda = new Venda();
+		$vendaClientePF = new Application\Models\VendaClientePF();
 		
-		// if($_POST['id_venda'] == null){
-// 			
+		
+		######## Preparando os arrays para as tabelas ########
+		$arrayVenda = array();
+		$vendaClientePF = array();
+		$vendaDependentePF = array();
+		$formaPagamento = array();
+		$arrayTicket = array();
+		
+		
+		$cliente = $this->session->getSession('id_clientePF');
+		$usuario = $this->session->getSession('user');
+		if(isset($_SESSION['dependentes'])){
+			$dependente = $this->session->getSession('dependentes');
+		}else{
+			$dependente = null;
+		}
+		
+		############ Preparando dados para tbl_venda ###########
+		$id_usuario = $usuario['id_usuario'];
+		$id_agencia = $_POST['id_agencia'] == '0' ? null : $_POST['id_agencia'];
+		$id_agente = isset($_POST['id_agente']) ? $_POST['id_agente'] : null;
+		$total_comissao = $_POST['total_comissao'];
+		$total_venda = $_POST['total_venda'];
+		$data_venda = date('Y-m-d');
+		$descricao_venda = $_POST['descricao_venda'];
+		$numero_processo = str_pad($id_usuario,2,0,STR_PAD_LEFT).date('m').date('Y');
+		
+		
+		
+		############ Busca os valores de Agencia e Agente ###########
+		if($id_agencia != null){
+			$busca_agencia = $agencia->list_once($id_agencia);
+			$busca_agente = $agente->list_once($id_agente);
+			
+			$valor_agencia = $busca_agencia[0]['comissao_agencia'];
+			$valor_agente = ($total_venda * ceil($busca_agente['porcentagem_agente'])) / 100;
+		}else{
+			$valor_agencia = 0.00;
+			$valor_agente = 0.00;
+		}
+		
+		$tbl_venda = array(
+			'id_usuario' => $id_usuario,
+			'id_agencia' => $id_agencia,
+			'id_agente' => $id_agente,
+			'valor_agencia' => $valor_agencia,
+			'valor_agente' => $valor_agente,
+			'valor_casa' => $total_comissao,
+			'total_venda' => $total_venda,
+			'data_venda' => $data_venda,
+			'descricao_venda' => $descricao_venda,
+			'nm_processo_venda' => $numero_processo
+		);
+		
+		
+		
+		########### Adicionando nas tabela envolvidas ##########
+		// $id_venda = $this->model->add($tbl_venda);
+		// if($id_venda){
+			// $tbl_venda['id_venda'] = $id_venda;
+			// $tbl_venda['nm_processo_venda'] = $numero_processo.$id_venda;
+			// if($this->model->alter($tbl_venda)){
+				// ######## Preparando array vendaClientePF ###########
+				// $tbl_vendaClientePF = array();
+				// foreach($cliente['id'] as $key => $value){
+					// $tbl_vendaClientePF[]['id_clientePF'] = $value;
+					// $tbl_vendaClientePF[$key]['id_participacaoPF'] = $cliente['participacao'][$key];
+					// $tbl_vendaClientePF[$key]['id_venda'] = $id_venda;
+				// }
+// 				
+				// foreach($tbl_vendaClientePF as  $array){
+					// $vendaClientePF->add($array);
+				// }
+// 				
+				// ########### Preparando o array de venda_dependentePF
+				// $arrayDependente = array();
+				// if($dependente != null){
+					// foreach($dependente as $key => $value){
+						// foreach($value as $chave => $valor){
+							// $arrayDependente[]['id_dependentePF'] = $valor;
+							// $arrayDependente[$chave]['id_venda'] = 12;
+							// $vendaDependentePF = new Application\Models\VendaDependentePF();
+							// $vendaDependentePF->add($arrayDependente);
+						// }
+					// }
+				// }
+				
+			############## Preparando array forma de pagamento #########
+				
+			// }
 		// }
+		########### Adicionando nas tabela envolvidas ##########
+		
+		
+		  
+		//removendo posts nulos
 		foreach($_POST as $key => $value){
 			if($_POST[$key] == null){
 				unset($_POST[$key]);
 			}
+			
+			// if(is_array($value)){
+				// foreach($value as $chave => $valor){
+					// $this->dump($valor);
+				// }
+			// }
 		}
-		$this->dump($_POST);
-		$this->dump($_SESSION);
+		//removendo posts nulos
+		
+		
+		
+		if(isset($_SESSION['tickets'])){
+			//Estancia a classe do produto da lista de venda
+			$clienteTicket = new ClienteTicket();
+			$ticket = $this->session->getSession('tickets');
+			
+		}
+		
+		foreach($_POST as $key => $value){
+			if(preg_match("/^(\d)/", $key)){
+				$this->dump($key);
+			}
+		}
+				$this->dump($_POST);
+		
+		
 	}
 
 	public function findClientePFAction()

@@ -14,6 +14,12 @@ class ContinenteController extends OXE_Controller{
 		$this->table = new Table();
 		$this->form = new FormStyle();
 		$this->model = new Continente();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()

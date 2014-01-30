@@ -11,6 +11,8 @@ use Application\Models\Classificacao;
 use Application\Models\CartaoPF;
 use Application\Models\CartaoPJ;
 use Application\Models\TipoCartao;
+use Application\Models\Moeda;
+use Application\Models\Cambio;
 
 class ClienteController extends OXE_Controller {
 	
@@ -19,16 +21,27 @@ class ClienteController extends OXE_Controller {
 		$this->model = new ClientePF();
 		$this->model2 = new ClientePJ();
 		$this->session = new Session();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		} 
 	}
 	
 	public function indexAction()
 	{
+		$moeda = new Moeda();
+		$cambio = new Cambio();
+		
+		$data['moedas'] = $moeda->list_all();
+		$data['cambios'] = $cambio->list_all();
 		
 		$data['title'] = 'Gerenciar Clientes';
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		$this->view('template/cambio',$data);
 		$this->view('cliente/index');
 		$this->view('template/footer');
 	}

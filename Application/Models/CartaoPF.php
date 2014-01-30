@@ -57,9 +57,7 @@ class CartaoPF extends OXE_Model {
 	
 	public function lista_um($id)
 	{
-		return $this->select()
-					->from()
-					->where("id_clientePF = $id")
-					->result();
+		$query = "SELECT * FROM $this->_name WHERE id_clientePF = $id";
+		return $this->query($query);
 	}
 }

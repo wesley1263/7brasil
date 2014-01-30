@@ -3,10 +3,10 @@ namespace Application\Models;
 
 use Vendor\Core\OXE_Model;
 
-class CompraTicket extends OXE_Model {
+class ClienteTicket extends OXE_Model {
 		
-	protected $_name = 'tbl_compraTicket';
-	protected $_primary = 'id_compraTicket';
+	protected $_name = 'tbl_cliente_ticket';
+	protected $_primary = 'id_cliente_ticket';
 	
 	public function __construct()
 	{
@@ -35,7 +35,7 @@ class CompraTicket extends OXE_Model {
 	
 	public function alter(array $data)
 	{
-		return $this->update($data,$this->_primary.' = '.$data['id_compraTicket']);
+		return $this->update($data,$this->_primary.' = '.$data['id_cliente_ticket']);
 	}
 	
 	public function DescTables()
@@ -43,9 +43,4 @@ class CompraTicket extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}	
 	
-	
-	public function getClientePF($id)
-	{
-		return $this->fetch("id_clientePF = $id");
-	}
 }

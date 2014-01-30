@@ -16,6 +16,12 @@ class AgenteController extends OXE_Controller{
 		$this->form = new FormStyle();
 		$this->model = new Agente();
 		$this->agencia = new Agencia();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()

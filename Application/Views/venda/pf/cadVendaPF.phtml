@@ -796,9 +796,8 @@
 				'value' =>'',
 				'required' => true
 				));
-		// $form->groupClose();
-// 
-		// $form->groupOpen();	
+				
+				
 		$form->input(array(
 				'name' =>'dt_fim_cruzeiro',
 				'type' =>'date',
@@ -1306,7 +1305,7 @@
 	
 		<!-- Modal Finalização de Venda -->
 	<div class="modal fade" id="modalFinaliza" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog" style="width: 50%;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -1329,10 +1328,16 @@
 						<br />
 						<br />
 					<!-- Todos os Produtos -->
+					<div id="painel_cliente">
 					<div class="panel-group" id="accordion">
 						<!-- Aba de cliente-->
 						<?php
+						
+						//Setando os contadores para total e comissão
 						$total_tudo = 0;
+						$total_comissao = 0;
+						
+						
 						 if(isset($_SESSION['id_clientePF']) && count($_SESSION['id_clientePF']) > 0): ?>
 					  <div class="panel panel-default">
 					    <div class="panel-heading">
@@ -1447,6 +1452,7 @@
 							    <?php 
 							    $total_passagens += $value['tarifa_passagens'] + $value['valor_casa_passagens'] + $value['tx_embarque_passagens'] + $value['tx_outras_passagens'] + $value['tx_repasse_passagens'];
 							    $total_tudo += $total_passagens;
+								$total_comissao += $value['valor_casa_passagens'];
 								 ?>
 							    <p class="list-group-item-text">TOTAL: R$ <strong><?=number_format($total_passagens,2,',','.')?></strong></p>
 							  </a>
@@ -1495,7 +1501,8 @@
 								    <p class="list-group-item-text">CAMBIO: <strong><?=$hotel['id_moeda'] == 0 ? 'REAL BR' : $opt_moe[$hotel['id_moeda']] ?></strong></p>
 								    <p class="list-group-item-text">RESERVADO PARA: <strong><?=$opt_cli[$hotel['id_clientePF']]?></strong></p>
 								    <?php $total_hotel += $hotel['valor_hotel'] + $hotel['valor_casa_hotel']; 
-								    		$total_tudo += $total_hotel;
+								    	  $total_tudo += $total_hotel;
+										  $total_comissao += $hotel['valor_casa_hotel'];
 								    ?>
 								    <p class="list-group-item-text">TOTAL: R$ <strong><?=number_format($total_hotel,2,',','.'); ?></strong></p>
 								  </a>
@@ -1539,6 +1546,7 @@
 							    <p class="list-group-item-text">LOCAL DEVOLUÇÃO: <strong><?=$car['local_devolucao_carro']?></strong></p>
 							    <?php $total_carro += $car['valor_carro'] + $car['valor_casa_carro'] + $car['taxa_carro']; 
 							    		$total_tudo += $total_carro;
+										$total_comissao += $car['valor_casa_carro'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL R$ <strong><?=number_format($total_carro,2,',','.')?></strong></p>
 							    <p class="list-group-item-text">LOCADO PARA: <strong><?=$opt_cli[$car['id_clientePF']]?></strong></p>
@@ -1585,6 +1593,7 @@
 							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($seg['dt_fim_seguro']))?></strong></p>
 							  	<?php $total_seguro += $seg['valor_seguro'] + $seg['valor_casa_seguro'];
 										$total_tudo += $total_seguro;
+										$total_comissao += $seg['valor_casa_seguro'];
 								 ?>
 							    <p class="list-group-item-text">TOTAL R$: <strong><?=number_format($total_seguro,2,',','.')?></strong></p>
 							  </a>
@@ -1618,6 +1627,7 @@
 							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_compraTicket']?></strong></p>
 							    <?php $total_ticket += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
 										$total_tudo += $total_ticket;
+										$total_comissao += $value['comissao_compraTicket'];
 								 ?>
 							    <p class="list-group-item-text">TOTAL: R$ <strong><?=number_format($total_ticket,2,',','.')?></strong></p>
 							    <p class="list-group-item-text">CLIENTE: <strong><?=$opt_cli[$value['id_clientePF']]?></strong></p>
@@ -1655,6 +1665,7 @@
 							    <p class="list-group-item-text">CABINE: <strong><?=$value['tipo_cabine_cruzeiro']?></strong></p>
 							    <?php $total_cruzeiro += $value['valor_cruzeiro'] + $value['comissao_cruzeiro']; 
 							    	$total_tudo += $total_cruzeiro;
+							    	$total_comissao += $value['comissao_cruzeiro']; 
 							    ?>
 							    <p class="list-group-item-text">TOTAL: R$ <strong><?=number_format($total_cruzeiro,2,',','.')?></strong></p>
 							  </a>
@@ -1691,6 +1702,7 @@
 							    <p class="list-group-item-text">MOEDA: <strong><?=$value['id_moeda'] !=0 ? $opt_moe[$value['id_moeda']] : 'Real BR'?></strong></p>
 							    <?php $total_outros += $value['valor_produto'] + $value['comissao_produto']; 
 							    	  $total_tudo += $total_outros;
+									  $total_comissao += $value['comissao_produto'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: R$ <strong><?=number_format($total_outros,2,',','.');?></strong></p>
 							  </a>
@@ -1706,7 +1718,7 @@
 					 </div> <!-- Todos Produtos -->
 					  
 					</div>
-					
+				</div><!-- End div painel_cliente -->
 					<!-- Todos os Produtos -->
 					
 					<br />
@@ -1714,7 +1726,7 @@
 						<div class="list-group">
 						  <a href="#" class="list-group-item">
 						  	<div id="total_geral" class="hidden"><?=$total_tudo?></div>
-						    <h4 class="list-group-item-heading">TOTAL:  R$ <?= number_format($total_tudo,2,',','.') ?></h4>
+						    <h4 class="list-group-item-heading">TOTAL DA VENDA: R$ <?= number_format($total_tudo,2,',','.') ?></h4>
 						    <!-- Iterar TIpo Cartãoo -->
 						    <?php foreach($tipoCartao as $key => $value){
 						    	$opt_tipo[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
@@ -1725,8 +1737,7 @@
 									
 							    	?>
 							    <p></p>
-							    <p class="list-group-item-text"><?=$cliente['nome_clientePF']?> 
-							    </p>
+							    <p class="list-group-item-text"><strong><?=$cliente['nome_clientePF']?></strong></p>
 							    		<table class="table" id="tbl_pagamento">
 							    	<?php foreach($tipoPagamento as $key => $value){ ?>
 											<tr>
@@ -1738,7 +1749,9 @@
 													foreach($cartaoPF->lista_um($cliente['id_clientePF']) as $cartao){ ?>
 											    			<tr>
 											    		<td><?=$opt_tipo[$cartao['id_tipoCartao']]?></td>
-											    	 	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento'].'_'.$cartao['id_tipoCartao']?>" /></td>
+											    	 	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento'].'_'.$cartao['id_tipoCartao']?>[]" />
+											    	 		  X  <input type="text" name="<?=$value['id_tipoPagamento'].'_'.$cartao['id_tipoCartao']?>_vezes_pgto[]" maxlength="2" style="width: 10%" />
+											    	 	</td>
 															</tr>
 														<?php } ?>
 														</table>
@@ -1746,7 +1759,7 @@
 													</td>
 										    	<?php else: ?>
 										    	<td><?=$value['titulo_tipoPagamento']?></td> 
-										    	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>" /></td>
+										    	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>[]" /></td>
 										    	<?php endif; ?><!-- End IF CARTÃO DE CREDITO -->
 											</tr>							    			
 							    	
@@ -1757,9 +1770,13 @@
 						  </a>
 						</div>
 					    <!-- Total de todos os produtos  -->
-						
+					    
+					    <label>Descrição de venda</label>
+						<textarea name="descricao_venda" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
+					<input type="hidden" name="total_venda" value="<?=$total_tudo?>" />
+					<input type="hidden" name="total_comissao" value="<?=$total_comissao?>" />
 					<button type="button" data-dismiss="modal" id="bt_cancel" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-down"></i> Cancelar</button>
 					<button type="submit" id="bt_finalizaVenda" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-up"></i> Confirmar</button>
 					</form>
@@ -1814,7 +1831,7 @@
 				foreach($value as $k => $v){
 					$nome_cli[$v['id_clientePF']] = $v['nome_clientePF'];
 			?>
-			<tr class="warning">
+			<tr class="warning" id="tr_clientePF">
 				<td><?='Cliente: '.$v['nome_clientePF']?></td>
 				<td>Cliente</td>
 				<td><a href="#"  class="btn btn-info bt_part" id_cliente="<?=$v['id_clientePF']?>" data-toggle="modal" data-target="#modalDependente"><span class="glyphicon glyphicon-plus-sign"></span> Dependentes</a></td>
@@ -1984,7 +2001,7 @@
 			<td><strong style="font-size: 20px;">R$ <?=number_format($total_geral,2,',','.')?></strong></td>
 		</tr>
 	</table>
-       <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalFinaliza">Finalizar Venda</button>
+       <button  id="btn_finaliza_venda" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalFinaliza">Finalizar Venda</button>
       </div>
        <br /> 
        <br /> 
@@ -2252,7 +2269,21 @@
 			});
 			
 			
+			if(jQuery('.table').find('#tr_clientePF').length){
+				jQuery('#btn_finaliza_venda').attr('disabled',false);
+			}else{
+				jQuery('#btn_finaliza_venda').attr('disabled',true);
+				
+			}
 			
+			
+			jQuery('#bt_finalizaVenda').click(function(){
+				if(confirm('As informações mostradas estão corretas?')){
+					return true;
+				}else{
+					return false;
+				}
+			});
 			
 			
 		//Funções de todos produtos

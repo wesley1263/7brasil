@@ -22,10 +22,7 @@ class Usuario extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					 ->from($this->_name)
-					 ->where($this->_primary.' = '.$id)
-					 ->result();
+		return $this->fetch($this->_primary.' = '.$id);
 	}
 	
 	public function add(array $data)
@@ -68,6 +65,18 @@ class Usuario extends OXE_Model {
 		return $this->select()
 					->from()
 					->where("nome_usuario = '$name'")
+					->result();
+	}
+	
+	public function validaUser(array $data)
+	{
+		$user = $data['usuario_login'];
+		$pass = md5($data['senha_login']);
+		
+		return $this->select()
+					->from()
+					->where("login_usuario = '$user'")
+					->where("senha_usuario = '$pass'")
 					->result();
 	}
 }

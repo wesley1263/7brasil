@@ -1,22 +1,31 @@
-<div class="content_form">
-	<center>
-	<div class="logo_login">
-		<img src="/skin/img/logo-sys.png" width="150" height="120" />
-	</div>
-	<div class="label_login">
-		<label>LOGIN</label>
-	</div>
-	</center>
-	<form name="form_login" method="post" action="/login/validar" id="form_login">
-		<input type="text" name="usuario_login" value=""  id="usuario_login" placeholder="Usuário"/>
-		<input type="password" name="senha_login" value=""  id="senha_login" placeholder="Senha"/>
-		<br />
+<div class="container">
+	<div class="content_form">
 		<center>
-			<button type="submit" class="btn btn-primary" id="submit_login">
-				Entrar
-			</button>
+		<div class="logo_login">
+			<img src="/skin/img/logo-sys.png" width="150" height="120" />
+		</div>
+		<div class="label_login">
+			<label>LOGIN</label>
+		</div>
 		</center>
-	</form>
+		<form name="form_login" method="post" action="/login/validar" id="form_login">
+			<input type="text" name="usuario_login" value=""  id="usuario_login" placeholder="Usuário"/>
+			<input type="password" name="senha_login" value=""  id="senha_login" placeholder="Senha"/>
+			<br />
+			<center>
+				<button type="submit" class="btn btn-primary" id="submit_login">
+					Entrar
+				</button>
+			</center>
+		</form>
+	</div>
+	<br />
+	<br />
+ <?php 
+	  if(isset($_SESSION['error'])){
+       	echo '<div class="alert alert-danger"><center>'.$this->session->getFlashMessage('error').'</center></div>';
+       }
+ ?>
 </div>
 
 <script>

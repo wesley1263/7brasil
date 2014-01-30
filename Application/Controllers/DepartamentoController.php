@@ -16,6 +16,12 @@ class DepartamentoController extends OXE_Controller{
 		$this->session = new Session();
 		$this->table = new Table();
 		$this->cliente = new ClientePJ();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()

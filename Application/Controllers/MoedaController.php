@@ -16,6 +16,12 @@ class MoedaController extends OXE_Controller{
 		$this->form = new FormStyle();
 		$this->model = new Moeda();
 		$this->cambio = new Cambio();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()

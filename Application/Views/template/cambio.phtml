@@ -1,9 +1,27 @@
-<?php 
-	$date = new DateTime();
+<?php
+$date = new DateTime();
 ?>
 <div class="row">
-	<div class="cambio">
-		
+	<?php
+	foreach($cambios as $cam){
+		$opt_camb[$cam['id_cambio']] = $cam['titulo_cambio'];
+	}
+	
+	 ?>
+	
+	<?php
+	 foreach($moedas as $moe): ?>
+	  <?php if(date('Y-m-d',strtotime($moe['dt_moeda'])) == date('Y-m-d')) { ?>
+	<div class="col-md-4">
+		<h3><?=$opt_camb[$moe['id_cambio']]?></h3>
+		<h3 style="color:#000;"><?=$moe['valor_moeda']?></h3>
+	</div>
+	 <?php } ?>
+	<?php endforeach; ?>
+	
+
+	<!-- <div class="cambio">
+
 		<div id="dollar">
 			<h3>US - DOLAR</h3>
 			<h3 style="color:#000;">2,30</h3>
@@ -13,13 +31,13 @@
 			<h3>LIBRA</h3>
 			<h3 style="color:#000;">5,30</h3>
 		</div>
-		
+
 		<div id="euro">
 			<h3>EURO</h3>
 			<h3 style="color:#000;">3,30</h3>
 		</div>
-		
-	</div>
+
+	</div> -->
 </div>
 <div class="separator"></div>
 
