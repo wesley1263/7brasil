@@ -1726,7 +1726,7 @@
 						<div class="list-group">
 						  <a href="#" class="list-group-item">
 						  	<div id="total_geral" class="hidden"><?=$total_tudo?></div>
-						    <h4 class="list-group-item-heading">TOTAL DA VENDA: R$ <?= number_format($total_tudo,2,',','.') ?></h4>
+						    <h4 class="list-group-item-heading">RATEIO: R$ <?= number_format($total_tudo,2,',','.') ?></h4>
 						    <!-- Iterar TIpo Cartãoo -->
 						    <?php foreach($tipoCartao as $key => $value){
 						    	$opt_tipo[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
@@ -1737,8 +1737,8 @@
 									
 							    	?>
 							    <p></p>
+							    		<table class="table" id="tbl_pagamento_<?=$cliente['id_clientePF']?>" >
 							    <p class="list-group-item-text"><strong><?=$cliente['nome_clientePF']?></strong></p>
-							    		<table class="table" id="tbl_pagamento">
 							    	<?php foreach($tipoPagamento as $key => $value){ ?>
 											<tr>
 												<?php if($value['titulo_tipoPagamento'] == 'CARTÃO DE CRÉDITO'): ?>
@@ -1764,6 +1764,7 @@
 											</tr>							    			
 							    	
 							    	<?php } ?>
+										    	<tr><td><a href="#" id="cad_formPgto" class="btn btn-default">OK</a></td></tr>
 							    		</table>
 							    <?php endforeach; ?><!-- ENDFOREACH ClientePF -->
 						 	 <!-- <p class="list-group-item-text">Rateio: <strong><div id="valor_rateio">R$ 0,00</div></strong></p> -->
@@ -2264,14 +2265,6 @@
 			jQuery('.fmpgto').maskMoney({thousands:'', decimal:'.'});
 			
 			
-			jQuery('.fmpgto').keypress(function(){
-
-				rateio = jQuery(this).val();
-				var total = total_geral - rateio;
-				jQuery('#valor_rateio').html('R$ '+total);
-			});
-			
-			
 			if(jQuery('.table').find('#tr_clientePF').length){
 				jQuery('#btn_finaliza_venda').attr('disabled',false);
 			}else{
@@ -2279,6 +2272,10 @@
 				
 			}
 			
+			jQuery('#cad_formPgto').click(function(){
+				var table = jQuery(this).parents().find('#tbl_pagamento_6');
+				// table.hide('slow');
+			});
 			
 			jQuery('#bt_finalizaVenda').click(function(){
 				if(confirm('As informações mostradas estão corretas?')){

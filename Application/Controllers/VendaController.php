@@ -482,31 +482,55 @@ class VendaController extends OXE_Controller{
 		
 		
 			### Outras formas de pagamento ###
-			foreach($_POST as $key => $value){
-			if(preg_match("/^(\d+)$/", $key)){
-				$this->dump($key);
-				$this->dump($value);
-				}
-			}
-				$this->dump($arrayFormaPgto);
-			### Outras formas de pagamento ###
-		
-		
-		### Outras formas de pagamento ###
+				// $array = array();
 			// foreach($_POST as $key => $value){
-			// if(preg_match("/^(\d)$/", $key)){
-				// foreach($arrayFormaPgto as $chave => $valor){
-					// foreach($value as $k => $v){
-						// if($chave == $k && $v != null){
+			// if(preg_match("/^(\d+)$/", $key)){
+				// foreach($value as $k => $v){
+					// foreach($arrayFormaPgto as $chave => $valor){
+						// if($chave == $k && $v != 0){
 							// $arrayFormaPgto[$chave]['id_tipoPagamento'] = $key;
 							// $arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
 							// $arrayFormaPgto[$chave]['id_tipoCartao'] = null;
 							// $arrayFormaPgto[$chave]['vezes_formaPagamento'] = 1;
+							// // $this->dump($arrayFormaPgto);
+								// foreach($arrayFormaPgto as $ke => $va){
+									// if(!isset($va['valor_formaPagamento'])){
+										// unset($va);
+									// }
+									// @$array[] = $va;
 								// }
 							// }
 						// }
 					// }
 				// }
+			// }
+			// foreach($array as $key => $arr){
+				// if($array[$key] == null){
+					// unset($array[$key]);
+				// }
+			// }
+			// $this->dump($array);
+			
+				// $this->dump($arrayFormaPgto);
+			### Outras formas de pagamento ###
+		
+		
+		### Outras formas de pagamento ###
+			foreach($_POST as $key => $value){
+			if(preg_match("/^(\d)$/", $key)){
+				foreach($arrayFormaPgto as $chave => $valor){
+					foreach($value as $k => $v){
+						if($chave == $k && $v != null){
+							$arrayFormaPgto[$chave]['id_tipoPagamento'] = $key;
+							$arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
+							$arrayFormaPgto[$chave]['id_tipoCartao'] = null;
+							$arrayFormaPgto[$chave]['vezes_formaPagamento'] = 1;
+								}
+							}
+						}
+					}
+				}
+			$this->dump($arrayFormaPgto);
 			### Outras formas de pagamento ###
 		
 		
