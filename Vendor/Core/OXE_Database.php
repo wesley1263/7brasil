@@ -177,7 +177,8 @@ abstract class OXE_Database extends PDO {
 	
 	public function where($cond)
 	{
-		$this->_where[] = "AND ($cond)";
+		$arrayWhere[] = "AND ($cond)";
+		$this->_where = $arrayWhere;
 		return $this;
 	}
 	
@@ -224,7 +225,7 @@ abstract class OXE_Database extends PDO {
 	
 	public function result()
 	{
-		if(is_array($this->_where) && count($this->_where)){
+		if(is_array($this->_where) && count($this->_where) != 0){
 			$this->_where = implode($this->_where, '  ');
 		}else{
 			$this->_where = null;

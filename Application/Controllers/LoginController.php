@@ -22,6 +22,7 @@ class LoginController extends OXE_Controller {
 	
 	public function validarAction()
 	{
+		
 		$ok = $this->model->validaUser($_POST);
 		if($ok){
 			if($ok[0]['status_usuario'] == '0'){

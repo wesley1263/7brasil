@@ -1731,7 +1731,7 @@
 						    <?php foreach($tipoCartao as $key => $value){
 						    	$opt_tipo[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
 						    } ?>
-						    <!-- Iterar TIpo Cartão -->
+						    <!-- Iterar Tipo Cartão -->
 						    
 							    <?php foreach($arrayClientePF as $cliente): 
 									
@@ -2028,10 +2028,12 @@
 				dataType: 'json',
 				data: {nome: nomeCli, cpf: cpfCli},
 				success: function(data){
-					if(data == ''){
+					if(!data.length){
 						jQuery(".modal-body").html('<h2>Cliente não foi encontrado!</h2>');
 						jQuery("#bt_incluir").attr('disabled',true);
-					}
+						setTimeout(function(){location.href="/venda/cadVendaPF";},4000);
+						
+					}else{
 						jQuery('#id_PF').val(data[0].id_clientePF);
 						jQuery('#cpf_PF').html('CPF: ' +data[0].cpf_clientePF);
 						jQuery('#dataNascimento_PF').html('Data de Nasc: ' +format_data(data[0].dataNascimento_clientePF));
@@ -2039,6 +2041,7 @@
 						jQuery('#endereco_PF').html('Endereço: ' +data[0].endereco_clientePF);
 						jQuery('#telefone_PF').html('Telefone: ' +data[0].telefone_clientePF);
 						jQuery("#bt_incluir").attr('disabled',false);
+					}
 				}
 			});
 		});

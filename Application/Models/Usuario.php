@@ -72,11 +72,8 @@ class Usuario extends OXE_Model {
 	{
 		$user = $data['usuario_login'];
 		$pass = md5($data['senha_login']);
+		$query = "SELECT * FROM $this->_name WHERE login_usuario = '$user' AND senha_usuario = '$pass'";
 		
-		return $this->select()
-					->from()
-					->where("login_usuario = '$user'")
-					->where("senha_usuario = '$pass'")
-					->result();
+		return $this->query($query);
 	}
 }

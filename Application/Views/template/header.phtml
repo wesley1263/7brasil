@@ -2,7 +2,8 @@
 	<div id="header">
 		<div class="container">
 			<div class="logged">
-				<span>Olá Weslei</span><a href="/login/logout" class="sair">Logout</a>
+				
+				<span>Olá <?=$_SESSION['user']['nome_usuario'];?></span><a href="/login/logout" class="sair">Logout</a>
 			</div>
 			<a href="/" title="7ete - System by 7brasil" class="logo"> <img src="/skin/img/logo-sys.png" alt="logo 7ete"> </a>
 			<div class="menuNav">
@@ -12,7 +13,7 @@
 						<ul class="submenu" style="display: none;">
 							<li class=""><a href="/empresa" title="Empresa dententora do sistema">Empresa</a></li>
 							<li class=""><a href="/cambio" title="Nome das moedas internacionais">Moeda</a></li>
-							<li class=""><a href="#" title="Cambio do dia">Cambio</a></li>
+							<li class=""><a href="/moeda" title="Cambio do dia">Cambio</a></li>
 							<li class=""><a href="/tipoPagamento" title="Tipos de Pagamento permitido pela empresa">Tipos de Pagamento</a></li>
 							<li class=""><a href="#" title="Nomes dos cartões de crédito permitido pela empresa">Tipos de cartões</a></li>
 							<li class=""><a href="/filial" title="Filiais da empresa">Filiais</a></li>
