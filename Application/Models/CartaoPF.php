@@ -60,4 +60,21 @@ class CartaoPF extends OXE_Model {
 		$query = "SELECT * FROM $this->_name WHERE id_clientePF = $id";
 		return $this->query($query);
 	}
+	
+	public function lista_cartoes($id)
+	{
+		$query = "select distinct tip.id_tipoCartao,tip.titulo_tipoCartao
+				  from tbl_cartaoPF as cart
+				
+				  inner join tbl_clientePF as cli
+				  ON cart.id_clientePF = cli.id_clientePF
+				
+				  inner join tbl_tipoCartao as tip
+				  on cart.id_tipoCartao = tip.id_tipoCartao
+				
+				  WHERE cli.id_clientePF = $id";
+				  
+		return $this->query($query);
+					
+	}
 }

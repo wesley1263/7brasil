@@ -1723,53 +1723,7 @@
 					
 					<br />
 					    <!-- Total de todos os produtos  -->
-						<div class="list-group">
-						  <a href="#" class="list-group-item">
-						  	<div id="total_geral" class="hidden"><?=$total_tudo?></div>
-						    <h4 class="list-group-item-heading">RATEIO: R$ <?= number_format($total_tudo,2,',','.') ?></h4>
-						    <!-- Iterar TIpo Cartãoo -->
-						    <?php foreach($tipoCartao as $key => $value){
-						    	$opt_tipo[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
-						    } ?>
-						    <!-- Iterar Tipo Cartão -->
-						    
-							    <?php foreach($arrayClientePF as $cliente): 
-									
-							    	?>
-							    <p></p>
-							    		<table class="table" id="tbl_pagamento_<?=$cliente['id_clientePF']?>" >
-							    <p class="list-group-item-text"><strong><?=$cliente['nome_clientePF']?></strong></p>
-							    	<?php foreach($tipoPagamento as $key => $value){ ?>
-											<tr>
-												<?php if($value['titulo_tipoPagamento'] == 'CARTÃO DE CRÉDITO'): ?>
-											    	<td><?=$value['titulo_tipoPagamento']?>
-											    		<!-- Listar todos cartões de crédito do cliente -->
-											    		<table class="table table-bordered">
-													<?php
-													foreach($cartaoPF->lista_um($cliente['id_clientePF']) as $cartao){ ?>
-											    			<tr>
-											    		<td><?=$opt_tipo[$cartao['id_tipoCartao']]?></td>
-											    	 	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento'].'_'.$cartao['id_tipoCartao']?>[]" />
-											    	 		  X  <input type="text" name="<?=$value['id_tipoPagamento'].'_'.$cartao['id_tipoCartao']?>_vezes_pgto[]" maxlength="2" style="width: 10%" />
-											    	 	</td>
-															</tr>
-														<?php } ?>
-														</table>
-											    		<!-- Listar todos cartões de crédito do cliente -->
-													</td>
-										    	<?php else: ?>
-										    	<td><?=$value['titulo_tipoPagamento']?></td> 
-										    	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>[]" /></td>
-										    	<?php endif; ?><!-- End IF CARTÃO DE CREDITO -->
-											</tr>							    			
-							    	
-							    	<?php } ?>
-										    	<tr><td><a href="#" id="cad_formPgto" class="btn btn-default">OK</a></td></tr>
-							    		</table>
-							    <?php endforeach; ?><!-- ENDFOREACH ClientePF -->
-						 	 <!-- <p class="list-group-item-text">Rateio: <strong><div id="valor_rateio">R$ 0,00</div></strong></p> -->
-						  </a>
-						</div>
+						
 					    <!-- Total de todos os produtos  -->
 					    
 					    <label>Descrição de venda</label>
@@ -1790,7 +1744,52 @@
 	
 	
 	
-	
+		   	<!-- Modal Rateio Venda -->
+	<div class="modal fade" id="modalRateio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Rateio Venda   -   <strong>R$ <?=number_format($total_tudo,2,',','.')?></strong></h4>
+				</div>
+				<div class="modal-body">
+					<?php 
+					foreach($tipoPagamento as $tipo){
+						 $opt_tipo[$tipo['id_tipoPagamento']] = $tipo['titulo_tipoPagamento'];
+					}
+					?>
+				<form method="post" name="rateio" action="/venda/cadTipoPagamento">
+				<input type="hidden" name="id_clientePF" value="" />
+				<table class="table">
+							    <p class="list-group-item-text"><h3 id="nome_cliente"></h3></p>
+							    	<?php foreach($tipoPagamento as $key => $value){ ?>
+											<tr>
+												<?php if($value['titulo_tipoPagamento'] == 'CARTÃO DE CRÉDITO'): ?>
+											    	<td><?=$value['titulo_tipoPagamento']?>
+											    		<!-- Listar todos cartões de crédito do cliente -->
+											    		<table id="cartoes_credito" class="table table-bordered">
+														</table>
+											    		<!-- Listar todos cartões de crédito do cliente -->
+													</td>
+										    	<?php else: ?>
+										    	<td><?=$value['titulo_tipoPagamento']?></td> 
+										    	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>[]" /></td>
+										    	<?php endif; ?><!-- End IF CARTÃO DE CREDITO -->
+											</tr>							    			
+							    	
+							    	<?php } ?>
+							    		</table>
+							</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+								</form>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		   	<!-- Modal Rateio Venda -->
 	
 	
 	
@@ -1834,9 +1833,10 @@
 			?>
 			<tr class="warning" id="tr_clientePF">
 				<td><?='Cliente: '.$v['nome_clientePF']?></td>
-				<td>Cliente</td>
+				<!-- <td>Cliente</td> -->
 				<td><a href="#"  class="btn btn-info bt_part" id_cliente="<?=$v['id_clientePF']?>" data-toggle="modal" data-target="#modalDependente"><span class="glyphicon glyphicon-plus-sign"></span> Dependentes</a></td>
 				<td><a href="/venda/deleteClientePF/id/<?=$v['id_clientePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_clientePF']?> da lista de venda?')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
+				<td><a href="#" data-toggle="modal" title="Rateio do cliente" data-target="#modalRateio" id_clientePF="<?=$v['id_clientePF']?>" class="btn btn-warning bt_rateio"><span class="glyphicon glyphicon-usd"></span> Rateio</a></td>
 			</tr>
 		<?php 
 				}
@@ -2272,10 +2272,40 @@
 				
 			}
 			
-			jQuery('#cad_formPgto').click(function(){
-				var table = jQuery(this).parents().find('#tbl_pagamento_6');
-				// table.hide('slow');
+			
+			
+			//############# Botão para montagem do formulário de Rateio ###########
+			jQuery('.bt_rateio').click(function(){
+				var id_clientePF = jQuery(this).attr('id_clientePF');
+				jQuery.ajax({
+					url: '/venda/getClientePF',
+					type: 'post',
+					dataType: 'json',
+					data: {id_clientePF : id_clientePF},
+					success: function(data){
+						jQuery('#nome_cliente').html(data.nome_clientePF);
+						jQuery('[name=id_clientePF]').val(id_clientePF);
+					},
+					complete: function(){
+						jQuery.ajax({
+							url: '/venda/getTipoCartao',
+							type: 'post',
+							dataType: 'json',
+							data:{id_clientePF : id_clientePF},
+							success:function(data){
+								jQuery('#cartoes_credito').html('');
+								for(var i = 0; i < data.length; i++){
+									jQuery('#cartoes_credito').append('<tr><td>'+data[i].titulo_tipoCartao+'</td><td><input type="text" class="fmpgto" name="3_'+data[i].id_tipoCartao+'" /></td>  <td> <input type="text" class="fmpgto" name="3_'+ data[i].id_tipoCartao+'_vezes_pgto" maxlength="2" style="width: 30%" /> Vezes</td></tr>');
+									
+									console.log(data[i]);
+								}
+							}
+						});
+					}
+				});
+				
 			});
+			//############# Botão para montagem do formulário de Rateio ###########
 			
 			jQuery('#bt_finalizaVenda').click(function(){
 				if(confirm('As informações mostradas estão corretas?')){

@@ -17,13 +17,14 @@ if(isset($_SESSION['error'])){
 	$table->t_init('class="table table-bordered"');
 	$table->t_head(array('Titúlo','Dias','Porcentagem','Status','Editar','Remover'));
 	foreach($tipopagamentos as $tipo){
+					$exluir = $tipo['titulo_tipoPagamento'] != 'CARTÃO DE CRÉDITO' ? '<center><a href="/tipoPagamento/deleteTipoPagamento/id/'.$tipo['id_tipoPagamento'].'" onclick=" return confirm(\'Deseja realmente remover '.$tipo['titulo_tipoPagamento'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>': '';
 		$table->t_row(array(
 					$tipo['titulo_tipoPagamento'],
 					$tipo['dias_recebimento_tipoPagamento'],
 					$tipo['porcentagem_tipoPagamento'],
 					$tipo['status_tipoPagamento'] == 1? 'Ativo' : 'Inativo',
 					'<center><a href="/tipoPagamento/cadTipoPagamento/id/'.$tipo['id_tipoPagamento'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-					'<center><a href="/tipoPagamento/deleteTipoPagamento/id/'.$tipo['id_tipoPagamento'].'" onclick=" return confirm(\'Deseja realmente remover '.$tipo['titulo_tipoPagamento'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+					$exluir
 					));
 	}
 	$table->generate();

@@ -71,15 +71,20 @@ class ClienteController extends OXE_Controller {
 	
 	public function cadfisicaAction()
 	{
+		$moeda = new Moeda();
+		$cambio = new Cambio();
 		$tipoCartao = new TipoCartao();
 		$form = new FormStyle();
+		
+		$data['moedas'] = $moeda->list_all();
+		$data['cambios'] = $cambio->list_all();
 		$data['title'] = 'Cadastro Clientes - Pessoa Física';
 		$data['form'] = $form;
 		$data['tipoCartoes'] = $tipoCartao->list_all();
 
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		$this->view('template/cambio',$data);
 		$this->view('cliente/pf/fisica',$data);
 		$this->view('template/footer');
 	}
@@ -88,12 +93,17 @@ class ClienteController extends OXE_Controller {
 	{
 		
 		$param = func_get_args();
+		$moeda = new Moeda();
+		$cambio = new Cambio();
+		
 		$classif = new Classificacao();
 		$cartoes = new CartaoPF();
 		$tipoCartao = new TipoCartao();
 		
 		$form = new FormStyle();
 		$data['title'] = 'Cadastro Clientes - Pessoa Física';
+		$data['moedas'] = $moeda->list_all();
+		$data['cambios'] = $cambio->list_all();
 		$data['form'] = $form;
 		$data['classif'] = $classif->list_all();
 		$data['clientes'] = $this->model->list_once($param[1]);
@@ -102,7 +112,7 @@ class ClienteController extends OXE_Controller {
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		$this->view('template/cambio',$data);
 		$this->view('cliente/pf/updatefisica',$data);
 		$this->view('template/footer');
 	}

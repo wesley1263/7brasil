@@ -75,6 +75,9 @@ class TipoPagamentoController extends OXE_Controller{
 				$this->redirector('/tipoPagamento');
 			}
 		}else{
+			if($_POST['id_tipoPagamento'] == 3){
+				$_POST['titulo_tipoPagamento'] = 'CARTÃO DE CRÉDITO';
+			}
 			$this->model->alter($_POST);
 				$this->session->setFlashMessage('Tipo de pagamento atualizado com sucesso','success');
 				$this->redirector('/tipoPagamento');
@@ -84,6 +87,11 @@ class TipoPagamentoController extends OXE_Controller{
 	public function deleteTipoPagamentoAction()
 	{
 		$param = func_get_args();
+		if($param[1] == '3'){
+			$this->session->setFlashMessage('CARTÃO DE CRÉDITO não pode ser removido!','error');
+			$this->redirector('/tipoPagamento');
+			exit;
+		}
 		if($this->model->remove($param[1])){
 			$this->session->setFlashMessage('TipoPagamento removido do sistema','success');
 			$this->redirector('/tipoPagamento');
