@@ -561,6 +561,33 @@
 		}
 		$form->select($opt_moe,'id_moeda','Moeda',1,2,5);
 		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_inicio_seguro',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Inicio',
+				'value' =>'',
+				'required' => true
+				));
+		// $form->groupClose();
+// 		
+		// $form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_fim_seguro',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Fim',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
 
 		$form->groupOpen();	
 		$form->input(array(

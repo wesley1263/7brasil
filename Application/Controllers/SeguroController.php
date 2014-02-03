@@ -66,12 +66,11 @@ class SeguroController extends OXE_Controller{
 			$_POST['voucher_seguro'] = UPLOAD_PATH.$name.$ext;
 		}
 		
-		$_POST['dt_inicio_seguro'] = $this->dateToMysql($_POST['dt_inicio_seguro']);
-		$_POST['dt_fim_seguro'] = $this->dateToMysql($_POST['dt_fim_seguro']);
 		
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
 		}
+		
 		
 		if($_POST['id_seguro'] == null){
 			$id_seguro = $this->model->add($_POST);

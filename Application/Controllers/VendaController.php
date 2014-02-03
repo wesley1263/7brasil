@@ -36,6 +36,9 @@ use Application\Models\TipoCartao;
 use Application\Models\ClienteTicket;
 use Application\Models\VendaClientePF;
 use Application\Models\FormaPagamento;
+use Application\Models\CarroClientePF;
+use Application\Models\AsseguradoPF;
+
 
 class VendaController extends OXE_Controller{
 		
@@ -348,6 +351,7 @@ class VendaController extends OXE_Controller{
 		$formPagamento = new FormaPagamento();
 		$clienteTicket = new ClienteTicket();
 		$CompraTicket = new CompraTicket();
+		$carro = new CarroClientePF();
 		
 		
 		######## Preparando os arrays para as tabelas ########
@@ -448,6 +452,10 @@ class VendaController extends OXE_Controller{
 					}
 				}
 				
+				
+				
+				
+				
 				############### Adicionando ticket venda cliente ###########
 				if(isset($_SESSION['tickets'])){
 					$arrayTicket = array();
@@ -470,7 +478,58 @@ class VendaController extends OXE_Controller{
 						$clienteTicket->add($data);
 					}
 				}
-				############### Adicionando ticket venda cliente ###########
+				
+				
+				############### Adicionando Carros##########
+					if(isset($_SESSION['carros'])){
+						$carro = new Carro();
+						$sess_carro = $this->session->getSession('carros');
+						$arrayCarro = array();
+						foreach($sess_carro as $key => $value){
+							foreach($value['id_carro'] as $k => $v){
+								$arrayCarro[] = $carro->list_once($v);
+							}
+						}
+						
+						
+						$data = array();
+						$carroCliente = new CarroClientePF();
+						foreach ($arrayCarro as $key => $value) {
+							foreach($value as $chave => $valor){
+								$data['id_venda'] = $id_venda;
+								$data['id_carros'] = $valor['id_carros'];
+								$data['id_clientePF'] = $valor['id_clientePF'];
+								
+								$carroCliente->add($data);
+							}
+						}
+					}
+						
+				############## Adicionando Seguro ###########
+				if(isset($_SESSION['seguro'])){
+					$seguro = new Seguro();
+					$AsseguradoPF = new AsseguradoPF();
+					$sess_seguro = $this->session->getSession('seguro');
+					$arraySeguro = array();
+						foreach ($sess_seguro as $key => $value) {
+							foreach($value['id_seguro'] as $id_seguro){
+								$arraySeguro[] = $seguro->list_once($id_seguro);
+							}
+						}
+						$data = array();
+						
+						foreach ($arraySeguro as $key => $value) {
+							foreach ($value as $chave => $valor) {
+								$data['id_seguro'] = $valor['id_seguro'];
+								$data['id_clientePF'] = $valor['id_clientePF'];
+								$data['id_venda'] = $id_venda;
+								$id_participacao = array_search($valor['id_clientePF'],$_SESSION['id_clientePF']['id']);
+								$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
+								
+								$AsseguradoPF->add($data);
+							}
+						}
+				}
 				
 				
 			}### ENDIF Venda alteração
@@ -492,12 +551,12 @@ class VendaController extends OXE_Controller{
 				unset($_SESSION['carros']);
 			}
 			
-			if(isset($_SESSION['seguros'])){
-				unset($_SESSION['seguros']);
+			if(isset($_SESSION['seguro'])){
+				unset($_SESSION['seguro']);
 			}
 			
 			if(isset($_SESSION['passagens'])){
-				unset($_SESSION['passagens']);
+				unset($_SESSION['passagen']);
 			}
 			
 			if(isset($_SESSION['produtos'])){
