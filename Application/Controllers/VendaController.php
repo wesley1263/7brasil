@@ -34,6 +34,8 @@ use Application\Models\TipoPagamento;
 use Application\Models\CartaoPF;
 use Application\Models\TipoCartao;
 use Application\Models\ClienteTicket;
+use Application\Models\VendaClientePF;
+use Application\Models\FormaPagamento;
 
 class VendaController extends OXE_Controller{
 		
@@ -342,26 +344,23 @@ class VendaController extends OXE_Controller{
 		$agencia = new Agencia();
 		$agente = new Agente();
 		$venda = new Venda();
-		$vendaClientePF = new Application\Models\VendaClientePF();
+		$venda_ClientePF = new VendaClientePF();
+		$formPagamento = new FormaPagamento();
+		$clienteTicket = new ClienteTicket();
+		$CompraTicket = new CompraTicket();
 		
 		
 		######## Preparando os arrays para as tabelas ########
 		$arrayVenda = array();
 		$vendaClientePF = array();
 		$vendaDependentePF = array();
-		$formaPagamento = array();
 		$arrayTicket = array();
 		
-		// $this->dump($_POST);
-		//removendo posts nulos
-		// foreach($_POST as $key => $value){
-			// if($_POST[$key] == null){
-				// unset($_POST[$key]);
-			// }
 		
 		######### Buscando dados na Sessão ############
 		$cliente = $this->session->getSession('id_clientePF');
 		$usuario = $this->session->getSession('user');
+		$formaPagamento = $this->session->getSession('formarPagamento');
 		if(isset($_SESSION['dependentes'])){
 			$dependente = $this->session->getSession('dependentes');
 		}else{
@@ -376,7 +375,7 @@ class VendaController extends OXE_Controller{
 		$total_venda = $_POST['total_venda'];
 		$data_venda = date('Y-m-d');
 		$descricao_venda = $_POST['descricao_venda'];
-		$numero_processo = str_pad($id_usuario,2,0,STR_PAD_LEFT).date('m').date('Y');
+		$numero_processo = str_pad($id_usuario,3,0,STR_PAD_LEFT).date('m').date('Y');
 		
 		
 		
@@ -408,45 +407,113 @@ class VendaController extends OXE_Controller{
 		
 		
 		########### Adicionando nas tabela envolvidas ##########
-		// $id_venda = $this->model->add($tbl_venda);
-		// if($id_venda){
-			// $tbl_venda['id_venda'] = $id_venda;
-			// $tbl_venda['nm_processo_venda'] = $numero_processo.$id_venda;
-			// if($this->model->alter($tbl_venda)){
-				// ######## Preparando array vendaClientePF ###########
-				// $tbl_vendaClientePF = array();
-				// foreach($cliente['id'] as $key => $value){
-					// $tbl_vendaClientePF[]['id_clientePF'] = $value;
-					// $tbl_vendaClientePF[$key]['id_participacaoPF'] = $cliente['participacao'][$key];
-					// $tbl_vendaClientePF[$key]['id_venda'] = $id_venda;
-				// }
-// 				
-				// foreach($tbl_vendaClientePF as  $array){
-					// $vendaClientePF->add($array);
-				// }
-// 				
-				// ########### Preparando o array de venda_dependentePF
-				// $arrayDependente = array();
-				// if($dependente != null){
-					// foreach($dependente as $key => $value){
-						// foreach($value as $chave => $valor){
-							// $arrayDependente[]['id_dependentePF'] = $valor;
-							// $arrayDependente[$chave]['id_venda'] = 12;
-							// $vendaDependentePF = new Application\Models\VendaDependentePF();
-							// $vendaDependentePF->add($arrayDependente);
-						// }
-					// }
-				// }
+		$id_venda = $this->model->add($tbl_venda);
+		if($id_venda){
+			$tbl_venda['id_venda'] = $id_venda;
+			$tbl_venda['nm_processo_venda'] = $numero_processo.$id_venda;
+			if($this->model->alter($tbl_venda)){
+				######## Preparando array vendaClientePF ###########
+				$tbl_vendaClientePF = array();
+				foreach($cliente['id'] as $key => $value){
+					$tbl_vendaClientePF[]['id_clientePF'] = $value;
+					$tbl_vendaClientePF[$key]['id_participacaoPF'] = $cliente['participacao'][$key];
+					$tbl_vendaClientePF[$key]['id_venda'] = $id_venda;
+				}
 				
+				foreach($tbl_vendaClientePF as  $array){
+					$venda_ClientePF->add($array);
+				}
+				
+				########### Preparando o array de venda_dependentePF
+				$arrayDependente = array();
+				if($dependente != null){
+					foreach($dependente as $key => $value){
+						foreach($value as $chave => $valor){
+							$arrayDependente[]['id_dependentePF'] = $valor;
+							$arrayDependente[$chave]['id_venda'] = 12;
+							$vendaDependentePF = new Application\Models\VendaDependentePF();
+							$vendaDependentePF->add($arrayDependente);
+						}
+					}
+				}
+				
+				
+				######### Registrando forma de pagamento ###########
+				$data = array();
+				foreach($formaPagamento as $key => $value){
+					foreach($value as $chave => $valor){
+						$data['id_venda'] = $id_venda;
+						$data['id_formaPagamento'] = $valor;
+						$formPagamento->alter($data);
+					}
+				}
+				
+				############### Adicionando ticket venda cliente ###########
+				if(isset($_SESSION['tickets'])){
+					$arrayTicket = array();
+					foreach($_SESSION['tickets'] as $key => $value){
+						foreach($value['id_tickets'] as $k => $v){
+							$arrayTicket[] = $CompraTicket->list_once($v);
+						}
+					}
+					
+					$data = array();
+					foreach($arrayTicket as $key => $value){
+						
+						$data['id_venda'] = $id_venda;
+						$data['id_moeda'] = $value['id_moeda'];
+						$data['id_compraTicket'] = $value['id_compraTicket'];
+						$data['id_clientePF'] = $value['id_clientePF'];
+						$id_participacao = array_search($value['id_clientePF'],$_SESSION['id_clientePF']['id']);
+						$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
+						
+						$clienteTicket->add($data);
+					}
+				}
+				############### Adicionando ticket venda cliente ###########
+				
+				
+			}### ENDIF Venda alteração
+			unset($_SESSION['id_clientePF']);
+			unset($_SESSION['formarPagamento']);
+			if(isset($_SESSION['tickets'])){
+				unset($_SESSION['tickets']);
+			}
 			
-		
-		
-		
-		
-		
-	}
+			if(isset($_SESSION['dependentes'])){
+				unset($_SESSION['dependentes']);
+			}
+			
+			if(isset($_SESSION['hotel'])){
+				unset($_SESSION['hotel']);
+			}
+			
+			if(isset($_SESSION['carros'])){
+				unset($_SESSION['carros']);
+			}
+			
+			if(isset($_SESSION['seguros'])){
+				unset($_SESSION['seguros']);
+			}
+			
+			if(isset($_SESSION['passagens'])){
+				unset($_SESSION['passagens']);
+			}
+			
+			if(isset($_SESSION['produtos'])){
+				unset($_SESSION['produtos']);
+			}
+			
+			
+			if(isset($_SESSION['cruzeiros'])){
+				unset($_SESSION['cruzeiros']);
+			}
 
-
+			$this->session->setFlashMessage('Venda cadastrada com sucesso.','success');
+		$this->redirector('/venda/cadVendaPF');
+		} ### ENDIF Venda
+		
+}
 
 	
 	public function cadTipoPagamentoAction()
