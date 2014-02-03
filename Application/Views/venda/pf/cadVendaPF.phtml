@@ -10,9 +10,8 @@
        	echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
        }
 		
-		session_cache_expire();
-		 // session_destroy();
-		// $this->dump($_SESSION);
+		// session_destroy();
+		$this->dump($_SESSION);
 		// $this->dump(session_cache_expire());
 		
 		// if(isset($compraTickets))

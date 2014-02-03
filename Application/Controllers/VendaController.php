@@ -438,131 +438,10 @@ class VendaController extends OXE_Controller{
 					// }
 				// }
 				
-			############## Preparando array forma de pagamento #########
 			
-			
-			
-				
-			// }
-		// }
-		########### Adicionando nas tabela envolvidas ##########
-		
-		
-		  
-		
-			
-			// if(is_array($value)){
-				// foreach($value as $chave => $valor){
-					// $this->dump($valor);
-				// }
-			// }
-		// }
-		//removendo posts nulos
-		// $this->dump($_POST);
-		$arrayFormaPgto = array();
-		
-		$arrayFormaPgto = array();
-		foreach($cliente['id'] as $id_cliente ){
-			$arrayFormaPgto[]['id_clientePF'] = $id_cliente;
-		}
-		
-		foreach($arrayFormaPgto as $key => $value){
-			$arrayFormaPgto[$key]['id_venda'] = 1;
-		}
-		
-		if(isset($_SESSION['tickets'])){
-			//Estancia a classe do produto da lista de venda
-			$clienteTicket = new ClienteTicket();
-			$ticket = $this->session->getSession('tickets');
-			
-		}
 		
 		
 		
-			### Outras formas de pagamento ###
-			$array = array();
-			foreach($_POST as $key => $value){
-			if(preg_match("/^(\d+)$/", $key)){
-				foreach($value as $k => $v){
-					foreach($arrayFormaPgto as $chave => $valor){
-						if($chave == $k && $v != 0){
-							$arrayFormaPgto[$chave]['id_tipoPagamento'] = $key;
-							$arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
-							$arrayFormaPgto[$chave]['id_tipoCartao'] = null;
-							$arrayFormaPgto[$chave]['vezes_formaPagamento'] = 1;
-							// $this->dump($arrayFormaPgto);
-								foreach($arrayFormaPgto as $ke => $va){
-									if(!isset($va['valor_formaPagamento'])){
-										unset($va);
-									}
-									@$array[] = $va;
-								}
-							}
-						}
-					}
-				}
-			}
-			foreach($array as $key => $arr){
-				if($array[$key] == null){
-					unset($array[$key]);
-				}
-			}
-			
-			foreach($array as $key => $value){
-				$this->dump($value);
-			}
-			
-				// $this->dump($arrayFormaPgto);
-			### Outras formas de pagamento ###
-		
-		
-		### Outras formas de pagamento ###
-			// foreach($_POST as $key => $value){
-			// if(preg_match("/^(\d)$/", $key)){
-				// foreach($arrayFormaPgto as $chave => $valor){
-					// foreach($value as $k => $v){
-						// if($chave == $k && $v != null){
-							// $arrayFormaPgto[$chave]['id_tipoPagamento'] = $key;
-							// $arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
-							// $arrayFormaPgto[$chave]['id_tipoCartao'] = null;
-							// $arrayFormaPgto[$chave]['vezes_formaPagamento'] = 1;
-								// }
-							// }
-						// }
-					// }
-				// }
-			// $this->dump($arrayFormaPgto);
-			### Outras formas de pagamento ###
-		
-		
-		### Somente os cartões de credito ###
-		// foreach($_POST as $key => $value){
-				// if(preg_match("/^([0-9]_[0-9])$/", $key)){
-					// $tipo = explode('_', $key);
-					// foreach($arrayFormaPgto as $chave => $valor){
-						// foreach($value as $k => $v){
-							// if($chave == $k && $v != null){
-								// $arrayFormaPgto[$chave]['id_tipoPagamento'] = $tipo[0];
-								// $arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
-								// $arrayFormaPgto[$chave]['id_tipoCartao'] = $tipo[1];
-							// }else{
-// 								
-							// }
-						// }
-					// }
-				// }
-			// // ### Somente as vezes de pagamento de cartão de crédito ###
-			// if(preg_match("/^([0-9]_[0-9]_[a-z]{1,})/", $key)){
-				// foreach($arrayFormaPgto as $chave => $valor){
-					// foreach($value as $k => $v){
-						// if($chave == $k && $v != null){
-							// $arrayFormaPgto[$chave]['vezes_formaPagamento'] = $v;
-						// }
-					// }
-				// }
-			// }
-		// }	
-			// $this->dump($_POST);;
 		
 		
 	}
@@ -585,14 +464,14 @@ class VendaController extends OXE_Controller{
 			$dependente = null;
 		}
 		
-		
+		$formaPagamento = new Application\Models\FormaPagamento();
 		
 		
 		$arrayFormaPgto = array();
 		
 		$arrayFormaPgto = array();
 		foreach($cliente['id'] as $id_cliente ){
-			$arrayFormaPgto[]['id_clientePF'] = $_POST['id_clientePF'];
+			$arrayFormaPgto[]['id_formaPagamento'] = null;
 		}
 		
 		foreach($arrayFormaPgto as $key => $value){
@@ -609,6 +488,7 @@ class VendaController extends OXE_Controller{
 				foreach($value as $k => $v){
 					foreach($arrayFormaPgto as $chave => $valor){
 						if($chave == $k && $v != 0){
+							$arrayFormaPgto[$chave]['id_clientePF'] = $_POST['id_clientePF'];
 							$arrayFormaPgto[$chave]['id_tipoPagamento'] = $key;
 							$arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
 							$arrayFormaPgto[$chave]['id_tipoCartao'] = null;
@@ -630,10 +510,12 @@ class VendaController extends OXE_Controller{
 						unset($array[$key]);
 					}
 				}
-				// $this->dump($array);
 				
 				foreach($array as $key => $value){
-					$this->dump($value);
+					$id_form = $formaPagamento->add($value);
+					if($id_form){
+						$_SESSION['formarPagamento'][$_POST['id_clientePF']][] = $id_form;
+					}
 				}
 				
 				
@@ -643,7 +525,8 @@ class VendaController extends OXE_Controller{
 		
 				$arrayFormaPgto = array();
 				foreach($cliente['id'] as $id_cliente ){
-					$arrayFormaPgto[]['id_clientePF'] = $_POST['id_clientePF'];
+					$arrayFormaPgto[]['id_formaPagamento'] = null;
+					
 				}
 				
 				foreach($arrayFormaPgto as $key => $value){
@@ -655,12 +538,12 @@ class VendaController extends OXE_Controller{
 				
 				foreach($_POST as $key => $value){
 				 if(preg_match("/^([0-9]_[0-9])$/", $key)){
-					// $this->dump($value);
 					$type = explode('_', $key);
 					$tipopagamento = $type[0];
 					$tipocartao = $type[1];
 					
 					foreach($arrayFormaPgto as $chave => $valor){
+						$arrayFormaPgto[$chave]['id_clientePF'] = $_POST['id_clientePF'];
 						$arrayFormaPgto[$chave]['id_tipoCartao'] = $tipocartao;
 						$arrayFormaPgto[$chave]['id_tipoPagamento'] = $tipopagamento;
 						$arrayFormaPgto[$chave]['valor_formaPagamento'] = $value;
@@ -669,20 +552,28 @@ class VendaController extends OXE_Controller{
 				  }
 				}
 				
+				$arrayVezes = array();
 				foreach($_POST as $key => $value){
 				 if(preg_match("/^([0-9]_[0-9]_.+)/", $key)){
-				 	// $this->dump($key);
-				 	// $this->dump($value);
-					foreach($array as $chave => $valor){
-						$valor[$chave]['vezes_formaPagamento'] = $value;
-						if(!isset($valor[0]['vezes_formaPagamento'])){
-							unset($valor[0]);
-						}
-						$this->dump(@$valor[0]);
-					}
-				 }
+					 $arrayVezes[]=$value;
+				  }
 				}
-		// $this->dump($array);
+					
+					foreach($array as $key => $value){
+			 			$array[$key][0]['vezes_formaPagamento'] = $arrayVezes[$key];
+					}
+					
+					
+					
+		 			foreach($array as $key => $value){
+		 				if($value[0]['valor_formaPagamento'] != null){
+			 				$id_form = $formaPagamento->add($value[0]);
+							if($id_form){
+								$_SESSION['formarPagamento'][$_POST['id_clientePF']][] = $id_form;
+							}
+		 				}
+		 			}
+					$this->redirector('/venda/cadVendaPF');
 	}
 	
 	public function findClientePFAction()
