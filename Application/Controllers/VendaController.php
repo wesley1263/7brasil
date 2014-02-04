@@ -38,8 +38,10 @@ use Application\Models\VendaClientePF;
 use Application\Models\FormaPagamento;
 use Application\Models\CarroClientePF;
 use Application\Models\AsseguradoPF;
-
-
+use Application\Models\CruzeiroClientePF;
+use Application\Models\VendaDependentePF;
+use Application\Models\DependentePFTicket;
+use Application\Models\CruzeiroDependentePF;
 class VendaController extends OXE_Controller{
 		
 	public function init()
@@ -430,17 +432,19 @@ class VendaController extends OXE_Controller{
 				
 				########### Preparando o array de venda_dependentePF
 				$arrayDependente = array();
-				if($dependente != null){
-					foreach($dependente as $key => $value){
+				if(isset($_SESSION['dependentes'])){
+					foreach($_SESSION['dependentes'] as $key => $value){
 						foreach($value as $chave => $valor){
 							$arrayDependente[]['id_dependentePF'] = $valor;
 							$arrayDependente[$chave]['id_venda'] = 12;
-							$vendaDependentePF = new Application\Models\VendaDependentePF();
-							$vendaDependentePF->add($arrayDependente);
 						}
 					}
+						$vendaDependentePF = new VendaDependentePF();
+						
+						foreach($arrayDependente as $key => $value){
+							$vendaDependentePF->add($value);
+						}
 				}
-				
 				
 				######### Registrando forma de pagamento ###########
 				$data = array();
@@ -459,6 +463,7 @@ class VendaController extends OXE_Controller{
 				############### Adicionando ticket venda cliente ###########
 				if(isset($_SESSION['tickets'])){
 					$arrayTicket = array();
+					$id_compraTicket = null;
 					foreach($_SESSION['tickets'] as $key => $value){
 						foreach($value['id_tickets'] as $k => $v){
 							$arrayTicket[] = $CompraTicket->list_once($v);
@@ -471,11 +476,26 @@ class VendaController extends OXE_Controller{
 						$data['id_venda'] = $id_venda;
 						$data['id_moeda'] = $value['id_moeda'];
 						$data['id_compraTicket'] = $value['id_compraTicket'];
+						$id_compraTicket = $value['id_compraTicket'];
 						$data['id_clientePF'] = $value['id_clientePF'];
 						$id_participacao = array_search($value['id_clientePF'],$_SESSION['id_clientePF']['id']);
 						$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
 						
 						$clienteTicket->add($data);
+					}
+					
+					if(isset($_SESSION['dependentes'])){
+						$dependentePFTicket = new DependentePFTicket();
+						$sess_dependente = $this->session->getSession('dependentes');
+						$data = array();
+						foreach ($sess_dependente as $key => $value) {
+							foreach($value as $id_dependente){
+								$data['id_venda'] = $id_venda;
+								$data['id_compraTicket'] = $id_compraTicket;
+								$data['id_dependentePF'] = $id_dependente;
+								$dependentePFTicket->add($data);
+							}
+						}
 					}
 				}
 				
@@ -531,6 +551,60 @@ class VendaController extends OXE_Controller{
 						}
 				}
 				
+			################ Cruzeiros ################
+			
+			if(isset($_SESSION['cruzeiros'])){
+				$cruzeiroCliente = new CruzeiroClientePF();
+				$cruzeiro = new Cruzeiro();
+				$arrayCruzeiro = array();
+				$id_cruzeiro = null;
+				
+				$sess_cruz = $this->session->getSession('cruzeiros');
+				foreach ($sess_cruz as $key => $value) {
+					foreach ($value['id_cruzeiro'] as $chave => $valor) {
+						$arrayCruzeiro[] = $cruzeiro->list_once($valor);
+					}
+				}
+				
+				$data = array();
+				foreach($arrayCruzeiro as $key => $value){
+					$data['id_clientePF'] = $value['id_clientePF'];
+					$data['id_cruzeiro'] = $value['id_cruzeiro'];
+					$id_cruzeiro = $value['id_cruzeiro'];
+					$data['id_venda'] = $id_venda;
+					$id_participacao = array_search($value['id_clientePF'],$_SESSION['id_clientePF']['id']);
+					$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
+					$cruzeiroCliente->add($data);
+				}
+				
+				if(isset($_SESSION['dependentes'])){
+						$dependenteCruzeiro = new CruzeiroDependentePF();
+						$sess_dependente = $this->session->getSession('dependentes');
+						$data = array();
+						foreach ($sess_dependente as $key => $value) {
+							foreach($value as $id_dependente){
+								$data['id_venda'] = $id_venda;
+								$data['id_cruzeiro'] = $id_cruzeiro;
+								$data['id_dependentePF'] = $id_dependente;
+								$dependenteCruzeiro->add($data);
+							}
+						}
+					}
+				
+				
+			}
+				
+				
+			############# Hoteis ################	
+			
+			
+			
+			############# outros Produtos ################
+			
+			
+			
+			############# Passagens Aéreas ################		
+			
 				
 			}### ENDIF Venda alteração
 			unset($_SESSION['id_clientePF']);
@@ -577,10 +651,7 @@ class VendaController extends OXE_Controller{
 	
 	public function cadTipoPagamentoAction()
 	{
-		########### Instanciar classes necessárias #########
 		
-		// $this->dump($_POST);
-		// exit;
 		######### Buscando dados na Sessão ############
 		$cliente = $this->session->getSession('id_clientePF');
 		$usuario = $this->session->getSession('user');
