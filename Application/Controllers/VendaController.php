@@ -42,6 +42,13 @@ use Application\Models\CruzeiroClientePF;
 use Application\Models\VendaDependentePF;
 use Application\Models\DependentePFTicket;
 use Application\Models\CruzeiroDependentePF;
+use Application\Models\HotelClientePF;
+use Application\Models\HotelDependentePF;
+use Application\Models\OutroProdutoPF;
+use Application\Models\AdicionaClientePF;
+use Application\Models\AdicionarDependentePF;
+
+
 class VendaController extends OXE_Controller{
 		
 	public function init()
@@ -436,7 +443,7 @@ class VendaController extends OXE_Controller{
 					foreach($_SESSION['dependentes'] as $key => $value){
 						foreach($value as $chave => $valor){
 							$arrayDependente[]['id_dependentePF'] = $valor;
-							$arrayDependente[$chave]['id_venda'] = 12;
+							$arrayDependente[$chave]['id_venda'] = $id_venda;
 						}
 					}
 						$vendaDependentePF = new VendaDependentePF();
@@ -596,14 +603,117 @@ class VendaController extends OXE_Controller{
 				
 				
 			############# Hoteis ################	
-			
+			if(isset($_SESSION['hotel'])){
+				$sess_hotel = $this->session->getSession('hotel');
+				$hotel = new Hotel();
+				$hotelCliente = new HotelClientePF();
+				$arrayHotel = array();
+				
+				foreach ($sess_hotel as $key => $value) {
+					foreach($value['id_hotel'] as $id_hotel){
+						$arrayHotel[] = $hotel->list_once($id_hotel);
+					}
+				}
+				
+				$data = array();
+				$id_clientePF = null;
+				$id_hotel = null;
+				foreach ($arrayHotel as $key => $value) {
+					foreach ($value as $chave => $valor) {
+					$data['id_venda'] =  $id_venda;
+					$data['id_hotel'] = $valor['id_hoteis'];
+					$id_hotel = $valor['id_hoteis'];
+					$data['id_clientePF'] = $valor['id_clientePF'];
+					$id_participacao = array_search($valor['id_clientePF'],$_SESSION['id_clientePF']['id']);
+					$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
+					
+					$hotelCliente->add($data);
+					}
+				}
+				
+				if(isset($_SESSION['dependentes'])){
+						$dependenteHotel = new HotelDependentePF();
+						$sess_dependente = $this->session->getSession('dependentes');
+						$data = array();
+						foreach ($sess_dependente as $key => $value) {
+							foreach($value as $id_dependente){
+								$data['id_hoteis'] = $id_hotel;
+								$data['id_dependentePF'] = $id_dependente;
+								$data['id_venda'] = $id_venda;
+								$dependenteHotel->add($data);
+							}
+						}
+					}
+			}
 			
 			
 			############# outros Produtos ################
-			
-			
+			if(isset($_SESSION['produtos'])){
+				$sess_prod = $this->session->getSession('produtos');
+				$arrayProdutos = array();
+				$produtosOutros = new ProdutoOutros();
+				$outroProdPF = new OutroProdutoPF();
+				foreach ($sess_prod as $key => $value) {
+					foreach ($value['id_produtos'] as $id_produtos) {
+						$arrayProdutos[] = $produtosOutros->list_once($id_produtos);
+					}
+				}
+
+				$data = array();
+				foreach($arrayProdutos as $key => $value){
+					$data['id_venda'] = $id_venda;
+					$data['id_produto'] = $value['id_produto'];
+					$data['id_clientePF'] = $value['id_clientePF'];
+					$id_participacao = array_search($value['id_clientePF'],$_SESSION['id_clientePF']['id']);
+					$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
+					$outroProdPF->add($data);
+				}
+			}
 			
 			############# Passagens Aéreas ################		
+			if(isset($_SESSION['passagens'])){
+				$sess_passagem = $this->session->getSession('passagens');
+				$arrayPassagem = array();
+				$passagens = new Passagens();
+				$adicionaCliente = new AdicionaClientePF();
+				
+				
+				foreach ($sess_passagem as $key => $value) {
+					foreach ($value['id_passagens'] as $id_passagens) {
+						$arrayPassagem[] = $passagens->list_once($id_passagens);
+					}
+				}
+					
+				$data = array();
+				$id_passagens = null;
+				foreach ($arrayPassagem as $key => $value) {
+					$data['id_venda'] = $id_venda;
+					$data['id_clientePF'] = $value['id_clientePF'];
+					$data['id_passagens'] = $value['id_passagens'];
+					$id_passagens = $value['id_passagens'];
+					$id_participacao = array_search($value['id_clientePF'],$_SESSION['id_clientePF']['id']);
+					$data['id_participacao'] = $_SESSION['id_clientePF']['participacao'][$id_participacao];
+					
+					$adicionaCliente->add($data);
+				}
+				
+				
+				if(isset($_SESSION['dependentes'])){
+						$adicionarDependente = new AdicionarDependentePF();
+						$sess_dependente = $this->session->getSession('dependentes');
+						$data = array();
+						foreach ($sess_dependente as $key => $value) {
+							foreach($value as $id_dependente){
+								$data['id_passagens'] = $id_passagens;
+								$data['id_dependentePF'] = $id_dependente;
+								$data['id_venda'] = $id_venda;
+								$adicionarDependente->add($data);
+							}
+						}
+					}
+				}
+			
+			
 			
 				
 			}### ENDIF Venda alteração
@@ -630,7 +740,7 @@ class VendaController extends OXE_Controller{
 			}
 			
 			if(isset($_SESSION['passagens'])){
-				unset($_SESSION['passagen']);
+				unset($_SESSION['passagens']);
 			}
 			
 			if(isset($_SESSION['produtos'])){

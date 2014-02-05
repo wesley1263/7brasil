@@ -10,12 +10,6 @@
        	echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
        }
 		
-		// session_destroy();
-		$this->dump($_SESSION);
-		// $this->dump(session_cache_expire());
-		
-		// if(isset($compraTickets))
-		// $this->dump($compraTickets);
 		
        $form->init('form_addClientePF','addClientePF','post');
 		
