@@ -917,28 +917,4 @@ class VendaController extends OXE_Controller{
 	}
 	
 	
-		#####################################
-		############ Cliente PJ #############
-		#####################################
-	
-		public function cadVendaPJAction()
-	{
-		
-		$data['title'] = '7 Brasil - Vendas';
-				
-		
-		$data['form'] = $this->form;
-		$data['table'] = $this->table;
-		$data['session'] = $this->session;
-				
-		$this->view('template/head',$data);
-		$this->view('template/header');
-		$this->view('venda/pj/cadVendaPJ',$data);
-		$this->view('template/footer');
-	}
-	
-	
-	
-	
 }
-			

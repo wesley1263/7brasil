@@ -1,0 +1,533 @@
+<div class="venda">
+	
+
+       <form method="post" action="/vendaPJ/findClientePJ" id="form_addClientePJ" role="form" class="form-horizontal">
+       		<label for="cnpj_clientePJ" style="color: #797676;" class="col-sm-1 control-label">CNPJ</label>
+       		<div class="col-sm-3">
+       			<input type="text" class="form-control" id="cnpj_clientePJ" placeholder="CNPJ da Empresa" name="cnpj_clientePJ" value="">
+       			</div>
+       			<button type="button" id="bt_findClientePJ" data-toggle="modal" data-target="#myModal" class="btn btn-primary" disabled="disabled">
+       				<span class="glyphicon glyphicon-search"></span> Buscar</button> 
+       			<a href="/cliente/cadjuridica" type="button" id="bt_addNewPJ" class="btn btn-primary"><i class="glyphicon glyphicon-user"></i> Novo</a>
+       	</form>
+</div>       
+      
+      
+      <?php $this->dump($_SESSION); ?>
+      
+      <?php foreach ($departamento->list_all() as $key => $value) {
+          $opt_departamento[$value['id_departamento']] = $value['nome_departamento'];
+      } ?>
+      
+      	<!-- Modal cliente Pessoa Júridica -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Empresa Cadastrada</h4>
+				</div>
+				<div class="modal-body">
+						<form method="post" action="/vendaPJ/addClientePJ">
+						<input id="id_PJ" name="id_PJ" type="hidden">
+						
+						<div id="nomefantasia_PJ"></div>
+						<div id="cnpj_PJ"></div>
+						<div id="endereco_PJ"></div>
+						<div id="cidade_PJ"></div>
+						<div id="uf_PJ"></div>
+						<div id="telefone_PJ"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+					<button type="submit" id="bt_incluir" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				</form>
+					
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	
+	
+	
+	  	<!-- Modal Funcionarios -->
+	<div class="modal fade" id="modalFuncionario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style=" width: 115%;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel">Funcionários</h4>
+				</div>
+				<div class="modal-body">
+					<form action="/vendaPJ/addDependentePJ" method="post">
+					<!-- <input type="checkbox" id="todos" /> Todos -->
+					<?php if(isset($_SESSION['empresa'])): ?>
+						<?php foreach ($departamento->list_all() as $key => $value): ?>
+							<p><label><strong><?=$value['nome_departamento']?></strong></label></p>
+						<?php  foreach ($funcionarios->getDependentePJ($_SESSION['empresa']['id']) as $chave => $valor) {
+								if($value['id_departamento'] == $valor['id_departamento']){ ?>
+								<p><input type="checkbox" name="id_dependentePJ[]" value="<?=$valor['id_dependentePJ']?>" class="marcar" /> <?=$valor['nome_dependentePJ']?>  -  CPF: <?=$valor['cpf_dependentePJ']?></p>
+						
+						<?php
+								}
+							 } 
+						 ?>
+						<?php endforeach; ?>
+						
+					<?php endif; ?>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirFuncionario" class="btn btn-primary" ><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+					</form>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	  	<!-- Modal Passagens -->
+	
+	
+	
+	   	<!-- Modal dependente cliente -->
+	<div class="modal fade" id="modalDependente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Dependentes</h4>
+				</div>
+				<div class="modal-body">
+				<form method="post" action="/venda/addDependente">
+				<div class="dependentePF">	</div>
+						
+				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirDependente" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+					
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	
+		   
+	
+	<br>
+	<br>
+	<br>
+	
+	   	<!-- Modal de aluguel de carros -->
+	<div class="modal fade" id="modalCarros" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Aluguel de Carros</h4>
+				</div>
+				<div class="modal-body">
+					<div class="carroPF">	
+						<form name="formAddCarro" method="post" action="/carro/saveCarro" id="formAddCarro" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_locadora" style="color: #797676;" class="col-sm-2 control-label">Locadora</label> <div class="col-sm-5"><select class="form-control" name="id_locadora"><option value="4">LOCALIZA AUTOMOVEIS</option><option value="5">RENT CAR</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-5"><select class="form-control" name="id_moeda"><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option><option value="0" selected="">REAL BR</option></select></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="dt_inicio_carro" style="color: #797676;" class="col-sm-2 control-label">Início</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_inicio_carro" required="" placeholder="Data de início" name="dt_inicio_carro" value=""></div><label for="hora_inicio_carro" style="color: #797676;" class="col-sm-2 control-label">Hora Início</label><div class="col-sm-3"><input type="time" class="form-control" id="hora_inicio_carro" required="" placeholder="Horário de início" name="hora_inicio_carro" value=""></div></div><div class="form-group"><label for="dt_devolucao_carro" style="color: #797676;" class="col-sm-2 control-label">Fim</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_devolucao_carro" required="" placeholder="Data de Devolução" name="dt_devolucao_carro" value=""></div><label for="hora_devolucao_carro" style="color: #797676;" class="col-sm-2 control-label">Hora Fim</label><div class="col-sm-3"><input type="time" class="form-control" id="hora_devolucao_carro" required="" placeholder="Horário de Devolução" name="hora_devolucao_carro" value=""></div></div><div class="form-group"><label for="local_incio_carro" style="color: #797676;" class="col-sm-2 control-label">Retirada</label><div class="col-sm-8"><input type="text" class="form-control" id="local_incio_carro" required="" placeholder="Local de retirada" name="local_incio_carro" value=""></div></div><div class="form-group"><label for="local_devolucao_carro" style="color: #797676;" class="col-sm-2 control-label">Devolução</label><div class="col-sm-8"><input type="text" class="form-control" id="local_devolucao_carro" required="" placeholder="Local de Devolução" name="local_devolucao_carro" value=""></div></div><div class="form-group"><label for="voucher_carro" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_carro" required="" placeholder="" name="voucher_carro" value=""></div></div><div class="form-group"><label for="valor_carro" style="color: #797676;" class="col-sm-2 control-label">Aluguel</label><div class="col-sm-4"><input type="text" class="form-control" id="valor_carro" required="" placeholder="Valor do Aluguel" name="valor_carro" value=""></div></div><div class="form-group"><label for="valor_casa_carro" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-4"><input type="text" class="form-control" id="valor_casa_carro" required="" placeholder="Comissão da Casa" name="valor_casa_carro" value=""></div></div><div class="form-group"><label for="taxa_carro" style="color: #797676;" class="col-sm-2 control-label">Taxas</label><div class="col-sm-4"><input type="text" class="form-control" id="taxa_carro" placeholder="Taxas Extras" name="taxa_carro" value=""></div></div>						 <label>Descrição</label>
+						 <textarea name="descricao_carro" class="form-control" rows="3"></textarea>
+					</form></div><!-- div carroPF-->
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirCarro" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+								</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	   	<!-- Modal de aluguel de carros -->
+	   	
+	   	
+	   	
+	   		<!-- Modal Hotel -->
+	<div class="modal fade" id="modalHotel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Hotel</h4>
+				</div>
+				<div class="modal-body">
+						<form name="form_hotel" method="post" action="/hotel/saveHotel" id="form_hotel" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_hoteis" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_hoteis" placeholder="" name="id_hoteis" value=""></div></div><div class="form-group"><label for="id_brokers" style="color: #797676;" class="col-sm-2 control-label">Brokers</label> <div class="col-sm-8"><select class="form-control" name="id_brokers"><option value="0" selected="">NENHUM</option><option value="1">BEST 7 BOOKING</option></select></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="nome_hotel" style="color: #797676;" class="col-sm-2 control-label">Nome</label><div class="col-sm-8"><input type="text" class="form-control" id="nome_hotel" required="" placeholder="Nome" name="nome_hotel" value=""></div></div><div class="form-group"> <div id="checkbox" class="checkbox" style="margin-left: 17%;"><input type="checkbox" name="is_br" id="is_br" value="nothing"><span>Internacional</span></div></div><div class="form-group"><label for="cep_hotel" style="color: #797676;" class="col-sm-2 control-label">CEP</label><div class="col-sm-4"><input type="text" class="form-control" id="cep_hotel" placeholder="CEP" name="cep_hotel" value=""></div><div id="msg_cep"></div></div><div class="form-group"><label for="endereco_hotel" style="color: #797676;" class="col-sm-2 control-label">Endereço</label><div class="col-sm-8"><input type="text" class="form-control" id="endereco_hotel" placeholder="Endereço" name="endereco_hotel" value=""></div></div><div class="form-group"><label for="numero_hotel" style="color: #797676;" class="col-sm-2 control-label">Número</label><div class="col-sm-3"><input type="text" class="form-control" id="numero_hotel" placeholder="Número" name="numero_hotel" value=""></div></div><div class="form-group"><label for="cidade_hotel" style="color: #797676;" class="col-sm-2 control-label">Cidade</label><div class="col-sm-6"><input type="text" class="form-control" id="cidade_hotel" placeholder="Cidade" name="cidade_hotel" value=""></div></div><div class="form-group"><label for="uf_hotel" style="color: #797676;" class="col-sm-2 control-label">UF</label><div class="col-sm-3"><input type="text" class="form-control" id="uf_hotel" placeholder="UF" name="uf_hotel" value=""></div></div><div class="form-group"><label for="telefone_hotel" style="color: #797676;" class="col-sm-2 control-label">Telefone</label><div class="col-sm-5"><input type="text" class="form-control" id="telefone_hotel" required="" placeholder="Telefone" name="telefone_hotel" value=""></div></div><div class="form-group"><label for="email_hotel" style="color: #797676;" class="col-sm-2 control-label">Email</label><div class="col-sm-8"><input type="text" class="form-control" id="email_hotel" required="" placeholder="Email" name="email_hotel" value=""></div></div><div class="form-group"><label for="voucher_hotel" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-7"><input type="file" class="form-control" id="voucher_hotel" required="" placeholder="" name="voucher_hotel" value=""></div></div><div class="form-group"><label for="valor_hotel" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-3"><input type="text" class="form-control" id="valor_hotel" required="" placeholder="Valor" name="valor_hotel" value=""></div><label for="valor_casa_hotel" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-3"><input type="text" class="form-control" id="valor_casa_hotel" required="" placeholder="Comissão" name="valor_casa_hotel" value=""></div></div>		<label>Descrição</label>
+		<textarea name="descricao_hotel" class="form-control" rows="3"></textarea>
+				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirHotel" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+								</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- Modal Hotel -->
+	
+	
+		   	<!-- Modal Seguro -->
+	<div class="modal fade" id="modalSeguro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Seguros</h4>
+				</div>
+				<div class="modal-body">
+			<form name="form_seguro" method="post" action="/seguro/saveSeguro" id="form_seguro" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_seguro" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_seguro" placeholder="" name="id_seguro" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_seguradora" style="color: #797676;" class="col-sm-2 control-label">Seguradora</label> <div class="col-sm-8"><select class="form-control" name="id_seguradora"><option value="1" selected="">ALLIANZ</option></select></div></div><div class="form-group"><label for="id_tipoSeguro" style="color: #797676;" class="col-sm-2 control-label">Tipo</label> <div class="col-sm-5"><select class="form-control" name="id_tipoSeguro"><option value="1" selected="">DIAMANTE</option><option value="2">OURO</option><option value="3">PRATA</option><option value="4">BRONZE</option></select></div></div><div class="form-group"><label for="id_continente" style="color: #797676;" class="col-sm-2 control-label">Continente</label> <div class="col-sm-5"><select class="form-control" name="id_continente"><option value="1" selected="">EUROPEU</option><option value="2">ASIATICO</option><option value="3">AMERICANO</option><option value="4">AFRICANO</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-5"><select class="form-control" name="id_moeda"><option value="0">Real BR</option><option value="1" selected="">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="dt_inicio_seguro" style="color: #797676;" class="col-sm-2 control-label">Inicio</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_inicio_seguro" required="" placeholder="" name="dt_inicio_seguro" value=""></div><label for="dt_fim_seguro" style="color: #797676;" class="col-sm-1 control-label">Fim</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_fim_seguro" required="" placeholder="" name="dt_fim_seguro" value=""></div></div><div class="form-group"><label for="valor_seguro" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_seguro" required="" placeholder="Valor" name="valor_seguro" value=""></div></div><div class="form-group"><label for="valor_casa_seguro" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_casa_seguro" required="" placeholder="Comissão" name="valor_casa_seguro" value=""></div></div><div class="form-group"><label for="voucher_seguro" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_seguro" required="" placeholder="Voucher" name="voucher_seguro" value=""></div></div>				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+								</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		   	<!-- Modal Seguro -->
+		   
+		   
+		   
+		   
+		   
+		   	<!-- Modal Tickets -->
+	<div class="modal fade" id="modalTicket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Tickets</h4>
+				</div>
+				<div class="modal-body">
+						<form name="form_compraticket" method="post" action="/compraTicket/saveCompraTicket" id="form_compraticket" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_compraTicket" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_compraTicket" required="" placeholder="" name="id_compraTicket" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_ticket" style="color: #797676;" class="col-sm-2 control-label">Ticket</label> <div class="col-sm-8"><select class="form-control" name="id_ticket"><option value="1" selected="">UCF LAS VEGAS</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-5"><select class="form-control" name="id_moeda"><option value="0">Real BR</option><option value="1" selected="">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="valor_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_compraTicket" required="" placeholder="Valor da compra" name="valor_compraTicket" value=""></div></div><div class="form-group"><label for="comissao_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="comissao_compraTicket" required="" placeholder="Comissão em porcentagem" name="comissao_compraTicket" value=""></div></div><div class="form-group"><label for="voucher_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_compraTicket" required="" placeholder="Voucher" name="voucher_compraTicket" value=""></div></div><div class="form-group"><label for="fornecedor_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Fornecedor</label><div class="col-sm-8"><input type="text" class="form-control" id="fornecedor_compraTicket" required="" placeholder="Nome Fornecedor" name="fornecedor_compraTicket" value=""></div></div>				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirTicket" class="btn btn-primary" disabled="disabled">
+						<i class="glyphicon glyphicon-plus-sign"></i> Incluir
+					</button>
+									</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+		   	<!-- Modal Tickets -->
+		   	
+		   	
+		   	
+		   	<!-- Modal Cruzeiros -->
+	<div class="modal fade" id="modalCruzeiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Cruzeiro</h4>
+				</div>
+				<div class="modal-body">
+				<form name="form_cruzeiro" method="post" action="/cruzeiro/saveCruzeiro" id="form_cruzeiro" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_cruzeiro" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_cruzeiro" required="" placeholder="" name="id_cruzeiro" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_compania_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Companias</label> <div class="col-sm-8"><select class="form-control" name="id_compania_cruzeiro"><option value="2">CVC BRASIL</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="navio_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">navio</label><div class="col-sm-5"><input type="text" class="form-control" id="navio_cruzeiro" required="" placeholder="Navio" name="navio_cruzeiro" value=""></div></div><div class="form-group"><label for="dt_inicio_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Início</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_inicio_cruzeiro" required="" placeholder="Inicio" name="dt_inicio_cruzeiro" value=""></div><label for="dt_fim_cruzeiro" style="color: #797676;" class="col-sm-1 control-label">Fim</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_fim_cruzeiro" required="" placeholder="Fim" name="dt_fim_cruzeiro" value=""></div></div><div class="form-group"><label for="rota_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Rota</label><div class="col-sm-8"><input type="text" class="form-control" id="rota_cruzeiro" required="" placeholder="Rota" name="rota_cruzeiro" value=""></div></div><div class="form-group"><label for="nm_confirmacao_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Número</label><div class="col-sm-5"><input type="text" class="form-control" id="nm_confirmacao_cruzeiro" required="" placeholder="Número de Confirmação" name="nm_confirmacao_cruzeiro" value=""></div></div><div class="form-group"><label for="tipo_cabine_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Cabine</label><div class="col-sm-8"><input type="text" class="form-control" id="tipo_cabine_cruzeiro" required="" placeholder="Tipo de Cabine" name="tipo_cabine_cruzeiro" value=""></div></div><div class="form-group"><label for="valor_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_cruzeiro" required="" placeholder="Valor do Cruzeiro" name="valor_cruzeiro" value=""></div></div><div class="form-group"><label for="comissao_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="comissao_cruzeiro" required="" placeholder="Comissão" name="comissao_cruzeiro" value=""></div></div><div class="form-group"><label for="voucher_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_cruzeiro" placeholder="Voucher" name="voucher_cruzeiro" value=""></div></div>				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirCruzeiro" class="btn btn-primary" disabled="disabled">
+						<i class="glyphicon glyphicon-plus-sign"></i> Incluir
+					</button>
+									</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+		   	<!-- Modal Cruzeiros -->
+		   	
+		   	
+		   	
+		<!-- Modal Outros Produtos -->
+	<div class="modal fade" id="modalProdutos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Outros Produtos</h4>
+				</div>
+				<div class="modal-body">
+		<form name="form_produtooutros" method="post" action="/produtoOutros/saveProdutoOutros" id="form_produtooutros" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_produto" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_produto" required="" placeholder="" name="id_produto" value=""></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="titulo_produto" style="color: #797676;" class="col-sm-2 control-label">Título</label><div class="col-sm-8"><input type="text" class="form-control" id="titulo_produto" required="" placeholder="Título" name="titulo_produto" value=""></div></div><div class="form-group"><label for="valor_produto" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_produto" required="" placeholder="Valor" name="valor_produto" value=""></div></div><div class="form-group"><label for="comissao_produto" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="comissao_produto" required="" placeholder="Comissão" name="comissao_produto" value=""></div></div><div class="form-group"><label for="fornecedor_produto" style="color: #797676;" class="col-sm-2 control-label">Fornecedor</label><div class="col-sm-8"><input type="text" class="form-control" id="fornecedor_produto" required="" placeholder="Fornecedor" name="fornecedor_produto" value=""></div></div><div class="form-group"><label for="dt_inicio_produto" style="color: #797676;" class="col-sm-2 control-label">Início</label><div class="col-sm-5"><input type="date" class="form-control" id="dt_inicio_produto" required="" placeholder="Início" name="dt_inicio_produto" value=""></div></div><div class="form-group"><label for="dt_final_produto" style="color: #797676;" class="col-sm-2 control-label">Final</label><div class="col-sm-5"><input type="date" class="form-control" id="dt_final_produto" required="" placeholder="Final" name="dt_final_produto" value=""></div></div>				<label>Descrição</label>
+						 <textarea name="descricao_produto" class="form-control" rows="3"></textarea>
+				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirProdutos" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+								</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		<!-- Modal Outros Produtos -->
+		
+		
+	  	<!-- Modal Passagens -->
+	<div class="modal fade" id="modalPassagens" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Passagem Aérea</h4>
+				</div>
+				<div class="modal-body">
+				<form name="form_passagens" method="post" action="/passagens/savePassagens" id="form_passagens" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_passagens" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_passagens" required="" placeholder="" name="id_passagens" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_compania" style="color: #797676;" class="col-sm-2 control-label">Compania</label> <div class="col-sm-8"><select class="form-control" name="id_compania"><option value="2">CVC BRASIL</option><option value="1" selected="">TAM</option><option value="3">AVIANCA</option></select></div><a href="/compania/cadCompania" title="Adicionar nova Compania caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_classe" style="color: #797676;" class="col-sm-2 control-label">Classe</label> <div class="col-sm-8"><select class="form-control" name="id_classe"><option value="1" selected="">CLASSE ECONOMICA</option></select></div><a href="/classe/cadClasse" title="Adicionar nova classe caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_origem" style="color: #797676;" class="col-sm-2 control-label">Origem</label> <div class="col-sm-6"><select class="form-control" name="id_origem"><option value="1" selected="">SP - CUMBICA</option><option value="2">SP - GUARULHOS</option></select></div><a href="/origem/cadOrigem" title="Adicionar novo origem caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_destino" style="color: #797676;" class="col-sm-2 control-label">Destino</label> <div class="col-sm-6"><select class="form-control" name="id_destino"><option value="1" selected="">SP- CUMBICA</option><option value="3">MIAMI - USA</option><option value="4">TESTE-RJ</option></select></div><a href="/destino/cadDestino" title="Adicionar novo destino caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><input type="checkbox" id="somente_ida" checked="checked"> <strong>Somente ida</strong><fieldset id="fs_ida"><legend><strong>IDA</strong></legend><div class="form-group"><label for="dataIda_passagens" style="color: #797676;" class="col-sm-2 control-label">Data</label><div class="col-sm-4"><input type="date" class="form-control" id="dataIda_passagens" required="" placeholder="" name="dataIda_passagens" value=""></div></div><div class="form-group"><label for="saidaIda_passagens" style="color: #797676;" class="col-sm-2 control-label">Saida</label><div class="col-sm-3"><input type="time" class="form-control" id="saidaIda_passagens" required="" placeholder="" name="saidaIda_passagens" value=""></div><label for="chegadaIda_passagens" style="color: #797676;" class="col-sm-2 control-label">Chegada</label><div class="col-sm-3"><input type="time" class="form-control" id="chegadaIda_passagens" required="" placeholder="" name="chegadaIda_passagens" value=""></div></div></fieldset><fieldset id="fs_volta" style="display: none;"><legend><strong>Volta</strong></legend><div class="form-group"><label for="dataVolta_passagens" style="color: #797676;" class="col-sm-2 control-label">Data</label><div class="col-sm-4"><input type="date" class="form-control" id="dataVolta_passagens" required="" placeholder="" name="dataVolta_passagens" value=""></div></div><div class="form-group"><label for="saidaVolta_passagens" style="color: #797676;" class="col-sm-2 control-label">Saida</label><div class="col-sm-3"><input type="time" class="form-control" id="saidaVolta_passagens" required="" placeholder="" name="saidaVolta_passagens" value=""></div><label for="chegadaVolta_passagens" style="color: #797676;" class="col-sm-2 control-label">Chegada</label><div class="col-sm-3"><input type="time" class="form-control" id="chegadaVolta_passagens" required="" placeholder="" name="chegadaVolta_passagens" value=""></div></div></fieldset><hr><div class="form-group"><label for="voo_passagens" style="color: #797676;" class="col-sm-2 control-label">Voo</label><div class="col-sm-8"><input type="text" class="form-control" id="voo_passagens" required="" placeholder="Voo" name="voo_passagens" value=""></div></div><div class="form-group"><label for="voucher_passagens" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_passagens" required="" placeholder="Voucher" name="voucher_passagens" value=""></div></div><div class="form-group"><label for="tarifa_passagens" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-3"><input type="text" class="form-control" id="tarifa_passagens" required="" placeholder="Valor" name="tarifa_passagens" value=""></div><label for="ticket_passagens" style="color: #797676;" class="col-sm-1 control-label">Ticket</label><div class="col-sm-4"><input type="text" class="form-control" id="ticket_passagens" required="" placeholder="Ticket" name="ticket_passagens" value=""></div></div><div class="form-group"><label for="valor_casa_passagens" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-3"><input type="text" class="form-control" id="valor_casa_passagens" required="" placeholder="Comissão" name="valor_casa_passagens" value=""></div><label for="tx_embarque_passagens" style="color: #797676;" class="col-sm-2 control-label">Embarque</label><div class="col-sm-3"><input type="text" class="form-control" id="tx_embarque_passagens" required="" placeholder="Taxa de Enbarque" name="tx_embarque_passagens" value=""></div></div><div class="form-group"><label for="tx_outras_passagens" style="color: #797676;" class="col-sm-2 control-label">Extra</label><div class="col-sm-3"><input type="text" class="form-control" id="tx_outras_passagens" placeholder="Taxa Extra" name="tx_outras_passagens" value=""></div><label for="tx_repasse_passagens" style="color: #797676;" class="col-sm-2 control-label">Repasse</label><div class="col-sm-3"><input type="text" class="form-control" id="tx_repasse_passagens" required="" placeholder="Taxa de Repasse" name="tx_repasse_passagens" value=""></div></div>				</form></div>
+				<div class="modal-footer">
+					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+								</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	  	<!-- Modal Passagens -->
+		   	
+		   	
+	
+	
+	
+		<!-- Modal Finalização de Venda -->
+	<div class="modal fade" id="modalFinaliza" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="width: 50%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Finalizar Venda</h4>
+				</div>
+				<div class="modal-body">
+					<label style="color: #797676;" class="col-sm-2 control-label">Agencia</label> 
+					<form method="post" action="/venda/saveVenda">
+						<select class="form-control" name="id_agencia">
+							<option value="0">7 Brasil</option>
+														<option value="1">MILESSIS TURISMO</option>
+													</select>
+						<br>
+						<label id="lb_agente" style="color: rgb(121, 118, 118); display: none;" class="col-sm-2 control-label">Agente</label> 
+						<select class="form-control" name="id_agente" id="id_agente" style="display: none;"></select>
+						<br>
+						<br>
+					<!-- Todos os Produtos -->
+					<div id="painel_cliente">
+					<div class="panel-group" id="accordion">
+						<!-- Aba de cliente-->
+												<!-- Aba de cliente-->
+					  
+					  					  
+					  <!-- Todos Produtos -->
+					  <div id="todos_produtos">
+					 </div> <!-- Todos Produtos -->
+					  
+					</div>
+				</div><!-- End div painel_cliente -->
+					<!-- Todos os Produtos -->
+					
+					<br>
+					    <!-- Total de todos os produtos  -->
+						
+					    <!-- Total de todos os produtos  -->
+					    
+					    <label>Descrição de venda</label>
+						<textarea name="descricao_venda" class="form-control" rows="3"></textarea>
+				</form></div>
+				<div class="modal-footer">
+					<input type="hidden" name="total_venda" value="0">
+					<input type="hidden" name="total_comissao" value="0">
+					<button type="button" data-dismiss="modal" id="bt_cancel" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-down"></i> Cancelar</button>
+					<button type="submit" id="bt_finalizaVenda" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-thumbs-up"></i> Confirmar</button>
+					
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	   
+		   	<!-- Modal Finalização de Venda -->
+	
+	
+	
+		   	<!-- Modal Rateio Venda -->
+	<div class="modal fade" id="modalRateio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Rateio Venda   -   <strong>R$ 0,00</strong></h4>
+				</div>
+				<div class="modal-body">
+									<form method="post" name="rateio" action="/venda/cadTipoPagamento">
+				<input type="hidden" name="id_clientePF" value="">
+				<p class="list-group-item-text"></p><h3 id="nome_cliente"></h3><p></p><table class="table">
+							    
+							    												<tbody><tr>
+																						    	<td>DEPOSITO BANCARIO</td> 
+										    	<td><input type="text" class="fmpgto" name="1[]"></td>
+										    	<!-- End IF CARTÃO DE CREDITO -->
+											</tr>							    			
+							    	
+							    												<tr>
+																						    	<td>BOLETO BANCÁRIO</td> 
+										    	<td><input type="text" class="fmpgto" name="2[]"></td>
+										    	<!-- End IF CARTÃO DE CREDITO -->
+											</tr>							    			
+							    	
+							    												<tr>
+																							    	<td>CARTÃO DE CRÉDITO											    		<!-- Listar todos cartões de crédito do cliente -->
+											    		<table id="cartoes_credito" class="table table-bordered">
+														</table>
+											    		<!-- Listar todos cartões de crédito do cliente -->
+													</td>
+										    	<!-- End IF CARTÃO DE CREDITO -->
+											</tr>							    			
+							    	
+							    								    		</tbody></table>
+							</form></div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+								
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		   	<!-- Modal Rateio Venda -->
+	
+	
+	
+	
+	<!-- Tela de botoes de produtos-->
+	<div class="venda_produtos">
+		<div class="vend_produtos_left">
+			<br>
+			<br>
+			<p><a href="#" title="Reserva de Hoteis" data-toggle="modal" data-target="#modalHotel" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> HOTEIS</a></p>
+			<br>
+			<p><a href="#" data-toggle="modal" data-target="#modalCarros" title="Aluguel de carros" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CARROS</a></p>
+			<br>
+			<p><a href="#" data-toggle="modal" data-target="#modalPassagens" title="Reservar passagens aéreas" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> PASSAGENS</a></p>
+		</div>
+		
+		<div class="vend_produtos_right">
+			<br>
+			<br>
+			<p><a href="#" data-toggle="modal" data-target="#modalSeguro" title="Contratar Seguro para viagem" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> SEGURO</a></p>
+			<br>
+			<p><a href="#" title="Compra de tickets" data-toggle="modal" data-target="#modalTicket" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> TICKETS</a></p>
+			<br>
+			<p><a href="#" data-toggle="modal" data-target="#modalCruzeiro" title="Compra de cruzeiros atlânticos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> CRUZEIROS</a></p>
+			<br>
+			<p><a href="#" data-toggle="modal" data-target="#modalProdutos" title="Outros Produtos" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus-sign"></i> Outros</a></p>
+		</div>
+	</div>
+	<!-- Tela de botoes de produtos-->
+	<hr>
+	
+	<hr>
+	<br>
+	<table class="table table-condensed">
+	<!-- Cliente da Lista de venda -->
+		<tbody>
+			<!-- Empresa selecionada -->
+			<?php if(isset($_SESSION['empresa'])): ?>
+				<?php foreach($empresa as $key => $value): ?>
+					<tr class="warning">
+						<td>EMPRESA: <?=$value['nomefantasia_clientePJ']?></td>
+						<td><?=$value['cidade_clientePJ']?></td>
+						<td><a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalFuncionario" id_clientePJ="<?=$value['id_clientePJ']?>" id="bt_addFunc">Funcionário</a></td>
+						<td><a href="/vendaPJ/removeClientePJ" onclick="return confirm('Deseja realmente remover empresa da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			
+			
+			
+			<!-- Funcionarios selecionados -->
+			<?php if(isset($_SESSION['funcionarios'])): ?>
+				<?php foreach ($dependentes as $key => $value): ?>
+					<tr class="warning">
+					<td><?=$value['nome_dependentePJ']?></td>						
+					<td><?=$opt_departamento[$value['id_departamento']]?></td>						
+					<td><?=$value['cpf_dependentePJ']?></td>						
+					<td><a href="/vendaPJ/removeDependentePJ/id/<?=$value['id_dependentePJ']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			
+			
+			
+			
+			
+			<tr class="success">
+			<td><strong style="font-size: 20px;">Total Geral:</strong></td>
+			<td></td>
+			<td></td>
+			<td><strong style="font-size: 20px;">R$ 0,00</strong></td>
+			</tr>
+		</tbody>
+	</table>
+       <button id="btn_finaliza_venda" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalFinaliza" disabled="disabled">Finalizar Venda</button>
+       <button id="btn_rateio_venda" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFinaliza" disabled="disabled">Rateio</button>
+<br />
+<br />
+
+<script>
+	jQuery(function(){
+		
+		//Mascarando campos
+		jQuery('#cnpj_clientePJ').mask('99.999.999/9999-99');
+		
+		
+		//Validando valor vázio de campo de cnpj
+		jQuery('#cnpj_clientePJ').keypress(function() {
+			if(jQuery('#cnpj_clientePJ').val().length > 17){
+				jQuery('#bt_findClientePJ').attr('disabled',false);
+			}else{
+				jQuery('#bt_findClientePJ').attr('disabled',true);
+				
+			}
+		});
+		
+		
+		//Populando empresa buscada pelo CNPJ
+		jQuery('#bt_findClientePJ').click(function(){
+			if(jQuery('#cnpj_clientePJ').val().length < 18){
+				alert('Digite corretamente o CNPJ da Empresa!');
+				return false;
+			}else{
+				jQuery.ajax({
+					url: '/vendaPJ/findClientePJ',
+					type: 'post',
+					dataType: 'json',
+					data: {cnpj : jQuery('#cnpj_clientePJ').val()},
+					success: function(data){
+						if(data){
+							jQuery('#id_PJ').val(data.id_clientePJ);
+							jQuery('#nomefantasia_PJ').html('<strong>NOME FANTASIA:</strong> '+data.nomefantasia_clientePJ);
+							jQuery('#cnpj_PJ').html('<strong>CNPJ: </strong>' + data.cnpj_clientePJ);
+							jQuery('#endereco_PJ').html('<strong>ENDEREÇO: </strong>' +data.endereco_clientePJ);
+							jQuery('#cidade_PJ').html('<strong>CIDADE:</strong> ' +data.cidade_clientePJ);
+							jQuery('#uf_PJ').html('<strong>UF: ' + data.uf_clientePJ);
+							jQuery('#telefone_PJ').html('<strong>TELEFONE:</strong> '+data.telefone_clientePJ);
+						}else{
+							jQuery('.modal-body').html('<h2>Empresa não encontrada!</h2>');
+							jQuery('#bt_incluir').attr('disabled',true);
+							setTimeout(function(){
+								location.href="/vendaPJ/cadVendaPJ"
+							},3000);
+						}
+					}
+				});
+			}
+			
+		});
+		
+		
+		
+	
+	});
+</script>

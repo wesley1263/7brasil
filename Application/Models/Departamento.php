@@ -20,10 +20,7 @@ class Departamento extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					 ->from($this->_name)
-					 ->where($this->_primary.' = '.$id)
-					 ->result();
+		return $this->fetch($this->_primary.' = '.$id);
 	}
 	
 	public function add(array $data)
@@ -55,12 +52,12 @@ class Departamento extends OXE_Model {
 		$id_empresa = $data['id_clientePJ'];
 		$codigo = $data['codigo_centrocusto'];
 		
-		return $this->select()
-					->from()
-					->where("nome_departamento = '$nomeDep'")
-					->where("id_clientePJ = '$id_empresa'")
-					->where_or("codigo_centrocusto = '$codigo'")
-					->result();	
+		$query = "SELECT * FROM $this->_name WHERE TRUE 
+				 AND id_clientePJ = $id_empresa
+				 AND codigo_centrocusto = '$codigo'";
+		
+		return $this->query($query);	
+					
 	}
 	
 	
@@ -68,5 +65,13 @@ class Departamento extends OXE_Model {
 	{
 		return $this->query("DESC $this->_name");
 	}	
+	
+	public function getDepartamento($id_clientePJ)
+	{
+		return $this->select()
+					->from()
+					->where("id_clientePJ = $id_clientePJ")
+					->result();
+	}
 	
 }

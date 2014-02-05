@@ -20,6 +20,10 @@ $form->select($opt_cli,'id_clientePJ','Cliente','1',2,4);
 $form->groupClose();
 
 $form->groupOpen();
+$form->select(array(),'id_departamento','Departamento','1',2,2);
+$form->groupClose();
+
+$form->groupOpen();
 $form->select($opt_class,'id_classificacao','Classificação','1',2,2);
 $form->groupClose();
 
@@ -347,5 +351,43 @@ $form->close();
 		 }
 		 	
 		 });
+		 
+		 //Popular departamento ao carregar página
+		 var id_clientePJ = jQuery('[name=id_clientePJ]').val();
+		 jQuery.ajax({
+		 	url:'/funcionario/getDepartamento',
+		 	type:'post',
+		 	dataType: 'json',
+		 	data: {id_clientePJ : id_clientePJ},
+		 	success: function(data){
+		 		if(data){
+		 			jQuery('[name=id_departamento]').html('');
+		 			for(var i = 0; i < data.length; i++){
+		 				jQuery('[name=id_departamento]').append('<option value="'+data[i].id_departamento+'">'+data[i].nome_departamento+'</option>');
+		 			}
+		 		}
+		 	}
+		 });
+		 
+		 
+		 //Popular Página ao mudar de empresa
+		 jQuery('[name=id_clientePJ]').change(function(){
+			 	jQuery.ajax({
+			 	url:'/funcionario/getDepartamento',
+			 	type:'post',
+			 	dataType: 'json',
+			 	data: {id_clientePJ : jQuery(this).val()},
+			 	success: function(data){
+			 		if(data){
+			 			jQuery('[name=id_departamento]').html('');
+			 			for(var i = 0; i < data.length; i++){
+			 				jQuery('[name=id_departamento]').append('<option value="'+data[i].id_departamento+'">'+data[i].nome_departamento+'</option>');
+			 			}
+			 		}
+			 	}
+			 });
+		 });
+		 
+		 
 	});
 </script>

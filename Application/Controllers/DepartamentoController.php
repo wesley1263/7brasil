@@ -65,6 +65,7 @@ class DepartamentoController extends OXE_Controller{
 			$_POST[$key] = strip_tags($value);
 		}
 		
+		$_POST['nome_departamento'] = strtoupper($_POST['nome_departamento']);
 		####### Se existir id deve ser insert ############
 			if($_POST['id_departamento'] == null){
 				############# Verifica se existe departamento ###############

@@ -84,7 +84,7 @@ class ClienteController extends OXE_Controller {
 
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio',$data);
+		// $this->view('template/cambio',$data);
 		$this->view('cliente/pf/fisica',$data);
 		$this->view('template/footer');
 	}
@@ -112,7 +112,7 @@ class ClienteController extends OXE_Controller {
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio',$data);
+		// $this->view('template/cambio',$data);
 		$this->view('cliente/pf/updatefisica',$data);
 		$this->view('template/footer');
 	}
@@ -414,7 +414,7 @@ class ClienteController extends OXE_Controller {
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		// $this->view('template/cambio');
 		$this->view('cliente/pj/juridica',$data);
 		$this->view('template/footer');
 	}

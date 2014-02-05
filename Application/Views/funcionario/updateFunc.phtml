@@ -16,8 +16,16 @@ foreach($classificacao as $clas){
 	$opt_class[$clas['id_classificacao']] = $clas['titulo_classificacao'];
 }
 
+foreach ($departamentos as $key => $value) {
+	$opt_dep[$value['id_departamento']] = $value['nome_departamento'];
+}
+
 $form->groupOpen();
 $form->select($opt_cli,'id_clientePJ','Cliente',$funcionarios[0]['id_clientePJ'],2,4);
+$form->groupClose();
+
+$form->groupOpen();
+$form->select($opt_dep,'id_departamento','Departamento',$funcionarios[0]['id_departamento'],2,2);
 $form->groupClose();
 
 $form->groupOpen();
@@ -26,15 +34,15 @@ $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'nome_dependentePJ',
-				'type' =>'text',
-				'placeholder' => 'Nome',
-				'num_label' =>'2',
-				'num_input' =>'5',
-				'label' =>'Nome',
-				'value' =>$funcionarios[0]['nome_dependentePJ'],
-				'required' => true
-				));
+		'name' =>'nome_dependentePJ',
+		'type' =>'text',
+		'placeholder' => 'Nome',
+		'num_label' =>'2',
+		'num_input' =>'5',
+		'label' =>'Nome',
+		'value' =>$funcionarios[0]['nome_dependentePJ'],
+		'required' => true
+		));
 $form->groupClose();
 
 $form->groupOpen();	
@@ -290,20 +298,24 @@ $form->textarea('descricao_dependentePJ','Descrição',$funcionarios[0]['descric
 
 echo str_repeat('<br />',3);
 
+
+
 	$form->groupOpen();		
 	$form->submit('Atualizar','style="padding:5% 13%"');
 	$form->groupClose();
 
 $form->close();
 ?>
+
 </fieldset>
 </div>
+
 <script>
 	jQuery(function(){
 		jQuery('#nome_dependentePF').css('text-transform','uppercase');
 		jQuery('#dt_nascimento_dependentePJ').mask('99/99/9999');
 		jQuery('#cpf_dependentePJ').mask('999.999.999-99');
-		jQuery('#rg_dependentePJ').mask('99.999.999-99');
+		jQuery('#rg_dependentePJ').mask('99.999.999-9');
 		jQuery('#telefone_dependentePJ').mask('(99) 9999-9999');
 		jQuery('#celular_dependentePJ').mask('(99) 9999-9999');
 		jQuery('#dt_validade_passaporte_dependentePJ').mask('99/99/9999');
@@ -341,5 +353,25 @@ $form->close();
 		 }
 		 	
 		 });
+		 
+		 
+		 //Popular Página ao mudar de empresa
+		 jQuery('[name=id_clientePJ]').change(function(){
+			 	jQuery.ajax({
+			 	url:'/funcionario/getDepartamento',
+			 	type:'post',
+			 	dataType: 'json',
+			 	data: {id_clientePJ : jQuery(this).val()},
+			 	success: function(data){
+			 		if(data){
+			 			jQuery('[name=id_departamento]').html('');
+			 			for(var i = 0; i < data.length; i++){
+			 				jQuery('[name=id_departamento]').append('<option value="'+data[i].id_departamento+'">'+data[i].nome_departamento+'</option>');
+			 			}
+			 		}
+			 	}
+			 });
+		 });
+		 
 	});
 </script>

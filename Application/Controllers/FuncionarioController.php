@@ -30,7 +30,7 @@ class FuncionarioController extends OXE_Controller{
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		// $this->view('template/cambio');
 		$this->view('funcionario/index',$data);
 		$this->view('template/footer');
 	}
@@ -48,10 +48,17 @@ class FuncionarioController extends OXE_Controller{
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		// $this->view('template/cambio');
 		$this->view('funcionario/cadFunc',$data);
 		$this->view('template/footer');
 		
+	}
+	
+	
+	public function getDepartamentoAction()
+	{
+		$departamento = new Application\Models\Departamento();
+		echo json_encode($departamento->getDepartamento($_POST['id_clientePJ']));
 	}
 	
 	public function saveFuncionarioAction()
@@ -106,7 +113,7 @@ class FuncionarioController extends OXE_Controller{
 	{
 		$param = func_get_args();
 		$model = $this->model;
-		
+		$departamento = new Application\Models\Departamento();
 		
 		$data['title'] = 'Gerenciar Funcionários';
 		$data['dependentes'] = $this->model->list_all();
@@ -114,13 +121,14 @@ class FuncionarioController extends OXE_Controller{
 		$data['table'] = $this->table;
 		$data['classificacao'] = $this->classificacao->list_all();
 		$data['funcionarios'] = $model->list_once($param[1]);
+		$data['departamentos'] = $departamento->list_all();
 		
 		$data['empresas'] = $this->model->clientePJ();
 		$data['session'] = $this->session;
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
-		$this->view('template/cambio');
+		// $this->view('template/cambio');
 		$this->view('funcionario/updateFunc',$data);
 		$this->view('template/footer');
 	}

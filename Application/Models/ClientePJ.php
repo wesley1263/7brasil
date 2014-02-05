@@ -58,4 +58,9 @@ class ClientePJ extends OXE_Model {
 					->result();
 	}
 	
+	public function getCNPJ($cnpj)
+	{
+		return $this->fetch("cnpj_clientePJ = '$cnpj'");
+	}
+	
 }

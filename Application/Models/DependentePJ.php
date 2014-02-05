@@ -32,6 +32,11 @@ class DependentePJ extends OXE_Model {
 		return $this->query($query);
 	}
 	
+	public function lista_um($id)
+	{
+		return $this->fetch($this->_primary." = $id");
+	}
+	
 	public function add(array $data)
 	{
 		return $this->insert($data);
@@ -65,6 +70,19 @@ class DependentePJ extends OXE_Model {
 					->from()
 					->where("cpf_dependentePJ = '$cpf'")
 					->result();
+	}
+	
+	public function getDependentePJ($id)
+	{
+		$query = "SELECT dep.id_dependentePJ, dep.nome_dependentePJ,dep.cpf_dependentePJ, dp.id_departamento, dp.nome_departamento
+					FROM tbl_dependentePJ as dep
+
+					LEFT JOIN tbl_departamento as dp
+					ON dp.id_departamento = dep.id_departamento
+					
+					WHERE dep.id_clientePJ = $id";
+		return $this->query($query);
+					
 	}
 	
 }
