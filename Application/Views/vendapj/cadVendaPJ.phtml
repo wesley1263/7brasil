@@ -1,5 +1,13 @@
 <div class="venda">
-	
+	<?php 
+	if(isset($_SESSION['success'])){
+       	echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+       }
+	   
+	    if(isset($_SESSION['error'])){
+       	echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+       }
+	?>
 
        <form method="post" action="/vendaPJ/findClientePJ" id="form_addClientePJ" role="form" class="form-horizontal">
        		<label for="cnpj_clientePJ" style="color: #797676;" class="col-sm-1 control-label">CNPJ</label>
@@ -17,7 +25,40 @@
       
       <?php foreach ($departamento->list_all() as $key => $value) {
           $opt_departamento[$value['id_departamento']] = $value['nome_departamento'];
-      } ?>
+      } 
+      
+	  foreach($locadoras as $key => $value){
+	  	$opt_locadora[$value['id_locadora']] = $value['nome_locadora'];
+	  }
+      
+	  foreach ($brokers as $key => $value) {
+		  $opt_brokers[$value['id_brokers']] = $value['nome_brokers'];
+	  }
+	  
+	  foreach ($cambios as $key => $value) {
+		  $opt_cambio[$value['id_cambio']] = $value['titulo_cambio'];
+	  }
+	  
+	  foreach ($seguradora as $key => $value) {
+		  $opt_seguradora[$value['id_seguradora']] = $value['nome_seguradora'];
+	  }
+	  
+	  foreach ($tipoSeguro as $key => $value) {
+		  $opt_tipoSeguro[$value['id_tipoSeguro']] = $value['nome_tipoSeguro'];
+	  }
+	  
+	  foreach ($continente as $key => $value) {
+		  $opt_continente[$value['id_continente']] = $value['nome_continente'];
+	  }
+	  
+	  foreach ($ticket as $key => $value) {
+		  $opt_ticket[$value['id_ticket']] = $value['nome_ticket'];
+	  }
+	  
+	  foreach ($companiaCruzeiro as $key => $value) {
+		  $opt_companiaCruzeiro[$value['id_compania_cruzeiro']] = $value['nome_compania_cruzeiro'];
+	  }
+      ?>
       
       	<!-- Modal cliente Pessoa Júridica -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -126,19 +167,173 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Aluguel de Carros</h4>
 				</div>
 				<div class="modal-body">
 					<div class="carroPF">	
-						<form name="formAddCarro" method="post" action="/carro/saveCarro" id="formAddCarro" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_locadora" style="color: #797676;" class="col-sm-2 control-label">Locadora</label> <div class="col-sm-5"><select class="form-control" name="id_locadora"><option value="4">LOCALIZA AUTOMOVEIS</option><option value="5">RENT CAR</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-5"><select class="form-control" name="id_moeda"><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option><option value="0" selected="">REAL BR</option></select></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="dt_inicio_carro" style="color: #797676;" class="col-sm-2 control-label">Início</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_inicio_carro" required="" placeholder="Data de início" name="dt_inicio_carro" value=""></div><label for="hora_inicio_carro" style="color: #797676;" class="col-sm-2 control-label">Hora Início</label><div class="col-sm-3"><input type="time" class="form-control" id="hora_inicio_carro" required="" placeholder="Horário de início" name="hora_inicio_carro" value=""></div></div><div class="form-group"><label for="dt_devolucao_carro" style="color: #797676;" class="col-sm-2 control-label">Fim</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_devolucao_carro" required="" placeholder="Data de Devolução" name="dt_devolucao_carro" value=""></div><label for="hora_devolucao_carro" style="color: #797676;" class="col-sm-2 control-label">Hora Fim</label><div class="col-sm-3"><input type="time" class="form-control" id="hora_devolucao_carro" required="" placeholder="Horário de Devolução" name="hora_devolucao_carro" value=""></div></div><div class="form-group"><label for="local_incio_carro" style="color: #797676;" class="col-sm-2 control-label">Retirada</label><div class="col-sm-8"><input type="text" class="form-control" id="local_incio_carro" required="" placeholder="Local de retirada" name="local_incio_carro" value=""></div></div><div class="form-group"><label for="local_devolucao_carro" style="color: #797676;" class="col-sm-2 control-label">Devolução</label><div class="col-sm-8"><input type="text" class="form-control" id="local_devolucao_carro" required="" placeholder="Local de Devolução" name="local_devolucao_carro" value=""></div></div><div class="form-group"><label for="voucher_carro" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_carro" required="" placeholder="" name="voucher_carro" value=""></div></div><div class="form-group"><label for="valor_carro" style="color: #797676;" class="col-sm-2 control-label">Aluguel</label><div class="col-sm-4"><input type="text" class="form-control" id="valor_carro" required="" placeholder="Valor do Aluguel" name="valor_carro" value=""></div></div><div class="form-group"><label for="valor_casa_carro" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-4"><input type="text" class="form-control" id="valor_casa_carro" required="" placeholder="Comissão da Casa" name="valor_casa_carro" value=""></div></div><div class="form-group"><label for="taxa_carro" style="color: #797676;" class="col-sm-2 control-label">Taxas</label><div class="col-sm-4"><input type="text" class="form-control" id="taxa_carro" placeholder="Taxas Extras" name="taxa_carro" value=""></div></div>						 <label>Descrição</label>
-						 <textarea name="descricao_carro" class="form-control" rows="3"></textarea>
-					</form></div><!-- div carroPF-->
+						<?php 
+						$form->init('formAddCarro','/carro/saveCarroPJ','post');
+						
+						$form->groupOpen();
+						$form->select($opt_locadora,'id_locadora','Locadora',1,2,5);
+						$form->groupClose();
+
+						$form->groupOpen();
+						foreach($cambios as $key => $value){
+							$op_cambio[$value['id_cambio']] = $value['titulo_cambio'];
+						}
+						$op_cambio['0'] = 'REAL BR';
+						$form->select($op_cambio,'id_moeda','Moeda',0,2,5);
+						$form->input(array(
+							'name' =>'valor_cambio',
+							'type' =>'text',
+							'placeholder' => '',
+							'num_label' =>'1',
+							'num_input' =>'2',
+							'label' =>'Valor',
+							'value' => '',
+							'required' => true
+							));						$form->groupClose();
+						
+						
+						echo "<input type='hidden' name='id_clientePJ' value='".$_SESSION['empresa']['id']."'>";
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'dt_inicio_carroPJ',
+							'type' =>'date',
+							'placeholder' => 'Data de início',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Início',
+							'value' => '',
+							'required' => true
+							));
+							
+						$form->input(array(
+							'name' =>'hora_inicio_carroPJ',
+							'type' =>'time',
+							'placeholder' => 'Horário de início',
+							'num_label' =>'2',
+							'num_input' =>'3',
+							'label' =>'Hora Início',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();	
+						$form->input(array(
+							'name' =>'dt_devolucao_carroPJ',
+							'type' =>'date',
+							'placeholder' => 'Data de Devolução',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Fim',
+							'value' => '',
+							'required' => true
+							));	
+							
+							$form->input(array(
+							'name' =>'hora_devolucao_carroPJ',
+							'type' =>'time',
+							'placeholder' => 'Horário de Devolução',
+							'num_label' =>'2',
+							'num_input' =>'3',
+							'label' =>'Hora Fim',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'local_inicio_carroPJ',
+							'type' =>'text',
+							'placeholder' => 'Local de retirada',
+							'num_label' =>'2',
+							'num_input' =>'8',
+							'label' =>'Retirada',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'local_devolucao_carroPJ',
+							'type' =>'text',
+							'placeholder' => 'Local de Devolução',
+							'num_label' =>'2',
+							'num_input' =>'8',
+							'label' =>'Devolução',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'voucher_carroPJ',
+							'type' =>'file',
+							'placeholder' => '',
+							'num_label' =>'2',
+							'num_input' =>'8',
+							'label' =>'Voucher',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'valor_carroPJ',
+							'type' =>'text',
+							'placeholder' => 'Valor do Aluguel',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Aluguel',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'valor_casa_carroPJ',
+							'type' =>'text',
+							'placeholder' => 'Comissão da Casa',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Comissão',
+							'value' => '',
+							'required' => true
+							));	
+						$form->groupClose();
+						
+						$form->groupOpen();
+						$form->input(array(
+							'name' =>'taxa_carroPJ',
+							'type' =>'text',
+							'placeholder' => 'Taxas Extras',
+							'num_label' =>'2',
+							'num_input' =>'4',
+							'label' =>'Taxas',
+							'value' => '',
+							'required' => false
+							));	
+						$form->groupClose();
+						 ?>
+						 <label>Descrição</label>
+						 <textarea name="descricao_carroPJ" class="form-control" rows="3"></textarea>
+					</div><!-- div carroPF-->
 				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirCarro" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-								</div>
+					<button type="submit" id="bt_incluirCarro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -146,44 +341,369 @@
 	   	
 	   	
 	   	
+	   		
 	   		<!-- Modal Hotel -->
 	<div class="modal fade" id="modalHotel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Hotel</h4>
 				</div>
 				<div class="modal-body">
-						<form name="form_hotel" method="post" action="/hotel/saveHotel" id="form_hotel" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_hoteis" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_hoteis" placeholder="" name="id_hoteis" value=""></div></div><div class="form-group"><label for="id_brokers" style="color: #797676;" class="col-sm-2 control-label">Brokers</label> <div class="col-sm-8"><select class="form-control" name="id_brokers"><option value="0" selected="">NENHUM</option><option value="1">BEST 7 BOOKING</option></select></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="nome_hotel" style="color: #797676;" class="col-sm-2 control-label">Nome</label><div class="col-sm-8"><input type="text" class="form-control" id="nome_hotel" required="" placeholder="Nome" name="nome_hotel" value=""></div></div><div class="form-group"> <div id="checkbox" class="checkbox" style="margin-left: 17%;"><input type="checkbox" name="is_br" id="is_br" value="nothing"><span>Internacional</span></div></div><div class="form-group"><label for="cep_hotel" style="color: #797676;" class="col-sm-2 control-label">CEP</label><div class="col-sm-4"><input type="text" class="form-control" id="cep_hotel" placeholder="CEP" name="cep_hotel" value=""></div><div id="msg_cep"></div></div><div class="form-group"><label for="endereco_hotel" style="color: #797676;" class="col-sm-2 control-label">Endereço</label><div class="col-sm-8"><input type="text" class="form-control" id="endereco_hotel" placeholder="Endereço" name="endereco_hotel" value=""></div></div><div class="form-group"><label for="numero_hotel" style="color: #797676;" class="col-sm-2 control-label">Número</label><div class="col-sm-3"><input type="text" class="form-control" id="numero_hotel" placeholder="Número" name="numero_hotel" value=""></div></div><div class="form-group"><label for="cidade_hotel" style="color: #797676;" class="col-sm-2 control-label">Cidade</label><div class="col-sm-6"><input type="text" class="form-control" id="cidade_hotel" placeholder="Cidade" name="cidade_hotel" value=""></div></div><div class="form-group"><label for="uf_hotel" style="color: #797676;" class="col-sm-2 control-label">UF</label><div class="col-sm-3"><input type="text" class="form-control" id="uf_hotel" placeholder="UF" name="uf_hotel" value=""></div></div><div class="form-group"><label for="telefone_hotel" style="color: #797676;" class="col-sm-2 control-label">Telefone</label><div class="col-sm-5"><input type="text" class="form-control" id="telefone_hotel" required="" placeholder="Telefone" name="telefone_hotel" value=""></div></div><div class="form-group"><label for="email_hotel" style="color: #797676;" class="col-sm-2 control-label">Email</label><div class="col-sm-8"><input type="text" class="form-control" id="email_hotel" required="" placeholder="Email" name="email_hotel" value=""></div></div><div class="form-group"><label for="voucher_hotel" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-7"><input type="file" class="form-control" id="voucher_hotel" required="" placeholder="" name="voucher_hotel" value=""></div></div><div class="form-group"><label for="valor_hotel" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-3"><input type="text" class="form-control" id="valor_hotel" required="" placeholder="Valor" name="valor_hotel" value=""></div><label for="valor_casa_hotel" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-3"><input type="text" class="form-control" id="valor_casa_hotel" required="" placeholder="Comissão" name="valor_casa_hotel" value=""></div></div>		<label>Descrição</label>
-		<textarea name="descricao_hotel" class="form-control" rows="3"></textarea>
-				</form></div>
+		<?php
+			$form->init('form_hotel','/hotel/saveHotelPJ');
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_hotelPJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => '',
+				'required' => false
+				));
+			$form->groupClose();
+			
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_clientePJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $_SESSION['empresa']['id'],
+				'required' => false
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_brokers,'id_brokers','Brokers',0,2,8);
+			$form->groupClose();
+
+
+			$form->groupOpen();	
+			$opt_cambio['0'] = 'Real BR';
+			$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
+			$form->input(array(
+				'name' =>'valor_cambio_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Cambio',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'nome_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Nome',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Nome',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();
+			echo ' <div id="checkbox" class="checkbox"><input type="checkbox" name="is_br" id="is_br" value="nothing"><span>Internacional</span></div>';
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cep_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'CEP',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'CEP',
+				'value' =>'',
+				'required' => false
+				));
+				echo '<div id="msg_cep"></div>';
+			$form->groupClose();
+		
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'endereco_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Endereço',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Endereço',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'numero_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Número',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Número',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'cidade_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Cidade',
+				'num_label' =>'2',
+				'num_input' =>'6',
+				'label' =>'Cidade',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'uf_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'UF',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'UF',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'telefone_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Telefone',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Telefone',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'email_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Email',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Email',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'voucher_hotelPJ',
+				'type' =>'file',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'7',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+			
+			$form->input(array(
+				'name' =>'valor_casa_hotelPJ',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		?>
+		<label>Descrição</label>
+		<textarea name="descricao_hotelPJ" class="form-control" rows="3"></textarea>
+				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirHotel" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-								</div>
+					<button type="submit" id="bt_incluirHotel" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	<!-- Modal Hotel -->
+	   		
+	   		
+	   		
+	   		
 	
 	
-		   	<!-- Modal Seguro -->
+		   <!-- Modal Seguro -->
 	<div class="modal fade" id="modalSeguro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Seguros</h4>
 				</div>
 				<div class="modal-body">
-			<form name="form_seguro" method="post" action="/seguro/saveSeguro" id="form_seguro" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_seguro" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_seguro" placeholder="" name="id_seguro" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_seguradora" style="color: #797676;" class="col-sm-2 control-label">Seguradora</label> <div class="col-sm-8"><select class="form-control" name="id_seguradora"><option value="1" selected="">ALLIANZ</option></select></div></div><div class="form-group"><label for="id_tipoSeguro" style="color: #797676;" class="col-sm-2 control-label">Tipo</label> <div class="col-sm-5"><select class="form-control" name="id_tipoSeguro"><option value="1" selected="">DIAMANTE</option><option value="2">OURO</option><option value="3">PRATA</option><option value="4">BRONZE</option></select></div></div><div class="form-group"><label for="id_continente" style="color: #797676;" class="col-sm-2 control-label">Continente</label> <div class="col-sm-5"><select class="form-control" name="id_continente"><option value="1" selected="">EUROPEU</option><option value="2">ASIATICO</option><option value="3">AMERICANO</option><option value="4">AFRICANO</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-5"><select class="form-control" name="id_moeda"><option value="0">Real BR</option><option value="1" selected="">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="dt_inicio_seguro" style="color: #797676;" class="col-sm-2 control-label">Inicio</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_inicio_seguro" required="" placeholder="" name="dt_inicio_seguro" value=""></div><label for="dt_fim_seguro" style="color: #797676;" class="col-sm-1 control-label">Fim</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_fim_seguro" required="" placeholder="" name="dt_fim_seguro" value=""></div></div><div class="form-group"><label for="valor_seguro" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_seguro" required="" placeholder="Valor" name="valor_seguro" value=""></div></div><div class="form-group"><label for="valor_casa_seguro" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_casa_seguro" required="" placeholder="Comissão" name="valor_casa_seguro" value=""></div></div><div class="form-group"><label for="voucher_seguro" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_seguro" required="" placeholder="Voucher" name="voucher_seguro" value=""></div></div>				</form></div>
+			<?php
+		$form->init('form_seguro','/seguro/saveSeguroPJ');
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'id_seguroPJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => false
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_clientePJ',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $_SESSION['empresa']['id'],
+			'required' => false
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select($opt_seguradora,'id_seguradora','Seguradora',1,2,8);
+		$form->groupClose();
+
+		$form->groupOpen();
+		$form->select($opt_tipoSeguro,'id_tipoSeguro','Tipo',1,2,5);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select($opt_continente,'id_continente','Continente',1,2,5);
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select($opt_cambio,'id_moeda','Moeda',0,2,5);
+		$form->input(array(
+				'name' =>'valor_cambio_seguroPJ',
+				'type' =>'text',
+				'placeholder' => '',
+				'num_label' =>'1',
+				'num_input' =>'2',
+				'label' =>'valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_inicio_seguroPJ',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Inicio',
+				'value' =>'',
+				'required' => true
+				));
+
+		$form->input(array(
+				'name' =>'dt_fim_seguroPJ',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Fim',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_seguroPJ',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_casa_seguroPJ',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'voucher_seguroPJ',
+				'type' =>'file',
+				'placeholder' => 'Voucher',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+		
+		?>
+				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-								</div>
+					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -193,23 +713,121 @@
 		   
 		   
 		   
-		   	<!-- Modal Tickets -->
+		   <!-- Modal Tickets -->
 	<div class="modal fade" id="modalTicket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Tickets</h4>
 				</div>
 				<div class="modal-body">
-						<form name="form_compraticket" method="post" action="/compraTicket/saveCompraTicket" id="form_compraticket" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_compraTicket" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_compraTicket" required="" placeholder="" name="id_compraTicket" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_ticket" style="color: #797676;" class="col-sm-2 control-label">Ticket</label> <div class="col-sm-8"><select class="form-control" name="id_ticket"><option value="1" selected="">UCF LAS VEGAS</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-5"><select class="form-control" name="id_moeda"><option value="0">Real BR</option><option value="1" selected="">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="valor_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_compraTicket" required="" placeholder="Valor da compra" name="valor_compraTicket" value=""></div></div><div class="form-group"><label for="comissao_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="comissao_compraTicket" required="" placeholder="Comissão em porcentagem" name="comissao_compraTicket" value=""></div></div><div class="form-group"><label for="voucher_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_compraTicket" required="" placeholder="Voucher" name="voucher_compraTicket" value=""></div></div><div class="form-group"><label for="fornecedor_compraTicket" style="color: #797676;" class="col-sm-2 control-label">Fornecedor</label><div class="col-sm-8"><input type="text" class="form-control" id="fornecedor_compraTicket" required="" placeholder="Nome Fornecedor" name="fornecedor_compraTicket" value=""></div></div>				</form></div>
+						<?php
+			$form->init('form_compraticket','/compraTicket/saveCompraTicketPJ');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_compraTicketPJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+			$form->input(array(
+				'name' =>'id_clientePJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $_SESSION['empresa']['id'],
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();
+			$form->select($opt_ticket,'id_ticket','Ticket',1,2,8);
+			$form->groupClose();
+
+
+			$form->groupOpen();	
+			$form->select($opt_cambio,'id_moeda','Moeda',0,2,5);
+			$form->input(array(
+				'name' =>'valor_cambio_compraTicketPJ',
+				'type' =>'text',
+				'placeholder' => 'Cambio',
+				'num_label' =>'1',
+				'num_input' =>'2',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => false
+				));
+			$form->groupClose();
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_compraTicketPJ',
+				'type' =>'text',
+				'placeholder' => 'Valor da compra',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'comissao_compraTicketPJ',
+				'type' =>'text',
+				'placeholder' => 'Comissão em porcentagem',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'voucher_compraTicketPJ',
+				'type' =>'file',
+				'placeholder' => 'Voucher',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Voucher',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'fornecedor_compraTicketPJ',
+				'type' =>'text',
+				'placeholder' => 'Nome Fornecedor',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Fornecedor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+						?>
+				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirTicket" class="btn btn-primary" disabled="disabled">
+					<button type="submit" id="bt_incluirTicket" class="btn btn-primary">
 						<i class="glyphicon glyphicon-plus-sign"></i> Incluir
 					</button>
-									</div>
+					<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -224,17 +842,180 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Cruzeiro</h4>
 				</div>
 				<div class="modal-body">
-				<form name="form_cruzeiro" method="post" action="/cruzeiro/saveCruzeiro" id="form_cruzeiro" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_cruzeiro" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_cruzeiro" required="" placeholder="" name="id_cruzeiro" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_compania_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Companias</label> <div class="col-sm-8"><select class="form-control" name="id_compania_cruzeiro"><option value="2">CVC BRASIL</option></select></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="navio_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">navio</label><div class="col-sm-5"><input type="text" class="form-control" id="navio_cruzeiro" required="" placeholder="Navio" name="navio_cruzeiro" value=""></div></div><div class="form-group"><label for="dt_inicio_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Início</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_inicio_cruzeiro" required="" placeholder="Inicio" name="dt_inicio_cruzeiro" value=""></div><label for="dt_fim_cruzeiro" style="color: #797676;" class="col-sm-1 control-label">Fim</label><div class="col-sm-4"><input type="date" class="form-control" id="dt_fim_cruzeiro" required="" placeholder="Fim" name="dt_fim_cruzeiro" value=""></div></div><div class="form-group"><label for="rota_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Rota</label><div class="col-sm-8"><input type="text" class="form-control" id="rota_cruzeiro" required="" placeholder="Rota" name="rota_cruzeiro" value=""></div></div><div class="form-group"><label for="nm_confirmacao_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Número</label><div class="col-sm-5"><input type="text" class="form-control" id="nm_confirmacao_cruzeiro" required="" placeholder="Número de Confirmação" name="nm_confirmacao_cruzeiro" value=""></div></div><div class="form-group"><label for="tipo_cabine_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Cabine</label><div class="col-sm-8"><input type="text" class="form-control" id="tipo_cabine_cruzeiro" required="" placeholder="Tipo de Cabine" name="tipo_cabine_cruzeiro" value=""></div></div><div class="form-group"><label for="valor_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_cruzeiro" required="" placeholder="Valor do Cruzeiro" name="valor_cruzeiro" value=""></div></div><div class="form-group"><label for="comissao_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="comissao_cruzeiro" required="" placeholder="Comissão" name="comissao_cruzeiro" value=""></div></div><div class="form-group"><label for="voucher_cruzeiro" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_cruzeiro" placeholder="Voucher" name="voucher_cruzeiro" value=""></div></div>				</form></div>
+				<?php
+				
+			$form->init('form_cruzeiro','/cruzeiro/saveCruzeiroPJ');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_cruzeiroPJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' =>'',
+				'required' => true
+				));
+			$form->input(array(
+				'name' =>'id_clientePJ',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $_SESSION['empresa']['id'],
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_companiaCruzeiro,'id_compania_cruzeiro','Companias',0,2,8);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
+			$form->input(array(
+				'name' =>'valor_cambio_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Cambio',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'navio_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Navio',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'navio',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'dt_inicio_cruzeiroPJ',
+				'type' =>'date',
+				'placeholder' => 'Inicio',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Início',
+				'value' =>'',
+				'required' => true
+				));
+				
+				
+		$form->input(array(
+				'name' =>'dt_fim_cruzeiroPJ',
+				'type' =>'date',
+				'placeholder' => 'Fim',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Fim',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'rota_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Rota',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Rota',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'nm_confirmacao_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Número de Confirmação',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Número',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'tipo_cabine_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Tipo de Cabine',
+				'num_label' =>'2',
+				'num_input' =>'8',
+				'label' =>'Cabine',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'valor_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Valor do Cruzeiro',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+				'name' =>'comissao_cruzeiroPJ',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+				$form->groupClose();
+				
+				
+			$form->groupOpen();	
+			$form->input(array(
+					'name' =>'voucher_cruzeiroPJ',
+					'type' =>'file',
+					'placeholder' => 'Voucher',
+					'num_label' =>'2',
+					'num_input' =>'8',
+					'label' =>'Voucher',
+					'value' =>'',
+					'required' => false
+					));
+				$form->groupClose();
+				
+				?>
+				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirCruzeiro" class="btn btn-primary" disabled="disabled">
+					<button type="submit" id="bt_incluirCruzeiro" class="btn btn-primary">
 						<i class="glyphicon glyphicon-plus-sign"></i> Incluir
 					</button>
-									</div>
+					<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -243,23 +1024,143 @@
 		   	
 		   	
 		   	
-		<!-- Modal Outros Produtos -->
+	<!-- Modal Outros Produtos -->
 	<div class="modal fade" id="modalProdutos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Outros Produtos</h4>
 				</div>
 				<div class="modal-body">
-		<form name="form_produtooutros" method="post" action="/produtoOutros/saveProdutoOutros" id="form_produtooutros" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_produto" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_produto" required="" placeholder="" name="id_produto" value=""></div></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="titulo_produto" style="color: #797676;" class="col-sm-2 control-label">Título</label><div class="col-sm-8"><input type="text" class="form-control" id="titulo_produto" required="" placeholder="Título" name="titulo_produto" value=""></div></div><div class="form-group"><label for="valor_produto" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-5"><input type="text" class="form-control" id="valor_produto" required="" placeholder="Valor" name="valor_produto" value=""></div></div><div class="form-group"><label for="comissao_produto" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-5"><input type="text" class="form-control" id="comissao_produto" required="" placeholder="Comissão" name="comissao_produto" value=""></div></div><div class="form-group"><label for="fornecedor_produto" style="color: #797676;" class="col-sm-2 control-label">Fornecedor</label><div class="col-sm-8"><input type="text" class="form-control" id="fornecedor_produto" required="" placeholder="Fornecedor" name="fornecedor_produto" value=""></div></div><div class="form-group"><label for="dt_inicio_produto" style="color: #797676;" class="col-sm-2 control-label">Início</label><div class="col-sm-5"><input type="date" class="form-control" id="dt_inicio_produto" required="" placeholder="Início" name="dt_inicio_produto" value=""></div></div><div class="form-group"><label for="dt_final_produto" style="color: #797676;" class="col-sm-2 control-label">Final</label><div class="col-sm-5"><input type="date" class="form-control" id="dt_final_produto" required="" placeholder="Final" name="dt_final_produto" value=""></div></div>				<label>Descrição</label>
-						 <textarea name="descricao_produto" class="form-control" rows="3"></textarea>
-				</form></div>
+		<?php 
+		$form->init('form_produtooutros','/produtoOutros/saveProdutoOutrosPJ');
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_produtoPJ',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' =>'',
+			'required' => true
+			));
+		$form->input(array(
+			'name' =>'id_clientePJ',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $_SESSION['empresa']['id'],
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
+		$form->input(array(
+			'name' =>'valor_cambio_produtoPJ',
+			'type' =>'text',
+			'placeholder' => 'Cambio',
+			'num_label' =>'2',
+			'num_input' =>'2',
+			'label' =>'Valor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'titulo_produtoPJ',
+			'type' =>'text',
+			'placeholder' => 'Título',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Título',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'valor_produtoPJ',
+			'type' =>'text',
+			'placeholder' => 'Valor',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Valor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+				
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'comissao_produtoPJ',
+			'type' =>'text',
+			'placeholder' => 'Comissão',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Comissão',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'fornecedor_produtoPJ',
+			'type' =>'text',
+			'placeholder' => 'Fornecedor',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Fornecedor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dt_inicio_produtoPJ',
+			'type' =>'date',
+			'placeholder' => 'Início',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Início',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dt_final_produtoPJ',
+			'type' =>'date',
+			'placeholder' => 'Final',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Final',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+				?>
+				<label>Descrição</label>
+					<textarea name="descricao_produtoPJ" class="form-control" rows="3"></textarea>
+				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirProdutos" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-								</div>
+					<button type="submit" id="bt_incluirProdutos" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -432,6 +1333,10 @@
 	<table class="table table-condensed">
 	<!-- Cliente da Lista de venda -->
 		<tbody>
+			<?php $total_tudo = 0;
+				  
+			
+			 ?>
 			<!-- Empresa selecionada -->
 			<?php if(isset($_SESSION['empresa'])): ?>
 				<?php foreach($empresa as $key => $value): ?>
@@ -458,15 +1363,124 @@
 				<?php endforeach; ?>
 			<?php endif; ?>
 			
+			<!-- Aluguel de carro -->
+			<?php if(isset($carros)): 
+				?>
+				<?php foreach ($carros as $key => $value): 
+					
+				$total_carro = 0;
+					?>
+					<tr class="warning">
+						<td>Locadora: <?=$opt_locadora[$value['id_locadora']]?></td>
+						<td><?=date('d/m/Y',strtotime($value['dt_inicio_carroPJ']))?> à <?=date('d/m/Y',strtotime($value['dt_devolucao_carroPJ']))?></td>
+						<?php $total_carro += $value['valor_carroPJ'] + $value['valor_casa_carroPJ'] + $value['taxa_carroPJ'];
+							  $total_tudo += $total_carro;
+						?>
+						<td>Total: R$ <?=number_format($total_carro,2,',','.')?></td>
+						<td><a href="/carro/removeCarroPJ/id/<?=$value['id_carroPJ']?>" onclick="return confirm('Deseja realmente remover Carro da lista de Venda?')" class="btn btn-danger">Remover</a></td></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			<?php endif;  ?>
 			
 			
+			<!-- Lista de Hotel -->
+			<?php if(isset($hotels)): ?>
+				<?php foreach ($hotels as $key => $value): 
+					$valor_hotel = 0;
+					?>
+					<tr class="warning">
+						<td>HOTEL: <?=$value['nome_hotelPJ']?></td>
+						<td><?=$opt_brokers[$value['id_brokers']]?></td>
+						<?php $valor_hotel += $value['valor_hotelPJ'] + $value['valor_casa_hotelPJ'];
+							  $total_tudo += $valor_hotel;
+						 ?>
+						<td>TOTAL: R$ <?=number_format($valor_hotel,2,',','.')?></td>
+						<td><a href="/hotel/removeHotelPJ/id/<?=$value['id_hotelPJ']?>" onclick="return confirm('Deseja realmente remover Hotel da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach;  ?>
+			<?php endif; ?>
+			
+			
+			<!-- listando Seguro --> 
+			<?php if(isset($seguros)): ?>
+			<?php foreach ($seguros as $key => $value): 
+				$total_seguro = 0;
+				?>
+				<tr class="warning">
+					<td>SEGURO: <?=$opt_seguradora[$value['id_seguradora']]?></td>
+					<td><?=$opt_tipoSeguro[$value['id_tipoSeguro']]?></td>
+					<?php  $total_seguro += $value['valor_seguroPJ'] + $value['valor_casa_seguroPJ'];
+							$total_tudo += $total_seguro;
+					?>
+					<td>TOTAL: R$ <?=number_format($total_seguro,2,',','.')?></td>
+					<td><a href="/seguro/removeSeguroPJ/id/<?=$value['id_seguroPJ']?>" onclick="return confirm('Deseja realmente remover Seguro da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+				</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
+			
+			
+			<!-- listando Ticket --> 
+			<?php if(isset($compTicket)): ?>
+				<?php foreach ($compTicket as $key => $value): 
+					$total_ticket = 0;
+					?>
+					<tr class="warning">
+						<td>TICKET: <?=$opt_ticket[$value['id_ticket']]?></td>
+						<td><?=$value['fornecedor_compraTicketPJ']?></td>
+						<?php $total_ticket += $value['valor_compraTicketPj'] + $value['comissao_compraTicketPJ']; 
+						$total_tudo += $total_ticket;
+						?>
+						<td>TOTAL: R$ <?=number_format($total_ticket,2,',','.')?></td>
+						<td><a href="/compraTicket/removeCompraTicketPJ/id/<?=$value['id_compraTicketPJ']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			
+			
+			
+			<!-- listando Cruzeiro --> 
+			<?php if(isset($cruzeiro)): ?>
+				<?php foreach ($cruzeiro as $key => $value): 
+					$total_cruzeiro = 0;
+					?>
+					<tr class="warning">
+						<td>CRUZEIRO: <?=$opt_companiaCruzeiro[$value['id_compania_cruzeiro']]?></td>
+						<td><?=$value['navio_cruzeiroPJ']?></td>
+						<?php $total_cruzeiro += $value['valor_cruzeiroPJ'] + $value['comissao_cruzeiroPJ']; 
+						$total_tudo += $total_cruzeiro;
+						?>
+						<td>TOTAL: R$ <?=number_format($total_cruzeiro,2,',','.')?></td>
+						<td><a href="/cruzeiro/removeCruzeiroPJ/id/<?=$value['id_cruzeiroPJ']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			
+			
+			
+			<!-- listando Produto --> 
+			<?php if(isset($produto)): ?>
+				<?php foreach ($produto as $key => $value): 
+					$total_produto = 0;
+					?>
+					<tr class="warning">
+						<td>PRODUTO: <?=$value['titulo_produtoPJ']?></td>
+						<td><?=$value['fornecedor_produtoPJ']?></td>
+						<?php $total_produto += $value['valor_produtoPJ'] + $value['comissao_produtoPJ']; 
+						$total_tudo += $total_produto;
+						?>
+						<td>TOTAL: R$ <?=number_format($total_produto,2,',','.')?></td>
+						<td><a href="/ProdutoOutros/removeProdutoOutrosPJ/id/<?=$value['id_produtoPJ']?>" onclick="return confirm('Deseja realmente remover Produto da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 			
 			
 			<tr class="success">
 			<td><strong style="font-size: 20px;">Total Geral:</strong></td>
 			<td></td>
 			<td></td>
-			<td><strong style="font-size: 20px;">R$ 0,00</strong></td>
+			<td><strong style="font-size: 20px;">R$ <?=number_format($total_tudo,2,',','.')?></strong></td>
 			</tr>
 		</tbody>
 	</table>
@@ -526,8 +1540,111 @@
 			
 		});
 		
+		//Funções ao modal Carros
+		jQuery("#valor_cambio").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_carroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_carroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#taxa_carroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio').attr('disabled',true);
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() == '0'){
+				jQuery('#valor_cambio').val('');
+				jQuery('#valor_cambio').attr('disabled',true);
+			}else{
+				jQuery('#valor_cambio').attr('disabled',false);
+			}
+		});
 		
 		
-	
-	});
+		//Funções para o modal Hotel
+		jQuery('#cep_hotelPJ').mask('99999-999');
+		jQuery("#valor_hotelPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_hotelPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_hotelPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery('#is_br').click(function(){
+			if(jQuery(this).attr('checked')){
+				jQuery('#cep_hotelPJ').attr('disabled',true);
+			}else{
+				jQuery('#cep_hotelPJ').attr('disabled',false);
+			}
+		});
+		
+		jQuery('#valor_cambio_hotelPJ').attr('disabled',true);
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() == '0'){
+				jQuery('#valor_cambio_hotelPJ').attr('disabled',true);
+			}else{
+				jQuery('#valor_cambio_hotelPJ').attr('disabled',false);
+			}
+		});
+		
+		
+		
+		
+		//Funções para o model Seguro
+		jQuery("#valor_cambio_seguroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_seguroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_seguroPJ").maskMoney({thousands:'', decimal:'.'});
+		
+		jQuery("#valor_cambio_seguroPJ").attr('disabled',true);
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() != '0'){
+				jQuery("#valor_cambio_seguroPJ").attr('disabled',false);
+			}else{
+				jQuery("#valor_cambio_seguroPJ").attr('disabled',true);
+				
+			}
+		});
+		
+		
+		//Funções do modal Ticket
+		jQuery("#valor_cambio_compraTicketPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_compraTicketPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#comissao_compraTicketPJ").maskMoney({thousands:'', decimal:'.'});
+		
+		jQuery("#valor_cambio_compraTicketPJ").attr('disabled',true);
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() != '0'){
+				jQuery("#valor_cambio_compraTicketPJ").attr('disabled',false);
+			}else{
+				jQuery("#valor_cambio_compraTicketPJ").attr('disabled',true);
+				
+			}
+		});
+		
+		
+		//Funções do modal Cruzeiro
+		jQuery("#valor_cambio_cruzeiroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cruzeiroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#comissao_cruzeiroPJ").maskMoney({thousands:'', decimal:'.'});
+		
+		jQuery("#valor_cambio_cruzeiroPJ").attr('disabled',true);
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() != '0'){
+				jQuery("#valor_cambio_cruzeiroPJ").attr('disabled',false);
+			}else{
+				jQuery("#valor_cambio_cruzeiroPJ").attr('disabled',true);
+				
+			}
+		});
+		
+		
+		
+		//Funçoes do modal Produtos
+		jQuery("#valor_cambio_produtoPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_produtoPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#comissao_produtoPJ").maskMoney({thousands:'', decimal:'.'});
+		
+		jQuery("#valor_cambio_produtoPJ").attr('disabled',true);
+		
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() != '0'){
+				jQuery("#valor_cambio_produtoPJ").attr('disabled',false);
+			}else{
+				jQuery("#valor_cambio_produtoPJ").attr('disabled',true);
+			}
+		});
+		
+// 		
+});
 </script>

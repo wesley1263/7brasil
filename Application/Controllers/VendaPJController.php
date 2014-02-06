@@ -6,6 +6,8 @@ use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
 use Application\Models\Venda;
 use Application\Models\ClientePJ;
+use Application\Models\Locadora;
+
 
 class VendaPJController extends OXE_Controller{
 		
@@ -45,6 +47,17 @@ class VendaPJController extends OXE_Controller{
 		$empresa = new ClientePJ();
 		$dependente = new Application\Models\DependentePJ();
 		$departamento = new Application\Models\Departamento();
+		$moedas = new Application\Models\Moeda();
+		$cambio = new Application\Models\Cambio();
+		$brokers = new Application\Models\Brokers();
+		$seguro = new Application\Models\SeguroPJ();
+		$seguradora = new Application\Models\Seguradora();
+		$tipoSeguro = new Application\Models\TipoSeguro();
+		$continente = new Application\Models\Continente();
+		$ticket = new Application\Models\Ticket();
+		$companiaCruzeiro = new Application\Models\CompaniaCruzeiro();
+		$locadora = new Locadora();
+		
 		
 		######## Populando cliente Pesso Jurídica ############
 		if(isset($_SESSION['empresa'])){
@@ -52,6 +65,8 @@ class VendaPJController extends OXE_Controller{
 			$data['empresa'] = $empresa->list_once($sess_empresa['id']);
 		}
 		
+		
+		########## Populando Funcionarios ##########
 		if(isset($_SESSION['funcionarios'])){
 			$sess_func = $this->session->getSession('funcionarios');
 			$arrayFunc = array();
@@ -63,12 +78,96 @@ class VendaPJController extends OXE_Controller{
 		}
 		
 		
+		############ Populando Carros #################
+		if(isset($_SESSION['carro'])){
+			$carroPJ = new Application\Models\CarroPJ(); 
+			$sess_carro = $this->session->getSession('carro');
+			$arrayCarro = array();
+			foreach ($sess_carro['id'] as $key => $value) {
+				$arrayCarro[] = $carroPJ->list_once($value);
+			}
+			
+			$data['carros'] = $arrayCarro;
+		}
+		
+		
+		############## Populando Hotel ###############
+		if(isset($_SESSION['hotel'])){
+			$hotelPJ = new Application\Models\HotelPJ();
+			$arrayHotel = array();
+			$sess_hotel = $this->session->getSession('hotel');
+			
+			foreach ($sess_hotel['id'] as $key => $value) {
+				$arrayHotel[] = $hotelPJ->list_once($value);
+			}
+			$data['hotels'] = $arrayHotel;
+		}
+		
+		############## Populando Seguro ###############
+		if(isset($_SESSION['seguro'])){
+			$sess_seguro = $this->session->getSession('seguro');
+			$arraySeguro = array();
+			$seguro = new Application\Models\SeguroPJ();
+			foreach ($sess_seguro['id'] as $key => $value) {
+				$arraySeguro[] = $seguro->list_once($value);
+			}
+			
+			$data['seguros'] = $arraySeguro;
+		}
+		
+		
+		############# Populando Ticket #############
+		if(isset($_SESSION['ticket'])){
+			$sess_ticket = $this->session->getSession('ticket');
+			$arrayTicket = array();
+			$compTicket = new Application\Models\CompraTicketPJ();
+			foreach ($sess_ticket['id'] as $key => $value) {
+				$arrayTicket[] = $compTicket->list_once($value);
+			}
+			
+			$data['compTicket'] = $arrayTicket;
+		}
+		
+		############# Populando Cruzeiro #############
+		if(isset($_SESSION['cruzeiro'])){
+			$sess_cruzeiro = $this->session->getSession('cruzeiro');
+			$arrayCruzeiro = array();
+			$cruzeiro = new Application\Models\CruzeiroPJ();
+			foreach ($sess_cruzeiro['id'] as $key => $value) {
+				$arrayCruzeiro[] = $cruzeiro->list_once($value);
+			}
+			
+			$data['cruzeiro'] = $arrayCruzeiro;
+		}
+		
+		############# Populando Produtos #############
+		if(isset($_SESSION['produto'])){
+			$sess_produto = $this->session->getSession('produto');
+			$arrayProduto = array();
+			$produto = new Application\Models\ProdutoOutrosPJ();
+			foreach ($sess_produto['id'] as $key => $value) {
+				$arrayProduto[] = $produto->list_once($value);
+			}
+			
+			$data['produto'] = $arrayProduto;
+		}
+		
+		
 		$data['title'] = 'Titulo da Pagina';
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
 		$data['funcionarios'] = $dependente;
 		$data['departamento'] = $departamento;
+		$data['locadoras'] = $locadora->list_all();
+		$data['moedas'] = $moedas->list_all();
+		$data['cambios'] = $cambio->list_all();
+		$data['brokers'] = $brokers->list_all();
+		$data['seguradora'] = $seguradora->list_all();
+		$data['tipoSeguro'] = $tipoSeguro->list_all();
+		$data['continente'] = $continente->list_all();
+		$data['ticket'] = $ticket->list_all();
+		$data['companiaCruzeiro'] = $companiaCruzeiro->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

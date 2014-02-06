@@ -58,7 +58,7 @@ class CruzeiroController extends OXE_Controller{
 	
 	public function saveCruzeiroAction()
 	{
-		if($_FILES['voucher_cruzeiro']['size'] > 0 & $_FILES['voucher_cruzeiro']['error'] == UPLOAD_ERR_OK){
+		if($_FILES['voucher_cruzeiro']['size'] > 0 && $_FILES['voucher_cruzeiro']['error'] == UPLOAD_ERR_OK){
 			$file = explode('.',$_FILES['voucher_cruzeiro']['name']);
 			$ext = '.'.end($file);
 			$name = md5(time().$file[0]);
@@ -98,5 +98,48 @@ class CruzeiroController extends OXE_Controller{
 		}
 		$this->dump($_SESSION['cruzeiros']);
 	}
-}
-			
+	
+	
+	public function saveCruzeiroPJAction()
+	{
+		$cruzeiro = new Application\Models\CruzeiroPJ();
+		
+		if($_FILES['voucher_cruzeiroPJ']['size'] > 0 && $_FILES['voucher_cruzeiroPJ']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.',$_FILES['voucher_cruzeiro']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_cruzeiroPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_cruzeiroPJ'] = UPLOAD_PATH.$name.$ext;
+			}
+		
+		
+		$id_cruzeiro = $cruzeiro->add($_POST);
+		if($id_cruzeiro){
+			$_SESSION['cruzeiro']['id'][] = $id_cruzeiro;
+			$this->session->setFlashMessage('Cruzeiro adicionado à lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+		
+		$this->dump($_POST);
+		$this->dump($_FILES);
+	}
+	
+	public function removeCruzeiroPJAction()
+	{
+		$cruzeiro = new Application\Models\CruzeiroPJ();
+		$param = func_get_args();
+		
+		$foto = $cruzeiro->list_once($param[1]);
+		if($cruzeiro->remove($param[1])){
+			$key = array_search($param[1],$_SESSION['cruzeiro']['id']);
+			unset($_SESSION['cruzeiro']['id'][$key]);
+			if(count($_SESSION['cruzeiro']['id']) == 0){
+				unset($_SESSION['cruzeiro']);
+			}
+			unlink($foto['voucher_cruzeiroPJ']);
+			$this->session->setFlashMessage('Cruzeiro removido da lista venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+	}
+	
+}		

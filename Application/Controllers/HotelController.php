@@ -93,5 +93,47 @@ class HotelController extends OXE_Controller{
 			}
 		}
 	}
+	
+	public function saveHotelPJAction()
+	{
+		if($_FILES['voucher_hotelPJ']['size'] > 0 && $_FILES['voucher_hotelPJ']['error'] == UPLOAD_ERR_OK){
+			
+			$file = explode('.',$_FILES['voucher_hotelPJ']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_hotelPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_hotelPJ'] = UPLOAD_PATH.$name.$ext;
+		}
+		
+		$_POST['nome_hotelPJ'] = strtoupper($_POST['nome_hotelPJ']);
+		
+		$hotelPJ = new Application\Models\HotelPJ();
+		$id_hotel = $hotelPJ->add($_POST);
+		if($id_hotel){
+			$_SESSION['hotel']['id'][] = $id_hotel;
+			$this->session->setFlashMessage('Reserva de Hotel adicionado a lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+	}
+	
+	public function removeHotelPJAction()
+	{
+		$hotelPJ = new Application\Models\HotelPJ();
+		$param = func_get_args();
+		$voucher = $hotelPJ->list_once($param[1]);
+		if($hotelPJ->remove($param[1])){
+			$key = array_search($param[1],$_SESSION['hotel']['id']);
+			unset($_SESSION['hotel']['id'][$key]);
+			if(count($_SESSION['hotel']['id']) == 0){
+				unset($_SESSION['hotel']);
+			}
+			unlink($voucher['voucher_hotelPJ']);
+			
+			$this->session->setFlashMessage('Hotel removido da lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+			
+		}
+		
+	}
 }
 			

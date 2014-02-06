@@ -102,6 +102,47 @@ class SeguroController extends OXE_Controller{
 		}
 	}
 	
+	public function saveSeguroPJAction()
+	{
+		$seguro = new Application\Models\SeguroPJ();
+		
+		if($_FILES['voucher_seguroPJ']['size'] > 0 && $_FILES['voucher_seguroPJ']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.',$_FILES['voucher_seguroPJ']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_seguroPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_seguroPJ'] = UPLOAD_PATH.$name.$ext;
+		}
+		
+		$id_seguro = $seguro->add($_POST);
+		
+		if($id_seguro){
+			$_SESSION['seguro']['id'][] = $id_seguro;
+			$this->session->setFlashMessage('Seguro adicionado a lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+		
+	}
+	
+	public function removeSeguroPJAction()
+	{
+		$seguro = new Application\Models\SeguroPJ();
+		$param = func_get_args();
+		$foto = $seguro->list_once($param[1]);
+		
+		$id_seguro = $seguro->remove($param[1]);
+		if($id_seguro){
+			$key = array_search($param[1], $_SESSION['seguro']['id']);
+			unset($_SESSION['seguro']['id'][$key]);
+			if(count($_SESSION['seguro']['id']) == 0){
+				unset($_SESSION['seguro']);
+			}
+			unlink($foto['voucher_seguroPJ']);
+			$this->session->setFlashMessage('Seguro removido da lista de Venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+	}
+	
 	public function dateToMysql($date)
 	{
 		$data = explode('/',$date);

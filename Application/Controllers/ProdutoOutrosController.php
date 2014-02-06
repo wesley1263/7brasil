@@ -83,14 +83,42 @@ class ProdutoOutrosController extends OXE_Controller{
 		if(in_array($id, $_SESSION['produtos'][$id_cliente]['id_produtos'])){
 			$key = array_search($id, $_SESSION['produtos'][$id_cliente]['id_produtos']);
 			unset($_SESSION['produtos'][$id_cliente]['id_produtos'][$key]);
-			// if(count($_SESSION['produtos'][$id_cliente]['id_produtos']) == 0){
-				// unset($_SESSION['produtos']);
-			// }
 			
 			if($this->model->remove($param[1])){
 				$this->session->setFlashMessage('ProdutoOutros removido do sistema','success');
 				$this->redirector('/venda/cadVendaPF');
 			}
+		}
+	}
+	
+	
+	public function saveProdutoOutrosPJAction()
+	{
+		$produto = new Application\Models\ProdutoOutrosPJ();
+		$id_produto = $produto->add($_POST);
+		
+		if($id_produto){
+			$_SESSION['produto']['id'][] = $id_produto;
+			$this->session->setFlashMessage('Produto adicionado a lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+	}
+	
+	
+	public function removeProdutoOutrosPJAction()
+	{
+		$produto = new Application\Models\ProdutoOutrosPJ();
+		
+		$param = func_get_args();
+		 
+		if($produto->remove($param[1])){
+			$key = array_search($param[1], $_SESSION['produto']['id']);
+			unset($_SESSION['produto']['id'][$key]);
+			if(count($_SESSION['produto']['id']) == 0){
+				unset($_SESSION['produto']);
+			}
+			$this->session->setFlashMessage('Produto removido da lista de Venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
 		}
 	}
 }

@@ -113,5 +113,51 @@ class CarroController extends OXE_Controller{
 		$date = explode("/",$date);
 		return $date[2].'-'.$date[1].'-'.$date[0];
 	}
+	
+	public function saveCarroPJAction()
+	{
+		
+		$carroPJ = new Application\Models\CarroPJ();
+		
+		if($_FILES['voucher_carroPJ']['size'] > 0 && $_FILES['voucher_carroPJ']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.', $_FILES['voucher_carroPJ']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_carroPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_carroPJ'] = UPLOAD_PATH.$name.$ext;
+		}
+		$ini = $_POST['dt_inicio_carroPJ'].' '.$_POST['hora_inicio_carroPJ'];
+		$fim = $_POST['dt_devolucao_carroPJ'].' '.$_POST['hora_devolucao_carroPJ'];
+		
+		$_PÒST['dt_inicio_carroPJ'] = $ini;
+		$_PÒST['dt_devolucao_carroPJ'] = $fim;
+		unset($_POST['hora_inicio_carroPJ']);
+		unset($_POST['hora_devolucao_carroPJ']);
+		$id_carro = $carroPJ->add($_POST);
+		
+		if($id_carro){
+			$_SESSION['carro']['id'][] = $id_carro;
+			$this->session->setFlashMessage('Aluguel de carro adicionado a lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+
+	}
+	
+	public function removeCarroPJAction()
+	{
+		$carroPJ = new Application\Models\CarroPJ();
+		$param = func_get_args();
+		$voucher = $carroPJ->list_once($param[1]);
+		if($carroPJ->remove($param[1])){
+			unlink($voucher['voucher_carroPJ']);
+			 $key = array_search($param[1], $_SESSION['carro']['id']);
+			unset($_SESSION['carro']['id'][$key]);
+			if(count($_SESSION['carro']['id']) == 0){
+				unset($_SESSION['carro']);
+			}
+			$this->session->setFlashMessage('Carro removido da lista de Venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+	}
 }
 			
