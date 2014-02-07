@@ -58,6 +58,22 @@
 	  foreach ($companiaCruzeiro as $key => $value) {
 		  $opt_companiaCruzeiro[$value['id_compania_cruzeiro']] = $value['nome_compania_cruzeiro'];
 	  }
+	  
+	  foreach ($compania as $key => $value) {
+		  $opt_compania[$value['id_compania']] = $value['nome_compania'];
+	  }
+	  
+	  foreach ($classe as $key => $value) {
+		  $opt_classe[$value['id_classe']] = $value['titulo_classe'];
+	  }
+	  
+	  foreach ($origem as $key => $value) {
+		  $opt_origem[$value['id_origem']] = $value['nome_origem'].' - '.$value['codigo_origem'];
+	  }
+	  
+	  foreach ($destino as $key => $value) {
+		  $opt_destino[$value['id_destino']] = $value['nome_destino'].' - '.$value['codigo_destino'];
+	  }
       ?>
       
       	<!-- Modal cliente Pessoa Júridica -->
@@ -1167,21 +1183,285 @@
 		<!-- Modal Outros Produtos -->
 		
 		
-	  	<!-- Modal Passagens -->
+		<!-- Modal Passagens -->
 	<div class="modal fade" id="modalPassagens" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
+						&times;
 					</button>
 					<h4 class="modal-title" id="myModalLabel">Passagem Aérea</h4>
 				</div>
 				<div class="modal-body">
-				<form name="form_passagens" method="post" action="/passagens/savePassagens" id="form_passagens" role="form" class="form-horizontal" enctype="multipart/form-data"><div class="form-group"><label for="id_passagens" style="color: #797676;" class="col-sm-2 control-label"></label><div class="col-sm-5"><input type="hidden" class="form-control" id="id_passagens" required="" placeholder="" name="id_passagens" value=""></div></div><div class="form-group"><label for="id_clientePF" style="color: #797676;" class="col-sm-2 control-label">Cliente</label> <div class="col-sm-8"><select class="form-control" name="id_clientePF"></select></div></div><div class="form-group"><label for="id_compania" style="color: #797676;" class="col-sm-2 control-label">Compania</label> <div class="col-sm-8"><select class="form-control" name="id_compania"><option value="2">CVC BRASIL</option><option value="1" selected="">TAM</option><option value="3">AVIANCA</option></select></div><a href="/compania/cadCompania" title="Adicionar nova Compania caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_classe" style="color: #797676;" class="col-sm-2 control-label">Classe</label> <div class="col-sm-8"><select class="form-control" name="id_classe"><option value="1" selected="">CLASSE ECONOMICA</option></select></div><a href="/classe/cadClasse" title="Adicionar nova classe caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_origem" style="color: #797676;" class="col-sm-2 control-label">Origem</label> <div class="col-sm-6"><select class="form-control" name="id_origem"><option value="1" selected="">SP - CUMBICA</option><option value="2">SP - GUARULHOS</option></select></div><a href="/origem/cadOrigem" title="Adicionar novo origem caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_destino" style="color: #797676;" class="col-sm-2 control-label">Destino</label> <div class="col-sm-6"><select class="form-control" name="id_destino"><option value="1" selected="">SP- CUMBICA</option><option value="3">MIAMI - USA</option><option value="4">TESTE-RJ</option></select></div><a href="/destino/cadDestino" title="Adicionar novo destino caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></div><div class="form-group"><label for="id_moeda" style="color: #797676;" class="col-sm-2 control-label">Moeda</label> <div class="col-sm-4"><select class="form-control" name="id_moeda"><option value="0" selected="">Real BR</option><option value="1">DOLLAR USA</option><option value="2">EURO</option><option value="3">LIBRA</option></select></div></div><input type="checkbox" id="somente_ida" checked="checked"> <strong>Somente ida</strong><fieldset id="fs_ida"><legend><strong>IDA</strong></legend><div class="form-group"><label for="dataIda_passagens" style="color: #797676;" class="col-sm-2 control-label">Data</label><div class="col-sm-4"><input type="date" class="form-control" id="dataIda_passagens" required="" placeholder="" name="dataIda_passagens" value=""></div></div><div class="form-group"><label for="saidaIda_passagens" style="color: #797676;" class="col-sm-2 control-label">Saida</label><div class="col-sm-3"><input type="time" class="form-control" id="saidaIda_passagens" required="" placeholder="" name="saidaIda_passagens" value=""></div><label for="chegadaIda_passagens" style="color: #797676;" class="col-sm-2 control-label">Chegada</label><div class="col-sm-3"><input type="time" class="form-control" id="chegadaIda_passagens" required="" placeholder="" name="chegadaIda_passagens" value=""></div></div></fieldset><fieldset id="fs_volta" style="display: none;"><legend><strong>Volta</strong></legend><div class="form-group"><label for="dataVolta_passagens" style="color: #797676;" class="col-sm-2 control-label">Data</label><div class="col-sm-4"><input type="date" class="form-control" id="dataVolta_passagens" required="" placeholder="" name="dataVolta_passagens" value=""></div></div><div class="form-group"><label for="saidaVolta_passagens" style="color: #797676;" class="col-sm-2 control-label">Saida</label><div class="col-sm-3"><input type="time" class="form-control" id="saidaVolta_passagens" required="" placeholder="" name="saidaVolta_passagens" value=""></div><label for="chegadaVolta_passagens" style="color: #797676;" class="col-sm-2 control-label">Chegada</label><div class="col-sm-3"><input type="time" class="form-control" id="chegadaVolta_passagens" required="" placeholder="" name="chegadaVolta_passagens" value=""></div></div></fieldset><hr><div class="form-group"><label for="voo_passagens" style="color: #797676;" class="col-sm-2 control-label">Voo</label><div class="col-sm-8"><input type="text" class="form-control" id="voo_passagens" required="" placeholder="Voo" name="voo_passagens" value=""></div></div><div class="form-group"><label for="voucher_passagens" style="color: #797676;" class="col-sm-2 control-label">Voucher</label><div class="col-sm-8"><input type="file" class="form-control" id="voucher_passagens" required="" placeholder="Voucher" name="voucher_passagens" value=""></div></div><div class="form-group"><label for="tarifa_passagens" style="color: #797676;" class="col-sm-2 control-label">Valor</label><div class="col-sm-3"><input type="text" class="form-control" id="tarifa_passagens" required="" placeholder="Valor" name="tarifa_passagens" value=""></div><label for="ticket_passagens" style="color: #797676;" class="col-sm-1 control-label">Ticket</label><div class="col-sm-4"><input type="text" class="form-control" id="ticket_passagens" required="" placeholder="Ticket" name="ticket_passagens" value=""></div></div><div class="form-group"><label for="valor_casa_passagens" style="color: #797676;" class="col-sm-2 control-label">Comissão</label><div class="col-sm-3"><input type="text" class="form-control" id="valor_casa_passagens" required="" placeholder="Comissão" name="valor_casa_passagens" value=""></div><label for="tx_embarque_passagens" style="color: #797676;" class="col-sm-2 control-label">Embarque</label><div class="col-sm-3"><input type="text" class="form-control" id="tx_embarque_passagens" required="" placeholder="Taxa de Enbarque" name="tx_embarque_passagens" value=""></div></div><div class="form-group"><label for="tx_outras_passagens" style="color: #797676;" class="col-sm-2 control-label">Extra</label><div class="col-sm-3"><input type="text" class="form-control" id="tx_outras_passagens" placeholder="Taxa Extra" name="tx_outras_passagens" value=""></div><label for="tx_repasse_passagens" style="color: #797676;" class="col-sm-2 control-label">Repasse</label><div class="col-sm-3"><input type="text" class="form-control" id="tx_repasse_passagens" required="" placeholder="Taxa de Repasse" name="tx_repasse_passagens" value=""></div></div>				</form></div>
+				<?php
+		$form->init('form_passagens','/passagens/savePassagensPJ');
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'id_passagensPJ',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' =>'',
+			'required' => true
+			));
+		$form->input(array(
+			'name' =>'id_clientePJ',
+			'type' =>'hidden',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'',
+			'value' => $_SESSION['empresa']['id'],
+			'required' => true
+			));
+		$form->groupClose();
+		
+
+
+		$form->groupOpen();	
+		$form->select($opt_compania,'id_compania','Compania',1,2,8);
+		echo '<td><a href="/compania/cadCompania" title="Adicionar nova Compania caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+		$form->groupClose();
+
+
+		$form->groupOpen();	
+		$form->select($opt_classe,'id_classe','Classe',1,2,8);
+		echo '<td><a href="/classe/cadClasse" title="Adicionar nova classe caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+		$form->groupClose();
+
+		
+		
+		$form->groupOpen();	
+		$form->select($opt_origem,'id_origem','Origem',1,2,6);	
+		echo '<td><a href="/origem/cadOrigem" title="Adicionar novo origem caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+		$form->groupClose();
+		
+		
+		
+		$form->groupOpen();	
+		$form->select($opt_destino,'id_destino','Destino',1,2,6);
+		echo '<td><a href="/destino/cadDestino" title="Adicionar novo destino caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
+				
+		$form->groupClose();
+
+
+		$form->groupOpen();	
+		$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
+		$form->input(array(
+			'name' =>'valor_cambio_passagensPJ',
+			'type' =>'text',
+			'placeholder' => 'Cambio',
+			'num_label' =>'2',
+			'num_input' =>'3',
+			'label' =>'Valor',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+		echo '<input type="checkbox" id="somente_ida" /> <strong>Somente ida</strong>';
+		echo '<fieldset id="fs_ida">';
+		echo '<legend><strong>IDA</strong></legend>';
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dataIda_passagensPJ',
+			'type' =>'date',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'4',
+			'label' =>'Data',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'saidaIda_passagensPJ',
+			'type' =>'time',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'3',
+			'label' =>'Saida',
+			'value' =>'',
+			'required' => true
+			));
+
+		$form->input(array(
+			'name' =>'chegadaIda_passagensPJ',
+			'type' =>'time',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'3',
+			'label' =>'Chegada',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		echo '</fieldset>';
+		
+		
+		echo '<fieldset id="fs_volta">';
+		echo '<legend><strong>Volta</strong></legend>';
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'dataVolta_passagensPJ',
+			'type' =>'date',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'4',
+			'label' =>'Data',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'saidaVolta_passagensPJ',
+			'type' =>'time',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'3',
+			'label' =>'Saida',
+			'value' =>'',
+			'required' => true
+			));
+			
+		$form->input(array(
+			'name' =>'chegadaVolta_passagensPJ',
+			'type' =>'time',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'3',
+			'label' =>'Chegada',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		echo '</fieldset>';
+		echo '<hr>';
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'voo_passagensPJ',
+			'type' =>'text',
+			'placeholder' => 'Voo',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Voo',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'bagagem_passagensPJ',
+			'type' =>'text',
+			'placeholder' => '',
+			'num_label' =>'2',
+			'num_input' =>'3',
+			'label' =>'Bagagem',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'voucher_passagensPJ',
+			'type' =>'file',
+			'placeholder' => 'Voucher',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Voucher',
+			'value' =>'',
+			'required' => true
+			));
+		$form->groupClose();
+
+			 $form->groupOpen();	
+			 $form->input(array(
+				'name' =>'tarifa_passagensPJ',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Valor',
+				'value' =>'',
+				'required' => true
+				));
+		
+			$form->input(array(
+				'name' =>'ticket_passagensPJ',
+				'type' =>'text',
+				'placeholder' => 'Ticket',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Ticket',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'valor_casa_passagensPJ',
+				'type' =>'text',
+				'placeholder' => 'Comissão',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Comissão',
+				'value' =>'',
+				'required' => true
+				));
+				
+			$form->input(array(
+				'name' =>'tx_embarque_passagensPJ',
+				'type' =>'text',
+				'placeholder' => 'Taxa de Enbarque',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Embarque',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tx_outras_passagensPJ',
+				'type' =>'text',
+				'placeholder' => 'Taxa Extra',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Extra',
+				'value' =>'',
+				'required' => false
+				));
+				
+			$form->input(array(
+				'name' =>'tx_repasse_passagensPJ',
+				'type' =>'text',
+				'placeholder' => 'Taxa de Repasse',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Repasse',
+				'value' =>'',
+				'required' => true
+				));
+		$form->groupClose();
+				?>
+				</div>
 				<div class="modal-footer">
-					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-								</div>
+					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
+				<?php $form->close(); ?>
+				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -1475,6 +1755,23 @@
 				<?php endforeach; ?>
 			<?php endif; ?>
 			
+			<!-- listando Passagem --> 
+			<?php if(isset($passagens)): ?>
+				<?php foreach ($passagens as $key => $value): 
+					$total_passagem = 0;
+					?>
+					<tr class="warning">
+						<td>PASSAGEM: <?=$opt_compania[$value['id_compania']].' - '.$opt_classe[$value['id_classe']]?></td>
+						<td>ORIGEM: <?=$opt_origem[$value['id_origem']].' - DESTINO: '.$opt_destino[$value['id_destino']]?></td>
+						<?php $total_passagem += $value['tarifa_passagensPJ'] + $value['valor_casa_passagensPJ'] + $value['tx_embarque_passagensPJ'] + $value['tx_outras_passagensPJ'] + $value['tx_repasse_passagensPJ']; 
+						$total_tudo += $total_passagem;
+						?>
+						<td>TOTAL: R$ <?=number_format($total_passagem,2,',','.')?></td>
+						<td><a href="/passagens/removePassagensPJ/id/<?=$value['id_passagensPJ']?>" onclick="return confirm('Deseja realmente remover Produto da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			
 			
 			<tr class="success">
 			<td><strong style="font-size: 20px;">Total Geral:</strong></td>
@@ -1645,6 +1942,23 @@
 			}
 		});
 		
+		//Funções do modal passagens
+		jQuery("#valor_cambio_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tarifa_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tx_embarque_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tx_outras_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tx_repasse_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		
+		jQuery("#valor_cambio_passagensPJ").attr('disabled',true);
+		
+		jQuery('[name=id_moeda]').change(function(){
+			if(jQuery(this).val() != '0'){
+				jQuery("#valor_cambio_passagensPJ").attr('disabled',false);
+			}else{
+				jQuery("#valor_cambio_passagensPJ").attr('disabled',true);
+			}
+		});
 // 		
 });
 </script>

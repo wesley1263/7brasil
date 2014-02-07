@@ -96,5 +96,44 @@ class PassagensController extends OXE_Controller{
 			}
 		}
 	}
+	
+	public function savePassagensPJAction()
+	{
+		$passagens = new Application\Models\PassagensPJ();
+		
+		if($_FILES['voucher_passagensPJ']['size'] > 0 && $_FILES['voucher_passagensPJ']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.',$_FILES['voucher_passagensPJ']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_passagensPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_passagensPJ'] = UPLOAD_PATH.$name.$ext;
+		}
+		
+		$id_passagens = $passagens->add($_POST);
+		if($id_passagens){
+			$_SESSION['passagens']['id'][] = $id_passagens;
+			$this->session->setFlashMessage('Passagens aérea adicionado à lista de venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+		
+	
+	}
+	
+	public function removePassagensPJAction()
+	{
+		$passagens = new Application\Models\PassagensPJ();
+		$param = func_get_args();
+		$foto = $passagens->list_once($param[1]);
+		if($passagens->remove($param[1])){
+			$key = array_search($param[1],$_SESSION['passagens']['id']);
+			unset($_SESSION['passagens']['id'][$key]);
+			if(count($_SESSION['passagens']['id']) == 0){
+				unset($_SESSION['passagens']);
+			}
+			unlink($foto['voucher_passagensPJ']);
+			$this->session->setFlashMessage('Passagem aérea removido da lista venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
+	}
 }
 			

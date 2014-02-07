@@ -56,6 +56,10 @@ class VendaPJController extends OXE_Controller{
 		$continente = new Application\Models\Continente();
 		$ticket = new Application\Models\Ticket();
 		$companiaCruzeiro = new Application\Models\CompaniaCruzeiro();
+		$compania = new Application\Models\Compania();
+		$classe = new Application\Models\Classe();
+		$origem = new Application\Models\Origem();
+		$destino = new Application\Models\Destino();
 		$locadora = new Locadora();
 		
 		
@@ -152,6 +156,18 @@ class VendaPJController extends OXE_Controller{
 			$data['produto'] = $arrayProduto;
 		}
 		
+		############# Populando Passagens #############
+		if(isset($_SESSION['passagens'])){
+			$sess_passagem = $this->session->getSession('passagens');
+			$arrayPassagem = array();
+			$passagem = new Application\Models\PassagensPJ();
+			foreach ($sess_passagem['id'] as $key => $value) {
+				$arrayPassagem[] = $passagem->list_once($value);
+			}
+			
+			$data['passagens'] = $arrayPassagem;
+		}
+		
 		
 		$data['title'] = 'Titulo da Pagina';
 		$data['form'] = $this->form;
@@ -168,6 +184,10 @@ class VendaPJController extends OXE_Controller{
 		$data['continente'] = $continente->list_all();
 		$data['ticket'] = $ticket->list_all();
 		$data['companiaCruzeiro'] = $companiaCruzeiro->list_all();
+		$data['compania'] = $compania->list_all();
+		$data['classe'] = $classe->list_all();
+		$data['origem'] = $origem->list_all();
+		$data['destino'] = $destino->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
