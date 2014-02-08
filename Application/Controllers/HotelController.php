@@ -106,6 +106,7 @@ class HotelController extends OXE_Controller{
 		}
 		
 		$_POST['nome_hotelPJ'] = strtoupper($_POST['nome_hotelPJ']);
+		unset($_POST['is_br']);
 		
 		$hotelPJ = new Application\Models\HotelPJ();
 		$id_hotel = $hotelPJ->add($_POST);

@@ -60,6 +60,9 @@ class VendaPJController extends OXE_Controller{
 		$classe = new Application\Models\Classe();
 		$origem = new Application\Models\Origem();
 		$destino = new Application\Models\Destino();
+		$agencia = new Application\Models\Agencia();
+		$tipoPagamento = new Application\Models\TipoPagamento();
+		$tipoCartao = new Application\Models\TipoCartao();
 		$locadora = new Locadora();
 		
 		
@@ -188,6 +191,11 @@ class VendaPJController extends OXE_Controller{
 		$data['classe'] = $classe->list_all();
 		$data['origem'] = $origem->list_all();
 		$data['destino'] = $destino->list_all();
+		$data['agencia'] = $agencia->list_all();
+		$data['tipoPagamento'] = $tipoPagamento->list_all();
+		$data['tipoCartao'] = $tipoCartao->list_all();
+		$data['cartaoPJ'] = new Application\Models\CartaoPJ();
+		
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -246,6 +254,91 @@ class VendaPJController extends OXE_Controller{
 	public function removeClientePJAction()
 	{
 		unset($_SESSION['empresa']);
+		$this->redirector('/vendaPJ/cadVendaPJ');
+	}
+	
+	public function findAgenciaAction()
+	{
+		$agente = new Application\Models\Agente();
+		
+		echo json_encode($agente->getAgencia($_POST['id_agencia']));
+		
+	}
+	
+	public function cadTipoPagamentoPJAction()
+	{
+		$formaPagamento = new Application\Models\FormaPagamentoPJ();
+		
+		$arrayForm = array();
+		$data = array();
+		$arrayForm['id_clientePJ'] = $_POST['id_clientePJ'];
+		$arrayForm['id_vendaPJ'] = null;
+		
+		
+		$arrayForm2 = array();
+		$data2 = array();
+		$arrayForm2['id_clientePJ'] = $_POST['id_clientePJ'];
+		$arrayForm2['id_vendaPJ'] = null;
+		
+		foreach($_POST as $key => $value){
+			if(preg_match("/^([a-z]+_[\d])$/", $key)){
+				if(preg_match("/^([tipo_])/", $key)){
+					$tipo = explode('_',$key);
+					$arrayForm['id_tipoPagamento'] = $tipo[1];
+					$arrayForm['id_tipoCartao'] = null;
+					$arrayForm['valor_formaPagamentoPJ'] = $value;
+				}
+				
+				if(preg_match("/^([vezes_])/", $key)){
+					$vezes = explode('_',$key);
+					$arrayForm['vezes_formaPagamentoPJ'] = $value;
+					$data[] = $arrayForm;
+				}
+			}
+			
+			if(preg_match("/^([a-z]+_3)/", $key)){
+				if(preg_match("/^([tipo_])/",$key)){
+					$tipo = explode('_',$key);
+					$arrayForm2['id_tipoPagamento'] = $tipo[1];
+					$arrayForm2['id_tipoCartao'] = $tipo[2];
+					$arrayForm2['valor_formaPagamentoPJ'] = $value;
+				}
+				
+				if(preg_match("/^([vezes_])/", $key)){
+					$vezes = explode('_',$key);
+					$arrayForm2['vezes_formaPagamentoPJ'] = $value;
+					$data2[] = $arrayForm2;
+					
+				}
+			}
+		}
+		
+		
+		
+		foreach ($data as $key => $value) {
+			if($value['valor_formaPagamentoPJ'] == null){
+				unset($data[$key]);
+			}
+		}
+		
+		foreach ($data2 as $key => $value) {
+			if($value['valor_formaPagamentoPJ'] == null){
+				unset($data2[$key]);
+			}
+		}
+		
+		
+		foreach ($data as $key => $value) {
+			$id = $formaPagamento->add($value);
+			$_SESSION['formaPagamento']['id'][]= $id;
+		}
+		
+		foreach ($data2 as $key => $value) {
+			$formaPagamento->add($value);
+			$_SESSION['formaPagamento']['id'][]= $id;
+		}
+		
+		$this->session->setFlashMessage('Rateio registrado com sucesso.','success');
 		$this->redirector('/vendaPJ/cadVendaPJ');
 	}
 	

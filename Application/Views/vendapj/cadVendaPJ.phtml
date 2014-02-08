@@ -74,6 +74,10 @@
 	  foreach ($destino as $key => $value) {
 		  $opt_destino[$value['id_destino']] = $value['nome_destino'].' - '.$value['codigo_destino'];
 	  }
+	  
+	  foreach ($tipoCartao as $key => $value) {
+		  $opt_tipoCartao[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
+	  }
       ?>
       
       	<!-- Modal cliente Pessoa Júridica -->
@@ -1315,7 +1319,7 @@
 			'num_input' =>'4',
 			'label' =>'Data',
 			'value' =>'',
-			'required' => true
+			'required' => false
 			));
 		$form->groupClose();
 		
@@ -1328,7 +1332,7 @@
 			'num_input' =>'3',
 			'label' =>'Saida',
 			'value' =>'',
-			'required' => true
+			'required' => false
 			));
 			
 		$form->input(array(
@@ -1339,7 +1343,7 @@
 			'num_input' =>'3',
 			'label' =>'Chegada',
 			'value' =>'',
-			'required' => true
+			'required' => false
 			));
 		$form->groupClose();
 		echo '</fieldset>';
@@ -1476,46 +1480,367 @@
 		<div class="modal-dialog" style="width: 50%;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
-					</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 					<h4 class="modal-title" id="myModalLabel">Finalizar Venda</h4>
 				</div>
 				<div class="modal-body">
-					<label style="color: #797676;" class="col-sm-2 control-label">Agencia</label> 
+					<label style="color: #797676;width: 90%" class="col-sm-2 control-label">Agencia</label> 
 					<form method="post" action="/venda/saveVenda">
-						<select class="form-control" name="id_agencia">
+						<select class="form-control" name="id_agencia" style="width: 70%">
 							<option value="0">7 Brasil</option>
-														<option value="1">MILESSIS TURISMO</option>
-													</select>
+							<?php foreach ($agencia as $key => $value): ?>
+								<option value="<?=$value['id_agencia']?>"><?=$value['nomefantasia_agencia']?></option>
+							<?php endforeach; ?>
+						</select>
+						<br />
+						<label id="lb_valor_agencia" style="color: rgb(121, 118, 118);width: 90%" class="col-sm-2 control-label">Valor Agência</label> 
+						<input type="text" class="form-control" style="width: 30%" id="valor_agencia" placeholder="Valor da Agência" name="valor_agencia" />
 						<br>
-						<label id="lb_agente" style="color: rgb(121, 118, 118); display: none;" class="col-sm-2 control-label">Agente</label> 
-						<select class="form-control" name="id_agente" id="id_agente" style="display: none;"></select>
+						<label id="lb_agente" style="color: rgb(121, 118, 118);width: 90%" class="col-sm-2 control-label">Agente</label> 
+						<select class="form-control" name="id_agente" id="id_agente" style="width: 70%"></select>
+						<br />
+						<label id="lb_valor_agente" style="color: rgb(121, 118, 118);width: 90%" class="col-sm-2 control-label">Valor Agente</label> 
+						<input type="text" class="form-control" style="width: 30%" id="valor_agente" placeholder="Valor da Agência" name="valor_agente" />
 						<br>
 						<br>
-					<!-- Todos os Produtos -->
-					<div id="painel_cliente">
+					
+					    <div id="painel_cliente">
 					<div class="panel-group" id="accordion">
-						<!-- Aba de cliente-->
-												<!-- Aba de cliente-->
+					
+					<?php $total_tudo = 0; ?>
+					
+					
+					
+					<!-- Aba de cliente-->
+					<?php if(isset($empresa)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">Empresa</a>
+					      </h4>
+					    </div>
+					    <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+							  <a href="#" class="list-group-item">
+							    <h4 class="list-group-item-heading"><?=$empresa[0]['nomefantasia_clientePJ']?></h4>
+							    <p class="list-group-item-text">CNPJ: <?=$empresa[0]['cnpj_clientePJ']?></p>
+							    <p class="list-group-item-text">EMAIL: <?=$empresa[0]['email_clientePJ']?></p>
+							    <p class="list-group-item-text">TELEFONE: <?=$empresa[0]['telefone_clientePJ']?></p>
+							    <p class="list-group-item-text">RESPONSÁVEL: <?=$empresa[0]['nomeresponsavel_clientePJ']?></p>
+							    <p class="list-group-item-text">CPF: <?=$empresa[0]['cpf_responsavel_clientePJ']?></p>
+							    <p class="list-group-item-text">TELFONE: <?=$empresa[0]['telefone_responsavel_clientePJ']?></p>
+							    <p class="list-group-item-text">EMAIL: <?=$empresa[0]['email_responsavel_clientePJ']?></p>
+							  </a>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					  <!-- Aba de cliente-->
 					  
-					  					  
+					  <!-- Aba de Funcionarios-->
+					<?php if(isset($dependentes)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">Funcionários</a>
+					      </h4>
+					    </div>
+					    <div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($dependentes as $key => $value): ?>
+							  <a href="#" class="list-group-item">
+							    <h4 class="list-group-item-heading"><?=$value['nome_dependentePJ']?></h4>
+							    <p class="list-group-item-text">DEPARTAMENTO: <strong><?=$opt_departamento[$value['id_departamento']]?></strong></p>
+							    <p class="list-group-item-text">CPF: <strong><?=$value['cpf_dependentePJ']?></strong></p>
+							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_dependentePJ']?></strong></p>
+							    <p class="list-group-item-text">TELEFONE: <strong><?=$value['telefone_dependentePJ']?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					  <!-- Aba de Funcionarios-->
+					  
 					  <!-- Todos Produtos -->
 					  <div id="todos_produtos">
+					  	
+				  <?php if(isset($carros)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">Carros</a>
+					      </h4>
+					    </div>
+					    <div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($carros as $key => $value): 
+					       		$total_carro = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">LOCADORA: <strong><?=$opt_locadora[$value['id_locadora']]?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_carroPJ']))?></strong></p>
+							    <p class="list-group-item-text">FINAL: <strong><?=date('d/m/Y',strtotime($value['dt_devolucao_carroPJ']))?></strong></p>
+							    <?php $total_carro += $value['valor_carroPJ'] + $value['valor_casa_carroPJ'] + $value['taxa_carroPJ'];
+							    	$total_tudo += $total_carro;
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_carro,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					
+					<!-- Hotel-->
+					 <?php if(isset($hotels)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed">Hotel</a>
+					      </h4>
+					    </div>
+					    <div id="collapseFour" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($hotels as $key => $value): 
+					       		$total_hotel = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">BROKERS: <strong><?=$opt_brokers[$value['id_brokers']]?></strong></p>
+							    <p class="list-group-item-text">NOME: <strong><?=$value['nome_hotelPJ']?></strong></p>
+							    <p class="list-group-item-text">LOCALIDADE: <strong><?=$value['cidade_hotelPJ'].' - '.$value['uf_hotelPJ']?></strong></p>
+							    <p class="list-group-item-text">TELEFONE: <strong><?=$value['telefone_hotelPJ']?></strong></p>
+							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_hotelPJ']?></strong></p>
+							    <?php $total_hotel += $value['valor_hotelPJ'] + $value['valor_casa_hotelPJ'];
+							    	  $total_tudo += $total_hotel;
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_hotel,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					<!-- Hotel-->
+					
+					
+					<!-- Seguro -->
+					 <?php if(isset($seguros)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" class="collapsed">Seguro</a>
+					      </h4>
+					    </div>
+					    <div id="collapseFive" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($seguros as $key => $value): 
+					       		$total_seguro = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">SEGURADORA: <strong><?=$opt_seguradora[$value['id_seguradora']]?></strong></p>
+							    <p class="list-group-item-text">TIPO: <strong><?=$opt_tipoSeguro[$value['id_tipoSeguro']]?></strong></p>
+							    <p class="list-group-item-text">CONTINENTE: <strong><?=$opt_continente[$value['id_continente']]?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_seguroPJ']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_fim_seguroPJ']))?></strong></p>
+							    <?php $total_seguro += $value['valor_seguroPJ'] + $value['valor_casa_seguroPJ'];
+							    	  $total_tudo += $total_seguro;
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_seguro,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					
+					  <!-- TIckets -->
+					   <?php if(isset($compTicket)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" class="collapsed">Tickets</a>
+					      </h4>
+					    </div>
+					    <div id="collapseSix" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($compTicket as $key => $value): 
+					       		$total_ticket = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">TICKET: <strong><?=$opt_ticket[$value['id_ticket']]?></strong></p>
+							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_compraTicketPJ']?></strong></p>
+							    <?php $total_ticket += $value['valor_compraTicketPj'] + $value['comissao_compraTicketPJ'];
+							    	  $total_tudo += $total_ticket;
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_ticket,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					  
+					  
+					  <!-- Cruzeiro -->
+					     <?php if(isset($cruzeiro)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" class="collapsed">Cruzeiro</a>
+					      </h4>
+					    </div>
+					    <div id="collapseSeven" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($cruzeiro as $key => $value): 
+					       		$total_cruzeiro = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">COMPANIA: <strong><?=$opt_companiaCruzeiro[$value['id_compania_cruzeiro']]?></strong></p>
+							    <p class="list-group-item-text">NAVIO: <strong><?=$value['navio_cruzeiroPJ']?></strong></p>
+							    <p class="list-group-item-text">NÚMERO: <strong><?=$value['nm_confirmacao_cruzeiroPJ']?></strong></p>
+							    <p class="list-group-item-text">CABINE: <strong><?=$value['tipo_cabine_cruzeiroPJ']?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_cruzeiroPJ']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['navio_cruzeiroPJ']))?></strong></p>
+							    <?php $total_cruzeiro += $value['valor_cruzeiroPJ'] + $value['comissao_cruzeiroPJ'];
+							    	  $total_tudo += $total_cruzeiro;
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_cruzeiro,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					  
+					  
+					  <!-- Outros Produtos -->
+					  <?php if(isset($produto)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseEigth" class="collapsed">Outros Produtos</a>
+					      </h4>
+					    </div>
+					    <div id="collapseEigth" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($produto as $key => $value): 
+					       		$total_produto = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">TITULO: <strong><?=$value['titulo_produtoPJ']?></strong></p>
+							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_produtoPJ']?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_produtoPJ']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_final_produtoPJ']))?></strong></p>
+							    <?php $total_produto += $value['valor_produtoPJ'] + $value['comissao_produtoPJ'];
+							   		  $total_tudo += $total_produto; 
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_produto,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					
+					
+					
+					 <!-- Outros Passagens -->
+					  <?php if(isset($passagens)): ?>
+					<div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine" class="collapsed">Passagens</a>
+					      </h4>
+					    </div>
+					    <div id="collapseNine" class="panel-collapse collapse" style="height: 0px;">
+					      <div class="panel-body">
+					       <div class="list-group">
+					       	<?php foreach ($passagens as $key => $value): 
+					       		$total_passagens = 0;
+					       		?>
+							  <a href="#" class="list-group-item">
+							    <p class="list-group-item-text">CÓDIGO RESERVA: <strong><?=$value['codigo_reserva_pasagensPJ']?></strong></p>
+							    <p class="list-group-item-text">COMPANIA: <strong><?=$opt_compania[$value['id_compania']]?></strong></p>
+							    <p class="list-group-item-text">CLASSE: <strong><?=$opt_classe[$value['id_classe']]?></strong></p>
+							    <p class="list-group-item-text">ORIGEM: <strong><?=$opt_origem[$value['id_origem']]?></strong></p>
+							    <p class="list-group-item-text">DESTINO: <strong><?=$opt_destino[$value['id_destino']]?></strong></p>
+							    <p class="list-group-item-text">VOO: <strong><?=$value['voo_passagensPJ']?></strong></p>
+							    <p class="list-group-item-text">DATA DE IDA: <strong><?=date('d/m/Y',strtotime($value['dataIda_passagensPJ']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE PARTIDA: <strong><?=date('H:i',strtotime($value['saidaIda_passagensPJ']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE CHEGADA: <strong><?=date('H:i',strtotime($value['chegadaIda_passagensPJ']))?></strong></p>
+							    <?php if(date('Y',strtotime($value['dataVolta_passagensPJ'])) > date('Y')){ ?>
+							    <p class="list-group-item-text">DATA DE VOLTA: <strong><?=date('d/m/Y',strtotime($value['dataVolta_passagensPJ']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE PARTIDA: <strong><?=date('H:i',strtotime($value['saidaVolta_passagensPJ']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE CHEGADA: <strong><?=date('H:i',strtotime($value['chegadaVolta_passagensPJ']))?></strong></p>
+							    <?php } ?>
+							    <?php $total_passagens += $value['tarifa_passagensPJ'] + $value['valor_casa_passagensPJ'] + $value['tx_embarque_passagensPJ'] + $value['tx_outras_passagensPJ'] + $value['tx_repasse_passagensPJ'];
+							    	   $total_tudo += $total_passagens;
+							    ?>
+							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_passagens,2,',','.')?></strong></p>
+							  
+							  </a>
+					       	<?php endforeach; ?>
+							</div>
+							
+							
+					      </div>
+					    </div>
+					  </div>
+					<?php endif; ?>
+					  
+					  
+					  
 					 </div> <!-- Todos Produtos -->
 					  
 					</div>
-				</div><!-- End div painel_cliente -->
-					<!-- Todos os Produtos -->
-					
-					<br>
-					    <!-- Total de todos os produtos  -->
-						
-					    <!-- Total de todos os produtos  -->
+				</div>
+				<br />
+				<br />
 					    
 					    <label>Descrição de venda</label>
 						<textarea name="descricao_venda" class="form-control" rows="3"></textarea>
-				</form></div>
+				</form>
+				</div>
 				<div class="modal-footer">
 					<input type="hidden" name="total_venda" value="0">
 					<input type="hidden" name="total_comissao" value="0">
@@ -1536,41 +1861,55 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
-					</button>
-					<h4 class="modal-title" id="myModalLabel">Rateio Venda   -   <strong>R$ 0,00</strong></h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel">Rateio Venda   -   <strong>R$ <?=number_format($total_tudo,2,',','.') ?></strong></h4>
 				</div>
 				<div class="modal-body">
-									<form method="post" name="rateio" action="/venda/cadTipoPagamento">
-				<input type="hidden" name="id_clientePF" value="">
-				<p class="list-group-item-text"></p><h3 id="nome_cliente"></h3><p></p><table class="table">
-							    
-							    												<tbody><tr>
-																						    	<td>DEPOSITO BANCARIO</td> 
-										    	<td><input type="text" class="fmpgto" name="1[]"></td>
-										    	<!-- End IF CARTÃO DE CREDITO -->
-											</tr>							    			
-							    	
-							    												<tr>
-																						    	<td>BOLETO BANCÁRIO</td> 
-										    	<td><input type="text" class="fmpgto" name="2[]"></td>
-										    	<!-- End IF CARTÃO DE CREDITO -->
-											</tr>							    			
-							    	
-							    												<tr>
-																							    	<td>CARTÃO DE CRÉDITO											    		<!-- Listar todos cartões de crédito do cliente -->
-											    		<table id="cartoes_credito" class="table table-bordered">
-														</table>
-											    		<!-- Listar todos cartões de crédito do cliente -->
-													</td>
-										    	<!-- End IF CARTÃO DE CREDITO -->
-											</tr>							    			
-							    	
-							    								    		</tbody></table>
-							</form></div>
+				<form method="post" name="rateio" action="/vendaPJ/cadTipoPagamentoPJ">
+				<input type="hidden" name="id_clientePJ" value="<?= $_SESSION['empresa']['id']; ?>">
+				<input type="hidden" name="valor_total" value="<?= $total_tudo; ?>">
+				<p class="list-group-item-text"></p>
+				<table class="table">
+						<tbody>
+							<?php if($empresa[0]['credito_clientePJ'] > 0): ?>
+							<tr>
+								<td><label>CRÉDITO DA EMPRESA</label></td>
+								<td><input type="checkbox" name="creadito_empresa" value="<?=$total_tudo?>"/> <strong><?=number_format($empresa[0]['credito_clientePJ'],2,',','.');  ?></strong></td>
+							</tr>
+							<?php endif; ?>
+							<div class="formas_pagamento">
+							
+							<?php foreach($tipoPagamento as $key => $value): ?>
+								<?php if($value['id_tipoPagamento'] != 3):?>
+							<tr>
+							<td><label><?=$value['titulo_tipoPagamento']?></label></td>
+							<td>
+								<input type="text" class="formPGTO" name="tipo_<?=$value['id_tipoPagamento']?>" />
+								X <input type="text" style="width: 10%" maxlength="2" name="vezes_<?=$value['id_tipoPagamento']?>" />
+							</td>
+							</tr>							    			
+								<?php else: ?>
+									<!-- Cartões de crédito -->
+										<?php foreach ($cartaoPJ->listCartCli($_SESSION['empresa']['id']) as $chave => $valor) { ?>
+										<tr>
+											<td><label><?=$opt_tipoCartao[$valor['id_tipoCartao']]?></label></td>
+											<td>
+												<input type="text" class="formPGTO" name="tipo_3_<?=$valor['id_tipoCartao']?>"/>
+												X <input type="text" name="vezes_3_<?=$valor['id_tipoCartao']?>" style="width: 10%" maxlength="2" />
+											</td>
+										</tr>
+									<!-- Cartões de crédito -->
+								<?php 
+										}
+								endif; ?>
+							<?php endforeach; ?>
+								</div> <!-- End formas_pagamento -->
+						</tbody>
+				</table>
+				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+							</form>
 								
 				</div>
 			</div><!-- /.modal-content -->
@@ -1781,8 +2120,8 @@
 			</tr>
 		</tbody>
 	</table>
-       <button id="btn_finaliza_venda" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalFinaliza" disabled="disabled">Finalizar Venda</button>
-       <button id="btn_rateio_venda" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFinaliza" disabled="disabled">Rateio</button>
+       <button id="btn_finaliza_venda" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalFinaliza" >Finalizar Venda</button>
+       <button id="btn_rateio_venda" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalRateio">Rateio</button>
 <br />
 <br />
 
@@ -1959,6 +2298,82 @@
 				jQuery("#valor_cambio_passagensPJ").attr('disabled',true);
 			}
 		});
+		
+		jQuery('#somente_ida').attr('checked',true);
+		jQuery('#fs_volta').hide('slow');
+		jQuery('#somente_ida').click(function(){
+			if(jQuery(this).attr('checked')){
+				jQuery('#fs_volta').hide('slow');
+			}else{
+				jQuery('#fs_volta').show('slow');
+			}
+		});
+		
+		
+		
+		
+		//fUNÇÕES MODAL FINALIZA VENDA
+		jQuery("#valor_agencia").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_agente").maskMoney({thousands:'', decimal:'.'});
+		
+		jQuery('#lb_valor_agencia').hide();
+		jQuery('#valor_agencia').hide();
+		
+		
+		jQuery('#lb_agente').hide();
+		jQuery('#id_agente').hide();
+		
+		jQuery('#lb_valor_agente').hide();
+		jQuery('#valor_agente').hide();
+		
+		
+		jQuery('[name=id_agencia]').change(function(){
+			if(jQuery(this).val() != '0'){
+				jQuery.ajax({
+					url: '/vendaPJ/findAgencia',
+					type: 'post',
+					dataType: 'json',
+					data: {id_agencia: jQuery(this).val()},
+					success: function(data){
+						if(data){
+							jQuery('#lb_valor_agencia').show();
+							jQuery('#valor_agencia').show();
+							
+							jQuery('#lb_agente').show();
+							jQuery('#id_agente').show();
+							
+							jQuery('#lb_valor_agente').show();
+							jQuery('#valor_agente').show();
+							
+							jQuery('#id_agente').html('');
+							for(var i = 0; i < data.length; i++){
+								jQuery('#id_agente').append('<option value="'+data[i].id_agente+'">'+data[i].nome_agente+'</option>');
+							}
+						}
+					}
+				});
+			}else{
+				jQuery('#lb_valor_agencia').hide();
+				jQuery('#valor_agencia').hide();
+				jQuery('#valor_agencia').val('');
+				
+				
+				jQuery('#lb_agente').hide();
+				jQuery('#id_agente').hide();
+				
+				jQuery('#lb_valor_agente').hide();
+				jQuery('#valor_agente').hide();
+				jQuery('#valor_agente').val('');
+			}
+		});
+		
+		
+		
+		//formas_pagamento
+		//Funções do modal Rateio
+		jQuery(".formPGTO").maskMoney({thousands:'', decimal:'.'});
+		
+		
 // 		
 });
 </script>

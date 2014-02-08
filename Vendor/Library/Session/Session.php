@@ -4,6 +4,7 @@ namespace Vendor\Library\Session;
 class Session {
 
 	public function __construct() {
+		session_set_cookie_params(3600*3);
 		session_start();
 		session_regenerate_id();
 	}

@@ -3,10 +3,10 @@ namespace Application\Models;
 
 use Vendor\Core\OXE_Model;
 
-class Agente extends OXE_Model {
+class FormaPagamentoPJ extends OXE_Model {
 		
-	protected $_name = 'tbl_agentes';
-	protected $_primary = 'id_agente';
+	protected $_name = 'tbl_formaPagamentoPJ';
+	protected $_primary = 'id_formaPagamentoPJ';
 	
 	public function __construct()
 	{
@@ -35,28 +35,12 @@ class Agente extends OXE_Model {
 	
 	public function alter(array $data)
 	{
-		return $this->update($data,$this->_primary.' = '.$data['id_agente']);
+		return $this->update($data,$this->_primary.' = '.$data['id_formaPagamentoPJ']);
 	}
 	
 	public function DescTables()
 	{
 		return $this->query("DESC $this->_name");
 	}	
-	
-	public function findAgente($name)
-	{
-		return $this->select()
-					->from()
-					->where("nome_agente = '$name'")
-					->result();
-	}
-	
-	public function getAgencia($id)
-	{
-		return $this->select()
-					->from()
-					->where("id_agencia = $id")
-					->result();
-	}
 	
 }
