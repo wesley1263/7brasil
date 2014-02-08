@@ -78,6 +78,10 @@
 	  foreach ($tipoCartao as $key => $value) {
 		  $opt_tipoCartao[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
 	  }
+	  
+	  foreach ($tipoPagamento as $key => $value) {
+		  $opt_tipoPagamento[$value['id_tipoPagamento']] = $value['titulo_tipoPagamento'];
+	  }
       ?>
       
       	<!-- Modal cliente Pessoa Júridica -->
@@ -1485,7 +1489,7 @@
 				</div>
 				<div class="modal-body">
 					<label style="color: #797676;width: 90%" class="col-sm-2 control-label">Agencia</label> 
-					<form method="post" action="/venda/saveVenda">
+					<form method="post" action="/vendaPJ/saveVendaPJ">
 						<select class="form-control" name="id_agencia" style="width: 70%">
 							<option value="0">7 Brasil</option>
 							<?php foreach ($agencia as $key => $value): ?>
@@ -1507,7 +1511,9 @@
 					    <div id="painel_cliente">
 					<div class="panel-group" id="accordion">
 					
-					<?php $total_tudo = 0; ?>
+					<?php $total_tudo = 0; 
+						  $total_comissao = 0;
+					?>
 					
 					
 					
@@ -1593,6 +1599,7 @@
 							    <p class="list-group-item-text">FINAL: <strong><?=date('d/m/Y',strtotime($value['dt_devolucao_carroPJ']))?></strong></p>
 							    <?php $total_carro += $value['valor_carroPJ'] + $value['valor_casa_carroPJ'] + $value['taxa_carroPJ'];
 							    	$total_tudo += $total_carro;
+									$total_comissao += $value['valor_casa_carroPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_carro,2,',','.')?></strong></p>
 							  
@@ -1628,6 +1635,7 @@
 							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_hotelPJ']?></strong></p>
 							    <?php $total_hotel += $value['valor_hotelPJ'] + $value['valor_casa_hotelPJ'];
 							    	  $total_tudo += $total_hotel;
+									  $total_comissao += $value['valor_casa_hotelPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_hotel,2,',','.')?></strong></p>
 							  
@@ -1665,6 +1673,7 @@
 							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_fim_seguroPJ']))?></strong></p>
 							    <?php $total_seguro += $value['valor_seguroPJ'] + $value['valor_casa_seguroPJ'];
 							    	  $total_tudo += $total_seguro;
+									  $total_comissao += $value['valor_casa_seguroPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_seguro,2,',','.')?></strong></p>
 							  
@@ -1697,6 +1706,7 @@
 							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_compraTicketPJ']?></strong></p>
 							    <?php $total_ticket += $value['valor_compraTicketPj'] + $value['comissao_compraTicketPJ'];
 							    	  $total_tudo += $total_ticket;
+									  $total_comissao += $value['comissao_compraTicketPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_ticket,2,',','.')?></strong></p>
 							  
@@ -1734,6 +1744,7 @@
 							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['navio_cruzeiroPJ']))?></strong></p>
 							    <?php $total_cruzeiro += $value['valor_cruzeiroPJ'] + $value['comissao_cruzeiroPJ'];
 							    	  $total_tudo += $total_cruzeiro;
+									  $total_comissao += $value['comissao_cruzeiroPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_cruzeiro,2,',','.')?></strong></p>
 							  
@@ -1769,6 +1780,7 @@
 							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_final_produtoPJ']))?></strong></p>
 							    <?php $total_produto += $value['valor_produtoPJ'] + $value['comissao_produtoPJ'];
 							   		  $total_tudo += $total_produto; 
+									  $total_comissao += $value['comissao_produtoPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_produto,2,',','.')?></strong></p>
 							  
@@ -1815,6 +1827,7 @@
 							    <?php } ?>
 							    <?php $total_passagens += $value['tarifa_passagensPJ'] + $value['valor_casa_passagensPJ'] + $value['tx_embarque_passagensPJ'] + $value['tx_outras_passagensPJ'] + $value['tx_repasse_passagensPJ'];
 							    	   $total_tudo += $total_passagens;
+									   $total_comissao += $value['valor_casa_passagensPJ'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_passagens,2,',','.')?></strong></p>
 							  
@@ -1839,13 +1852,13 @@
 					    
 					    <label>Descrição de venda</label>
 						<textarea name="descricao_venda" class="form-control" rows="3"></textarea>
-				</form>
 				</div>
 				<div class="modal-footer">
-					<input type="hidden" name="total_venda" value="0">
-					<input type="hidden" name="total_comissao" value="0">
+					<input type="hidden" name="total_venda" value="<?=$total_tudo?>">
+					<input type="hidden" name="total_comissao" value="<?=$total_comissao?>">
 					<button type="button" data-dismiss="modal" id="bt_cancel" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-down"></i> Cancelar</button>
-					<button type="submit" id="bt_finalizaVenda" class="btn btn-primary" disabled="disabled"><i class="glyphicon glyphicon-thumbs-up"></i> Confirmar</button>
+					<button type="submit" id="bt_finalizaVenda" class="btn btn-primary"><i class="glyphicon glyphicon-thumbs-up"></i> Confirmar</button>
+				</form>
 					
 				</div>
 			</div><!-- /.modal-content -->
@@ -1867,7 +1880,6 @@
 				<div class="modal-body">
 				<form method="post" name="rateio" action="/vendaPJ/cadTipoPagamentoPJ">
 				<input type="hidden" name="id_clientePJ" value="<?= $_SESSION['empresa']['id']; ?>">
-				<input type="hidden" name="valor_total" value="<?= $total_tudo; ?>">
 				<p class="list-group-item-text"></p>
 				<table class="table">
 						<tbody>
@@ -1959,7 +1971,7 @@
 			<!-- Empresa selecionada -->
 			<?php if(isset($_SESSION['empresa'])): ?>
 				<?php foreach($empresa as $key => $value): ?>
-					<tr class="warning">
+					<tr class="warning" id="empresa">
 						<td>EMPRESA: <?=$value['nomefantasia_clientePJ']?></td>
 						<td><?=$value['cidade_clientePJ']?></td>
 						<td><a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalFuncionario" id_clientePJ="<?=$value['id_clientePJ']?>" id="bt_addFunc">Funcionário</a></td>
@@ -1989,7 +2001,7 @@
 					
 				$total_carro = 0;
 					?>
-					<tr class="warning">
+					<tr class="warning prod">
 						<td>Locadora: <?=$opt_locadora[$value['id_locadora']]?></td>
 						<td><?=date('d/m/Y',strtotime($value['dt_inicio_carroPJ']))?> à <?=date('d/m/Y',strtotime($value['dt_devolucao_carroPJ']))?></td>
 						<?php $total_carro += $value['valor_carroPJ'] + $value['valor_casa_carroPJ'] + $value['taxa_carroPJ'];
@@ -2008,7 +2020,7 @@
 				<?php foreach ($hotels as $key => $value): 
 					$valor_hotel = 0;
 					?>
-					<tr class="warning">
+					<tr class="warning prod">
 						<td>HOTEL: <?=$value['nome_hotelPJ']?></td>
 						<td><?=$opt_brokers[$value['id_brokers']]?></td>
 						<?php $valor_hotel += $value['valor_hotelPJ'] + $value['valor_casa_hotelPJ'];
@@ -2026,7 +2038,7 @@
 			<?php foreach ($seguros as $key => $value): 
 				$total_seguro = 0;
 				?>
-				<tr class="warning">
+				<tr class="warning prod">
 					<td>SEGURO: <?=$opt_seguradora[$value['id_seguradora']]?></td>
 					<td><?=$opt_tipoSeguro[$value['id_tipoSeguro']]?></td>
 					<?php  $total_seguro += $value['valor_seguroPJ'] + $value['valor_casa_seguroPJ'];
@@ -2044,7 +2056,7 @@
 				<?php foreach ($compTicket as $key => $value): 
 					$total_ticket = 0;
 					?>
-					<tr class="warning">
+					<tr class="warning prod">
 						<td>TICKET: <?=$opt_ticket[$value['id_ticket']]?></td>
 						<td><?=$value['fornecedor_compraTicketPJ']?></td>
 						<?php $total_ticket += $value['valor_compraTicketPj'] + $value['comissao_compraTicketPJ']; 
@@ -2063,7 +2075,7 @@
 				<?php foreach ($cruzeiro as $key => $value): 
 					$total_cruzeiro = 0;
 					?>
-					<tr class="warning">
+					<tr class="warning prod">
 						<td>CRUZEIRO: <?=$opt_companiaCruzeiro[$value['id_compania_cruzeiro']]?></td>
 						<td><?=$value['navio_cruzeiroPJ']?></td>
 						<?php $total_cruzeiro += $value['valor_cruzeiroPJ'] + $value['comissao_cruzeiroPJ']; 
@@ -2082,7 +2094,7 @@
 				<?php foreach ($produto as $key => $value): 
 					$total_produto = 0;
 					?>
-					<tr class="warning">
+					<tr class="warning prod">
 						<td>PRODUTO: <?=$value['titulo_produtoPJ']?></td>
 						<td><?=$value['fornecedor_produtoPJ']?></td>
 						<?php $total_produto += $value['valor_produtoPJ'] + $value['comissao_produtoPJ']; 
@@ -2099,7 +2111,7 @@
 				<?php foreach ($passagens as $key => $value): 
 					$total_passagem = 0;
 					?>
-					<tr class="warning">
+					<tr class="warning prod">
 						<td>PASSAGEM: <?=$opt_compania[$value['id_compania']].' - '.$opt_classe[$value['id_classe']]?></td>
 						<td>ORIGEM: <?=$opt_origem[$value['id_origem']].' - DESTINO: '.$opt_destino[$value['id_destino']]?></td>
 						<?php $total_passagem += $value['tarifa_passagensPJ'] + $value['valor_casa_passagensPJ'] + $value['tx_embarque_passagensPJ'] + $value['tx_outras_passagensPJ'] + $value['tx_repasse_passagensPJ']; 
@@ -2111,6 +2123,24 @@
 				<?php endforeach; ?>
 			<?php endif; ?>
 			
+			
+			
+			<!-- listando Forma pagamento --> 
+			<?php if(isset($formaPagamento)): ?>
+				<?php foreach ($formaPagamento as $key => $value): ?>
+					
+					<tr class="warning prod">
+						<?php if($value['id_tipoPagamento'] == null){ ?>
+							<td>RATEIO: Crédito da empresa</td>
+						<?php }else{ ?>
+							<td>RATEIO: <?=$opt_tipoPagamento[$value['id_tipoPagamento']]?></td>
+						<?php } ?>
+							<td><?=$value['vezes_formaPagamentoPJ']?> X</td>
+							<td>TOTAL: R$ <?=number_format($value['valor_formaPagamentoPJ'],2,',','.')?></td>
+							<td><a href="/vendaPJ/removeFormaPagamentoPJ/id/<?=$value['id_formaPagamentoPJ']?>" onclick="return confirm('Deseja realmente remover Forma de pagamento da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 			
 			<tr class="success">
 			<td><strong style="font-size: 20px;">Total Geral:</strong></td>
@@ -2142,6 +2172,22 @@
 			}
 		});
 		
+		
+		if(jQuery('#empresa').length){
+			jQuery('#cnpj_clientePJ').attr('disabled',true);
+			jQuery('.btn-lg').attr('disabled',false);
+		}else{
+			jQuery('#cnpj_clientePJ').attr('disabled',false);
+			jQuery('.btn-lg').attr('disabled',true);
+		}
+		
+		if(jQuery('.prod').length){
+			jQuery('#btn_finaliza_venda').attr('disabled',false);
+			jQuery('#btn_rateio_venda').attr('disabled',false);
+		}else{
+			jQuery('#btn_finaliza_venda').attr('disabled',true);
+			jQuery('#btn_rateio_venda').attr('disabled',true);
+		}
 		
 		//Populando empresa buscada pelo CNPJ
 		jQuery('#bt_findClientePJ').click(function(){
@@ -2372,6 +2418,10 @@
 		//formas_pagamento
 		//Funções do modal Rateio
 		jQuery(".formPGTO").maskMoney({thousands:'', decimal:'.'});
+		var total = 0;
+		jQuery('.formPGTO :text').each(function(){
+			jQuery(this).attr('disabled',true);
+		});
 		
 		
 // 		

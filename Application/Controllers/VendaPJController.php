@@ -172,6 +172,19 @@ class VendaPJController extends OXE_Controller{
 		}
 		
 		
+		############# Populando Forma Pagamento #############
+		if(isset($_SESSION['formaPagamento'])){
+			$sess_forma = $this->session->getSession('formaPagamento');
+			$arrayForma = array();
+			$forma = new Application\Models\FormaPagamentoPJ();
+			foreach ($sess_forma['id'] as $key => $value) {
+				$arrayForma[] = $forma->list_once($value);
+			}
+			
+			$data['formaPagamento'] = $arrayForma;
+		}
+		
+		
 		$data['title'] = 'Titulo da Pagina';
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
@@ -207,6 +220,22 @@ class VendaPJController extends OXE_Controller{
 	{
 		
 		$this->dump($_POST);
+		$data = array();
+		$user = $this->session->getSession('user');
+		$data['id_usuario'] = $user['id_usuario'];
+		$data['id_agencia'] = $_POST['id_agencia'];
+		$data['id_agente'] = $_POST['id_agente'];
+		$data['valor_agencia'] = $_POST['valor_agencia'];
+		$data['valor_agente'] = $_POST['valor_agente'];
+		$data['valor_casa'] = $_POST['total_comissao'];
+		$data['total_venda'] = $_POST['total_venda'];
+		$data['data_venda'] = date('Y-m-d H:i');
+		$data['descricacao_vendaPJ'] = $_POST['descricao_venda'];
+		$data['nm_processo_vendaPJ'] = str_pad($user['id_usuario'], 3,0,STR_PAD_LEFT).date('mY').'1';
+		
+		$this->dump($data);
+		
+		
 	}
 	
 	public function findClientePJAction()
@@ -268,6 +297,22 @@ class VendaPJController extends OXE_Controller{
 	public function cadTipoPagamentoPJAction()
 	{
 		$formaPagamento = new Application\Models\FormaPagamentoPJ();
+		$empresa = new Application\Models\ClientePJ();
+		$credito = $empresa->lista_um($_SESSION['empresa']['id']);
+		$array = array();
+		
+		if(isset($_POST['creadito_empresa'])){
+			$array['id_clientePJ'] = $_POST['id_clientePJ'];
+			$array['id_vendaPJ'] = null;
+			$array['valor_formaPagamentoPJ'] = $_POST['creadito_empresa'];
+			$array['vezes_formaPagamentoPJ'] = 1;
+			$array['id_tipoCartao'] = null;
+			$array['id_tipoPagamento'] = null;
+			
+			$id = $formaPagamento->add($array);
+			$_SESSION['formaPagamento']['id'][]= $id;
+		}
+		
 		
 		$arrayForm = array();
 		$data = array();
@@ -334,12 +379,31 @@ class VendaPJController extends OXE_Controller{
 		}
 		
 		foreach ($data2 as $key => $value) {
-			$formaPagamento->add($value);
+			$id = $formaPagamento->add($value);
 			$_SESSION['formaPagamento']['id'][]= $id;
 		}
 		
 		$this->session->setFlashMessage('Rateio registrado com sucesso.','success');
 		$this->redirector('/vendaPJ/cadVendaPJ');
+		
+		
+	}
+
+	public function removeFormaPagamentoPJAction()
+	{
+		$formaPagamento = new Application\Models\FormaPagamentoPJ();
+		$param = func_get_args();
+		
+		if($formaPagamento->remove($param[1])){
+			
+			$key = array_search($param[1],$_SESSION['formaPagamento']['id']);
+			unset($_SESSION['formaPagamento']['id'][$key]);
+			if(count($_SESSION['formaPagamento']['id']) == 0){
+				unset($_SESSION['formaPagamento']);
+			}
+			$this->session->setFlashMessage('Formas de pagamento removido da lista venda.','success');
+			$this->redirector('/vendaPJ/cadVendaPJ');
+		}
 	}
 	
 	
