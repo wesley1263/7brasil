@@ -4,7 +4,7 @@ use Vendor\Core\OXE_Controller;
 use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
-use Application\Models\Venda;
+use Application\Models\VendaPJ;
 use Application\Models\ClientePJ;
 use Application\Models\Locadora;
 
@@ -16,7 +16,7 @@ class VendaPJController extends OXE_Controller{
 		$this->session = new Session();
 		$this->table = new Table();
 		$this->form = new FormStyle();
-		$this->model = new Venda();
+		$this->model = new VendaPJ();
 		
 		//Verifica se o usuário está logado
 		$user = $this->session->getSession('user');
@@ -219,7 +219,6 @@ class VendaPJController extends OXE_Controller{
 	public function saveVendaPJAction()
 	{
 		
-		$this->dump($_POST);
 		$data = array();
 		$user = $this->session->getSession('user');
 		$data['id_usuario'] = $user['id_usuario'];
@@ -230,12 +229,212 @@ class VendaPJController extends OXE_Controller{
 		$data['valor_casa'] = $_POST['total_comissao'];
 		$data['total_venda'] = $_POST['total_venda'];
 		$data['data_venda'] = date('Y-m-d H:i');
-		$data['descricacao_vendaPJ'] = $_POST['descricao_venda'];
-		$data['nm_processo_vendaPJ'] = str_pad($user['id_usuario'], 3,0,STR_PAD_LEFT).date('mY').'1';
+		$data['descricao_vendaPJ'] = $_POST['descricao_venda'];
 		
-		$this->dump($data);
+		$id_venda = $this->model->add($data);
+		if($id_venda){
+			$data2['id_vendaPJ'] = $id_venda;
+			$data2['nm_processo_vendaPJ'] = str_pad($user['id_usuario'], 3,0,STR_PAD_LEFT).date('mY').$id_venda;
+			if($this->model->alter($data2)){
+				
+				$id_empresa = $_SESSION['empresa']['id'];
+				
+				############ Adicionando Funcionários para tabela venda  #############
+				$vendaCliente = new Application\Models\VendaClientePJ();
+				$funcionario = $this->session->getSession('funcionarios');
+				$arrayVendaPJ = array();
+				
+				foreach ($funcionario['id'] as $key => $value) {
+					$arrayVendaPJ['id_venda'] = $id_venda;
+					$arrayVendaPJ['id_clientePJ'] = $id_empresa;
+					$arrayVendaPJ['id_dependentePJ'] = $value;
+					$vendaCliente->add($arrayVendaPJ);
+				}
+
+				
+				############ Para Ticket #############
+				if(isset($_SESSION['ticket'])){
+				$sess_ticket = $this->session->getSession('ticket');
+				$arrayTicket = array();
+				$compTicket = new Application\Models\CompraTicketPJ();
+				$clienteTicket = new Application\Models\TicketClientePJ();
+				foreach ($sess_ticket['id'] as $key => $value) {
+					foreach ($funcionario['id'] as $chave => $valor) {
+						$arrayTicket['id_compraTicketPJ'] = $value;
+						$arrayTicket['id_clientePJ'] = $id_empresa;
+						$arrayTicket['id_dependentePJ'] = $valor;
+						$arrayTicket['id_vendaPJ'] = $id_venda;
+						
+						$clienteTicket->add($arrayTicket);
+					}
+				}
+			}
+			
+			
+				############ Populando Carros #################
+				if(isset($_SESSION['carro'])){
+					$carroPJ = new Application\Models\CarroPJ(); 
+					$carroCliente = new Application\Models\CarroClientePJ();
+					$sess_carro = $this->session->getSession('carro');
+					$arrayCarro = array();
+					foreach ($sess_carro['id'] as $key => $value) {
+						foreach ($funcionario['id'] as $chave => $valor) {
+							$arrayCarro['id_carroPJ'] = $value;
+							$arrayCarro['id_vendaPJ'] = $id_venda;
+							$arrayCarro['id_clientePJ'] = $id_empresa;
+							// $arrayCarro['id_dependentePJ'] = $valor;
+							
+							$carroCliente->add($arrayCarro);
+					}
+					
+				}
+				
+			  }
+
+			
+			
+			############ Populando Hotel #################
+				if(isset($_SESSION['hotel'])){
+					$hotelCliente = new Application\Models\HotelClientePJ();
+					$sess_hotel = $this->session->getSession('hotel');
+					$arrayHotel = array();
+					foreach ($sess_hotel['id'] as $key => $value) {
+						foreach ($funcionario['id'] as $chave => $valor) {
+							$arrayHotel['id_hotelPJ'] = $value;
+							$arrayHotel['id_vendaPJ'] = $id_venda;
+							$arrayHotel['id_clientePJ'] = $id_empresa;
+							$arrayHotel['id_dependentePJ'] = $valor;
+							
+							$hotelCliente->add($arrayHotel);
+					}
+				}
+				
+			  }
+				
+			
+			
+			############ Populando Seguro #################
+				if(isset($_SESSION['seguro'])){
+					$seguroCliente = new Application\Models\AsseguradoPJ();
+					$sess_seguro = $this->session->getSession('seguro');
+					$arraySeguro = array();
+					foreach ($sess_seguro['id'] as $key => $value) {
+						foreach ($funcionario['id'] as $chave => $valor) {
+							$arraySeguro['id_seguroPJ'] = $value;
+							$arraySeguro['id_vendaPJ'] = $id_venda;
+							$arraySeguro['id_clientePJ'] = $id_empresa;
+							$arraySeguro['id_dependentePJ'] = $valor;
+							
+							$seguroCliente->add($arraySeguro);
+					}
+				}
+				
+			  }
+				
+				
+				
+				############ Populando Cruzeiro #################
+				if(isset($_SESSION['cruzeiro'])){
+					$cruzeiroCliente = new Application\Models\CruzeiroClientePJ();
+					$sess_cruzeiro = $this->session->getSession('cruzeiro');
+					$arrayCruzeiro = array();
+					foreach ($sess_cruzeiro['id'] as $key => $value) {
+						foreach ($funcionario['id'] as $chave => $valor) {
+							$arrayCruzeiro['id_cruzeiroPJ'] = $value;
+							$arrayCruzeiro['id_vendaPJ'] = $id_venda;
+							$arrayCruzeiro['id_clientePJ'] = $id_empresa;
+							$arrayCruzeiro['id_dependentePJ'] = $valor;
+							
+							$cruzeiroCliente->add($arrayCruzeiro);
+					}
+				}
+				
+			  }
+				
+				
+			
+			############ Populando Produto #################
+				if(isset($_SESSION['produto'])){
+					$produtoCliente = new Application\Models\ProdutoOutroClientePJ();
+					$sess_produto = $this->session->getSession('produto');
+					$arrayProduto = array();
+					foreach ($sess_produto['id'] as $key => $value) {
+						foreach ($funcionario['id'] as $chave => $valor) {
+							$arrayProduto['id_produtoPJ'] = $value;
+							$arrayProduto['id_vendaPJ'] = $id_venda;
+							$arrayProduto['id_clientePJ'] = $id_empresa;
+							$arrayProduto['id_dependentePJ'] = $valor;
+							
+							$produtoCliente->add($arrayProduto);
+					}
+				}
+				
+			  }
+		
+			
+			############ Populando Passagend #################
+				if(isset($_SESSION['passagens'])){
+					$passagensCliente = new Application\Models\PassagensClientePJ();
+					$sess_passagens = $this->session->getSession('passagens');
+					$arrayPassagem = array();
+					foreach ($sess_passagens['id'] as $key => $value) {
+						foreach ($funcionario['id'] as $chave => $valor) {
+							$arrayPassagem['id_passagensPJ'] = $value;
+							$arrayPassagem['id_vendaPJ'] = $id_venda;
+							$arrayPassagem['id_clientePJ'] = $id_empresa;
+							$arrayPassagem['id_dependentePJ'] = $valor;
+							
+							$passagensCliente->add($arrayPassagem);
+					}
+				}
+				
+			  }
+			
+			
+		
+				
+			} //End alter venda
+		} // End add Venda
 		
 		
+		if(isset($_SESSION['empresa'])){
+			unset($_SESSION['empresa']);
+		}
+		
+		if(isset($_SESSION['funcionarios'])){
+			unset($_SESSION['funcionarios']);
+		}
+		
+		if(isset($_SESSION['ticket'])){
+			unset($_SESSION['ticket']);
+		}
+
+		if(isset($_SESSION['carro'])){
+			unset($_SESSION['carro']);
+		}
+		
+		if(isset($_SESSION['hotel'])){
+			unset($_SESSION['hotel']);
+		}
+			
+		if(isset($_SESSION['seguro'])){
+			unset($_SESSION['seguro']);
+		}
+				
+		if(isset($_SESSION['cruzeiro'])){
+			unset($_SESSION['cruzeiro']);
+		}
+		
+		if(isset($_SESSION['produto'])){
+			unset($_SESSION['produto']);
+		}
+		
+		if(isset($_SESSION['passagens'])){
+			unset($_SESSION['passagens']);
+		}	
+		
+		$this->session->setFlashMessage('Venda registrada com sucesso.','success');
+		$this->redirector('/vendaPJ/cadVendaPJ');
 	}
 	
 	public function findClientePJAction()

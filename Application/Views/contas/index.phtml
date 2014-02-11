@@ -1,0 +1,80 @@
+<?php
+if(isset($_SESSION['success'])){
+		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
+	}
+	
+	if(isset($_SESSION['error'])){
+		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+	}
+?>
+<a href="/contas/cadContas" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<form class="navbar-form navbar-right" role="search" method="post" action="/contas/findContas">
+		<div class="form-group">
+			<input type="date" class="form-control" required="required" name="data_contas_de">
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" required="required" name="data_contas_ate">
+		</div>
+		<div class="form-group">
+			<select name="id_grupo" class="form-control">
+				<option value="0">--TODOS--</option>
+				<?php foreach ($grupo as $key => $value): ?>
+				<option value="<?=$value['id_grupo']?>"><?=$value['titulo_grupo']?> </option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div class="form-group">
+			<select name="id_subgrupo" class="form-control">
+				<option value="0">--TODOS--</option>
+				<?php foreach ($subgrupo as $key => $value): ?>
+				<option value="<?=$value['id_subgrupo']?>"><?=$value['titulo_subgrupo']?> </option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div class="form-group">
+			<select name="id_filial" class="form-control">
+				<option value="0">--TODAS--</option>
+				<?php foreach ($filial as $key => $value): ?>
+				<option value="<?=$value['id_filial']?>"><?=$value['nome_filial']?> </option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div class="form-group">
+			<select name="status_contas" class="form-control">
+				<option value="">--TODOS--</option>
+				<option value="0">Pendente</option>
+				<option value="1">Pago</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<?php 
+	foreach ($grupo as $key => $value) {
+		$opt_grupo[$value['id_grupo']] = $value['titulo_grupo'];
+	}
+	
+	foreach ($filial as $key => $value) {
+		$opt_filial[$value['id_filial']] = $value['nome_filial'];
+	}
+	
+	foreach ($subgrupo as $key => $value) {
+		$opt_subgrupo[$value['id_subgrupo']] = $value['titulo_subgrupo'];
+	}
+	
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Grupo','Subgrupo','Filial','Status','Editar','Remover'));
+	foreach ($contas as $key => $value) {
+	$table->t_row(array(
+			$opt_grupo[$value['id_grupo']],
+			$opt_subgrupo[$value['id_subgrupo']],
+			$opt_filial[$value['id_filial']],
+			$value['status_contas'] == 1 ? 'PAGO' : 'PENDENTE',
+			'<center><a href="/contas/cadContas/id/'.$value['id_contas'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+			'<center><a href="/contas/deleteContas/id/'.$value['id_contas'].'" onclick=" return confirm(\'Deseja realmente remover Conta?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+			));
+	}
+	$table->generate();
+	?>
+</div>

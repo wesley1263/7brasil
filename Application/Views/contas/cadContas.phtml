@@ -1,0 +1,109 @@
+<?php
+	
+	foreach ($grupo as $key => $value) {
+		$opt_grupo[$value['id_grupo']] = $value['titulo_grupo'];
+	}
+	
+	foreach ($filial as $key => $value) {
+		$opt_filial[$value['id_filial']] = $value['nome_filial'];
+	}
+	
+	foreach ($subgrupo as $key => $value) {
+		$opt_subgrupo[$value['id_subgrupo']] = $value['titulo_subgrupo'];
+	}
+	
+	
+	$id = isset($contas) ? $contas['id_contas'] : null;
+	$form->init('form_contas','/contas/saveContas');
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_contas',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_grupo,'id_grupo','Grupos',isset($contas) ? $contas['id_grupo'] : 1,2,5);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_subgrupo,'id_subgrupo','Subgrupos',isset($contas) ? $contas['id_subgrupo'] : 1,2,5);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->select($opt_filial,'id_filial','Filial',isset($contas) ? $contas['id_filial'] : 1,2,5);
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+					'name' =>'valor_contas',
+					'type' =>'text',
+					'placeholder' => 'Valor',
+					'num_label' =>'2',
+					'num_input' =>'3',
+					'label' =>'Valor',
+					'value' => isset($contas) ? $contas['valor_contas'] : null,
+					'required' => true
+					));
+			$form->groupClose();
+					
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'validade_conta',
+				'type' =>'date',
+				'placeholder' => 'Data de Validade',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' => 'Data',
+				'value' => isset($contas) ? $contas['validade_conta'] : null,
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'recibo_conta',
+				'type' =>'file',
+				'placeholder' => 'Recibo',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' => 'Recibo',
+				'value' => '',
+				'required' => false
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->select(array('0'=>'Pendente','1'=>'Pago'),'status_contas','Status',isset($contas) ? $contas['status_contas'] : 0,2,3);
+			$form->groupClose();
+			
+			
+		$form->textarea('descricao_contas','Descrição',isset($contas) ? $contas['descricao_contas'] : null,'Descrição',2,5);
+		
+		
+		echo str_repeat('<br />',3);
+								
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		echo '<button class="btn btn-default" id="voltar">Voltar</button>';
+		$form->groupClose();
+
+		
+		$form->close();
+		
+?>
+
+<script>
+	jQuery(function(){
+		jQuery('#valor_contas').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#voltar').click(function(){
+			location.href="/contas";
+		});
+	});
+</script>
