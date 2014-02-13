@@ -62,9 +62,9 @@ class Contas extends OXE_Model {
 		$grupo = $data['id_grupo'] == '0' ? null :'AND id_grupo = '.$data['id_grupo'];
 		$subgrupo = $data['id_subgrupo'] == '0' ? null :'AND id_subgrupo = '.$data['id_subgrupo'];
 		$filial = $data['id_filial'] == '0' ? null :'AND id_filial = '.$data['id_filial'];
-		$status = $data['status_contas'] == null ? null :'AND status_contas = '.$data['status_contas'];
+		$status = $data['status_contas'] == '0' ? null :'AND status_contas = '.$data['status_contas'];
 		
-		$query = "SELECT DISTINCT * 
+		  $query = "SELECT DISTINCT * 
 					FROM $this->_name WHERE 1
 					$grupo
 					$subgrupo
@@ -72,8 +72,11 @@ class Contas extends OXE_Model {
 					AND validade_conta BETWEEN '".$data['de']."' AND '".$data['ate']."'
 					$status
 					LIMIT $ini,$limit";
+					
 		
-		$this->query($query);
+		
+		return $this->query($query);
+		// echo $query;
 	}
 	
 }

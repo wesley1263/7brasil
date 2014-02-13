@@ -130,6 +130,16 @@
 						}
 						$op_car['0'] = 'REAL BR';
 						$form->select($op_car,'id_moeda','Moeda',0,2,5);
+						$form->input(array(
+							'name' =>'valor_cambio_carro',
+							'type' =>'text',
+							'placeholder' => 'Valor',
+							'num_label' =>'2',
+							'num_input' =>'2',
+							'label' =>'Cambio',
+							'value' => '',
+							'required' => true
+							));
 						$form->groupClose();
 						
 						
@@ -332,6 +342,16 @@
 				$opt_moe[$value['id_cambio']] = $value['titulo_cambio'];
 			}
 			$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+			$form->input(array(
+				'name' =>'valor_cambio_hotel',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Cambio',
+				'value' =>'',
+				'required' => false
+				));
 		$form->groupClose();
 
 			$form->groupOpen();	
@@ -468,9 +488,7 @@
 				'value' =>'',
 				'required' => true
 				));
-			// $form->groupClose();
-// 
-			// $form->groupOpen();	
+
 			$form->input(array(
 				'name' =>'valor_casa_hotel',
 				'type' =>'text',
@@ -554,6 +572,16 @@
 			$opt_moe[$value['id_cambio']] = $value['titulo_cambio'];
 		}
 		$form->select($opt_moe,'id_moeda','Moeda',1,2,5);
+		$form->input(array(
+				'name' =>'valor_cambio_seguro',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Cambio',
+				'value' =>'',
+				'required' => false
+				));
 		$form->groupClose();
 		
 		$form->groupOpen();	
@@ -623,6 +651,9 @@
 		$form->groupClose();
 		
 		?>
+		
+		<label>Descrição</label>
+		<textarea name="descricao_seguro" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -680,6 +711,16 @@
 				$opt_moe[$value['id_cambio']] = $value['titulo_cambio'];
 			}
 			$form->select($opt_moe,'id_moeda','Moeda',1,2,5);
+			$form->input(array(
+				'name' =>'valor_cambio_compraTicket',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Cambio',
+				'value' =>'',
+				'required' => false
+				));
 			$form->groupClose();
 
 
@@ -735,6 +776,8 @@
 				));
 		$form->groupClose();
 						?>
+		<label>Descrição</label>
+		<textarea name="descricao_compraTicket" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirTicket" class="btn btn-primary">
@@ -790,6 +833,16 @@
 
 			$form->groupOpen();	
 			$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+			$form->input(array(
+				'name' =>'valor_cambio_cruzeiro',
+				'type' =>'text',
+				'placeholder' => 'Valor',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Cambio',
+				'value' =>'',
+				'required' => false
+				));
 			$form->groupClose();
 
 			$form->groupOpen();	
@@ -910,6 +963,8 @@
 				$form->groupClose();
 				
 				?>
+				<label>Descrição</label>
+				<textarea name="descricao_cruzeiro" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirCruzeiro" class="btn btn-primary">
@@ -954,6 +1009,16 @@
 
 		$form->groupOpen();	
 		$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+		$form->input(array(
+			'name' =>'valor_cambio_produto',
+			'type' =>'text',
+			'placeholder' => 'Valor',
+			'num_label' =>'2',
+			'num_input' =>'2',
+			'label' =>'Cambio',
+			'value' =>'',
+			'required' => false
+			));
 		$form->groupClose();
 		
 		$form->groupOpen();
@@ -1039,7 +1104,7 @@
 		$form->groupClose();
 				?>
 				<label>Descrição</label>
-						 <textarea name="descricao_produto" class="form-control" rows="3"></textarea>
+				<textarea name="descricao_produto" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirProdutos" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -1123,6 +1188,16 @@
 
 		$form->groupOpen();	
 		$form->select($opt_moe,'id_moeda','Moeda',0,2,4);
+		$form->input(array(
+			'name' =>'valor_cambio_passagens',
+			'type' =>'text',
+			'placeholder' => 'Valor',
+			'num_label' =>'2',
+			'num_input' =>'2',
+			'label' =>'Cambio',
+			'value' =>'',
+			'required' => false
+			));
 		$form->groupClose();
 
 		echo '<input type="checkbox" id="somente_ida" /> <strong>Somente ida</strong>';
@@ -1308,7 +1383,9 @@
 				'required' => true
 				));
 		$form->groupClose();
-				?>
+		?>
+		<label>Descrição</label>
+		<textarea name="descricao_passagens" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -1343,8 +1420,22 @@
 							<?php endforeach; ?>
 						</select>
 						<br />
+						
+						<label id="lb_vl_agencia" style="color: #797676;">Valor Agência</label>
+						<br />
+						<input type="text" name="valor_agencia" />
+						<br />
 						<label id="lb_agente" style="color: #797676;" class="col-sm-2 control-label">Agente</label> 
 						<select class="form-control" name="id_agente" id="id_agente"></select>
+						<br />
+						<label id="lb_valor_agente" style="color: #797676;">Valor Agente</label>
+						<br />
+						<input type="text" name="valor_agente" />
+						<br />
+						<div class="faturado">
+						<input type="radio"  name="faturado_venda" checked="checked" value="1"/> Faturado
+						<input type="radio"  name="faturado_venda" value="2"/> Não Faturado
+						</div>
 						<br />
 						<br />
 					<!-- Todos os Produtos -->
@@ -1785,20 +1876,27 @@
 				<table class="table">
 							    <p class="list-group-item-text"><h3 id="nome_cliente"></h3></p>
 							    	<?php foreach($tipoPagamento as $key => $value){ ?>
-											<tr>
+											<!-- <tr>
 												<?php if($value['titulo_tipoPagamento'] == 'CARTÃO DE CRÉDITO'): ?>
 											    	<td><?=$value['titulo_tipoPagamento']?>
-											    		<!-- Listar todos cartões de crédito do cliente -->
 											    		<table id="cartoes_credito" class="table table-bordered">
 														</table>
-											    		<!-- Listar todos cartões de crédito do cliente -->
 													</td>
 										    	<?php else: ?>
 										    	<td><?=$value['titulo_tipoPagamento']?></td> 
 										    	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>[]" /></td>
-										    	<?php endif; ?><!-- End IF CARTÃO DE CREDITO -->
-											</tr>							    			
-							    	
+										    	<?php endif; ?>
+											</tr>	 -->	
+										<tr>						    			
+							    		<?php if($value['titulo_tipoPagamento'] != 'CARTÃO DE CRÉDITO'): ?>
+							    			<td><?=$value['titulo_tipoPagamento']?></td>
+							    			<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>[]" />
+							    				X <input type="text" maxlength="2" style="width:20%" name="vezes_<?=$value['id_tipoPagamento']?>[]" />
+							    			</td>
+							    		<?php else: ?>
+							    			<table id="cartoes_credito" class="table table-bordered"></table>
+							    		<?php endif; ?>
+							    		</tr>
 							    	<?php } ?>
 							    		</table>
 							</div>
@@ -1855,8 +1953,8 @@
 				<td><?='Cliente: '.$v['nome_clientePF']?></td>
 				<!-- <td>Cliente</td> -->
 				<td><a href="#"  class="btn btn-info bt_part" id_cliente="<?=$v['id_clientePF']?>" data-toggle="modal" data-target="#modalDependente"><span class="glyphicon glyphicon-plus-sign"></span> Dependentes</a></td>
-				<td><a href="/venda/deleteClientePF/id/<?=$v['id_clientePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_clientePF']?> da lista de venda?')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
-				<td><a href="#" data-toggle="modal" title="Rateio do cliente" data-target="#modalRateio" id_clientePF="<?=$v['id_clientePF']?>" class="btn btn-warning bt_rateio"><span class="glyphicon glyphicon-usd"></span> Rateio</a></td>
+				<td><a href="#" data-toggle="modal" title="Rateio do cliente" data-target="#modalRateio" id_clientePF="<?=$v['id_clientePF']?>" class="btn btn-info bt_rateio"><span class="glyphicon glyphicon-plus-sign"></span> Rateio</a></td>
+				<td><a href="/venda/deleteClientePF/id/<?=$v['id_clientePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_clientePF']?> da lista de venda?')" class="btn btn-danger">Remover</a></td>
 			</tr>
 		<?php 
 				}
@@ -1877,7 +1975,7 @@
 				<td><?='Dependente: '.$v['nome_dependentePF'].' -  '.$anos->format('%y').' Anos de idade' ?></td>
 				<td>Dependente</td>
 				<td><?=$nome_cli[$v['id_clientePF']]?> </td>
-				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependentePF']?> da lista de venda?')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>
+				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependentePF']?> da lista de venda?')" class="btn btn-danger">Remover</a></td>
 			</tr>
 			<?php 
 				}
@@ -1896,7 +1994,7 @@
 					echo '<td>Carro: '.$opt_loc[$v['id_locadora']].'</td>';
 					echo '<td>'.$opt_cli[$v['id_clientePF']].'</td>';
 					echo '<td>R$ '.number_format($total_carro,2,',','.').'</td>';
-			 		echo '<td><a href="/carro/deleteCarro/id/'.$v['id_carros'].'/cli/'.$v['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse carro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+			 		echo '<td><a href="/carro/deleteCarro/id/'.$v['id_carros'].'/cli/'.$v['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse carro da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				}
 					
 			echo '</tr>';
@@ -1917,7 +2015,7 @@
 					$total_hotel += $valor['valor_hotel'] + $valor['valor_casa_hotel'];
 					$total_geral += $total_hotel;
 					echo '<td>R$ '.number_format($total_hotel,2,',','.').'</td>';
-			 		echo '<td><a href="/hotel/deleteHotel/id/'.$valor['id_hoteis'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Hotel da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+			 		echo '<td><a href="/hotel/deleteHotel/id/'.$valor['id_hoteis'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Hotel da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				}
 				echo '</tr>';
 			}
@@ -1936,7 +2034,7 @@
 					$total_seguro += $valor['valor_seguro'] + $valor['valor_casa_seguro'];
 					$total_geral += $total_seguro;
 					echo '<td>R$ '.number_format($total_seguro,2,',','.').'</td>';
-					echo '<td><a href="/seguro/deleteSeguro/id/'.$valor['id_seguro'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Seguro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+					echo '<td><a href="/seguro/deleteSeguro/id/'.$valor['id_seguro'].'/cli/'.$valor['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Seguro da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				}	
 			echo '</tr>';	
 			}
@@ -1953,7 +2051,7 @@
 					$total_tickets += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
 					$total_geral += $total_tickets;
 					echo '<td>R$ '.number_format($total_tickets,2,',','.').'</td>';
-					echo '<td><a href="/compraTicket/deleteCompraTicket/id/'.$value['id_compraTicket'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Ticket da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+					echo '<td><a href="/compraTicket/deleteCompraTicket/id/'.$value['id_compraTicket'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Ticket da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				
 				echo '</tr>';
 			}
@@ -1972,7 +2070,7 @@
 				$total_cruzeiro += $value['valor_cruzeiro'] + $value['comissao_cruzeiro'];
 				$total_geral += $total_cruzeiro;
 				echo '<td>R$ '.number_format($total_cruzeiro,2,',','.').'</td>';
-				echo '<td><a href="/cruzeiro/deleteCruzeiro/id/'.$value['id_cruzeiro'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Cruzeiro da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				echo '<td><a href="/cruzeiro/deleteCruzeiro/id/'.$value['id_cruzeiro'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Cruzeiro da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				
 				echo '</tr>';
 			}
@@ -1991,7 +2089,7 @@
 				$total_produto += $value['valor_produto'] + $value['comissao_produto'];
 				$total_geral += $total_produto;
 				echo '<td> R$ '.number_format($total_produto,2,',','.').'</td>';
-				echo '<td><a href="/produtoOutros/deleteprodutoOutros/id/'.$value['id_produto'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Produto da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				echo '<td><a href="/produtoOutros/deleteprodutoOutros/id/'.$value['id_produto'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover esse Produto da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				echo '</tr>';
 			}
 		}
@@ -2008,11 +2106,24 @@
 				$total_passagem += $value['tarifa_passagens'] + $value['valor_casa_passagens'] + $value['tx_embarque_passagens'] + $value['tx_outras_passagens'] + $value['tx_repasse_passagens'];
 				$total_geral += $total_passagem; 
 				echo '<td>'.number_format($total_passagem,2,',','.').'</td>';
-				echo '<td><a href="/passagens/deletePassagens/id/'.$value['id_passagens'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover essa passagem da lista de venda?\')" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
+				echo '<td><a href="/passagens/deletePassagens/id/'.$value['id_passagens'].'/cli/'.$value['id_clientePF'].'" onclick="return confirm(\'Deseja remover essa passagem da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
 				echo '</tr>';
 			}
 		}
 		########## Popula Passagens ##############
+		
+		if(isset($formas)){
+			foreach ($formas as $key => $value) {
+				$nome = explode(' ', $opt_cli[$value['id_clientePF']]);
+				$total_formas = 0;
+				echo '<tr class="warning">';
+				echo '<td>Rateio:  '.$opt_tipo[$value['id_tipoPagamento']].' - '.$nome[0].'</td>';
+				echo '<td> R$ '.number_format($value['valor_formaPagamento'],2,',','.').'</td>';
+				echo '<td>'.$value['vezes_formaPagamento'].' X</td>';
+				echo '<td><a href="/venda/deleteFormaPagamento/id/'.$value['id_formaPagamento'].'" onclick="return confirm(\'Deseja remover esse Rateio da lista de venda?\')" class="btn btn-danger">Remover</a></td>';
+				echo '</tr>';
+			}
+		}
 			
 		?>
 		<tr class="success">
@@ -2120,6 +2231,16 @@
 			}else{
 				jQuery('#bt_incluirCarro').attr('disabled',false);
 			}
+			
+			jQuery('#valor_cambio_carro').maskMoney({thousands:'', decimal:'.'});
+			jQuery('#valor_cambio_carro').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_carro').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_carro').attr('disabled',true);
+		 	}
+		 });
 		//Funções para o modal Carros
 		
 		
@@ -2164,6 +2285,16 @@
 		 }
 		 	
 		 });
+		 
+		 jQuery('#valor_cambio_hotel').maskMoney({thousands:'', decimal:'.'});
+		 jQuery('#valor_cambio_hotel').attr('disabled',true);
+		 jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_hotel').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_hotel').attr('disabled',true);
+		 	}
+		 });
 		
 		//Funções do modal de hotel
 		
@@ -2177,6 +2308,16 @@
 			jQuery('#bt_incluirSeguro').attr('disabled',false);
 			
 		}
+		
+		jQuery('#valor_cambio_seguro').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_seguro').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_seguro').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_seguro').attr('disabled',true);
+		 	}
+		 });
 		//Funções do modal de Seguro
 		
 		
@@ -2190,6 +2331,15 @@
 			
 		}
 		
+		jQuery('#valor_cambio_compraTicket').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_compraTicket').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_compraTicket').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_compraTicket').attr('disabled',true);
+		 	}
+		 });
 		//Funções do Modal de Tickets
 		
 		
@@ -2202,6 +2352,16 @@
 			jQuery('#bt_incluirCruzeiro').attr('disabled',false);
 			
 		}
+		
+		jQuery('#valor_cambio_cruzeiro').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_cruzeiro').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_cruzeiro').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_cruzeiro').attr('disabled',true);
+		 	}
+		 });
 		//Funções do Modal de Cruzeiro
 		
 		//Funções do Modal de Outros Produtos
@@ -2212,6 +2372,16 @@
 		}else{
 			jQuery('#bt_incluirProdutos').attr('disabled',false);
 		}
+		
+		jQuery('#valor_cambio_cruzeiro').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_cruzeiro').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_cruzeiro').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_cruzeiro').attr('disabled',true);
+		 	}
+		 });
 		//Funções do Modal de Outros Produtos
 		
 		
@@ -2243,6 +2413,17 @@
 		//Iniciar somente ida selecionado
 		jQuery('#somente_ida').attr('checked',true);
 		jQuery('#fs_volta').hide('slow');
+		
+		
+		jQuery('#valor_cambio_passagens').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_passagens').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_passagens').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_passagens').attr('disabled',true);
+		 	}
+		 });
 		//Funções do Modal de passagens
 		
 		
@@ -2253,6 +2434,17 @@
 			jQuery('#bt_finalizaVenda').attr('disabled',true);
 			
 		}
+		
+		jQuery('#valor_cambio_produto').maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_produto').attr('disabled',true);
+		 	jQuery('[name=id_moeda]').change(function(){
+		 	if(jQuery(this).val() != 0){
+		 		jQuery('#valor_cambio_produto').attr('disabled',false);
+		 	}else{
+		 		jQuery('#valor_cambio_produto').attr('disabled',true);
+		 	}
+		 });
+		
 		
 		//Popula agentes
 		jQuery('#id_agente').hide();
@@ -2316,8 +2508,7 @@
 								jQuery('#cartoes_credito').html('');
 								for(var i = 0; i < data.length; i++){
 									jQuery('#cartoes_credito').append('<tr><td>'+data[i].titulo_tipoCartao+'</td><td><input type="text" class="fmpgto" name="3_'+data[i].id_tipoCartao+'" /></td>  <td> <input type="text" class="fmpgto" name="3_'+ data[i].id_tipoCartao+'_vezes_pgto" maxlength="2" style="width: 30%" /> Vezes</td></tr>');
-									
-									console.log(data[i]);
+									jQuery('[name=3_'+data[i].id_tipoCartao+']').maskMoney({thousands:'', decimal:'.'});
 								}
 							}
 						});
@@ -2337,6 +2528,32 @@
 			
 			
 		//Funções de todos produtos
+		
+		//Efeito de finaliza venda
+				jQuery('#lb_vl_agencia').hide();
+				jQuery('[name=valor_agencia]').hide();
+				jQuery('[name=valor_agencia]').maskMoney({thousands:'', decimal:'.'});
+				jQuery('#lb_valor_agente').hide();
+				jQuery("[name=valor_agente]").hide();
+				jQuery('[name=valor_agente]').maskMoney({thousands:'', decimal:'.'});
+				jQuery('.faturado').hide();
+		
+		jQuery('[name=id_agencia]').change(function(){
+			if(jQuery(this).val() == '0'){
+				jQuery('#lb_vl_agencia').hide();
+				jQuery('[name=valor_agencia]').hide();
+				jQuery('#lb_valor_agente').hide();
+				jQuery("[name=valor_agente]").hide();
+				jQuery('.faturado').hide();
+			}else{
+				jQuery('#lb_vl_agencia').show();
+				jQuery('[name=valor_agencia]').show();
+				jQuery('#lb_valor_agente').show();
+				jQuery("[name=valor_agente]").show();
+				jQuery('.faturado').show();
+			}
+		});
+		
 		
 		
 		//Função para formatar data no padrão brasileiro

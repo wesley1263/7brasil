@@ -7,7 +7,9 @@ if(isset($_SESSION['success'])){
 		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
 	}
 ?>
-<a href="/ticket/cadTicket" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+<a href="/tipoCartao/cadTipoCartao" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+<br />
+<br />
 	<!-- <form class="navbar-form navbar-right" role="search">
 		<div class="form-group">
 			<input type="text" class="form-control" placeholder="Teste" name="teste">
@@ -22,19 +24,17 @@ if(isset($_SESSION['success'])){
 			<span class="glyphicon glyphicon-search"></span> Buscar
 		</button>
 	</form> -->
-	<br />
-	<br />
 	<?php 
 	$table->t_init('class="table table-bordered"');
-	$table->t_head(array('Nome','Status','Editar','Remover'));
-	foreach($tickets as $tic){
-		$table->t_row(array(
-					$tic['nome_ticket'],
-					$tic['status_ticket'] == 1 ? 'Ativo' : 'Inativo',
-					'<center><a href="/ticket/cadTicket/id/'.$tic['id_ticket'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-					'<center><a href="/ticket/deleteTicket/id/'.$tic['id_ticket'].'" onclick=" return confirm(\'Deseja realmente remover '.$tic['nome_ticket'].' ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
-					));
-	}
+	$table->t_head(array('Titulo','Status','Editar','Remover'));
+	foreach ($tipocartaos as $key => $value):
+	$table->t_row(array(
+			$value['titulo_tipoCartao'],
+			$value['status_tipoCartao'] == 1 ? 'Ativo' : 'Inativo',
+			'<center><a href="/tipoCartao/cadTipoCartao/id/'.$value['id_tipoCartao'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+			'<center><a href="/tipoCartao/deleteTipoCartao/id/'.$value['id_tipoCartao'].'" onclick=" return confirm(\'Deseja realmente remover TIpo de Cartão ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+			));
+	endforeach;
 	$table->generate();
 	?>
 </div>

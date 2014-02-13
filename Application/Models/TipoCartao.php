@@ -44,6 +44,14 @@ class TipoCartao extends OXE_Model {
 	public function DescTables()
 	{
 		return $this->query("DESC $this->_name");
+	}
+	
+	public function findTipoCard($name)
+	{
+		return $this->select()
+					->from()
+					->where("titulo_tipoCartao = '$name'")
+					->result();
 	}	
 	
 }

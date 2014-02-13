@@ -18,38 +18,42 @@ class ContasController extends OXE_Controller{
 		$this->table = new Table();
 		$this->form = new FormStyle();
 		$this->model = new Contas();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()
 	{
 		$param = func_get_args();
+			//$this->dump($param);
+		
 		if($param){
 			
-			$de = $param[2];
-			$ate = $param[3];
-			$grupo = $param[4];
-			$subgrupo = $param[5];
-			$filial = $param[6];
-			$status = $param[7];
-			
-			$array['de'] = $de;
-			$array['ate'] = $ate;
-			$array['id_grupo'] = $grupo;
-			$array['id_subgrupo'] = $subgrupo;
-			$array['id_filial'] = $filial;
-			$array['status_contas'] = $status;
+			$array['de'] = $param[0];
+			$array['ate'] = $param[1];
+			$array['id_grupo'] = $param[2];
+			$array['id_subgrupo'] = $param[3];
+			$array['id_filial'] = $param[4];
+			$array['status_contas'] = $param[5];
+			$page = $param[7];
 			
 			
-			$pagination = new Pagination();
-			$count = $this->model->list_all();
-			$inicio = $pagination->init();
-			$limit = 15;
-			$pagination->setLimit($limit);
-			$pagination->setParam('page');
-			$pagination->setTotalRegister($count);
+			// $pagination = new Pagination();
+			// $count = $this->model->list_all();
+			// $inicio = $pagination->init();
+			// $limit = 15;
+			// $pagination->setLimit($limit);
+			// $pagination->setParam('page');
+			// $pagination->setTotalRegister($count);
+			$limit = 10;
+			$total = ceil(count($this->model->list_all()) / $limit);
 			
-			$data['listas'] = $this->model->lista_tudo($array,$inicio,$limit);
-			$data['pagination'] = $pagination;
+			$data['listas'] = $this->model->lista_tudo($array,$page,$limit);
+			$data['total'] = $total;
 		}
 		
 		$grupo = new Grupo();
@@ -144,7 +148,7 @@ class ContasController extends OXE_Controller{
 	
 	public function findContasAction()
 	{
-		$this->redirector('/contas/index/page/1/'.$_POST['data_contas_de'].'/'.$_POST['data_contas_ate'].'/'.$_POST['id_grupo'].'/'.$_POST['id_subgrupo'].'/'.$_POST['id_filial'].'/'.$_POST['status_contas']);
+		$this->redirector('/contas/index/'.$_POST['data_contas_de'].'/'.$_POST['data_contas_ate'].'/'.$_POST['id_grupo'].'/'.$_POST['id_subgrupo'].'/'.$_POST['id_filial'].'/'.$_POST['status_contas'].'/page/0');
 	}
 }
 			

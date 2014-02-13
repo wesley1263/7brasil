@@ -125,9 +125,10 @@ class VendaController extends OXE_Controller{
 		
 		
 		####### Iterando sessão de dependentes #############
-		$depArray = array();
 		if(isset($_SESSION['dependentes'])){
-			foreach($_SESSION['dependentes'] as $key => $value){
+			$depArray = array();
+			$sess_depend = $this->session->getSession('dependentes');
+			foreach($sess_depend as $key => $value){
 				if(count($value) != null){
 					$depArray[] = $dependente->list_once($value);
 				}
@@ -238,6 +239,17 @@ class VendaController extends OXE_Controller{
 		############### Iteração de Sessão Passagens ##########
 		
 		
+		############### Iteração de Sessão Forma de pagamento ##########
+		if(isset($_SESSION['formarPagamento'])){
+			$arrayFormas = array();
+			$formas = new FormaPagamento();
+			$sess_forma = $this->session->getSession('formarPagamento');
+			foreach($sess_forma['id'] as $key => $value){
+					$arrayFormas[] = $formas->list_once($value);
+			}
+				$data['formas'] = $arrayFormas;
+		}
+		############### Iteração de Sessão Forma de pagamento ##########
 		
 		
 		
@@ -322,6 +334,23 @@ class VendaController extends OXE_Controller{
 		$this->redirector('/venda/cadVendaPF');
 	}
 	
+	public function deleteFormaPagamentoAction()
+	{
+		$param = func_get_args();
+		$form = new FormaPagamento();
+		$sess_forma = $this->session->getSession('formarPagamento');
+		if($form->remove($param[1])){
+			$key = array_search($param[1],$_SESSION['formarPagamento']['id']);
+			unset($_SESSION['formarPagamento']['id'][$key]);
+			if(count($_SESSION['formarPagamento']['id']) == 0){
+				unset($_SESSION['formarPagamento']);
+			}
+			
+			$this->session->setFlashMessage('Rateio removido da lista de venda.','success');
+			$this->redirector('/venda/cadVendaPF');
+		}
+	}
+	
 	public function listCarroAction()
 	{
 		$Carro = new Carro();
@@ -393,28 +422,23 @@ class VendaController extends OXE_Controller{
 		
 		
 		############ Busca os valores de Agencia e Agente ###########
+		$faturado = null;
 		if($id_agencia != null){
-			$busca_agencia = $agencia->list_once($id_agencia);
-			$busca_agente = $agente->list_once($id_agente);
-			
-			$valor_agencia = $busca_agencia[0]['comissao_agencia'];
-			$valor_agente = ($total_venda * ceil($busca_agente['porcentagem_agente'])) / 100;
-		}else{
-			$valor_agencia = 0.00;
-			$valor_agente = 0.00;
+			$faturado = $_POST['faturado_venda'];
 		}
 		
 		$tbl_venda = array(
 			'id_usuario' => $id_usuario,
 			'id_agencia' => $id_agencia,
 			'id_agente' => $id_agente,
-			'valor_agencia' => $valor_agencia,
-			'valor_agente' => $valor_agente,
+			'valor_agencia' => $_POST['valor_agencia'],
+			'valor_agente' => $_POST['valor_agente'],
 			'valor_casa' => $total_comissao,
 			'total_venda' => $total_venda,
 			'data_venda' => $data_venda,
 			'descricao_venda' => $descricao_venda,
-			'nm_processo_venda' => $numero_processo
+			'nm_processo_venda' => $numero_processo,
+			'faturado_venda' => $faturado
 		);
 		
 		
@@ -774,6 +798,7 @@ class VendaController extends OXE_Controller{
 		$formaPagamento = new Application\Models\FormaPagamento();
 		
 		
+		
 		$arrayFormaPgto = array();
 		
 		$arrayFormaPgto = array();
@@ -785,12 +810,17 @@ class VendaController extends OXE_Controller{
 			$arrayFormaPgto[$key]['id_venda'] = null;
 		}
 		
-		
-		
+				
 		
 			### Outras formas de pagamento ###
 			$array = array();
+			$arrayVezes = array();
 			foreach($_POST as $key => $value){
+				
+				if(preg_match("/^([a-z]+_\d)$/",$key)){
+					$arrayVezes[] = $value;
+				}
+				
 			if(preg_match("/^(\d+)$/", $key)){
 				foreach($value as $k => $v){
 					foreach($arrayFormaPgto as $chave => $valor){
@@ -799,7 +829,7 @@ class VendaController extends OXE_Controller{
 							$arrayFormaPgto[$chave]['id_tipoPagamento'] = $key;
 							$arrayFormaPgto[$chave]['valor_formaPagamento'] = $v;
 							$arrayFormaPgto[$chave]['id_tipoCartao'] = null;
-							$arrayFormaPgto[$chave]['vezes_formaPagamento'] = 1;
+							// $arrayFormaPgto[$chave]['vezes_formaPagamento'] = 1;
 								foreach($arrayFormaPgto as $ke => $va){
 									if(!isset($va['valor_formaPagamento'])){
 										unset($va);
@@ -813,6 +843,7 @@ class VendaController extends OXE_Controller{
 			
 			} ###ENDIF
 				foreach($array as $key => $arr){
+					$array[$key]['vezes_formaPagamento'] = $arrayVezes[$key][0];
 					if($array[$key] == null){
 						unset($array[$key]);
 					}
@@ -821,7 +852,7 @@ class VendaController extends OXE_Controller{
 				foreach($array as $key => $value){
 					$id_form = $formaPagamento->add($value);
 					if($id_form){
-						$_SESSION['formarPagamento'][$_POST['id_clientePF']][] = $id_form;
+						$_SESSION['formarPagamento']['id'][] = $id_form;
 					}
 				}
 				
@@ -876,7 +907,7 @@ class VendaController extends OXE_Controller{
 		 				if($value[0]['valor_formaPagamento'] != null){
 			 				$id_form = $formaPagamento->add($value[0]);
 							if($id_form){
-								$_SESSION['formarPagamento'][$_POST['id_clientePF']][] = $id_form;
+								$_SESSION['formarPagamento']['id'][] = $id_form;
 							}
 		 				}
 		 			}

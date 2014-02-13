@@ -26,6 +26,19 @@ class MoedaController extends OXE_Controller{
 	
 	public function indexAction()
 	{
+		$param = func_get_args();
+		if($param){
+			$arrayMoeda = array();
+			$arrayMoeda['de'] = $param[0];
+			$arrayMoeda['ate'] = $param[1];
+			$arrayMoeda['id_cambio'] = $param[2];
+			$page = $param[4];
+			
+			$limit = 10;
+			$total = ceil(count($this->model->count_list()) / $limit);
+			$data['listas'] = $this->model->lista_paginacao($arrayMoeda,$page,$limit);
+			$data['total'] = $total;
+		}
 				
 		$data['title'] = 'Titulo da Pagina';
 		$data['moedas'] = $this->model->list_all();
@@ -95,6 +108,12 @@ class MoedaController extends OXE_Controller{
 	{
 		$data = explode('/',$date);
 		return $data[2].'-'.$data[1].'-'.$data[0];
+	}
+	
+	public function routeAction()
+	{
+		$this->dump($_POST);
+		$this->redirector('/moeda/index/'.$_POST['de_data'].'/'.$_POST['ate_data'].'/'.$_POST['id_cliente'].'/page/1');
 	}
 }
 			

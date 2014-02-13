@@ -80,7 +80,7 @@
 			$form->groupClose();
 			
 			$form->groupOpen();	
-			$form->select(array('0'=>'Pendente','1'=>'Pago'),'status_contas','Status',isset($contas) ? $contas['status_contas'] : 0,2,3);
+			$form->select(array('1'=>'Pendente','2'=>'Pago'),'status_contas','Status',isset($contas) ? $contas['status_contas'] : 0,2,3);
 			$form->groupClose();
 			
 			

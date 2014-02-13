@@ -1,7 +1,7 @@
 <div class="container">
-	<nav class="navbar navbar-default" role="navigation">
+	<!--<nav class="navbar navbar-default" role="navigation">
 		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		 <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<form class="navbar-form navbar-left" role="search" method="post">
 				<div class="form-group">
 					<input type="text" name="nome_clientePF" class="form-control" placeholder="Nome">
@@ -13,9 +13,10 @@
 					<input type="text" name="uf_clientePF" class="form-control" placeholder="UF">
 				</div>
 				<button type="submit" class="btn btn-info">Buscar</button>
-			</form>
-		</div><!-- /.navbar-collapse -->
-	</nav>
+			</form> 
+		</div> 
+		
+	</nav> -->
 	<br />
 	<?php
 		if(isset($_SESSION['success'])){
@@ -31,7 +32,7 @@
 	<br />
 	<div class="table-responsive">
 		<?php 
-			$table->t_init('class="table table-bordered"');
+			$table->t_init('class="table table-bordered" id="tbl_clientePF"');
 			$table->t_head(array('<strong>Nome</strong>','<strong>CPF</strong>','<strong>UF</strong>','<strong>TELEFONE</strong>','<strong>Editar</strong>','<strong>Excluir</strong>'));
 			foreach($clientes as $cliente){
 			$table->t_row(array($cliente['nome_clientePF'],
@@ -49,6 +50,6 @@
 </div>
 <script>
 	jQuery(function(){
-
+		jQuery('#tbl_clientePF').dataTable();
 	});
 </script>

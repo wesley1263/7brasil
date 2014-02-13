@@ -20,7 +20,7 @@ if(isset($_SESSION['success'])){
 	foreach($agentes as $key => $value){
 		$table->t_row(array(
 				$value['nome_agente'],
-				ceil($value['porcentagem_agente']).' %',
+				// ceil($value['porcentagem_agente']).' %',
 				$opt_agenc[$value['id_agencia']],
 				$value['status_agente'] == 1 ? 'Ativo' : 'Inativo',
 				'<center><a href="/agente/cadAgente/id/'.$value['id_agente'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',

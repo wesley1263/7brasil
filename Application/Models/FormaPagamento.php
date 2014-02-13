@@ -20,10 +20,7 @@ class FormaPagamento extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					 ->from($this->_name)
-					 ->where($this->_primary.' = '.$id)
-					 ->result();
+		return $this->fetch($this->_primary.' = '.$id);
 	}
 	
 	public function add(array $data)

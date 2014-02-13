@@ -8,17 +8,17 @@ if(isset($_SESSION['success'])){
 	}
 ?>
 <a href="/moeda/cadMoeda" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
-	<form class="navbar-form navbar-right" role="search">
+	<form class="navbar-form navbar-right" role="search" method="post" action="/moeda/route">
 		<div class="form-group">
-			<input type="date" class="form-control" placeholder="Dia" name="de_data">
+			<input type="date" class="form-control" required="required" placeholder="Dia" name="de_data">
 		</div>
 		<div class="form-group">
-			<input type="date" class="form-control" placeholder="Dia" name="ate_data">
+			<input type="date" class="form-control" required="required" placeholder="Dia" name="ate_data">
 		</div>
 		<div class="form-group">
 			<select name="id_cliente" class="form-control">
 				
-				<option selected="selected">--TODOS--</option>
+				<option value="0" selected="selected">--TODOS--</option>
 				<?php 
 				foreach($moedas as $cam): ?>
 				<option value="<?=$cam['id_cambio']?>"><?=$cam['titulo_cambio']?></option>
@@ -28,13 +28,15 @@ if(isset($_SESSION['success'])){
 		<button type="submit" class="btn btn-default">
 			<span class="glyphicon glyphicon-search"></span> Buscar
 		</button>
-	</form>
+	</form> 
 	<?php 
-	$table->t_init('class="table table-bordered"');
+	$table->t_init('class="table table-bordered" id="tbl_cambio"');
 	$table->t_head(array('Moeda','Cambio','Dia','Editar','Remover'));
 	foreach($moedas as $moe){
 		$nome_moe[$moe['id_cambio']] = $moe['titulo_cambio'];
 	}
+	if(!isset($listas)):
+	
 	foreach($cambios as $cam):
 	$table->t_row(array(
 						$nome_moe[$cam['id_cambio']],
@@ -44,6 +46,35 @@ if(isset($_SESSION['success'])){
 						'<center><a href="/moeda/deleteMoeda/id/'.$cam['id_moeda'].'" onclick=" return confirm(\'Deseja realmente remover cambio do dia?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
 						));
 	endforeach;
+	
+	else:
+		
+	foreach ($listas as $key => $cam):
+		$table->t_row(array(
+						$nome_moe[$cam['id_cambio']],
+						$cam['valor_moeda'],
+						date('d/m/Y',strtotime($cam['dt_moeda'])),
+						'<center><a href="/moeda/cadMoeda/id/'.$cam['id_moeda'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+						'<center><a href="/moeda/deleteMoeda/id/'.$cam['id_moeda'].'" onclick=" return confirm(\'Deseja realmente remover cambio do dia?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+						));
+	endforeach;
+	endif;
+		
 	$table->generate();
+	
+	if(isset($listas)):
+		$pag = null;
+		$num = 0;
+		
+		$pag = '<ul class="pagination pagination-lg" style="width:100%;">';
+  		$pag .= '<li><a href="1">&laquo;</a></li>';
+	for ($i=1; $i <= $total ; $i++) { 
+	  	$pag .= "<li><a href=\"$i\">$i</a></li>";
+		$num++;
+	}
+  	$pag .= '<li><a href="'.$num.'">&raquo;</a></li>';
+	$pag .= '</ul>';
+	print $pag;
+	endif;
 	?>
 </div>

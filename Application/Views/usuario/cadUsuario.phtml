@@ -1,5 +1,5 @@
 <?php
-$id = isset($usuarios) ? $usuarios[0]['id_usuario'] : null;
+$id = isset($usuarios) ? $usuarios['id_usuario'] : null;
 	$form->init('form_usuario','/usuario/saveUsuario');
 		$form->groupOpen();	
 			$form->input(array(
@@ -29,7 +29,7 @@ $id = isset($usuarios) ? $usuarios[0]['id_usuario'] : null;
 				$opt_gp[$gp['id_grupo']] = $gp['titulo_grupo'];
 			}
 			$form->groupOpen();	
-			$form->select($opt_gp,'id_grupo','Grupo',isset($usuarios) ? $usuarios[0]['id_grupo'] : null,2,3);
+			$form->select($opt_gp,'id_grupo','Grupo',isset($usuarios) ? $usuarios['id_grupo'] : null,2,3);
 			$form->groupClose();
 		
 
@@ -42,7 +42,7 @@ $id = isset($usuarios) ? $usuarios[0]['id_usuario'] : null;
 				'num_label' =>'2',
 				'num_input' =>'5',
 				'label' =>'Nome',
-				'value' => isset($usuarios) ? $usuarios[0]['nome_usuario'] : null,
+				'value' => isset($usuarios) ? $usuarios['nome_usuario'] : null,
 				'required' => true
 				));
 		$form->groupClose();
@@ -55,7 +55,7 @@ $id = isset($usuarios) ? $usuarios[0]['id_usuario'] : null;
 				'num_label' =>'2',
 				'num_input' =>'5',
 				'label' =>'Login',
-				'value' => isset($usuarios) ? $usuarios[0]['login_usuario'] : null,
+				'value' => isset($usuarios) ? $usuarios['login_usuario'] : null,
 				'required' => true
 				));
 		$form->groupClose();
@@ -81,13 +81,13 @@ $id = isset($usuarios) ? $usuarios[0]['id_usuario'] : null;
 				'num_label' =>'2',
 				'num_input' =>'3',
 				'label' =>'Comissão',
-				'value' => isset($usuarios) ? $usuarios[0]['porcentagem_usuario'] : null,
+				'value' => isset($usuarios) ? $usuarios['porcentagem_usuario'] : null,
 				'required' => false
 				));
 		$form->groupClose();
 		
 		$form->groupOpen();	
-		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_usuario','Status',isset($usuarios) ? $usuarios[0]['status_usuario'] : null,2,3);
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_usuario','Status',isset($usuarios) ? $usuarios['status_usuario'] : null,2,3);
 		$form->groupClose();
 		
 echo str_repeat('<br />',1);

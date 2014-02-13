@@ -139,7 +139,7 @@ class Pagination {
 			}else{
 				$uri = $this->getParam();
 				$param = $this->_param;
-				$url = '/'.$uri[0].'/'.$uri[1].'/'.$param.'/'.$i;
+				$url = getenv('REQUEST_URI').'/'.$param.'/'.$i;
 				echo "<a href=\"$url\">$i</a> $separator";
 			}
 			
@@ -152,7 +152,7 @@ class Pagination {
 		$pag = array_pop($uri);
 		
 		$next = (int)$pag + 1;
-		$url = implode($uri,'/');
+		$url = getenv('REQUEST_URI').'/page/';
 		$return = " <a href=\"$url/$next\">$icon</a> ";
 		if($this->_totalPage < $next){
 			$return = " <a href=\"#\">$icon</a> ";

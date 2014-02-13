@@ -1,0 +1,54 @@
+<?php
+		$id = isset($tipoCartaos) ? $tipoCartaos[0]['id_tipoCartao'] : null;
+
+			$form->init('form_tipocartao','/tipoCartao/saveTipoCartao');
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_tipoCartao',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+			$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'titulo_tipoCartao',
+				'type' =>'text',
+				'placeholder' => 'Titulo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Titulo',
+				'value' => isset($tipoCartaos) ? $tipoCartaos[0]['titulo_tipoCartao'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->select(array('1' => 'Ativo', '0'=>'Inativo'),'status_tipoCartao','Status',isset($tipoCartaos) ? $tipoCartaos[0]['status_tipoCartao'] : 1,2,3);
+		$form->groupClose();
+
+		
+		$form->textarea('descricao_tipoCartao','Descrição',isset($tipoCartaos) ? $tipoCartaos[0]['descricao_tipoCartao'] : null,'Descrição',2,5);
+		
+		echo str_repeat('<br />',3);
+								
+		$form->groupOpen();		
+		$form->submit('Salvar','style="padding:5% 13%"');
+		echo '<button class="btn btn-default" id="bt_voltar">Voltar</buttton>';
+		$form->groupClose();
+
+		$form->close();
+		?>
+<script>
+	jQuery(function(){
+		jQuery('#bt_voltar').click(function(){
+			location.href='/tipoCartao';
+		});
+	});
+</script>

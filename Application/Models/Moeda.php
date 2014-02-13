@@ -18,7 +18,13 @@ class Moeda extends OXE_Model {
 		return $this->select()
 					->from()
 					->order_by('dt_moeda','DESC')
+					->limit(10)
 					->result();
+	}
+	
+	public function count_list()
+	{
+		return $this->fetchAll();
 	}
 	
 	public function list_once($id)
@@ -47,6 +53,15 @@ class Moeda extends OXE_Model {
 	public function DescTables()
 	{
 		return $this->query("DESC $this->_name");
+	}
+	
+	public function lista_paginacao($data,$ini,$limit)
+	{
+		$id_cambio = $data['id_cambio'] == '0' ? null : "AND id_cambio = ".$data['id_cambio'];
+		$query = "SELECT * FROM  $this->_name WHERE 1 $id_cambio 
+					AND dt_moeda BETWEEN '".$data['de']."' AND '".$data['ate']."' ORDER BY dt_moeda DESC LIMIT $ini, $limit";
+		return $this->query($query);
+		// echo $query;
 	}	
 	
 }
