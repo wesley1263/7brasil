@@ -1433,7 +1433,7 @@
 						<input type="text" name="valor_agente" />
 						<br />
 						<div class="faturado">
-						<input type="radio"  name="faturado_venda" checked="checked" value="1"/> Faturado
+						<input type="radio"  name="faturado_venda" value="1"/> Faturado
 						<input type="radio"  name="faturado_venda" value="2"/> Não Faturado
 						</div>
 						<br />
@@ -1876,17 +1876,6 @@
 				<table class="table">
 							    <p class="list-group-item-text"><h3 id="nome_cliente"></h3></p>
 							    	<?php foreach($tipoPagamento as $key => $value){ ?>
-											<!-- <tr>
-												<?php if($value['titulo_tipoPagamento'] == 'CARTÃO DE CRÉDITO'): ?>
-											    	<td><?=$value['titulo_tipoPagamento']?>
-											    		<table id="cartoes_credito" class="table table-bordered">
-														</table>
-													</td>
-										    	<?php else: ?>
-										    	<td><?=$value['titulo_tipoPagamento']?></td> 
-										    	<td><input type="text" class="fmpgto" name="<?=$value['id_tipoPagamento']?>[]" /></td>
-										    	<?php endif; ?>
-											</tr>	 -->	
 										<tr>						    			
 							    		<?php if($value['titulo_tipoPagamento'] != 'CARTÃO DE CRÉDITO'): ?>
 							    			<td><?=$value['titulo_tipoPagamento']?></td>

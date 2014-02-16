@@ -1,0 +1,251 @@
+<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <form class="navbar-form navbar-right" role="search" method="post" action="/processosPJ" style="padding:0 !important"> 
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Nº Processo" name="nm_processo_vendaPJ">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Empresa" name="razaosocial_clientePJ">
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_de" value="<?=date('Y-m')?>-01" >
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_ate" value="<?=date('Y-m-d')?>" >
+		</div>
+		<div class="form-group">
+			<select name="id_usuario" class="form-control">
+				<option value="0">--TODOS--</option>
+				<?php foreach ($usuario as $key => $value): 
+					if($value['id_grupo'] == 1):	
+				?>
+				<option value="<?=$value['id_usuario']?>"><?=$value['nome_usuario']?></option>
+				<?php 
+					endif;
+				endforeach; 
+				?>
+			</select>
+		</div>
+		<!-- <div class="form-group">
+			<select name="id_moeda" class="form-control">
+				<option value="0">--TODAS--</option>
+				<option value="0">Real - BR</option>
+				<option value="3">Dollar  USA</option>
+			</select>
+		</div> --> 
+		
+		<div class="form-group">
+			<select name="id_agencia" class="form-control">
+				<option value="">--TODAS--</option>
+				<option value="0">7 Brasil</option>
+				<?php foreach ($agencia as $key => $value): ?>
+					<?php $nome = explode(' ', $value['nomefantasia_agencia']); ?>
+					<option value="<?=$value['id_agencia']?>"><?=$nome[0]?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<select name="id_agente" id="id_agente" class="form-control"></select>
+		</div>
+		
+		<div class="form-group">
+			<select name="status_vendaPJ" class="form-control">
+				<option value="">--TODOS--</option>
+				<option value="0">Proccesando</option>
+				<option value="3">Concluido</option>
+				<option value="3">Cancelado</option>
+			</select>
+		</div>
+		
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span>
+		</button>
+	</form>
+        </div>
+        
+        
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <div class="table table-striped">
+          	<?php 
+				$status = array('0' => 'Processando','1'=>'Concluído','2'=>'Cancelado');
+				
+				//Popular Usuário
+				foreach ($usuario as $key => $value) {
+					$opt_vendedor[$value['id_usuario']] = $value['nome_usuario'];
+				}
+				
+				//Popular Agencia
+				$opt_agencia = array();
+				foreach ($agencia as $key => $value) {
+					$opt_agencia[$value['id_agencia']] = $value['nomefantasia_agencia'];
+				}
+				
+				$table->t_init('class="table table-striped"');
+				$table->t_head(array('Data','Processo','Vendedor','Empresa','Agência','Total','Status','Visualizar'));
+				$total = 0;
+				foreach ($processos as $key => $value) {
+					$total += $value['total_venda'];
+				$table->t_row(array(
+						date('d/m/Y',strtotime($value['data_venda'])),
+						$value['nm_processo_vendaPJ'],
+						$opt_vendedor[$value['id_usuario']],
+						$value['razaosocial_clientePJ'],
+						$value['id_agencia'] == null ? '7 Brasil' : $opt_agencia[$value['id_agencia']],
+						number_format($value['total_venda'],2,',','.'),
+						$status[$value['status_vendaPJ']],
+						'<center><a href="/processosPJ/detalhe/id/'.$value['id_vendaPJ'].'"><span class="glyphicon glyphicon-list-alt"></span></a></center>'
+						));
+				}
+				$table->generate();
+	?>
+	          <h2 class="sub-header">Total: R$ <?=number_format($total,2,',','.')?></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+         
+
+
+
+
+<!-- 
+<div class="col-sm-3 col-md-2 sidebar">
+	<form class="navbar-form navbar-right" role="search" method="post" action="/processosPJ" style="padding:0 !important"> 
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Nº Processo" name="nm_processo_vendaPJ">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Empresa" name="razaosocial_clientePJ">
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_de" value="<?=date('Y-m')?>-01" >
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_ate" value="<?=date('Y-m-d')?>" >
+		</div>
+		<div class="form-group">
+			<select name="id_usuario" class="form-control">
+				<option value="0">--TODOS--</option>
+				<?php foreach ($usuario as $key => $value): 
+					if($value['id_grupo'] == 1):	
+				?>
+				<option value="<?=$value['id_usuario']?>"><?=$value['nome_usuario']?></option>
+				<?php 
+					endif;
+				endforeach; 
+				?>
+			</select>
+		</div>
+		<!-- <div class="form-group">
+			<select name="id_moeda" class="form-control">
+				<option value="0">--TODAS--</option>
+				<option value="0">Real - BR</option>
+				<option value="3">Dollar  USA</option>
+			</select>
+		</div> -->
+		
+		<!--<div class="form-group">
+			<select name="id_agencia" class="form-control">
+				<option value="">--TODAS--</option>
+				<option value="0">7 Brasil</option>
+				<?php foreach ($agencia as $key => $value): ?>
+					<?php $nome = explode(' ', $value['nomefantasia_agencia']); ?>
+					<option value="<?=$value['id_agencia']?>"><?=$nome[0]?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<select name="id_agente" id="id_agente" class="form-control"></select>
+		</div>
+		
+		<div class="form-group">
+			<select name="status_vendaPJ" class="form-control">
+				<option value="">--TODOS--</option>
+				<option value="0">Proccesando</option>
+				<option value="3">Concluido</option>
+				<option value="3">Cancelado</option>
+			</select>
+		</div>
+		
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span>
+		</button>
+	</form>
+</div>
+	<?php 
+	$status = array('0' => 'Processando','1'=>'Concluído','2'=>'Cancelado');
+	
+	//Popular Usuário
+	foreach ($usuario as $key => $value) {
+		$opt_vendedor[$value['id_usuario']] = $value['nome_usuario'];
+	}
+	
+	//Popular Agencia
+	$opt_agencia = array();
+	foreach ($agencia as $key => $value) {
+		$opt_agencia[$value['id_agencia']] = $value['nomefantasia_agencia'];
+	}
+	
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Data','Processo','Vendedor','Empresa','Agência','Total','Status','Visualizar'));
+	$total = 0;
+	foreach ($processos as $key => $value) {
+		$total += $value['total_venda'];
+	$table->t_row(array(
+			date('d/m/Y',strtotime($value['data_venda'])),
+			$value['nm_processo_vendaPJ'],
+			$opt_vendedor[$value['id_usuario']],
+			$value['razaosocial_clientePJ'],
+			$value['id_agencia'] == null ? '7 Brasil' : $opt_agencia[$value['id_agencia']],
+			number_format($value['total_venda'],2,',','.'),
+			$status[$value['status_vendaPJ']],
+			'<center><a href="/processosPJ/detalhe/id/'.$value['id_vendaPJ'].'"><span class="glyphicon glyphicon-list-alt"></span></a></center>'
+			));
+	}
+	$table->generate();
+	echo 'Total<strong> R$ '.number_format($total,2,',','.').'</strong>';
+	?>
+</div> -->
+<script>
+	jQuery(function(){
+		jQuery('body').attr('class','container');
+		jQuery('.btn-default').css('width','100%');
+		jQuery('.form-group').css('width','100%');
+		
+		
+		jQuery('.col-md-offset-2').css('margin-left','0');
+		jQuery('.col-md-10').css('width','82%');
+		
+		jQuery('[name=id_agencia]').change(function(){
+			if(jQuery(this).val() != null){
+					jQuery.ajax({
+						url: '/processosPJ/getAgente',
+						type: 'post',
+						dataType: 'json',
+						data: {id_agencia: jQuery(this).val()},
+						success: function(data){
+							if(data.length){
+								jQuery('#id_agente').html('');
+									jQuery('#id_agente').append('<option value="0">--TODOS--</option>')
+								for(var i = 0; i < data.length; i++){
+									jQuery('#id_agente').append('<option value="'+data[i].id_agente+'">'+data[i].nome_agente+'</option>')
+								}
+							}else{
+								jQuery('#id_agente').html('');
+							}
+						}
+					});
+			}else{
+				jQuery('#id_agente').html('');	
+			}
+		});
+		
+		
+		
+	});
+</script>

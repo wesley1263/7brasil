@@ -4,6 +4,7 @@ use Vendor\Core\OXE_Controller;
 use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
+use Application\Models\VendaPJ;
 
 class ProcessosController extends OXE_Controller{
 		
@@ -12,6 +13,12 @@ class ProcessosController extends OXE_Controller{
 		$this->session = new Session();
 		$this->table = new Table();
 		$this->form = new FormStyle();
+		
+		//Verifica se o usuário está logado
+		$user = $this->session->getSession('user');
+		if(!$user['logado']){
+			$this->redirector('/login');
+		}
 	}
 	
 	public function indexAction()

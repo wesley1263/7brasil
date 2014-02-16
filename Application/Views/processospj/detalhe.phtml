@@ -1,0 +1,445 @@
+<?php 
+foreach($usuario as $key => $value) {
+	$opt_usuario[$value['id_usuario']] = $value['nome_usuario'];
+	$procentagem[$value['id_usuario']] = $value['porcentagem_usuario'];
+}
+
+foreach ($cambio as $key => $value) {
+	$opt_moeda[$value['id_cambio']] = $value['titulo_cambio'];
+}
+	$opt_moeda['0'] = 'Real - BR';
+
+foreach ($agencia as $key => $value) {
+	$opt_agencia[$value['id_agencia']] = $value['nomefantasia_agencia'];
+}
+
+foreach ($agente as $key => $value) {
+	$opt_agente[$value['id_agente']] = $value['nome_agente'];
+}
+
+foreach ($brokers as $key => $value) {
+	$opt_broker[$value['id_brokers']] = $value['nome_brokers'];
+}
+
+foreach ($locadora as $key => $value) {
+	$opt_locadora[$value['id_locadora']] = $value['nome_locadora'];
+}
+
+
+foreach ($seguradora as $key => $value) {
+	$opt_seguradora[$value['id_seguradora']] = $value['nome_seguradora'];
+}
+
+
+foreach ($tipoSeguro as $key => $value) {
+	$opt_tiposeguro[$value['id_tipoSeguro']] = $value['nome_tipoSeguro'];
+}
+
+foreach ($continente as $key => $value) {
+	$opt_continente[$value['id_continente']] = $value['nome_continente'];
+}
+
+foreach ($ticket as $key => $value) {
+	$opt_ticket[$value['id_ticket']] = $value['nome_ticket'];
+}
+
+
+foreach ($companiaCruzeiro as $key => $value) {
+	$opt_companiaCruzeiro[$value['id_compania_cruzeiro']] = $value['nome_compania_cruzeiro'];
+}
+
+foreach ($compania as $key => $value) {
+	$opt_compania[$value['id_compania']] = $value['nome_compania'];
+}
+
+foreach ($classe as $key => $value) {
+	$opt_classe[$value['id_classe']] = $value['titulo_classe'];
+}
+
+foreach ($destino as $key => $value) {
+	$opt_destino[$value['id_destino']] = $value['nome_destino'];
+}
+
+foreach ($origem as $key => $value) {
+	$opt_origem[$value['id_origem']] = $value['nome_origem'];
+}
+
+$opt_departamento = array();
+foreach ($departamento as $key => $value) {
+	$opt_departamento[$value['id_departamento']] = $value['nome_departamento'];
+}
+
+foreach ($funcionario as $key => $value) {
+	$opt_funcionario[$value['id_dependentePJ']] = $value['nome_dependentePJ'];
+	$opt_setor[$value['id_dependentePJ']] = $opt_departamento[$value['id_departamento']];
+}
+
+$status = array('0'=>'Processando','1'=>'Concluído','2'=>'Cancelado');
+?>
+<div class="container-fluid">
+
+<h2 class="sub-header">Processo: <?=$vendaPJ[0]['nm_processo_vendaPJ']?></h2>
+
+<br />
+<table class="table">
+	<tr>
+		<td><b>Vendedor: </b></td>
+		<td><i><?=$opt_usuario[$vendaPJ[0]['id_usuario']]?></i></td>
+		<td><b>Data</b></td>
+		<td><i><?=date('d/m/Y',strtotime($vendaPJ[0]['data_venda']));?></i></td>
+		<td><b>Comissão</b></td>
+		<?php $comissao_user = ($vendaPJ[0]['valor_casa'] * $procentagem[$vendaPJ[0]['id_usuario']]) / 100; ?>
+		<td><i>R$ <?=number_format($comissao_user,2,',','.') ?></i></td>
+	</tr>
+	<?php if($vendaPJ[0]['id_agencia'] != '0'): ?>
+	<tr>
+		<td><b>Agência</b></td>
+		<td><i><?=$opt_agencia[$vendaPJ[0]['id_agencia']]?></i></td>
+		<td><b>Comissão:</b>&nbsp;   R$ <?=number_format($vendaPJ[0]['valor_agencia'],2,',','.')?></td>
+		<td><b>Agente</b></td>
+		<td><i><?=$opt_agente[$vendaPJ[0]['id_agente']]?></i></td>
+		<td><b>Comissão</b>&nbsp;   R$ <?=number_format($vendaPJ[0]['valor_agente'],2,',','.')?></td>
+	</tr>
+	<?php endif; ?>
+	<tr>
+		<td><b>Status</b></td>
+		<td><i><?=$status[$vendaPJ[0]['status_vendaPJ']]?></i></td>
+		<td><b>Descrição</b></td>
+		<td><i><?=$vendaPJ[0]['descricao_vendaPJ']?></i></td>
+		<?php 
+		$arrayCambio = array();
+		foreach ($moeda as $key => $value) {
+			if($value['dt_moeda'] == $vendaPJ[0]['data_venda']){
+				$arrayCambio[] = $opt_moeda[$value['id_cambio']].': '.number_format($value['valor_moeda'],2,',','.');
+			}
+		}
+		
+		?>
+		<td><b>Câmbio</b></td>
+		<td><?=implode(' | ',$arrayCambio)?></td>
+	</tr>
+		<?php foreach ($vendas->getFuncionario($vendaPJ[0]['id_vendaPJ']) as $key => $value): ?>
+	<tr>
+		<td><b>Funcionário</b></td>
+		<td><i><?=$opt_funcionario[$value['id_dependentePJ']]?></i></td>
+		<td><b>Departamento</b></td>
+		<td><i><?=$opt_setor[$value['id_dependentePJ']]?></i></td>
+		<td></td>
+		<td></td>
+	</tr>
+		<?php endforeach; ?>
+</table>
+<br />
+<br />
+<br />
+<?php $id_venda = $vendaPJ[0]['id_vendaPJ']; ?>
+
+<?php foreach ($vendas->getHotel($id_venda) as $key => $value): 
+			if(count($value) > 0): 	?>
+<h4>Hotel</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Brokers</th>
+		<th>Nome</th>
+		<th>Endereço</th>
+		<th>Cidade</th>
+		<th>UF</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<th>Voucher 1</th>
+		<th>Voucher 2</th>
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$opt_broker[$value['id_brokers']]?></td>
+		<td><?=$value['nome_hotelPJ']?></td>
+		<td><?=$value['endereco_hotelPJ']?></td>
+		<td><?=$value['cidade_hotelPJ']?></td>
+		<td><?=$value['uf_hotelPJ']?></td>
+		<td>R$ <?=number_format($value['valor_hotelPJ'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['valor_casa_hotelPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio_hotelPJ'],2,',','.')?></td>
+		<td><a target="_blank" href="/voucher/hotelPJ/id/<?=$value['id_hotelPJ']?>/agencia/<?=$vendaPJ[0]['id_agencia']?>">Visualizar</a></td>
+		
+		<?php $img = explode('/',$value['voucher_hotelPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td>
+	</tr>
+</table>
+<?php 
+	endif;
+	endforeach; 
+?>
+<br />
+<br />
+
+
+<?php foreach ($vendas->getCarros($id_venda) as $key => $value): 
+			if(count($value) > 0):	
+?>
+<h4>Carro</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Locadora</th>
+		<th>Início</th>
+		<th>Fim</th>
+		<th>Entrega</th>
+		<th>Devolução</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<th>Voucher</th>
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$opt_locadora[$value['id_locadora']]?></td>
+		<td><?=$value['dt_inicio_carroPJ']?></td>
+		<td><?=date('d/m/Y H:i',strtotime($value['dt_devolucao_carroPJ']))?></td>
+		<td><?=date('d/m/Y H:i',strtotime($value['local_inicio_carroPJ']))?></td>
+		<td><?=$value['local_devolucao_carroPJ']?></td>
+		<td>R$ <?=number_format($value['valor_carroPJ'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['valor_casa_carroPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio'],2,',','.')?></td>
+		
+		<?php $img = explode('/',$value['voucher_carroPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td>
+	</tr>
+</table>
+<?php 
+	endif;
+	endforeach; 
+?>
+<br />
+<br />
+
+
+<?php foreach ($vendas->getSeguro($id_venda) as $key => $value): 
+			if(count($value) > 0):	
+?>
+<h4>Seguro</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Seguradora</th>
+		<th>Seguro</th>
+		<th>Continente</th>
+		<th>Início</th>
+		<th>Fim</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<th>Voucher</th>
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$opt_seguradora[$value['id_seguradora']]?></td>
+		<td><?=$opt_tiposeguro[$value['id_tipoSeguro']]?></td>
+		<td><?=$opt_continente[$value['id_continente']]?></td>
+		<td><?=date('d/m/Y',strtotime($value['dt_inicio_seguroPJ']))?></td>
+		<td><?=date('d/m/Y',strtotime($value['dt_fim_seguroPJ']))?></td>
+		<td>R$ <?=number_format($value['valor_seguroPJ'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['valor_casa_seguroPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio_seguroPJ'],2,',','.')?></td>
+		<?php $img = explode('/',$value['voucher_seguroPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td>
+	</tr>
+</table>
+<?php 
+	endif;
+	endforeach; 
+?>
+
+<br />
+<br />
+
+
+<?php foreach ($vendas->getTicket($id_venda) as $key => $value): 
+			if(count($value) > 0):	
+?>
+<h4>Ticket</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Ticket</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<th>Voucher</th>
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$opt_ticket[$value['id_ticket']]?></td>
+		<td>R$ <?=number_format($value['valor_compraTicketPj'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['comissao_compraTicketPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio_compraTicketPJ'],2,',','.')?></td>
+		<?php $img = explode('/',$value['voucher_compraTicketPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td>
+	</tr>
+</table>
+<?php 
+	endif;
+	endforeach; 
+?>
+
+<br />
+<br />
+
+
+<?php foreach ($vendas->getCruzeiro($id_venda) as $key => $value): 
+			if(count($value) > 0):	
+?>
+<h4>Cruzeiro</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Compania</th>
+		<th>Navio</th>
+		<th>Início</th>
+		<th>Fim</th>
+		<th>Rota</th>
+		<th>Número</th>
+		<th>Cabine</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<th>Voucher</th>
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$opt_companiaCruzeiro[$value['id_compania_cruzeiro']]?></td>
+		<td><?=$value['navio_cruzeiroPJ']?></td>
+		<td><?=date('d/m/Y',strtotime($value['dt_inicio_cruzeiroPJ']))?></td>
+		<td><?=date('d/m/Y',strtotime($value['dt_fim_cruzeiroPJ']))?></td>
+		<td><?=$value['rota_cruzeiroPJ']?></td>
+		<td><?=$value['nm_confirmacao_cruzeiroPJ']?></td>
+		<td><?=$value['tipo_cabine_cruzeiroPJ']?></td>
+		<td>R$ <?=number_format($value['valor_cruzeiroPJ'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['comissao_cruzeiroPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio_cruzeiroPJ'],2,',','.')?></td>
+		<?php $img = explode('/',$value['voucher_cruzeiroPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td>
+	</tr>
+</table>
+<?php 
+	endif;
+	endforeach; 
+?>
+<br />
+<br />
+
+<?php foreach ($vendas->getProdutos($id_venda) as $key => $value): 
+			if(count($value) > 0):	
+?>
+<h4>Outros Produto</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Produto</th>
+		<th>Fornecedor</th>
+		<th>Início</th>
+		<th>Fim</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<!-- <th>Voucher</th> -->
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$value['titulo_produtoPJ']?></td>
+		<td><?=$value['fornecedor_produtoPJ']?></td>
+		<td><?=date('d/m/Y',strtotime($value['dt_inicio_produtoPJ']))?></td>
+		<td><?=date('d/m/Y',strtotime($value['dt_final_produtoPJ']))?></td>
+		<td>R$ <?=number_format($value['valor_produtoPJ'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['comissao_produtoPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio_produtoPJ'],2,',','.')?></td>
+		<?php $img = explode('/',$value['voucher_produtoPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<!-- <td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td> -->
+	</tr>
+</table>
+<?php 
+	endif;
+	endforeach; 
+?>
+
+<?php foreach ($vendas->getPassagens($id_venda) as $key => $value): 
+			if(count($value) > 0):	
+?>
+<br />
+<br />
+<h4>Passagem</h4>
+<table class="table table-striped">
+	<tr>
+	<thead>
+		<th>Compania</th>
+		<th>Classe</th>
+		<th>Origem</th>
+		<th>Destino</th>
+		<th>Voo</th>
+		<th>Data</th>
+		<th>Saida/Chegada</th>
+		<th>Bilhete</th>
+		<th>Valor</th>
+		<th>Comissão</th>
+		<th>Moeda</th>
+		<th>Câmbio</th>
+		<th>Voucher 1</th>
+		<th>Voucher 2</th>
+	</thead>
+	</tr>
+	<tr>
+		<td><?=$opt_compania[$value['id_compania']]?></td>
+		<td><?=$opt_classe[$value['id_classe']]?></td>
+		<td><?=$opt_origem[$value['id_origem']]?></td>
+		<td><?=$opt_destino[$value['id_destino']]?></td>
+		<td><?=$value['voo_passagensPJ']?></td>
+		<td><?=date('d/m/Y',strtotime($value['dataIda_passagensPJ']))?></td>
+		<td><?=date('H:i',strtotime($value['saidaIda_passagensPJ'])).' / '.date('H:i',strtotime($value['chegadaIda_passagensPJ']))?></td>
+		<td><?=$value['ticket_passagensPJ']?></td>
+		<td>R$ <?=number_format($value['tarifa_passagensPJ'],2,',','.')?></td>
+		<td>R$ <?=number_format($value['valor_casa_passagensPJ'],2,',','.')?></td>
+		<td><?=$opt_moeda[$value['id_moeda']]?></td>
+		<td><?=number_format($value['valor_cambio_passagensPJ'],2,',','.')?></td>
+		<td><a target="_blank" href="/voucher/passagensPJ/id/<?=$value['id_passagensPJ']?>/agencia/<?=$vendaPJ[0]['id_agencia']?>/venda/<?=$id_venda?>">Visualizar</a></td>
+		<?php $img = explode('/',$value['voucher_passagensPJ']); 
+			  $img = array_slice($img,4);
+		?>
+		<td><a target="_blank" href="/<?=implode('/',$img)?>">Visualizar</a></td>
+	</tr>
+</table>
+<br />
+<br />
+<?php 
+	endif;
+	endforeach; 
+?>
+
+<h3 class="sub-header">7 Brasil: R$ <?=number_format($vendaPJ[0]['valor_casa'],2,',','.')?></h3>
+<br />
+<h2 class="sub-header">Total Venda: R$ <?=number_format($vendaPJ[0]['total_venda'],2,',','.')?></h2>
+</div>

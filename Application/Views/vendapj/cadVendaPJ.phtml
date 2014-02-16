@@ -723,6 +723,8 @@
 		$form->groupClose();
 		
 		?>
+				<label>Descrição</label>
+				<textarea name="descricao_seguroPJ" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -845,6 +847,8 @@
 				));
 		$form->groupClose();
 						?>
+				<label>Descrição</label>
+				<textarea name="descricao_compraTicketPJ" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirTicket" class="btn btn-primary">
@@ -1033,6 +1037,9 @@
 				$form->groupClose();
 				
 				?>
+				<label>Descrição</label>
+					<textarea name="descricao_cruzeiroPJ" class="form-control" rows="3"></textarea>
+				</div>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirCruzeiro" class="btn btn-primary">
@@ -1465,6 +1472,8 @@
 				));
 		$form->groupClose();
 				?>
+				<label>Descrição</label>
+				<textarea name="descricao_passagensPJ" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -1506,6 +1515,10 @@
 						<label id="lb_valor_agente" style="color: rgb(121, 118, 118);width: 90%" class="col-sm-2 control-label">Valor Agente</label> 
 						<input type="text" class="form-control" style="width: 30%" id="valor_agente" placeholder="Valor da Agência" name="valor_agente" />
 						<br>
+						<div class="faturado">
+						<input type="radio"  name="faturado_vendaPJ" value="1"/> Faturado
+						<input type="radio"  name="faturado_vendaPJ" value="2"/> Não Faturado
+						</div>
 						<br>
 					
 					    <div id="painel_cliente">
@@ -2371,6 +2384,9 @@
 		
 		jQuery('#lb_valor_agente').hide();
 		jQuery('#valor_agente').hide();
+		jQuery('.faturado').hide();
+		
+		
 		
 		
 		jQuery('[name=id_agencia]').change(function(){
@@ -2382,6 +2398,7 @@
 					data: {id_agencia: jQuery(this).val()},
 					success: function(data){
 						if(data){
+							jQuery('.faturado').show();
 							jQuery('#lb_valor_agencia').show();
 							jQuery('#valor_agencia').show();
 							
@@ -2410,6 +2427,9 @@
 				jQuery('#lb_valor_agente').hide();
 				jQuery('#valor_agente').hide();
 				jQuery('#valor_agente').val('');
+				
+				jQuery('.faturado').hide();
+				jQuery('[name=faturado_vendaPJ]').val('');
 			}
 		});
 		

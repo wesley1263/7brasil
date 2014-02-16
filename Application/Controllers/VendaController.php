@@ -3,6 +3,7 @@ use Vendor\Core\OXE_Controller;
 use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
+use Vendor\Library\PHPMailer\PHPMailer;
 use Application\Models\Venda;
 use Application\Models\ClientePF;
 use Application\Models\ClientePJ;
@@ -737,7 +738,8 @@ class VendaController extends OXE_Controller{
 					}
 				}
 			
-			
+			//$numero_processo = $tbl_venda['nm_processo_venda'];
+			$email = new PHPMailer();
 			
 				
 			}### ENDIF Venda alteração
