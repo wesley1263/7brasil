@@ -101,14 +101,14 @@ class CompraTicketController extends OXE_Controller{
 	
 	public function saveCompraTicketPJAction()
 	{
-		$ticket = new Application\Models\CompraTicketPJ();
+		$ticket = new Application\Models\CompraTicket();
 		
-		if($_FILES['voucher_compraTicketPJ']['size'] > 0 && $_FILES['voucher_compraTicketPJ']['error'] == UPLOAD_ERR_OK){
-			$file = explode('.',$_FILES['voucher_compraTicketPJ']['name']);
+		if($_FILES['voucher_compraTicket']['size'] > 0 && $_FILES['voucher_compraTicket']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.',$_FILES['voucher_compraTicket']['name']);
 			$ext = '.'.end($file);
 			$name = md5(time().$file[0]);
-			move_uploaded_file($_FILES['voucher_compraTicketPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
-			$_POST['voucher_compraTicketPJ'] = UPLOAD_PATH.$name.$ext;
+			move_uploaded_file($_FILES['voucher_compraTicket']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_compraTicket'] = UPLOAD_PATH.$name.$ext;
 		}
 		
 		$id_ticket = $ticket->add($_POST);
@@ -122,7 +122,7 @@ class CompraTicketController extends OXE_Controller{
 	
 	public function removeCompraTicketPJAction()
 	{
-		$ticket = new Application\Models\CompraTicketPJ();
+		$ticket = new Application\Models\CompraTicket();
 		$param = func_get_args();
 		$foto = $ticket->list_once($param[1]);
 		if($ticket->remove($param[1])){
@@ -131,7 +131,7 @@ class CompraTicketController extends OXE_Controller{
 			if(count($_SESSION['ticket']['id']) == 0){
 				unset($_SESSION['ticket']);
 			}
-			unlink($foto['voucher_compraTicketPJ']);
+			unlink($foto['voucher_compraTicket']);
 			$this->session->setFlashMessage('Ticket removido da lista venda.','success');
 			$this->redirector('/vendaPJ/cadVendaPJ');
 		}

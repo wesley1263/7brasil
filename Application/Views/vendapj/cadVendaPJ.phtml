@@ -21,7 +21,7 @@
 </div>       
       
       
-      <?php $this->dump($_SESSION); ?>
+      <?php //$this->dump($_SESSION); ?>
       
       <?php foreach ($departamento->list_all() as $key => $value) {
           $opt_departamento[$value['id_departamento']] = $value['nome_departamento'];
@@ -155,31 +155,6 @@
 	
 	
 	
-	   	<!-- Modal dependente cliente -->
-	<div class="modal fade" id="modalDependente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						×
-					</button>
-					<h4 class="modal-title" id="myModalLabel">Dependentes</h4>
-				</div>
-				<div class="modal-body">
-				<form method="post" action="/venda/addDependente">
-				<div class="dependentePF">	</div>
-						
-				</form></div>
-				<div class="modal-footer">
-					<button type="submit" id="bt_incluirDependente" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
-					
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	
-	
-		   
 	
 	<br>
 	<br>
@@ -211,7 +186,7 @@
 						$op_cambio['0'] = 'REAL BR';
 						$form->select($op_cambio,'id_moeda','Moeda',0,2,5);
 						$form->input(array(
-							'name' =>'valor_cambio',
+							'name' =>'valor_cambio_carro',
 							'type' =>'text',
 							'placeholder' => '',
 							'num_label' =>'1',
@@ -219,14 +194,15 @@
 							'label' =>'Valor',
 							'value' => '',
 							'required' => true
-							));						$form->groupClose();
+							));	
+						$form->groupClose();
 						
 						
-						echo "<input type='hidden' name='id_clientePJ' value='".$_SESSION['empresa']['id']."'>";
+						echo "<input type='hidden' name='id_clientePF' value='".$_SESSION['empresa']['id']."'>";
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'dt_inicio_carroPJ',
+							'name' =>'dt_inicio_carro',
 							'type' =>'date',
 							'placeholder' => 'Data de início',
 							'num_label' =>'2',
@@ -237,7 +213,7 @@
 							));
 							
 						$form->input(array(
-							'name' =>'hora_inicio_carroPJ',
+							'name' =>'hora_inicio_carro',
 							'type' =>'time',
 							'placeholder' => 'Horário de início',
 							'num_label' =>'2',
@@ -250,7 +226,7 @@
 						
 						$form->groupOpen();	
 						$form->input(array(
-							'name' =>'dt_devolucao_carroPJ',
+							'name' =>'dt_devolucao_carro',
 							'type' =>'date',
 							'placeholder' => 'Data de Devolução',
 							'num_label' =>'2',
@@ -261,7 +237,7 @@
 							));	
 							
 							$form->input(array(
-							'name' =>'hora_devolucao_carroPJ',
+							'name' =>'hora_devolucao_carro',
 							'type' =>'time',
 							'placeholder' => 'Horário de Devolução',
 							'num_label' =>'2',
@@ -274,7 +250,7 @@
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'local_inicio_carroPJ',
+							'name' =>'local_inicio_carro',
 							'type' =>'text',
 							'placeholder' => 'Local de retirada',
 							'num_label' =>'2',
@@ -287,7 +263,7 @@
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'local_devolucao_carroPJ',
+							'name' =>'local_devolucao_carro',
 							'type' =>'text',
 							'placeholder' => 'Local de Devolução',
 							'num_label' =>'2',
@@ -300,7 +276,7 @@
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'voucher_carroPJ',
+							'name' =>'voucher_carro',
 							'type' =>'file',
 							'placeholder' => '',
 							'num_label' =>'2',
@@ -313,7 +289,7 @@
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'valor_carroPJ',
+							'name' =>'valor_carro',
 							'type' =>'text',
 							'placeholder' => 'Valor do Aluguel',
 							'num_label' =>'2',
@@ -326,7 +302,7 @@
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'valor_casa_carroPJ',
+							'name' =>'valor_casa_carro',
 							'type' =>'text',
 							'placeholder' => 'Comissão da Casa',
 							'num_label' =>'2',
@@ -339,7 +315,7 @@
 						
 						$form->groupOpen();
 						$form->input(array(
-							'name' =>'taxa_carroPJ',
+							'name' =>'taxa_carro',
 							'type' =>'text',
 							'placeholder' => 'Taxas Extras',
 							'num_label' =>'2',
@@ -351,7 +327,7 @@
 						$form->groupClose();
 						 ?>
 						 <label>Descrição</label>
-						 <textarea name="descricao_carroPJ" class="form-control" rows="3"></textarea>
+						 <textarea name="descricao_carro" class="form-control" rows="3"></textarea>
 					</div><!-- div carroPF-->
 				</div>
 				<div class="modal-footer">
@@ -382,7 +358,7 @@
 			
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'id_hotelPJ',
+				'name' =>'id_hoteis',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -396,7 +372,7 @@
 			
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'id_clientePJ',
+				'name' =>'id_clientePF',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -416,7 +392,7 @@
 			$opt_cambio['0'] = 'Real BR';
 			$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
 			$form->input(array(
-				'name' =>'valor_cambio_hotelPJ',
+				'name' =>'valor_cambio_hotel',
 				'type' =>'text',
 				'placeholder' => 'Valor',
 				'num_label' =>'2',
@@ -429,7 +405,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'nome_hotelPJ',
+				'name' =>'nome_hotel',
 				'type' =>'text',
 				'placeholder' => 'Nome',
 				'num_label' =>'2',
@@ -446,7 +422,7 @@
 			
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'cep_hotelPJ',
+				'name' =>'cep_hotel',
 				'type' =>'text',
 				'placeholder' => 'CEP',
 				'num_label' =>'2',
@@ -460,7 +436,7 @@
 		
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'endereco_hotelPJ',
+				'name' =>'endereco_hotel',
 				'type' =>'text',
 				'placeholder' => 'Endereço',
 				'num_label' =>'2',
@@ -473,7 +449,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'numero_hotelPJ',
+				'name' =>'numero_hotel',
 				'type' =>'text',
 				'placeholder' => 'Número',
 				'num_label' =>'2',
@@ -487,7 +463,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'cidade_hotelPJ',
+				'name' =>'cidade_hotel',
 				'type' =>'text',
 				'placeholder' => 'Cidade',
 				'num_label' =>'2',
@@ -500,7 +476,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'uf_hotelPJ',
+				'name' =>'uf_hotel',
 				'type' =>'text',
 				'placeholder' => 'UF',
 				'num_label' =>'2',
@@ -513,7 +489,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'telefone_hotelPJ',
+				'name' =>'telefone_hotel',
 				'type' =>'text',
 				'placeholder' => 'Telefone',
 				'num_label' =>'2',
@@ -526,7 +502,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'email_hotelPJ',
+				'name' =>'email_hotel',
 				'type' =>'text',
 				'placeholder' => 'Email',
 				'num_label' =>'2',
@@ -539,7 +515,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'voucher_hotelPJ',
+				'name' =>'voucher_hotel',
 				'type' =>'file',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -552,7 +528,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'valor_hotelPJ',
+				'name' =>'valor_hotel',
 				'type' =>'text',
 				'placeholder' => 'Valor',
 				'num_label' =>'2',
@@ -563,7 +539,7 @@
 				));
 			
 			$form->input(array(
-				'name' =>'valor_casa_hotelPJ',
+				'name' =>'valor_casa_hotel',
 				'type' =>'text',
 				'placeholder' => 'Comissão',
 				'num_label' =>'2',
@@ -576,7 +552,7 @@
 		
 		?>
 		<label>Descrição</label>
-		<textarea name="descricao_hotelPJ" class="form-control" rows="3"></textarea>
+		<textarea name="descricao_hotel" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirHotel" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -608,7 +584,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'id_seguroPJ',
+				'name' =>'id_seguro',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -621,7 +597,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'id_clientePJ',
+			'name' =>'id_clientePF',
 			'type' =>'hidden',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -647,7 +623,7 @@
 		$form->groupOpen();	
 		$form->select($opt_cambio,'id_moeda','Moeda',0,2,5);
 		$form->input(array(
-				'name' =>'valor_cambio_seguroPJ',
+				'name' =>'valor_cambio_seguro',
 				'type' =>'text',
 				'placeholder' => '',
 				'num_label' =>'1',
@@ -660,7 +636,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'dt_inicio_seguroPJ',
+				'name' =>'dt_inicio_seguro',
 				'type' =>'date',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -671,7 +647,7 @@
 				));
 
 		$form->input(array(
-				'name' =>'dt_fim_seguroPJ',
+				'name' =>'dt_fim_seguro',
 				'type' =>'date',
 				'placeholder' => '',
 				'num_label' =>'1',
@@ -685,7 +661,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'valor_seguroPJ',
+				'name' =>'valor_seguro',
 				'type' =>'text',
 				'placeholder' => 'Valor',
 				'num_label' =>'2',
@@ -698,7 +674,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'valor_casa_seguroPJ',
+				'name' =>'valor_casa_seguro',
 				'type' =>'text',
 				'placeholder' => 'Comissão',
 				'num_label' =>'2',
@@ -711,7 +687,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'voucher_seguroPJ',
+				'name' =>'voucher_seguro',
 				'type' =>'file',
 				'placeholder' => 'Voucher',
 				'num_label' =>'2',
@@ -724,7 +700,7 @@
 		
 		?>
 				<label>Descrição</label>
-				<textarea name="descricao_seguroPJ" class="form-control" rows="3"></textarea>
+				<textarea name="descricao_seguro" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirSeguro" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -754,7 +730,7 @@
 			$form->init('form_compraticket','/compraTicket/saveCompraTicketPJ');
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'id_compraTicketPJ',
+				'name' =>'id_compraTicket',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -764,7 +740,7 @@
 				'required' => true
 				));
 			$form->input(array(
-				'name' =>'id_clientePJ',
+				'name' =>'id_clientePF',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -783,7 +759,7 @@
 			$form->groupOpen();	
 			$form->select($opt_cambio,'id_moeda','Moeda',0,2,5);
 			$form->input(array(
-				'name' =>'valor_cambio_compraTicketPJ',
+				'name' =>'valor_cambio_compraTicket',
 				'type' =>'text',
 				'placeholder' => 'Cambio',
 				'num_label' =>'1',
@@ -797,7 +773,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'valor_compraTicketPJ',
+				'name' =>'valor_compraTicket',
 				'type' =>'text',
 				'placeholder' => 'Valor da compra',
 				'num_label' =>'2',
@@ -810,7 +786,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'comissao_compraTicketPJ',
+				'name' =>'comissao_compraTicket',
 				'type' =>'text',
 				'placeholder' => 'Comissão em porcentagem',
 				'num_label' =>'2',
@@ -823,7 +799,7 @@
 			
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'voucher_compraTicketPJ',
+				'name' =>'voucher_compraTicket',
 				'type' =>'file',
 				'placeholder' => 'Voucher',
 				'num_label' =>'2',
@@ -836,7 +812,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'fornecedor_compraTicketPJ',
+				'name' =>'fornecedor_compraTicket',
 				'type' =>'text',
 				'placeholder' => 'Nome Fornecedor',
 				'num_label' =>'2',
@@ -848,7 +824,7 @@
 		$form->groupClose();
 						?>
 				<label>Descrição</label>
-				<textarea name="descricao_compraTicketPJ" class="form-control" rows="3"></textarea>
+				<textarea name="descricao_compraTicket" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirTicket" class="btn btn-primary">
@@ -880,7 +856,7 @@
 			$form->init('form_cruzeiro','/cruzeiro/saveCruzeiroPJ');
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'id_cruzeiroPJ',
+				'name' =>'id_cruzeiro',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -890,7 +866,7 @@
 				'required' => true
 				));
 			$form->input(array(
-				'name' =>'id_clientePJ',
+				'name' =>'id_clientePF',
 				'type' =>'hidden',
 				'placeholder' => '',
 				'num_label' =>'2',
@@ -908,7 +884,7 @@
 			$form->groupOpen();	
 			$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
 			$form->input(array(
-				'name' =>'valor_cambio_cruzeiroPJ',
+				'name' =>'valor_cambio_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Cambio',
 				'num_label' =>'2',
@@ -921,7 +897,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'navio_cruzeiroPJ',
+				'name' =>'navio_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Navio',
 				'num_label' =>'2',
@@ -934,7 +910,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'dt_inicio_cruzeiroPJ',
+				'name' =>'dt_inicio_cruzeiro',
 				'type' =>'date',
 				'placeholder' => 'Inicio',
 				'num_label' =>'2',
@@ -946,7 +922,7 @@
 				
 				
 		$form->input(array(
-				'name' =>'dt_fim_cruzeiroPJ',
+				'name' =>'dt_fim_cruzeiro',
 				'type' =>'date',
 				'placeholder' => 'Fim',
 				'num_label' =>'1',
@@ -959,7 +935,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'rota_cruzeiroPJ',
+				'name' =>'rota_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Rota',
 				'num_label' =>'2',
@@ -972,7 +948,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'nm_confirmacao_cruzeiroPJ',
+				'name' =>'nm_confirmacao_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Número de Confirmação',
 				'num_label' =>'2',
@@ -985,7 +961,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'tipo_cabine_cruzeiroPJ',
+				'name' =>'tipo_cabine_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Tipo de Cabine',
 				'num_label' =>'2',
@@ -998,7 +974,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'valor_cruzeiroPJ',
+				'name' =>'valor_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Valor do Cruzeiro',
 				'num_label' =>'2',
@@ -1011,7 +987,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-				'name' =>'comissao_cruzeiroPJ',
+				'name' =>'comissao_cruzeiro',
 				'type' =>'text',
 				'placeholder' => 'Comissão',
 				'num_label' =>'2',
@@ -1025,7 +1001,7 @@
 				
 			$form->groupOpen();	
 			$form->input(array(
-					'name' =>'voucher_cruzeiroPJ',
+					'name' =>'voucher_cruzeiro',
 					'type' =>'file',
 					'placeholder' => 'Voucher',
 					'num_label' =>'2',
@@ -1038,7 +1014,7 @@
 				
 				?>
 				<label>Descrição</label>
-					<textarea name="descricao_cruzeiroPJ" class="form-control" rows="3"></textarea>
+					<textarea name="descricao_cruzeiro" class="form-control" rows="3"></textarea>
 				</div>
 				</div>
 				<div class="modal-footer">
@@ -1071,7 +1047,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'id_produtoPJ',
+			'name' =>'id_produto',
 			'type' =>'hidden',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1081,7 +1057,7 @@
 			'required' => true
 			));
 		$form->input(array(
-			'name' =>'id_clientePJ',
+			'name' =>'id_clientePF',
 			'type' =>'hidden',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1095,7 +1071,7 @@
 		$form->groupOpen();	
 		$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
 		$form->input(array(
-			'name' =>'valor_cambio_produtoPJ',
+			'name' =>'valor_cambio_produto',
 			'type' =>'text',
 			'placeholder' => 'Cambio',
 			'num_label' =>'2',
@@ -1109,7 +1085,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'titulo_produtoPJ',
+			'name' =>'titulo_produto',
 			'type' =>'text',
 			'placeholder' => 'Título',
 			'num_label' =>'2',
@@ -1122,7 +1098,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'valor_produtoPJ',
+			'name' =>'valor_produto',
 			'type' =>'text',
 			'placeholder' => 'Valor',
 			'num_label' =>'2',
@@ -1135,7 +1111,7 @@
 				
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'comissao_produtoPJ',
+			'name' =>'comissao_produto',
 			'type' =>'text',
 			'placeholder' => 'Comissão',
 			'num_label' =>'2',
@@ -1148,7 +1124,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'fornecedor_produtoPJ',
+			'name' =>'fornecedor_produto',
 			'type' =>'text',
 			'placeholder' => 'Fornecedor',
 			'num_label' =>'2',
@@ -1161,7 +1137,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'dt_inicio_produtoPJ',
+			'name' =>'dt_inicio_produto',
 			'type' =>'date',
 			'placeholder' => 'Início',
 			'num_label' =>'2',
@@ -1174,7 +1150,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'dt_final_produtoPJ',
+			'name' =>'dt_final_produto',
 			'type' =>'date',
 			'placeholder' => 'Final',
 			'num_label' =>'2',
@@ -1186,7 +1162,7 @@
 		$form->groupClose();
 				?>
 				<label>Descrição</label>
-					<textarea name="descricao_produtoPJ" class="form-control" rows="3"></textarea>
+					<textarea name="descricao_produto" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirProdutos" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -1213,7 +1189,7 @@
 		$form->init('form_passagens','/passagens/savePassagensPJ');
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'id_passagensPJ',
+			'name' =>'id_passagens',
 			'type' =>'hidden',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1223,7 +1199,7 @@
 			'required' => true
 			));
 		$form->input(array(
-			'name' =>'id_clientePJ',
+			'name' =>'id_clientePF',
 			'type' =>'hidden',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1234,8 +1210,17 @@
 			));
 		$form->groupClose();
 		
-
-
+		$opt_passageiro = array();
+		if(isset($dependentes)){
+			foreach ($dependentes as $key => $value) {
+				$opt_passageiro[$value['id_dependentePF']] = $value['nome_dependente'];
+			}
+		}
+		
+		$form->groupOpen();	
+		$form->select($opt_passageiro,'id_dependente','Passageiro',1,2,8);
+		$form->groupClose();
+		
 		$form->groupOpen();	
 		$form->select($opt_compania,'id_compania','Compania',1,2,8);
 		echo '<td><a href="/compania/cadCompania" title="Adicionar nova Compania caso não exista" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a></td>';
@@ -1266,7 +1251,7 @@
 		$form->groupOpen();	
 		$form->select($opt_cambio,'id_moeda','Moeda',0,2,4);
 		$form->input(array(
-			'name' =>'valor_cambio_passagensPJ',
+			'name' =>'valor_cambio_passagens',
 			'type' =>'text',
 			'placeholder' => 'Cambio',
 			'num_label' =>'2',
@@ -1282,7 +1267,7 @@
 		echo '<legend><strong>IDA</strong></legend>';
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'dataIda_passagensPJ',
+			'name' =>'dataIda_passagens',
 			'type' =>'date',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1295,7 +1280,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'saidaIda_passagensPJ',
+			'name' =>'saidaIda_passagens',
 			'type' =>'time',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1306,7 +1291,7 @@
 			));
 
 		$form->input(array(
-			'name' =>'chegadaIda_passagensPJ',
+			'name' =>'chegadaIda_passagens',
 			'type' =>'time',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1323,7 +1308,7 @@
 		echo '<legend><strong>Volta</strong></legend>';
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'dataVolta_passagensPJ',
+			'name' =>'dataVolta_passagens',
 			'type' =>'date',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1336,7 +1321,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'saidaVolta_passagensPJ',
+			'name' =>'saidaVolta_passagens',
 			'type' =>'time',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1347,7 +1332,7 @@
 			));
 			
 		$form->input(array(
-			'name' =>'chegadaVolta_passagensPJ',
+			'name' =>'chegadaVolta_passagens',
 			'type' =>'time',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1362,7 +1347,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'voo_passagensPJ',
+			'name' =>'voo_passagens',
 			'type' =>'text',
 			'placeholder' => 'Voo',
 			'num_label' =>'2',
@@ -1375,7 +1360,7 @@
 		
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'bagagem_passagensPJ',
+			'name' =>'bagagem_passagens',
 			'type' =>'text',
 			'placeholder' => '',
 			'num_label' =>'2',
@@ -1389,7 +1374,7 @@
 
 		$form->groupOpen();	
 		$form->input(array(
-			'name' =>'voucher_passagensPJ',
+			'name' =>'voucher_passagens',
 			'type' =>'file',
 			'placeholder' => 'Voucher',
 			'num_label' =>'2',
@@ -1402,7 +1387,7 @@
 
 			 $form->groupOpen();	
 			 $form->input(array(
-				'name' =>'tarifa_passagensPJ',
+				'name' =>'tarifa_passagens',
 				'type' =>'text',
 				'placeholder' => 'Valor',
 				'num_label' =>'2',
@@ -1413,7 +1398,7 @@
 				));
 		
 			$form->input(array(
-				'name' =>'ticket_passagensPJ',
+				'name' =>'ticket_passagens',
 				'type' =>'text',
 				'placeholder' => 'Ticket',
 				'num_label' =>'1',
@@ -1426,7 +1411,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'valor_casa_passagensPJ',
+				'name' =>'valor_casa_passagens',
 				'type' =>'text',
 				'placeholder' => 'Comissão',
 				'num_label' =>'2',
@@ -1437,7 +1422,7 @@
 				));
 				
 			$form->input(array(
-				'name' =>'tx_embarque_passagensPJ',
+				'name' =>'tx_embarque_passagens',
 				'type' =>'text',
 				'placeholder' => 'Taxa de Enbarque',
 				'num_label' =>'2',
@@ -1450,7 +1435,7 @@
 
 			$form->groupOpen();	
 			$form->input(array(
-				'name' =>'tx_outras_passagensPJ',
+				'name' =>'tx_outras_passagens',
 				'type' =>'text',
 				'placeholder' => 'Taxa Extra',
 				'num_label' =>'2',
@@ -1461,7 +1446,7 @@
 				));
 				
 			$form->input(array(
-				'name' =>'tx_repasse_passagensPJ',
+				'name' =>'tx_repasse_passagens',
 				'type' =>'text',
 				'placeholder' => 'Taxa de Repasse',
 				'num_label' =>'2',
@@ -1473,7 +1458,7 @@
 		$form->groupClose();
 				?>
 				<label>Descrição</label>
-				<textarea name="descricao_passagensPJ" class="form-control" rows="3"></textarea>
+				<textarea name="descricao_passagens" class="form-control" rows="3"></textarea>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="bt_incluirPassagens" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Incluir</button>
@@ -1516,8 +1501,8 @@
 						<input type="text" class="form-control" style="width: 30%" id="valor_agente" placeholder="Valor da Agência" name="valor_agente" />
 						<br>
 						<div class="faturado">
-						<input type="radio"  name="faturado_vendaPJ" value="1"/> Faturado
-						<input type="radio"  name="faturado_vendaPJ" value="2"/> Não Faturado
+						<input type="radio"  name="faturado_venda" value="1"/> Faturado
+						<input type="radio"  name="faturado_venda" value="2"/> Não Faturado
 						</div>
 						<br>
 					
@@ -1544,8 +1529,8 @@
 							  <a href="#" class="list-group-item">
 							    <h4 class="list-group-item-heading"><?=$empresa[0]['nomefantasia_clientePJ']?></h4>
 							    <p class="list-group-item-text">CNPJ: <?=$empresa[0]['cnpj_clientePJ']?></p>
-							    <p class="list-group-item-text">EMAIL: <?=$empresa[0]['email_clientePJ']?></p>
-							    <p class="list-group-item-text">TELEFONE: <?=$empresa[0]['telefone_clientePJ']?></p>
+							    <p class="list-group-item-text">EMAIL: <?=$empresa[0]['email_cliente']?></p>
+							    <p class="list-group-item-text">TELEFONE: <?=$empresa[0]['telefone1_clientePJ']?></p>
 							    <p class="list-group-item-text">RESPONSÁVEL: <?=$empresa[0]['nomeresponsavel_clientePJ']?></p>
 							    <p class="list-group-item-text">CPF: <?=$empresa[0]['cpf_responsavel_clientePJ']?></p>
 							    <p class="list-group-item-text">TELFONE: <?=$empresa[0]['telefone_responsavel_clientePJ']?></p>
@@ -1573,11 +1558,11 @@
 					       <div class="list-group">
 					       	<?php foreach ($dependentes as $key => $value): ?>
 							  <a href="#" class="list-group-item">
-							    <h4 class="list-group-item-heading"><?=$value['nome_dependentePJ']?></h4>
+							    <h4 class="list-group-item-heading"><?=$value['nome_dependente']?></h4>
 							    <p class="list-group-item-text">DEPARTAMENTO: <strong><?=$opt_departamento[$value['id_departamento']]?></strong></p>
-							    <p class="list-group-item-text">CPF: <strong><?=$value['cpf_dependentePJ']?></strong></p>
-							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_dependentePJ']?></strong></p>
-							    <p class="list-group-item-text">TELEFONE: <strong><?=$value['telefone_dependentePJ']?></strong></p>
+							    <p class="list-group-item-text">CPF: <strong><?=$value['cpf_dependente']?></strong></p>
+							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_dependente']?></strong></p>
+							    <p class="list-group-item-text">TELEFONE: <strong><?=$value['telefone_dependente']?></strong></p>
 							  
 							  </a>
 					       	<?php endforeach; ?>
@@ -1608,11 +1593,11 @@
 					       		?>
 							  <a href="#" class="list-group-item">
 							    <p class="list-group-item-text">LOCADORA: <strong><?=$opt_locadora[$value['id_locadora']]?></strong></p>
-							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_carroPJ']))?></strong></p>
-							    <p class="list-group-item-text">FINAL: <strong><?=date('d/m/Y',strtotime($value['dt_devolucao_carroPJ']))?></strong></p>
-							    <?php $total_carro += $value['valor_carroPJ'] + $value['valor_casa_carroPJ'] + $value['taxa_carroPJ'];
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_carro']))?></strong></p>
+							    <p class="list-group-item-text">FINAL: <strong><?=date('d/m/Y',strtotime($value['dt_devolucao_carro']))?></strong></p>
+							    <?php $total_carro += $value['valor_carro'] + $value['valor_casa_carro'] + $value['taxa_carro'];
 							    	$total_tudo += $total_carro;
-									$total_comissao += $value['valor_casa_carroPJ'];
+									$total_comissao += $value['valor_casa_carro'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_carro,2,',','.')?></strong></p>
 							  
@@ -1642,13 +1627,13 @@
 					       		?>
 							  <a href="#" class="list-group-item">
 							    <p class="list-group-item-text">BROKERS: <strong><?=$opt_brokers[$value['id_brokers']]?></strong></p>
-							    <p class="list-group-item-text">NOME: <strong><?=$value['nome_hotelPJ']?></strong></p>
-							    <p class="list-group-item-text">LOCALIDADE: <strong><?=$value['cidade_hotelPJ'].' - '.$value['uf_hotelPJ']?></strong></p>
-							    <p class="list-group-item-text">TELEFONE: <strong><?=$value['telefone_hotelPJ']?></strong></p>
-							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_hotelPJ']?></strong></p>
-							    <?php $total_hotel += $value['valor_hotelPJ'] + $value['valor_casa_hotelPJ'];
+							    <p class="list-group-item-text">NOME: <strong><?=$value['nome_hotel']?></strong></p>
+							    <p class="list-group-item-text">LOCALIDADE: <strong><?=$value['cidade_hotel'].' - '.$value['uf_hotel']?></strong></p>
+							    <p class="list-group-item-text">TELEFONE: <strong><?=$value['telefone_hotel']?></strong></p>
+							    <p class="list-group-item-text">EMAIL: <strong><?=$value['email_hotel']?></strong></p>
+							    <?php $total_hotel += $value['valor_hotel'] + $value['valor_casa_hotel'];
 							    	  $total_tudo += $total_hotel;
-									  $total_comissao += $value['valor_casa_hotelPJ'];
+									  $total_comissao += $value['valor_casa_hotel'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_hotel,2,',','.')?></strong></p>
 							  
@@ -1682,11 +1667,11 @@
 							    <p class="list-group-item-text">SEGURADORA: <strong><?=$opt_seguradora[$value['id_seguradora']]?></strong></p>
 							    <p class="list-group-item-text">TIPO: <strong><?=$opt_tipoSeguro[$value['id_tipoSeguro']]?></strong></p>
 							    <p class="list-group-item-text">CONTINENTE: <strong><?=$opt_continente[$value['id_continente']]?></strong></p>
-							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_seguroPJ']))?></strong></p>
-							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_fim_seguroPJ']))?></strong></p>
-							    <?php $total_seguro += $value['valor_seguroPJ'] + $value['valor_casa_seguroPJ'];
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_seguro']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_fim_seguro']))?></strong></p>
+							    <?php $total_seguro += $value['valor_seguro'] + $value['valor_casa_seguro'];
 							    	  $total_tudo += $total_seguro;
-									  $total_comissao += $value['valor_casa_seguroPJ'];
+									  $total_comissao += $value['valor_casa_seguro'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_seguro,2,',','.')?></strong></p>
 							  
@@ -1716,10 +1701,10 @@
 					       		?>
 							  <a href="#" class="list-group-item">
 							    <p class="list-group-item-text">TICKET: <strong><?=$opt_ticket[$value['id_ticket']]?></strong></p>
-							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_compraTicketPJ']?></strong></p>
-							    <?php $total_ticket += $value['valor_compraTicketPj'] + $value['comissao_compraTicketPJ'];
+							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_compraTicket']?></strong></p>
+							    <?php $total_ticket += $value['valor_compraTicket'] + $value['comissao_compraTicket'];
 							    	  $total_tudo += $total_ticket;
-									  $total_comissao += $value['comissao_compraTicketPJ'];
+									  $total_comissao += $value['comissao_compraTicket'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_ticket,2,',','.')?></strong></p>
 							  
@@ -1750,14 +1735,14 @@
 					       		?>
 							  <a href="#" class="list-group-item">
 							    <p class="list-group-item-text">COMPANIA: <strong><?=$opt_companiaCruzeiro[$value['id_compania_cruzeiro']]?></strong></p>
-							    <p class="list-group-item-text">NAVIO: <strong><?=$value['navio_cruzeiroPJ']?></strong></p>
-							    <p class="list-group-item-text">NÚMERO: <strong><?=$value['nm_confirmacao_cruzeiroPJ']?></strong></p>
-							    <p class="list-group-item-text">CABINE: <strong><?=$value['tipo_cabine_cruzeiroPJ']?></strong></p>
-							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_cruzeiroPJ']))?></strong></p>
-							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['navio_cruzeiroPJ']))?></strong></p>
-							    <?php $total_cruzeiro += $value['valor_cruzeiroPJ'] + $value['comissao_cruzeiroPJ'];
+							    <p class="list-group-item-text">NAVIO: <strong><?=$value['navio_cruzeiro']?></strong></p>
+							    <p class="list-group-item-text">NÚMERO: <strong><?=$value['nm_confirmacao_cruzeiro']?></strong></p>
+							    <p class="list-group-item-text">CABINE: <strong><?=$value['tipo_cabine_cruzeiro']?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_cruzeiro']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['navio_cruzeiro']))?></strong></p>
+							    <?php $total_cruzeiro += $value['valor_cruzeiro'] + $value['comissao_cruzeiro'];
 							    	  $total_tudo += $total_cruzeiro;
-									  $total_comissao += $value['comissao_cruzeiroPJ'];
+									  $total_comissao += $value['comissao_cruzeiro'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_cruzeiro,2,',','.')?></strong></p>
 							  
@@ -1787,13 +1772,13 @@
 					       		$total_produto = 0;
 					       		?>
 							  <a href="#" class="list-group-item">
-							    <p class="list-group-item-text">TITULO: <strong><?=$value['titulo_produtoPJ']?></strong></p>
-							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_produtoPJ']?></strong></p>
-							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_produtoPJ']))?></strong></p>
-							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_final_produtoPJ']))?></strong></p>
-							    <?php $total_produto += $value['valor_produtoPJ'] + $value['comissao_produtoPJ'];
+							    <p class="list-group-item-text">TITULO: <strong><?=$value['titulo_produto']?></strong></p>
+							    <p class="list-group-item-text">FORNECEDOR: <strong><?=$value['fornecedor_produto']?></strong></p>
+							    <p class="list-group-item-text">INÍCIO: <strong><?=date('d/m/Y',strtotime($value['dt_inicio_produto']))?></strong></p>
+							    <p class="list-group-item-text">FIM: <strong><?=date('d/m/Y',strtotime($value['dt_final_produto']))?></strong></p>
+							    <?php $total_produto += $value['valor_produto'] + $value['comissao_produto'];
 							   		  $total_tudo += $total_produto; 
-									  $total_comissao += $value['comissao_produtoPJ'];
+									  $total_comissao += $value['comissao_produto'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_produto,2,',','.')?></strong></p>
 							  
@@ -1824,23 +1809,24 @@
 					       		$total_passagens = 0;
 					       		?>
 							  <a href="#" class="list-group-item">
-							    <p class="list-group-item-text">CÓDIGO RESERVA: <strong><?=$value['codigo_reserva_pasagensPJ']?></strong></p>
+							    <p class="list-group-item-text">CÓDIGO RESERVA: <strong><?=$value['codigo_reserva_pasagens']?></strong></p>
+							    <p class="list-group-item-text">PASAGEIRO: <strong><?=$value['id_dependente']?></strong></p>
 							    <p class="list-group-item-text">COMPANIA: <strong><?=$opt_compania[$value['id_compania']]?></strong></p>
 							    <p class="list-group-item-text">CLASSE: <strong><?=$opt_classe[$value['id_classe']]?></strong></p>
 							    <p class="list-group-item-text">ORIGEM: <strong><?=$opt_origem[$value['id_origem']]?></strong></p>
 							    <p class="list-group-item-text">DESTINO: <strong><?=$opt_destino[$value['id_destino']]?></strong></p>
-							    <p class="list-group-item-text">VOO: <strong><?=$value['voo_passagensPJ']?></strong></p>
-							    <p class="list-group-item-text">DATA DE IDA: <strong><?=date('d/m/Y',strtotime($value['dataIda_passagensPJ']))?></strong></p>
-							    <p class="list-group-item-text">HORA DE PARTIDA: <strong><?=date('H:i',strtotime($value['saidaIda_passagensPJ']))?></strong></p>
-							    <p class="list-group-item-text">HORA DE CHEGADA: <strong><?=date('H:i',strtotime($value['chegadaIda_passagensPJ']))?></strong></p>
-							    <?php if(date('Y',strtotime($value['dataVolta_passagensPJ'])) > date('Y')){ ?>
-							    <p class="list-group-item-text">DATA DE VOLTA: <strong><?=date('d/m/Y',strtotime($value['dataVolta_passagensPJ']))?></strong></p>
-							    <p class="list-group-item-text">HORA DE PARTIDA: <strong><?=date('H:i',strtotime($value['saidaVolta_passagensPJ']))?></strong></p>
-							    <p class="list-group-item-text">HORA DE CHEGADA: <strong><?=date('H:i',strtotime($value['chegadaVolta_passagensPJ']))?></strong></p>
+							    <p class="list-group-item-text">VOO: <strong><?=$value['voo_passagens']?></strong></p>
+							    <p class="list-group-item-text">DATA DE IDA: <strong><?=date('d/m/Y',strtotime($value['dataIda_passagens']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE PARTIDA: <strong><?=date('H:i',strtotime($value['saidaIda_passagens']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE CHEGADA: <strong><?=date('H:i',strtotime($value['chegadaIda_passagens']))?></strong></p>
+							    <?php if(date('Y',strtotime($value['dataVolta_passagens'])) > date('Y')){ ?>
+							    <p class="list-group-item-text">DATA DE VOLTA: <strong><?=date('d/m/Y',strtotime($value['dataVolta_passagens']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE PARTIDA: <strong><?=date('H:i',strtotime($value['saidaVolta_passagens']))?></strong></p>
+							    <p class="list-group-item-text">HORA DE CHEGADA: <strong><?=date('H:i',strtotime($value['chegadaVolta_passagens']))?></strong></p>
 							    <?php } ?>
-							    <?php $total_passagens += $value['tarifa_passagensPJ'] + $value['valor_casa_passagensPJ'] + $value['tx_embarque_passagensPJ'] + $value['tx_outras_passagensPJ'] + $value['tx_repasse_passagensPJ'];
+							    <?php $total_passagens += $value['tarifa_passagens'] + $value['valor_casa_passagens'] + $value['tx_embarque_passagens'] + $value['tx_outras_passagens'] + $value['tx_repasse_passagens'];
 							    	   $total_tudo += $total_passagens;
-									   $total_comissao += $value['valor_casa_passagensPJ'];
+									   $total_comissao += $value['valor_casa_passagens'];
 							    ?>
 							    <p class="list-group-item-text">TOTAL: <strong>R$ <?=number_format($total_passagens,2,',','.')?></strong></p>
 							  
@@ -1892,7 +1878,7 @@
 				</div>
 				<div class="modal-body">
 				<form method="post" name="rateio" action="/vendaPJ/cadTipoPagamentoPJ">
-				<input type="hidden" name="id_clientePJ" value="<?= $_SESSION['empresa']['id']; ?>">
+				<input type="hidden" name="id_clientePF" value="<?= $_SESSION['empresa']['id']; ?>">
 				<p class="list-group-item-text"></p>
 				<table class="table">
 						<tbody>
@@ -1996,7 +1982,14 @@
 			
 			
 			<!-- Funcionarios selecionados -->
-			<?php if(isset($_SESSION['funcionarios'])): ?>
+			<?php if(isset($_SESSION['funcionarios'])): 
+				foreach ($dependentes as $key => $value) {
+					foreach ($dependentes as $key => $value) {
+						$opt_passageiro[$value['id_dependentePF']] = $value['nome_dependente'];
+					}
+				}
+				
+				?>
 				<?php foreach ($dependentes as $key => $value): ?>
 					<tr class="warning">
 					<td><?=$value['nome_dependente']?></td>						
@@ -2016,12 +2009,12 @@
 					?>
 					<tr class="warning prod">
 						<td>Locadora: <?=$opt_locadora[$value['id_locadora']]?></td>
-						<td><?=date('d/m/Y',strtotime($value['dt_inicio_carroPJ']))?> à <?=date('d/m/Y',strtotime($value['dt_devolucao_carroPJ']))?></td>
-						<?php $total_carro += $value['valor_carroPJ'] + $value['valor_casa_carroPJ'] + $value['taxa_carroPJ'];
+						<td><?=date('d/m/Y',strtotime($value['dt_inicio_carro']))?> à <?=date('d/m/Y',strtotime($value['dt_devolucao_carro']))?></td>
+						<?php $total_carro += $value['valor_carro'] + $value['valor_casa_carro'] + $value['taxa_carro'];
 							  $total_tudo += $total_carro;
 						?>
 						<td>Total: R$ <?=number_format($total_carro,2,',','.')?></td>
-						<td><a href="/carro/removeCarroPJ/id/<?=$value['id_carroPJ']?>" onclick="return confirm('Deseja realmente remover Carro da lista de Venda?')" class="btn btn-danger">Remover</a></td></td>
+						<td><a href="/carro/removeCarroPJ/id/<?=$value['id_carros']?>" onclick="return confirm('Deseja realmente remover Carro da lista de Venda?')" class="btn btn-danger">Remover</a></td></td>
 						
 					</tr>
 				<?php endforeach; ?>
@@ -2034,13 +2027,13 @@
 					$valor_hotel = 0;
 					?>
 					<tr class="warning prod">
-						<td>HOTEL: <?=$value['nome_hotelPJ']?></td>
+						<td>HOTEL: <?=$value['nome_hotel']?></td>
 						<td><?=$opt_brokers[$value['id_brokers']]?></td>
-						<?php $valor_hotel += $value['valor_hotelPJ'] + $value['valor_casa_hotelPJ'];
+						<?php $valor_hotel += $value['valor_hotel'] + $value['valor_casa_hotel'];
 							  $total_tudo += $valor_hotel;
 						 ?>
 						<td>TOTAL: R$ <?=number_format($valor_hotel,2,',','.')?></td>
-						<td><a href="/hotel/removeHotelPJ/id/<?=$value['id_hotelPJ']?>" onclick="return confirm('Deseja realmente remover Hotel da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+						<td><a href="/hotel/removeHotelPJ/id/<?=$value['id_hoteis']?>" onclick="return confirm('Deseja realmente remover Hotel da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
 				<?php endforeach;  ?>
 			<?php endif; ?>
@@ -2054,11 +2047,11 @@
 				<tr class="warning prod">
 					<td>SEGURO: <?=$opt_seguradora[$value['id_seguradora']]?></td>
 					<td><?=$opt_tipoSeguro[$value['id_tipoSeguro']]?></td>
-					<?php  $total_seguro += $value['valor_seguroPJ'] + $value['valor_casa_seguroPJ'];
+					<?php  $total_seguro += $value['valor_seguro'] + $value['valor_casa_seguro'];
 							$total_tudo += $total_seguro;
 					?>
 					<td>TOTAL: R$ <?=number_format($total_seguro,2,',','.')?></td>
-					<td><a href="/seguro/removeSeguroPJ/id/<?=$value['id_seguroPJ']?>" onclick="return confirm('Deseja realmente remover Seguro da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					<td><a href="/seguro/removeSeguroPJ/id/<?=$value['id_seguro']?>" onclick="return confirm('Deseja realmente remover Seguro da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 				</tr>
 			<?php endforeach; ?>
 			<?php endif; ?>
@@ -2071,12 +2064,12 @@
 					?>
 					<tr class="warning prod">
 						<td>TICKET: <?=$opt_ticket[$value['id_ticket']]?></td>
-						<td><?=$value['fornecedor_compraTicketPJ']?></td>
-						<?php $total_ticket += $value['valor_compraTicketPj'] + $value['comissao_compraTicketPJ']; 
+						<td><?=$value['fornecedor_compraTicket']?></td>
+						<?php $total_ticket += $value['valor_compraTicket'] + $value['comissao_compraTicket']; 
 						$total_tudo += $total_ticket;
 						?>
 						<td>TOTAL: R$ <?=number_format($total_ticket,2,',','.')?></td>
-						<td><a href="/compraTicket/removeCompraTicketPJ/id/<?=$value['id_compraTicketPJ']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+						<td><a href="/compraTicket/removeCompraTicketPJ/id/<?=$value['id_compraTicket']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -2090,12 +2083,12 @@
 					?>
 					<tr class="warning prod">
 						<td>CRUZEIRO: <?=$opt_companiaCruzeiro[$value['id_compania_cruzeiro']]?></td>
-						<td><?=$value['navio_cruzeiroPJ']?></td>
-						<?php $total_cruzeiro += $value['valor_cruzeiroPJ'] + $value['comissao_cruzeiroPJ']; 
+						<td><?=$value['navio_cruzeiro']?></td>
+						<?php $total_cruzeiro += $value['valor_cruzeiro'] + $value['comissao_cruzeiro']; 
 						$total_tudo += $total_cruzeiro;
 						?>
 						<td>TOTAL: R$ <?=number_format($total_cruzeiro,2,',','.')?></td>
-						<td><a href="/cruzeiro/removeCruzeiroPJ/id/<?=$value['id_cruzeiroPJ']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+						<td><a href="/cruzeiro/removeCruzeiroPJ/id/<?=$value['id_cruzeiro']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -2108,13 +2101,13 @@
 					$total_produto = 0;
 					?>
 					<tr class="warning prod">
-						<td>PRODUTO: <?=$value['titulo_produtoPJ']?></td>
-						<td><?=$value['fornecedor_produtoPJ']?></td>
-						<?php $total_produto += $value['valor_produtoPJ'] + $value['comissao_produtoPJ']; 
+						<td>PRODUTO: <?=$value['titulo_produto']?></td>
+						<td><?=$value['fornecedor_produto']?></td>
+						<?php $total_produto += $value['valor_produto'] + $value['comissao_produto']; 
 						$total_tudo += $total_produto;
 						?>
 						<td>TOTAL: R$ <?=number_format($total_produto,2,',','.')?></td>
-						<td><a href="/ProdutoOutros/removeProdutoOutrosPJ/id/<?=$value['id_produtoPJ']?>" onclick="return confirm('Deseja realmente remover Produto da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+						<td><a href="/ProdutoOutros/removeProdutoOutrosPJ/id/<?=$value['id_produto']?>" onclick="return confirm('Deseja realmente remover Produto da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -2126,8 +2119,8 @@
 					?>
 					<tr class="warning prod">
 						<td>PASSAGEM: <?=$opt_compania[$value['id_compania']].' - '.$opt_classe[$value['id_classe']]?></td>
-						<td>ORIGEM: <?=$opt_origem[$value['id_origem']].' - DESTINO: '.$opt_destino[$value['id_destino']]?></td>
-						<?php $total_passagem += $value['tarifa_passagensPJ'] + $value['valor_casa_passagensPJ'] + $value['tx_embarque_passagensPJ'] + $value['tx_outras_passagensPJ'] + $value['tx_repasse_passagensPJ']; 
+						<td>PASSAGEIRO: <?=$opt_passageiro[$value['id_dependente']]?></td>
+						<?php $total_passagem += $value['tarifa_passagens'] + $value['valor_casa_passagens'] + $value['tx_embarque_passagens'] + $value['tx_outras_passagens'] + $value['tx_repasse_passagens']; 
 						$total_tudo += $total_passagem;
 						?>
 						<td>TOTAL: R$ <?=number_format($total_passagem,2,',','.')?></td>
@@ -2146,11 +2139,16 @@
 						<?php if($value['id_tipoPagamento'] == null){ ?>
 							<td>RATEIO: Crédito da empresa</td>
 						<?php }else{ ?>
+							<?php if($value['id_tipoPagamento'] == '3'){ ?>
+							<td>RATEIO: <?=$opt_tipoPagamento[$value['id_tipoPagamento']].' - '.$opt_tipoCartao[$value['id_tipoCartao']]?></td>
+							<?php }else{ ?>
 							<td>RATEIO: <?=$opt_tipoPagamento[$value['id_tipoPagamento']]?></td>
+							<?php } ?>
+							
 						<?php } ?>
-							<td><?=$value['vezes_formaPagamentoPJ']?> X</td>
-							<td>TOTAL: R$ <?=number_format($value['valor_formaPagamentoPJ'],2,',','.')?></td>
-							<td><a href="/vendaPJ/removeFormaPagamentoPJ/id/<?=$value['id_formaPagamentoPJ']?>" onclick="return confirm('Deseja realmente remover Forma de pagamento da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+							<td><?=$value['vezes_formaPagamento']?> X</td>
+							<td>TOTAL: R$ <?=number_format($value['valor_formaPagamento'],2,',','.')?></td>
+							<td><a href="/vendaPJ/removeFormaPagamentoPJ/id/<?=$value['id_formaPagamento']?>" onclick="return confirm('Deseja realmente remover Forma de pagamento da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -2237,40 +2235,40 @@
 		});
 		
 		//Funções ao modal Carros
-		jQuery("#valor_cambio").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_carroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_casa_carroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#taxa_carroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery('#valor_cambio').attr('disabled',true);
+		jQuery("#valor_cambio_carro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_carro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_carro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#taxa_carro").maskMoney({thousands:'', decimal:'.'});
+		jQuery('#valor_cambio_carro').attr('disabled',true);
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() == '0'){
-				jQuery('#valor_cambio').val('');
-				jQuery('#valor_cambio').attr('disabled',true);
+				jQuery('#valor_cambio_carro').val('');
+				jQuery('#valor_cambio_carro').attr('disabled',true);
 			}else{
-				jQuery('#valor_cambio').attr('disabled',false);
+				jQuery('#valor_cambio_carro').attr('disabled',false);
 			}
 		});
 		
 		
 		//Funções para o modal Hotel
-		jQuery('#cep_hotelPJ').mask('99999-999');
-		jQuery("#valor_hotelPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_casa_hotelPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_cambio_hotelPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery('#cep_hotel').mask('99999-999');
+		jQuery("#valor_hotel").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_hotel").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_hotel").maskMoney({thousands:'', decimal:'.'});
 		jQuery('#is_br').click(function(){
 			if(jQuery(this).attr('checked')){
-				jQuery('#cep_hotelPJ').attr('disabled',true);
+				jQuery('#cep_hotel').attr('disabled',true);
 			}else{
-				jQuery('#cep_hotelPJ').attr('disabled',false);
+				jQuery('#cep_hotel').attr('disabled',false);
 			}
 		});
 		
-		jQuery('#valor_cambio_hotelPJ').attr('disabled',true);
+		jQuery('#valor_cambio_hotel').attr('disabled',true);
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() == '0'){
-				jQuery('#valor_cambio_hotelPJ').attr('disabled',true);
+				jQuery('#valor_cambio_hotel').attr('disabled',true);
 			}else{
-				jQuery('#valor_cambio_hotelPJ').attr('disabled',false);
+				jQuery('#valor_cambio_hotel').attr('disabled',false);
 			}
 		});
 		
@@ -2278,48 +2276,48 @@
 		
 		
 		//Funções para o model Seguro
-		jQuery("#valor_cambio_seguroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_seguroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_casa_seguroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_seguro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_seguro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_seguro").maskMoney({thousands:'', decimal:'.'});
 		
-		jQuery("#valor_cambio_seguroPJ").attr('disabled',true);
+		jQuery("#valor_cambio_seguro").attr('disabled',true);
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() != '0'){
-				jQuery("#valor_cambio_seguroPJ").attr('disabled',false);
+				jQuery("#valor_cambio_seguro").attr('disabled',false);
 			}else{
-				jQuery("#valor_cambio_seguroPJ").attr('disabled',true);
+				jQuery("#valor_cambio_seguro").attr('disabled',true);
 				
 			}
 		});
 		
 		
 		//Funções do modal Ticket
-		jQuery("#valor_cambio_compraTicketPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_compraTicketPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#comissao_compraTicketPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_compraTicket").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_compraTicket").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#comissao_compraTicket").maskMoney({thousands:'', decimal:'.'});
 		
-		jQuery("#valor_cambio_compraTicketPJ").attr('disabled',true);
+		jQuery("#valor_cambio_compraTicket").attr('disabled',true);
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() != '0'){
-				jQuery("#valor_cambio_compraTicketPJ").attr('disabled',false);
+				jQuery("#valor_cambio_compraTicket").attr('disabled',false);
 			}else{
-				jQuery("#valor_cambio_compraTicketPJ").attr('disabled',true);
+				jQuery("#valor_cambio_compraTicket").attr('disabled',true);
 				
 			}
 		});
 		
 		
 		//Funções do modal Cruzeiro
-		jQuery("#valor_cambio_cruzeiroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_cruzeiroPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#comissao_cruzeiroPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_cruzeiro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cruzeiro").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#comissao_cruzeiro").maskMoney({thousands:'', decimal:'.'});
 		
-		jQuery("#valor_cambio_cruzeiroPJ").attr('disabled',true);
+		jQuery("#valor_cambio_cruzeiro").attr('disabled',true);
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() != '0'){
-				jQuery("#valor_cambio_cruzeiroPJ").attr('disabled',false);
+				jQuery("#valor_cambio_cruzeiro").attr('disabled',false);
 			}else{
-				jQuery("#valor_cambio_cruzeiroPJ").attr('disabled',true);
+				jQuery("#valor_cambio_cruzeiro").attr('disabled',true);
 				
 			}
 		});
@@ -2327,35 +2325,35 @@
 		
 		
 		//Funçoes do modal Produtos
-		jQuery("#valor_cambio_produtoPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_produtoPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#comissao_produtoPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_produto").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_produto").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#comissao_produto").maskMoney({thousands:'', decimal:'.'});
 		
-		jQuery("#valor_cambio_produtoPJ").attr('disabled',true);
+		jQuery("#valor_cambio_produto").attr('disabled',true);
 		
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() != '0'){
-				jQuery("#valor_cambio_produtoPJ").attr('disabled',false);
+				jQuery("#valor_cambio_produto").attr('disabled',false);
 			}else{
-				jQuery("#valor_cambio_produtoPJ").attr('disabled',true);
+				jQuery("#valor_cambio_produto").attr('disabled',true);
 			}
 		});
 		
 		//Funções do modal passagens
-		jQuery("#valor_cambio_passagensPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#tarifa_passagensPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#valor_casa_passagensPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#tx_embarque_passagensPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#tx_outras_passagensPJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#tx_repasse_passagensPJ").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_cambio_passagens").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tarifa_passagens").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#valor_casa_passagens").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tx_embarque_passagens").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tx_outras_passagens").maskMoney({thousands:'', decimal:'.'});
+		jQuery("#tx_repasse_passagens").maskMoney({thousands:'', decimal:'.'});
 		
-		jQuery("#valor_cambio_passagensPJ").attr('disabled',true);
+		jQuery("#valor_cambio_passagens").attr('disabled',true);
 		
 		jQuery('[name=id_moeda]').change(function(){
 			if(jQuery(this).val() != '0'){
-				jQuery("#valor_cambio_passagensPJ").attr('disabled',false);
+				jQuery("#valor_cambio_passagens").attr('disabled',false);
 			}else{
-				jQuery("#valor_cambio_passagensPJ").attr('disabled',true);
+				jQuery("#valor_cambio_passagens").attr('disabled',true);
 			}
 		});
 		

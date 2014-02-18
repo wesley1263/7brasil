@@ -94,7 +94,7 @@ class ProdutoOutrosController extends OXE_Controller{
 	
 	public function saveProdutoOutrosPJAction()
 	{
-		$produto = new Application\Models\ProdutoOutrosPJ();
+		$produto = new Application\Models\ProdutoOutros();
 		$id_produto = $produto->add($_POST);
 		
 		if($id_produto){
@@ -107,7 +107,7 @@ class ProdutoOutrosController extends OXE_Controller{
 	
 	public function removeProdutoOutrosPJAction()
 	{
-		$produto = new Application\Models\ProdutoOutrosPJ();
+		$produto = new Application\Models\ProdutoOutros();
 		
 		$param = func_get_args();
 		 

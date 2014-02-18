@@ -104,14 +104,14 @@ class SeguroController extends OXE_Controller{
 	
 	public function saveSeguroPJAction()
 	{
-		$seguro = new Application\Models\SeguroPJ();
+		$seguro = $this->model;
 		
-		if($_FILES['voucher_seguroPJ']['size'] > 0 && $_FILES['voucher_seguroPJ']['error'] == UPLOAD_ERR_OK){
-			$file = explode('.',$_FILES['voucher_seguroPJ']['name']);
+		if($_FILES['voucher_seguro']['size'] > 0 && $_FILES['voucher_seguro']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.',$_FILES['voucher_seguro']['name']);
 			$ext = '.'.end($file);
 			$name = md5(time().$file[0]);
-			move_uploaded_file($_FILES['voucher_seguroPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
-			$_POST['voucher_seguroPJ'] = UPLOAD_PATH.$name.$ext;
+			move_uploaded_file($_FILES['voucher_seguro']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_seguro'] = UPLOAD_PATH.$name.$ext;
 		}
 		
 		$id_seguro = $seguro->add($_POST);
@@ -126,7 +126,7 @@ class SeguroController extends OXE_Controller{
 	
 	public function removeSeguroPJAction()
 	{
-		$seguro = new Application\Models\SeguroPJ();
+		$seguro = new Application\Models\Seguro();
 		$param = func_get_args();
 		$foto = $seguro->list_once($param[1]);
 		
@@ -137,7 +137,7 @@ class SeguroController extends OXE_Controller{
 			if(count($_SESSION['seguro']['id']) == 0){
 				unset($_SESSION['seguro']);
 			}
-			unlink($foto['voucher_seguroPJ']);
+			unlink($foto['voucher_seguro']);
 			$this->session->setFlashMessage('Seguro removido da lista de Venda.','success');
 			$this->redirector('/vendaPJ/cadVendaPJ');
 		}

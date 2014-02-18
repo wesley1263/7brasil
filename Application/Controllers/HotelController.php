@@ -96,20 +96,19 @@ class HotelController extends OXE_Controller{
 	
 	public function saveHotelPJAction()
 	{
-		if($_FILES['voucher_hotelPJ']['size'] > 0 && $_FILES['voucher_hotelPJ']['error'] == UPLOAD_ERR_OK){
+		if($_FILES['voucher_hotel']['size'] > 0 && $_FILES['voucher_hotel']['error'] == UPLOAD_ERR_OK){
 			
-			$file = explode('.',$_FILES['voucher_hotelPJ']['name']);
+			$file = explode('.',$_FILES['voucher_hotel']['name']);
 			$ext = '.'.end($file);
 			$name = md5(time().$file[0]);
-			move_uploaded_file($_FILES['voucher_hotelPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
-			$_POST['voucher_hotelPJ'] = UPLOAD_PATH.$name.$ext;
+			move_uploaded_file($_FILES['voucher_hotel']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_hotel'] = UPLOAD_PATH.$name.$ext;
 		}
 		
-		$_POST['nome_hotelPJ'] = strtoupper($_POST['nome_hotelPJ']);
+		$_POST['nome_hotel'] = strtoupper($_POST['nome_hotel']);
 		unset($_POST['is_br']);
 		
-		$hotelPJ = new Application\Models\HotelPJ();
-		$id_hotel = $hotelPJ->add($_POST);
+		$id_hotel = $this->model->add($_POST);
 		if($id_hotel){
 			$_SESSION['hotel']['id'][] = $id_hotel;
 			$this->session->setFlashMessage('Reserva de Hotel adicionado a lista de venda.','success');

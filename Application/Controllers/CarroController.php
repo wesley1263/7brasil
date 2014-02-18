@@ -117,23 +117,23 @@ class CarroController extends OXE_Controller{
 	public function saveCarroPJAction()
 	{
 		
-		$carroPJ = new Application\Models\CarroPJ();
 		
-		if($_FILES['voucher_carroPJ']['size'] > 0 && $_FILES['voucher_carroPJ']['error'] == UPLOAD_ERR_OK){
-			$file = explode('.', $_FILES['voucher_carroPJ']['name']);
+		
+		if($_FILES['voucher_carro']['size'] > 0 && $_FILES['voucher_carro']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.', $_FILES['voucher_carro']['name']);
 			$ext = '.'.end($file);
 			$name = md5(time().$file[0]);
-			move_uploaded_file($_FILES['voucher_carroPJ']['tmp_name'],UPLOAD_PATH.$name.$ext);
-			$_POST['voucher_carroPJ'] = UPLOAD_PATH.$name.$ext;
+			move_uploaded_file($_FILES['voucher_carro']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_carro'] = UPLOAD_PATH.$name.$ext;
 		}
-		$ini = $_POST['dt_inicio_carroPJ'].' '.$_POST['hora_inicio_carroPJ'];
-		$fim = $_POST['dt_devolucao_carroPJ'].' '.$_POST['hora_devolucao_carroPJ'];
+		$ini = $_POST['dt_inicio_carro'].' '.$_POST['hora_inicio_carro'];
+		$fim = $_POST['dt_devolucao_carro'].' '.$_POST['hora_devolucao_carro'];
 		
-		$_PÒST['dt_inicio_carroPJ'] = $ini;
-		$_PÒST['dt_devolucao_carroPJ'] = $fim;
-		unset($_POST['hora_inicio_carroPJ']);
-		unset($_POST['hora_devolucao_carroPJ']);
-		$id_carro = $carroPJ->add($_POST);
+		$_PÒST['dt_inicio_carro'] = $ini;
+		$_PÒST['dt_devolucao_carro'] = $fim;
+		unset($_POST['hora_inicio_carro']);
+		unset($_POST['hora_devolucao_carro']);
+		$id_carro = $this->model->add($_POST);
 		
 		if($id_carro){
 			$_SESSION['carro']['id'][] = $id_carro;
@@ -145,11 +145,11 @@ class CarroController extends OXE_Controller{
 	
 	public function removeCarroPJAction()
 	{
-		$carroPJ = new Application\Models\CarroPJ();
+		$carroPJ = $this->model;
 		$param = func_get_args();
 		$voucher = $carroPJ->list_once($param[1]);
 		if($carroPJ->remove($param[1])){
-			unlink($voucher['voucher_carroPJ']);
+			unlink($voucher['voucher_carro']);
 			 $key = array_search($param[1], $_SESSION['carro']['id']);
 			unset($_SESSION['carro']['id'][$key]);
 			if(count($_SESSION['carro']['id']) == 0){

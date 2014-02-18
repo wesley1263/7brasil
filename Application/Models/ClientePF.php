@@ -84,4 +84,9 @@ class ClientePF extends OXE_Model {
 	{
 		return $this->fetch("cnpj_clientePJ = '$cnpj'");
 	}
+	
+	public function lista_um($id)
+	{
+		return $this->fetch($this->_primary." = '$id'");
+	}
 }

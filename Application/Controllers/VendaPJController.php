@@ -88,20 +88,19 @@ class VendaPJController extends OXE_Controller{
 		
 		############ Populando Carros #################
 		if(isset($_SESSION['carro'])){
-			$carroPJ = new Application\Models\CarroPJ(); 
+			$carroPJ = new Application\Models\Carro(); 
 			$sess_carro = $this->session->getSession('carro');
 			$arrayCarro = array();
 			foreach ($sess_carro['id'] as $key => $value) {
 				$arrayCarro[] = $carroPJ->list_once($value);
 			}
-			
 			$data['carros'] = $arrayCarro;
 		}
 		
 		
 		############## Populando Hotel ###############
 		if(isset($_SESSION['hotel'])){
-			$hotelPJ = new Application\Models\HotelPJ();
+			$hotelPJ = new Application\Models\Hotel(); 
 			$arrayHotel = array();
 			$sess_hotel = $this->session->getSession('hotel');
 			
@@ -115,7 +114,7 @@ class VendaPJController extends OXE_Controller{
 		if(isset($_SESSION['seguro'])){
 			$sess_seguro = $this->session->getSession('seguro');
 			$arraySeguro = array();
-			$seguro = new Application\Models\SeguroPJ();
+			$seguro = new Application\Models\Seguro();
 			foreach ($sess_seguro['id'] as $key => $value) {
 				$arraySeguro[] = $seguro->list_once($value);
 			}
@@ -128,7 +127,7 @@ class VendaPJController extends OXE_Controller{
 		if(isset($_SESSION['ticket'])){
 			$sess_ticket = $this->session->getSession('ticket');
 			$arrayTicket = array();
-			$compTicket = new Application\Models\CompraTicketPJ();
+			$compTicket = new Application\Models\CompraTicket();
 			foreach ($sess_ticket['id'] as $key => $value) {
 				$arrayTicket[] = $compTicket->list_once($value);
 			}
@@ -140,7 +139,7 @@ class VendaPJController extends OXE_Controller{
 		if(isset($_SESSION['cruzeiro'])){
 			$sess_cruzeiro = $this->session->getSession('cruzeiro');
 			$arrayCruzeiro = array();
-			$cruzeiro = new Application\Models\CruzeiroPJ();
+			$cruzeiro = new Application\Models\Cruzeiro();
 			foreach ($sess_cruzeiro['id'] as $key => $value) {
 				$arrayCruzeiro[] = $cruzeiro->list_once($value);
 			}
@@ -152,7 +151,7 @@ class VendaPJController extends OXE_Controller{
 		if(isset($_SESSION['produto'])){
 			$sess_produto = $this->session->getSession('produto');
 			$arrayProduto = array();
-			$produto = new Application\Models\ProdutoOutrosPJ();
+			$produto = new Application\Models\ProdutoOutros();
 			foreach ($sess_produto['id'] as $key => $value) {
 				$arrayProduto[] = $produto->list_once($value);
 			}
@@ -164,7 +163,7 @@ class VendaPJController extends OXE_Controller{
 		if(isset($_SESSION['passagens'])){
 			$sess_passagem = $this->session->getSession('passagens');
 			$arrayPassagem = array();
-			$passagem = new Application\Models\PassagensPJ();
+			$passagem = new Application\Models\Passagens();
 			foreach ($sess_passagem['id'] as $key => $value) {
 				$arrayPassagem[] = $passagem->list_once($value);
 			}
@@ -177,7 +176,7 @@ class VendaPJController extends OXE_Controller{
 		if(isset($_SESSION['formaPagamento'])){
 			$sess_forma = $this->session->getSession('formaPagamento');
 			$arrayForma = array();
-			$forma = new Application\Models\FormaPagamentoPJ();
+			$forma = new Application\Models\FormaPagamento();
 			foreach ($sess_forma['id'] as $key => $value) {
 				$arrayForma[] = $forma->list_once($value);
 			}
@@ -208,7 +207,7 @@ class VendaPJController extends OXE_Controller{
 		$data['agencia'] = $agencia->list_all();
 		$data['tipoPagamento'] = $tipoPagamento->list_all();
 		$data['tipoCartao'] = $tipoCartao->list_all();
-		$data['cartaoPJ'] = new Application\Models\CartaoPJ();
+		$data['cartaoPJ'] = new Application\Models\CartaoPF();
 		
 				
 		$this->view('template/head',$data);
@@ -222,41 +221,44 @@ class VendaPJController extends OXE_Controller{
 		
 		$data = array();
 		$user = $this->session->getSession('user');
-		$data['id_usuario'] = str_pad($user['id_usuario'],3,0,STR_PAD_LEFT);
-		$data['id_agencia'] = $_POST['id_agencia'];
-		$data['id_agente'] = $_POST['id_agente'];
-		$data['valor_agencia'] = $_POST['valor_agencia'];
-		$data['valor_agente'] = $_POST['valor_agente'];
+		$data['id_usuario'] = $user['id_usuario'];
+		$data['id_agencia'] = isset($_POST['id_agencia']) ? $_POST['id_agencia'] : null;
+		$data['id_agente'] = isset($_POST['id_agente']) ? $_POST['id_agente'] : null;
+		$data['valor_agencia'] = isset($_POST['valor_agencia']) ? $_POST['valor_agencia'] : null;
+		$data['valor_agente'] = isset($_POST['valor_agente']) ? $_POST['valor_agente'] : null;
 		$data['valor_casa'] = $_POST['total_comissao'];
 		$data['total_venda'] = $_POST['total_venda'];
 		$data['data_venda'] = date('Y-m-d H:i');
-		$data['descricao_vendaPJ'] = $_POST['descricao_venda'];
-		$data['faturado_vendaPJ'] = $_POST['faturado_vendaPJ'];
+		$data['descricao_venda'] = $_POST['descricao_venda'];
+		$data['faturado_venda'] = isset($_POST['faturado_venda']) ? $_POST['faturado_venda'] : null;
 		
-		$id_venda = $this->model->add($data);
+		
+		$venda = new Application\Models\Venda();
+		
+		$id_venda = $venda->add($data);
 		if($id_venda){
-			$data2['id_vendaPJ'] = $id_venda;
-			$data2['nm_processo_vendaPJ'] = $user['id_usuario'].date('mY').$id_venda;
-			if($this->model->alter($data2)){
+			$data2['id_venda'] = $id_venda;
+			$data2['nm_processo_venda'] = $user['id_usuario'].date('mY').$id_venda;
+			if($venda->alter($data2)){
 				
 				$id_empresa = $_SESSION['empresa']['id'];
 				
 				############ Adicionando Funcionários para tabela venda  #############
-				$vendaCliente = new Application\Models\VendaClientePJ();
-				$dependente = new Application\Models\VendaDependentePJ();
+				$vendaCliente = new Application\Models\VendaClientePF();
+				$dependente = new Application\Models\VendaDependentePF();
 				$funcionario = $this->session->getSession('funcionarios');
 				$arrayVendaPJ = array();
 				
 					$arrayVendaPJ['id_venda'] = $id_venda;
-					$arrayVendaPJ['id_clientePJ'] = $id_empresa;
+					$arrayVendaPJ['id_clientePF'] = $id_empresa;
 					$vendaCliente->add($arrayVendaPJ);
 					
 					$arrayDependente = array();
 					
 				foreach ($funcionario['id'] as $key => $value) {
-					$arrayDependente['id_vendaPJ'] = $id_venda;
-					$arrayDependente['id_clientePJ'] = $id_empresa;
-					$arrayDependente['id_dependentePJ'] = $value;
+					$arrayDependente['id_venda'] = $id_venda;
+					// $arrayDependente['id_clientePF'] = $id_empresa;
+					$arrayDependente['id_dependentePF'] = $value;
 					
 					$dependente->add($arrayDependente);
 				}
@@ -264,7 +266,7 @@ class VendaPJController extends OXE_Controller{
 				###### Formas de pagamento ###########
 				if(isset($_SESSION['formaPagamento'])){
 					$sess_forma = $this->session->getSession('formaPagamento');
-					$forma = new Application\Models\FormaPagamentoPJ();
+					$forma = new Application\Models\FormaPagamento();
 					// se forma de pagamento for o crédito da empresa
 					foreach ($sess_forma['id'] as $key => $value) {
 						//Array vázio para forma de pagamento
@@ -274,31 +276,33 @@ class VendaPJController extends OXE_Controller{
 						//Array vázio para alterar o valor de credito da empresa
 						$array = array();
 						if($id_form['id_tipoPagamento'] == null){
-							$clientePJ = new ClientePJ();
-							$cliente = $clientePJ->list_once($id_form['id_clientePJ']);
+							$clientePJ = new ClientePF();
+							$cliente = $clientePJ->list_once($id_form['id_clientePF']);
 							
-							$array['id_clientePJ'] = $id_form['id_clientePJ'];
+							$array['id_clientePF'] = $id_form['id_clientePF'];
 							$array['credito_clientePJ'] = ($cliente[0]['credito_clientePJ'] - $data['total_venda']);
 							$clientePJ->update_cli($array);
 						}
-						$arrayForma['id_formaPagamentoPJ'] = $value;
-						$arrayForma['id_vendaPJ'] = $id_venda;
+						$arrayForma['id_formaPagamento'] = $value;
+						$arrayForma['id_venda'] = $id_venda;
 						$forma->alter($arrayForma);
 						 
 					}
 					
 				}
 				
+				
 				############ Para Ticket #############
 				if(isset($_SESSION['ticket'])){
 				$sess_ticket = $this->session->getSession('ticket');
 				$arrayTicket = array();
-				$compTicket = new Application\Models\CompraTicketPJ();
-				$clienteTicket = new Application\Models\TicketClientePJ();
+				$compTicket = new Application\Models\CompraTicket();
+				$clienteTicket = new Application\Models\ClienteTicket();
 				foreach ($sess_ticket['id'] as $key => $value) {
-						$arrayTicket['id_compraTicketPJ'] = $value;
-						$arrayTicket['id_clientePJ'] = $id_empresa;
-						$arrayTicket['id_vendaPJ'] = $id_venda;
+						$arrayTicket['id_compraTicket'] = $value;
+						$arrayTicket['id_clientePF'] = $id_empresa;
+						$arrayTicket['id_participacao'] = 2;
+						$arrayTicket['id_venda'] = $id_venda;
 						
 						$clienteTicket->add($arrayTicket);
 				}
@@ -307,17 +311,16 @@ class VendaPJController extends OXE_Controller{
 			
 				############ Populando Carros #################
 				if(isset($_SESSION['carro'])){
-					$carroPJ = new Application\Models\CarroPJ(); 
-					$carroCliente = new Application\Models\CarroClientePJ();
+					$carroPJ = new Application\Models\Carro(); 
+					$carroCliente = new Application\Models\CarroClientePF();
 					$sess_carro = $this->session->getSession('carro');
 					$arrayCarro = array();
 					foreach ($sess_carro['id'] as $key => $value) {
-							$arrayCarro['id_carroPJ'] = $value;
-							$arrayCarro['id_vendaPJ'] = $id_venda;
-							$arrayCarro['id_clientePJ'] = $id_empresa;
+							$arrayCarro['id_carros'] = $value;
+							$arrayCarro['id_venda'] = $id_venda;
+							$arrayCarro['id_clientePF'] = $id_empresa;
 							
 							$carroCliente->add($arrayCarro);
-					
 				}
 				
 			  }
@@ -326,16 +329,27 @@ class VendaPJController extends OXE_Controller{
 			
 			############ Populando Hotel #################
 				if(isset($_SESSION['hotel'])){
-					$hotelCliente = new Application\Models\HotelClientePJ();
+					$hotelCliente = new Application\Models\HotelClientePF();
 					$sess_hotel = $this->session->getSession('hotel');
 					$arrayHotel = array();
+					$id_hotel = null;
 					foreach ($sess_hotel['id'] as $key => $value) {
-							$arrayHotel['id_hotelPJ'] = $value;
-							$arrayHotel['id_vendaPJ'] = $id_venda;
-							$arrayHotel['id_clientePJ'] = $id_empresa;
+							$arrayHotel['id_hotel'] = $value;
+							$arrayHotel['id_venda'] = $id_venda;
+							$arrayHotel['id_clientePF'] = $id_empresa;
+							$arrayHotel['id_participacao'] = 2;
 							
-							$hotelCliente->add($arrayHotel);
+							$id_hotel = $hotelCliente->add($arrayHotel);
 				}
+					$data = array();
+					$modelDependente = new Application\Models\HotelDependentePF();
+					foreach ($funcionario['id'] as $key => $value) {
+						$data['id_hoteis'] = $id_empresa;
+						$data['id_dependentePF'] = $value;
+						$data['id_venda'] = $id_venda;
+						
+						$modelDependente->add($data);
+					}
 				
 			  }
 				
@@ -343,13 +357,14 @@ class VendaPJController extends OXE_Controller{
 			
 			############ Populando Seguro #################
 				if(isset($_SESSION['seguro'])){
-					$seguroCliente = new Application\Models\AsseguradoPJ();
+					$seguroCliente = new Application\Models\AsseguradoPF();
 					$sess_seguro = $this->session->getSession('seguro');
 					$arraySeguro = array();
 					foreach ($sess_seguro['id'] as $key => $value) {
-							$arraySeguro['id_seguroPJ'] = $value;
-							$arraySeguro['id_vendaPJ'] = $id_venda;
-							$arraySeguro['id_clientePJ'] = $id_empresa;
+							$arraySeguro['id_seguro'] = $value;
+							$arraySeguro['id_venda'] = $id_venda;
+							$arraySeguro['id_clientePF'] = $id_empresa;
+							$arraySeguro['id_participacao'] = 2;
 							
 							$seguroCliente->add($arraySeguro);
 				}
@@ -360,13 +375,14 @@ class VendaPJController extends OXE_Controller{
 				
 				############ Populando Cruzeiro #################
 				if(isset($_SESSION['cruzeiro'])){
-					$cruzeiroCliente = new Application\Models\CruzeiroClientePJ();
+					$cruzeiroCliente = new Application\Models\CruzeiroClientePF();
 					$sess_cruzeiro = $this->session->getSession('cruzeiro');
 					$arrayCruzeiro = array();
 					foreach ($sess_cruzeiro['id'] as $key => $value) {
-							$arrayCruzeiro['id_cruzeiroPJ'] = $value;
-							$arrayCruzeiro['id_vendaPJ'] = $id_venda;
-							$arrayCruzeiro['id_clientePJ'] = $id_empresa;
+							$arrayCruzeiro['id_cruzeiro'] = $value;
+							$arrayCruzeiro['id_venda'] = $id_venda;
+							$arrayCruzeiro['id_clientePF'] = $id_empresa;
+							$arrayCruzeiro['id_participacao'] = 2;
 							
 							$cruzeiroCliente->add($arrayCruzeiro);
 				}
@@ -377,13 +393,14 @@ class VendaPJController extends OXE_Controller{
 			
 			############ Populando Produto #################
 				if(isset($_SESSION['produto'])){
-					$produtoCliente = new Application\Models\ProdutoOutroClientePJ();
+					$produtoCliente = new Application\Models\OutroProdutoPF();
 					$sess_produto = $this->session->getSession('produto');
 					$arrayProduto = array();
 					foreach ($sess_produto['id'] as $key => $value) {
-							$arrayProduto['id_produtoPJ'] = $value;
-							$arrayProduto['id_vendaPJ'] = $id_venda;
-							$arrayProduto['id_clientePJ'] = $id_empresa;
+							$arrayProduto['id_produto'] = $value;
+							$arrayProduto['id_venda'] = $id_venda;
+							$arrayProduto['id_clientePF'] = $id_empresa;
+							$arrayProduto['id_participacao'] = 2;
 							
 							$produtoCliente->add($arrayProduto);
 				}
@@ -393,13 +410,15 @@ class VendaPJController extends OXE_Controller{
 			
 			############ Populando Passagend #################
 				if(isset($_SESSION['passagens'])){
-					$passagensCliente = new Application\Models\PassagensClientePJ();
+					$passagensCliente = new Application\Models\AdicionaClientePF();
 					$sess_passagens = $this->session->getSession('passagens');
 					$arrayPassagem = array();
 					foreach ($sess_passagens['id'] as $key => $value) {
-							$arrayPassagem['id_passagensPJ'] = $value;
-							$arrayPassagem['id_vendaPJ'] = $id_venda;
-							$arrayPassagem['id_clientePJ'] = $id_empresa;
+						
+							$arrayPassagem['id_passagens'] = $value;
+							$arrayPassagem['id_venda'] = $id_venda;
+							$arrayPassagem['id_clientePF'] = $id_empresa;
+							$arrayPassagem['id_participacao'] = 2;
 							
 							$passagensCliente->add($arrayPassagem);
 				}
@@ -521,16 +540,16 @@ class VendaPJController extends OXE_Controller{
 	
 	public function cadTipoPagamentoPJAction()
 	{
-		$formaPagamento = new Application\Models\FormaPagamentoPJ();
-		$empresa = new Application\Models\ClientePJ();
+		$formaPagamento = new Application\Models\FormaPagamento();
+		$empresa = new Application\Models\ClientePF();
 		$credito = $empresa->lista_um($_SESSION['empresa']['id']);
 		$array = array();
 		
 		if(isset($_POST['creadito_empresa'])){
-			$array['id_clientePJ'] = $_POST['id_clientePJ'];
-			$array['id_vendaPJ'] = null;
-			$array['valor_formaPagamentoPJ'] = $_POST['creadito_empresa'];
-			$array['vezes_formaPagamentoPJ'] = 1;
+			$array['id_clientePF'] = $_POST['id_clientePF'];
+			$array['id_venda'] = null;
+			$array['valor_formaPagamento'] = $_POST['creadito_empresa'];
+			$array['vezes_formaPagamento'] = 1;
 			$array['id_tipoCartao'] = null;
 			$array['id_tipoPagamento'] = null;
 			
@@ -541,14 +560,14 @@ class VendaPJController extends OXE_Controller{
 		
 		$arrayForm = array();
 		$data = array();
-		$arrayForm['id_clientePJ'] = $_POST['id_clientePJ'];
-		$arrayForm['id_vendaPJ'] = null;
+		$arrayForm['id_clientePF'] = $_POST['id_clientePF'];
+		$arrayForm['id_venda'] = null;
 		
 		
 		$arrayForm2 = array();
 		$data2 = array();
-		$arrayForm2['id_clientePJ'] = $_POST['id_clientePJ'];
-		$arrayForm2['id_vendaPJ'] = null;
+		$arrayForm2['id_clientePF'] = $_POST['id_clientePF'];
+		$arrayForm2['id_venda'] = null;
 		
 		foreach($_POST as $key => $value){
 			if(preg_match("/^([a-z]+_[\d])$/", $key)){
@@ -556,12 +575,12 @@ class VendaPJController extends OXE_Controller{
 					$tipo = explode('_',$key);
 					$arrayForm['id_tipoPagamento'] = $tipo[1];
 					$arrayForm['id_tipoCartao'] = null;
-					$arrayForm['valor_formaPagamentoPJ'] = $value;
+					$arrayForm['valor_formaPagamento'] = $value;
 				}
 				
 				if(preg_match("/^([vezes_])/", $key)){
 					$vezes = explode('_',$key);
-					$arrayForm['vezes_formaPagamentoPJ'] = $value;
+					$arrayForm['vezes_formaPagamento'] = $value;
 					$data[] = $arrayForm;
 				}
 			}
@@ -571,12 +590,12 @@ class VendaPJController extends OXE_Controller{
 					$tipo = explode('_',$key);
 					$arrayForm2['id_tipoPagamento'] = $tipo[1];
 					$arrayForm2['id_tipoCartao'] = $tipo[2];
-					$arrayForm2['valor_formaPagamentoPJ'] = $value;
+					$arrayForm2['valor_formaPagamento'] = $value;
 				}
 				
 				if(preg_match("/^([vezes_])/", $key)){
 					$vezes = explode('_',$key);
-					$arrayForm2['vezes_formaPagamentoPJ'] = $value;
+					$arrayForm2['vezes_formaPagamento'] = $value;
 					$data2[] = $arrayForm2;
 					
 				}
@@ -586,13 +605,13 @@ class VendaPJController extends OXE_Controller{
 		
 		
 		foreach ($data as $key => $value) {
-			if($value['valor_formaPagamentoPJ'] == null){
+			if($value['valor_formaPagamento'] == null){
 				unset($data[$key]);
 			}
 		}
 		
 		foreach ($data2 as $key => $value) {
-			if($value['valor_formaPagamentoPJ'] == null){
+			if($value['valor_formaPagamento'] == null){
 				unset($data2[$key]);
 			}
 		}

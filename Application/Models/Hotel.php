@@ -20,8 +20,7 @@ class Hotel extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		$query = "SELECT * FROM $this->_name WHERE $this->_primary = '$id'";
-		return $this->query($query);
+		return $this->fetch("$this->_primary = $id");
 	}
 	
 	public function add(array $data)
