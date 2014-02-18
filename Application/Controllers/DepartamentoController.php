@@ -2,7 +2,7 @@
 
 use Vendor\Core\OXE_Controller;
 use Application\Models\Departamento;
-use Application\Models\ClientePJ;
+use Application\Models\ClientePF;
 use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
@@ -15,7 +15,7 @@ class DepartamentoController extends OXE_Controller{
 		$this->form = new FormStyle();
 		$this->session = new Session();
 		$this->table = new Table();
-		$this->cliente = new ClientePJ();
+		$this->cliente = new ClientePF();
 		
 		//Verifica se o usuário está logado
 		$user = $this->session->getSession('user');

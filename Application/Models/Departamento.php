@@ -42,18 +42,18 @@ class Departamento extends OXE_Model {
 	{
 		return $this->select(array('dep.*','cli.*'))
 					->from($this->_name,'dep')
-					->join(array('tbl_clientePJ'=>'cli'),'cli.id_clientePJ = dep.id_clientePJ')
+					->join(array('tbl_clientePF'=>'cli'),'cli.id_clientePF = dep.id_clientePF')
 					->result();
 	}
 	
 	public function findDepart(array $data)
 	{
 		$nomeDep = $data['nome_departamento'];
-		$id_empresa = $data['id_clientePJ'];
+		$id_empresa = $data['id_clientePF'];
 		$codigo = $data['codigo_centrocusto'];
 		
 		$query = "SELECT * FROM $this->_name WHERE TRUE 
-				 AND id_clientePJ = $id_empresa
+				 AND id_clientePF = $id_empresa
 				 AND codigo_centrocusto = '$codigo'";
 		
 		return $this->query($query);	
@@ -66,11 +66,11 @@ class Departamento extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}	
 	
-	public function getDepartamento($id_clientePJ)
+	public function getDepartamento($id_clientePF)
 	{
 		return $this->select()
 					->from()
-					->where("id_clientePJ = $id_clientePJ")
+					->where("id_clientePF = $id_clientePF")
 					->result();
 	}
 	

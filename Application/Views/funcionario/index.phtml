@@ -11,8 +11,9 @@ if(isset($_SESSION['error'])){
 <h3 style="color: #C7187D">Cadastrado de Funcionario</h3>
 <br />
 	<a href="/funcionario/cadFuncionario" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+<br />
 	
-	<form class="navbar-form navbar-right" role="search">
+	<!-- <form class="navbar-form navbar-right" role="search">
   <div class="form-group">
     <input type="text" class="form-control" placeholder="Nome" name="nome_funcionario">
   </div>
@@ -24,8 +25,15 @@ if(isset($_SESSION['error'])){
    	<option>TODOS</option>
    	<?php
    	foreach($empresas as $dep){
-   		echo '<option value="'.$dep['id_clientePJ'].'">'.$dep['nomefantasia_clientePJ'].'</option>';
+   		if($dep['tipo_cliente'] == '2'){
+	   		echo '<option value="'.$dep['id_clientePF'].'">'.$dep['nomefantasia_clientePJ'].'</option>';
+   		}
    	}
+	
+	foreach ($empresa as $key => $value) {
+		if($value['tipo_cliente'] == '2')
+		$opt_cliente[$value['id_clientePF']] = $value['nomefantasia_clientePJ'];
+	}
 	?>
    </select>
   </div>
@@ -36,19 +44,22 @@ if(isset($_SESSION['error'])){
   	</select>
   </div>
   <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
-</form>
+</form> -->
 <br>
 	<?php
-	$table->t_init('class="table table-bordered"');
-	$table->t_head(array('Nome','CPF','Empresa','Editar','Excluir'));
+	$table->t_init('class="table table-bordered" id="tbl_dep"');
+	$table->t_head(array('Nome','CPF','Empresa','Status','Editar','Excluir'));
+	
 	
 	foreach($dependentes as $dep){
+		if($dep['id_departamento'] != null)
 		$table->t_row(array(
-			$dep['nome_dependentePJ'],
-			$dep['cpf_dependentePJ'],
-			$dep['nomefantasia_clientePJ'],
-			'<center><a href="/funcionario/updateFuncionario/id/'.$dep['id_dependentePJ'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-			'<center><a href="/funcionario/removeFuncionario/id/'.$dep['id_dependentePJ'].'" onclick="return confirm(\'Deseja Realmente remover '.$dep['nome_dependentePJ'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>')
+			$dep['nome_dependente'],
+			$dep['cpf_dependente'],
+			$opt_cliente[$dep['id_clientePF']],
+			$dep['status_dependente'] == 1 ? 'Ativo' : 'Inativo',
+			'<center><a href="/funcionario/updateFuncionario/id/'.$dep['id_dependentePF'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+			'<center><a href="/funcionario/removeFuncionario/id/'.$dep['id_dependentePF'].'" onclick="return confirm(\'Deseja Realmente remover '.$dep['nome_dependente'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>')
 			);
 	}
 	$table->generate();
@@ -57,5 +68,6 @@ if(isset($_SESSION['error'])){
 <script>
 	jQuery(function(){
 		jQuery('[name=cpf_dependente]').mask('999.999.999-99');
+		jQuery('#tbl_dep').dataTable();
 	});
 </script>

@@ -1,21 +1,22 @@
 <div class="form_cli_pj">
 	<fieldset id="form_clientePJ">
-		<h3 style="color: #c7187d">Cadastro de Empresa</h3>
+		<h3 style="color: #c7187d">Cadastrar dados de Empresa</h3>
 		<br />
 <?php
-	if(isset($_SESSION['success'])){
-		echo '<div class="alert alert-success">'.$this->session->getFlashMessage('success').'</div>';
-	}
-	
-	if(isset($_SESSION['error'])){
-		echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
-	}
-	
-
+	// $this->dump($cards);
 	$form->init('form_cli_pj','/cliente/saveJuridica');	
-	
 		######## Logotipo ##########
 		$form->groupOpen();	
+		$form->input(array(
+						'name' =>'tipo_cliente',
+						'type' =>'hidden',
+						'placeholder' => '',
+						'num_label' =>'2',
+						'num_input' =>'5',
+						'label' =>'',
+						'value' => '2',
+						'required' => false
+						));
 		$form->input(array(
 						'name' =>'logotipo_clientePJ',
 						'type' =>'file',
@@ -38,7 +39,7 @@
 					'num_label' =>'2',
 					'num_input' =>'8',
 					'label' =>'Razão Social',
-					'value' =>'',
+					'value' => '',
 					'required' => false
 					));
 		$form->groupClose();		
@@ -53,7 +54,7 @@
 						'num_label' =>'2',
 						'num_input' =>'8',
 						'label' =>'* Nome Fantasia',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));
 		$form->groupClose();
@@ -68,7 +69,7 @@
 						'num_label' =>'2',
 						'num_input' =>'5',
 						'label' =>'* CNPJ',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));		
 		$form->groupClose();		
@@ -76,13 +77,13 @@
 		######### CEP	############
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'cep_clientePJ',
+						'name' =>'cep_cliente',
 						'type' =>'text',
 						'placeholder' => 'CEP',
 						'num_label' =>'2',
 						'num_input' =>'2',
 						'label' =>'* CEP',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));		
 		$form->groupClose();
@@ -91,13 +92,13 @@
 		######### Endereço	############
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'endereco_clientePJ',
+						'name' =>'endereco_cliente',
 						'type' =>'text',
 						'placeholder' => 'Endereço',
 						'num_label' =>'2',
 						'num_input' =>'8',
 						'label' =>'* Endereço',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));		
 		$form->groupClose();		
@@ -106,23 +107,23 @@
 		######### Número e Complemento ############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'numero_clientePJ',
+						'name' =>'numero_cliente',
 						'type' =>'text',
 						'placeholder' => 'Número',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>'* Número',
-						'value' =>'',
+						'value' => '',
 						'required' => false
 						));
 		$form->input(array(
-						'name' =>'complemento_clientePJ',
+						'name' =>'complemento_cliente',
 						'type' =>'text',
 						'placeholder' => 'Complemento',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' Complemento',
-						'value' =>'',
+						'value' => '',
 						'required' => false
 						));
 		$form->groupClose();
@@ -131,23 +132,23 @@
 		######### Bairro e cidade ############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'bairro_clientePJ',
+						'name' =>'bairro_cliente',
 						'type' =>'text',
 						'placeholder' => 'Bairro',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>'* Bairro',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));
 		$form->input(array(
-						'name' =>'cidade_clientePJ',
+						'name' =>'cidade_cliente',
 						'type' =>'text',
 						'placeholder' => 'Cidade',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' Cidade',
-						'value' =>'',
+						'value' => '',
 						'required' => false
 						));
 		$form->groupClose();
@@ -156,23 +157,23 @@
 		######### UF - Pais ############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'uf_clientePJ',
+						'name' =>'uf_cliente',
 						'type' =>'text',
 						'placeholder' => 'UF',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' UF',
-						'value' =>'',
+						'value' => '',
 						'required' => false
 						));
 		$form->input(array(
-						'name' =>'pais_clientePJ',
+						'name' =>'pais_cliente',
 						'type' =>'text',
 						'placeholder' => 'País',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' País',
-						'value' =>'',
+						'value' => '',
 						'required' => false
 						));
 		$form->groupClose();
@@ -181,76 +182,76 @@
 		######### Telefone	############		
 		$form->groupOpen();		
 		$form->input(array(
-								'name' =>'telefone_clientePJ',
-								'type' =>'text',
-								'placeholder' => 'Telefone',
-								'num_label' =>'2',
-								'num_input' =>'3',
-								'label' =>'* Telefone',
-								'value' =>'',
-								'required' => true
-								));
+						'name' =>'telefone1_clientePJ',
+						'type' =>'text',
+						'placeholder' => 'Telefone',
+						'num_label' =>'2',
+						'num_input' =>'3',
+						'label' =>'* Telefone',
+						'value' => '',
+						'required' => true
+						));
 		$form->input(array(
-								'name' =>'telefone2_clientePJ',
-								'type' =>'text',
-								'placeholder' => 'Telefone',
-								'num_label' =>'2',
-								'num_input' =>'3',
-								'label' =>' Telefone 2',
-								'value' =>'',
-								'required' => FALSE
-								));	
+						'name' =>'telefone2_clientePJ',
+						'type' =>'text',
+						'placeholder' => 'Telefone',
+						'num_label' =>'2',
+						'num_input' =>'3',
+						'label' =>' Telefone 2',
+						'value' => '',
+						'required' => FALSE
+						));	
 		$form->groupClose();		
 								
 								
 		######### email	############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'email_clientePJ',
+						'name' =>'email_cliente',
 						'type' =>'text',
 						'placeholder' => 'E-mail',
 						'num_label' =>'2',
 						'num_input' =>'8',
 						'label' =>'* E-mail',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));	
 		$form->groupClose();		
-								
-		echo '<hr>';
+			$num = 0;	
+				echo '<hr>';
 		?>
 		<fieldset id="cartao_credito">
 	<center><h3>Cartões de Crédito</h3></center>
 	<br>
-		<div id="cloneDiv1" class="cartoes">
+	
+				<div id="cloneDiv1" class="cartoes">
 			<div class="form-group">
 				<label for="numero_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control numero_cartaoPJ" id="numero_cartaoPJ" placeholder="Número Cartão" name="numero_cartaoPJ[]">
+				<input type="text" class="form-control numero_cartaoPJ" id="numero_cartaoPJ1" placeholder="Número Cartão" name="numero_cartaoPF[]" />
 				</div>
 				
 				<label for="codigo_seguranca_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Código Segurança</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control codigo_seguranca_cartaoPF" id="codigo_seguranca_cartaoPF" placeholder="Número Cartão" name="codigo_seguranca_cartaoPJ[]">
-				</div>
+				<input type="text" class="form-control codigo_seguranca_cartaoPJ" id="codigo_seguranca_cartaoPJ1" placeholder="Número Cartão" name="codigo_seguranca_cartaoPF[]" />
+					</div>
 			</div>
 			
 			<div class="form-group">
-				  <label for="id_tipoCartao[]" style="color: #797676;" class="col-sm-2 control-label">Bandeira</label> <div class="col-sm-3">
-				  	<select class="form-control" name="id_tipoCartao[]">
-				  		<option value="1" selected="">Master Card</option>
-				  		<option value="2">Visa</option>
-				  	</select>
-				  		</div>				
+				 	<?php 
+				  	foreach($tipoCartoes as $cart){
+				  		$opt_cart[$cart['id_tipoCartao']] = $cart['titulo_tipoCartao'];
+				  	}
+				  	$form->select($opt_cart,'id_tipoCartao[]','Tipo Cartão',1,2,3);
+				  	?>			
 				  		
 				  	<label for="dt_validade_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control dt_validade_cartaoPJ" id="dt_validade_cartaoPJ" placeholder="Data de Validade" name="dt_validade_cartaoPJ[]">
+				<input type="text" class="form-control dt_validade_cartaoPJ" id="dt_validade_cartaoPJ" placeholder="Data de Validade" name="dt_validade_cartaoPF[]" />
 				</div>
 			</div>
 			<hr>
 			</div>
-			
 			<div class="form-group">
 				<div class="col-sm-offset-5 col-sm-10">
 				<button type="button" style="padding: 5px 20px" id="bt_add_ct" title="Adicionar novo Cartão de Crédito" class="btn btn-warning bt_add_ct"><span class="glyphicon glyphicon-plus"></span></button>
@@ -262,9 +263,13 @@
 		<?php						
 		echo '<hr>';						
 		
-		######### Nome responsavel	############	
+		
+		######### Nome responsavel	############
+		foreach($classificacao as $class){
+			$opt_class[$class['id_classificacao']] = $class['titulo_classificacao'];
+		}	
 		$form->groupOpen();
-		$form->select(array('1' =>'Sr','2' =>'Sra'),'id_classificacao','Classificação','1');
+		$form->select($opt_class,'id_classificacao','Classificação',1);
 		$form->groupClose();		
 		
 		$form->groupOpen();		
@@ -326,14 +331,14 @@
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>'* Créditos',
-						'value' =>'',
+						'value' => '',
 						'required' => true
 						));	
-		$form->select(array('1' =>'Ativo','0' =>'Inativo'),'status_clientePJ','Status','1');
+		$form->select(array('1' =>'Ativo','0' =>'Inativo'),'status_cliente','Status',1);
 		$form->groupClose();
 
 		$form->groupOpen();		
-		$form->textarea('descricao_clientePJ','Descrição','','Descrição',2,8);
+		$form->textarea('descricao_cliente','Descrição','','Descrição',2,8);
 		$form->groupClose();
 
 		
@@ -341,7 +346,7 @@
 	echo str_repeat('<br />',3);
 
 	$form->groupOpen();		
-	$form->submit('Salvar','style="padding:5% 13%"');
+	$form->submit('Atualizar','style="padding:5% 13%"');
 	$form->groupClose();		
 	
 	$form->close();	
@@ -349,12 +354,13 @@
 ?>
 </fieldset>
 </div>
+<!-- </div> -->
 <script>
 	jQuery(function(){
 		jQuery('#nomefantasia_clientePJ').css('text-transform','uppercase');
 		
 		jQuery("#credito_clientePJ").maskMoney({thousands:'', decimal:'.'});
-		jQuery("#cep_clientePJ").mask('99999-999');
+		jQuery("#cep_cliente").mask('99999-999');
 		jQuery("#telefone_clientePJ").mask('(99)9999-9999');
 		jQuery("#telefone2_clientePJ").mask('(99)9999-9999');
 		jQuery("#cnpj_clientePJ").mask('99.999.999/9999-99');
@@ -363,7 +369,7 @@
 		jQuery("#dt_validade_cartaoPJ").mask('99/99/9999');
 		
 		
-		jQuery("#cep_clientePJ").blur(function(){
+		jQuery("#cep_cliente").blur(function(){
 			if(jQuery(this).val() != ''){
 				jQuery.ajax({
 					url: '/cliente/findCep',

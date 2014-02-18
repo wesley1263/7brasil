@@ -21,7 +21,7 @@
 </div>       
       
       
-      <?php //$this->dump($_SESSION); ?>
+      <?php $this->dump($_SESSION); ?>
       
       <?php foreach ($departamento->list_all() as $key => $value) {
           $opt_departamento[$value['id_departamento']] = $value['nome_departamento'];
@@ -132,9 +132,9 @@
 					<?php if(isset($_SESSION['empresa'])): ?>
 						<?php foreach ($departamento->list_all() as $key => $value): ?>
 							<p><label><strong><?=$value['nome_departamento']?></strong></label></p>
-						<?php  foreach ($funcionarios->getDependentePJ($_SESSION['empresa']['id']) as $chave => $valor) {
+						<?php  foreach ($funcionarios->getDependentePF($_SESSION['empresa']['id']) as $chave => $valor) {
 								if($value['id_departamento'] == $valor['id_departamento']){ ?>
-								<p><input type="checkbox" name="id_dependentePJ[]" value="<?=$valor['id_dependentePJ']?>" class="marcar" /> <?=$valor['nome_dependentePJ']?>  -  CPF: <?=$valor['cpf_dependentePJ']?></p>
+								<p><input type="checkbox" name="id_dependente[]" value="<?=$valor['id_dependentePF']?>" class="marcar" /> <?=$valor['nome_dependente']?>  -  CPF: <?=$valor['cpf_dependente']?></p>
 						
 						<?php
 								}
@@ -1986,7 +1986,7 @@
 				<?php foreach($empresa as $key => $value): ?>
 					<tr class="warning" id="empresa">
 						<td>EMPRESA: <?=$value['nomefantasia_clientePJ']?></td>
-						<td><?=$value['cidade_clientePJ']?></td>
+						<td><?=$value['cidade_cliente']?></td>
 						<td><a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalFuncionario" id_clientePJ="<?=$value['id_clientePJ']?>" id="bt_addFunc">Funcionário</a></td>
 						<td><a href="/vendaPJ/removeClientePJ" onclick="return confirm('Deseja realmente remover empresa da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
@@ -1999,10 +1999,10 @@
 			<?php if(isset($_SESSION['funcionarios'])): ?>
 				<?php foreach ($dependentes as $key => $value): ?>
 					<tr class="warning">
-					<td><?=$value['nome_dependentePJ']?></td>						
+					<td><?=$value['nome_dependente']?></td>						
 					<td><?=$opt_departamento[$value['id_departamento']]?></td>						
-					<td><?=$value['cpf_dependentePJ']?></td>						
-					<td><a href="/vendaPJ/removeDependentePJ/id/<?=$value['id_dependentePJ']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
+					<td><?=$value['cpf_dependente']?></td>						
+					<td><a href="/vendaPJ/removeDependentePJ/id/<?=$value['id_dependente']?>" onclick="return confirm('Deseja realmente remover funcionário da lista de Venda?')" class="btn btn-danger">Remover</a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -2215,13 +2215,14 @@
 					data: {cnpj : jQuery('#cnpj_clientePJ').val()},
 					success: function(data){
 						if(data){
-							jQuery('#id_PJ').val(data.id_clientePJ);
+							console.log(data);
+							jQuery('#id_PJ').val(data.id_clientePF);
 							jQuery('#nomefantasia_PJ').html('<strong>NOME FANTASIA:</strong> '+data.nomefantasia_clientePJ);
 							jQuery('#cnpj_PJ').html('<strong>CNPJ: </strong>' + data.cnpj_clientePJ);
-							jQuery('#endereco_PJ').html('<strong>ENDEREÇO: </strong>' +data.endereco_clientePJ);
-							jQuery('#cidade_PJ').html('<strong>CIDADE:</strong> ' +data.cidade_clientePJ);
-							jQuery('#uf_PJ').html('<strong>UF: ' + data.uf_clientePJ);
-							jQuery('#telefone_PJ').html('<strong>TELEFONE:</strong> '+data.telefone_clientePJ);
+							jQuery('#endereco_PJ').html('<strong>ENDEREÇO: </strong>' +data.endereco_cliente);
+							jQuery('#cidade_PJ').html('<strong>CIDADE:</strong> ' +data.cidade_cliente);
+							jQuery('#uf_PJ').html('<strong>UF: ' + data.uf_cliente);
+							jQuery('#telefone_PJ').html('<strong>TELEFONE:</strong> '+data.telefone1_clientePJ);
 						}else{
 							jQuery('.modal-body').html('<h2>Empresa não encontrada!</h2>');
 							jQuery('#bt_incluir').attr('disabled',true);

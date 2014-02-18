@@ -1,0 +1,50 @@
+<?php
+	$form->init('form_classificacao','/classificacao/saveClassificacao');
+	$id = isset($classif) ? $classif['id_classificacao'] : null;
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'id_classificacao',
+				'type' =>'hidden',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'',
+				'value' => $id,
+				'required' => true
+				));
+		$form->groupClose();
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'titulo_classificacao',
+				'type' =>'text',
+				'placeholder' => 'Titulo',
+				'num_label' =>'2',
+				'num_input' =>'5',
+				'label' =>'Titulo',
+				'value' => isset($classif) ? $classif['titulo_classificacao'] : null,
+				'required' => true
+				));
+		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_classificacao','Status',isset($classif) ? $classif['status_classificacao'] : 1,2,3);
+		$form->groupClose();
+		
+		echo str_repeat('<br />',3);
+		
+			$form->groupOpen();		
+			$form->submit('Salvar');
+			echo '<button class="btn btn-default" id="bt_back">Voltar</button>';
+			$form->groupClose();
+
+				$form->close();
+				
+?>
+<script>
+	jQuery(function(){
+		jQuery('#bt_back').click(function(){
+			location.href="/classificacao";
+		});
+	});
+</script>

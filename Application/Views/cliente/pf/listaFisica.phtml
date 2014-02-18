@@ -28,6 +28,7 @@
 		}
  ?>
 	<a href="/cliente/cadfisica" class="btn btn-success"><span class="glyphicon glyphicon-plus"> Novo</span></a>
+	<a href="/cliente" class="btn btn-info"><span class="glyphicon glyphicon-plus"> Voltar</span></a>
 	<br />
 	<br />
 	<div class="table-responsive">
@@ -37,7 +38,7 @@
 			foreach($clientes as $cliente){
 			$table->t_row(array($cliente['nome_clientePF'],
 								$cliente['cpf_clientePF'],
-								$cliente['uf_clientePF'],
+								$cliente['uf_cliente'],
 								$cliente['telefone_clientePF'],
 								'<center><a href="/cliente/updateFisica/id/'.$cliente['id_clientePF'].'"><span  class="glyphicon glyphicon-pencil"></span></a></center>',
 								'<center><a href="/cliente/deleteClientePF/id/'.$cliente['id_clientePF'].'" onclick=" return confirm(\'Deseja realmente remover '.$cliente['nome_clientePF'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'

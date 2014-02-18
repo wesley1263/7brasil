@@ -38,8 +38,8 @@ class CartaoPF extends OXE_Model {
 	
 	public function del($id_cliente)
 	{
-		
-		return $this->query("DELETE FROM $this->_name WHERE id_clientePF = $id_cliente");
+		$query = "DELETE FROM $this->_name WHERE id_clientePF = $id_cliente";
+		return $this->query($query);
 	}
 	
 	public function alter(array $data)
@@ -76,5 +76,13 @@ class CartaoPF extends OXE_Model {
 				  
 		return $this->query($query);
 					
+	}
+	
+	public function listCartCli($id)
+	{
+		return $this->select()
+					->from()
+					->where("id_clientePF = '$id'")
+					->result();
 	}
 }

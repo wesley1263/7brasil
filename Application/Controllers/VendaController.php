@@ -48,6 +48,7 @@ use Application\Models\HotelDependentePF;
 use Application\Models\OutroProdutoPF;
 use Application\Models\AdicionaClientePF;
 use Application\Models\AdicionarDependentePF;
+use Application\Models\Classificacao;
 
 
 class VendaController extends OXE_Controller{
@@ -111,6 +112,7 @@ class VendaController extends OXE_Controller{
 		$tipoPagamento = new TipoPagamento();
 		$cartaoPF = new CartaoPF();
 		$tipoCartao = new TipoCartao();
+		$classificacao = new Classificacao();
 		### Estanciar as classess ###	
 
 				
@@ -278,6 +280,7 @@ class VendaController extends OXE_Controller{
 		$data['agentes'] = $agente->list_all();
 		$data['tipoPagamento'] = $tipoPagamento->list_all();
 		$data['tipoCartao'] = $tipoCartao->list_all();
+		$data['classificacao'] = $classificacao->list_all();
 		$data['cartaoPF'] = $cartaoPF;		
 		$this->view('template/head',$data);
 		$this->view('template/header');

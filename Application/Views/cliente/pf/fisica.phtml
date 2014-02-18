@@ -1,13 +1,18 @@
-<h3 style="color: #c7187d; font-weight: bold">Cadastro de Cliente PF</h3>
+<h3 style="color: #c7187d; font-weight: bold">Cadastro de Cliente Pessoa Física</h3>
 <br />
 <div class="cli_fisica">
-	<form name="form_clifisica" method="post" action="/cliente/saveFisica"
-		id="form_clifisico" role="form" class="form-horizontal"
+	<form name="form_clifisica" method="post" action="/cliente/saveFisica" id="form_clifisico" role="form" class="form-horizontal"
 		enctype="multipart/form-data">
+		
+		<input type="hidden" name="tipo_cliente" value="1" />
 		<fieldset id="fs_form_pf">
 	 <?php
+	 foreach ($classificacao as $key => $value) {
+		 $opt_classificacao[$value['id_classificacao']] = $value['titulo_classificacao'];
+	 }
+	 
 	 $form->groupOpen();
-	 $form->select(array('1' =>'Sr','2' =>'Sra'),'id_classificacao','Classificação','1');
+	 $form->select($opt_classificacao,'id_classificacao','Classificação','1');
 	 $form->groupClose();
 	  ?>
 	<div class="form-group">
@@ -52,7 +57,7 @@
 					class="col-sm-2 control-label">*CEP</label>
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="cep_clientePF" required
-						name="cep_clientePF" placeholder="CEP">
+						name="cep_cliente" placeholder="CEP">
 					<div id="msg_cep"></div>
 				</div>
 			</div>
@@ -62,7 +67,7 @@
 					class="col-sm-2 control-label">*Endereço</label>
 				<div class="col-sm-9">
 					<input type="text" class="form-control" id="endereco_clientePF"
-						required placeholder="Endereço" name="endereco_clientePF">
+						required placeholder="Endereço" name="endereco_cliente">
 				</div>
 
 			</div>
@@ -72,14 +77,14 @@
 					class="col-sm-2 control-label">*Número</label>
 				<div class="col-sm-2">
 					<input type="text" class="form-control" id="numero_clientePF"
-						required placeholder="Número" name="numero_clientePF">
+						required placeholder="Número" name="numero_cliente">
 				</div>
 
 				<label for="complemento_clientePF" style="color: #797676;"
 					class="col-sm-2 control-label">Complemento</label>
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="complemento_clientePF"
-						name="complemento_clientePF" placeholder="Complemento">
+						name="complemento_cliente" placeholder="Complemento">
 				</div>
 			</div>
 
@@ -88,14 +93,14 @@
 					class="col-sm-2 control-label">Bairro</label>
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="bairro_clientePF"
-						name="bairro_clientePF" placeholder="Bairro">
+						name="bairro_cliente" placeholder="Bairro">
 				</div>
 
 				<label for="cidade_clientePF" style="color: #797676;"
 					class="col-sm-1 control-label">Cidade</label>
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="cidade_clientePF"
-						name="cidade_clientePF" placeholder="CIdade">
+						name="cidade_cliente" placeholder="CIdade">
 				</div>
 
 			</div>
@@ -106,14 +111,14 @@
 					class="col-sm-2 control-label">UF</label>
 				<div class="col-sm-2">
 					<input type="text" class="form-control" id="uf_clientePF"
-						name="uf_clientePF" placeholder="UF">
+						name="uf_cliente" placeholder="UF">
 				</div>
 
 				<label for="pais_clientePF" style="color: #797676;"
 					class="col-sm-2 control-label">País</label>
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="pais_clientePF"
-						name="pais_clientePF" placeholder="País">
+						name="pais_cliente" placeholder="País">
 				</div>
 			</div>
 
@@ -122,7 +127,7 @@
 					class="col-sm-2 control-label">Email</label>
 				<div class="col-sm-9">
 					<input type="text" class="form-control" id="email_clientePF"
-						placeholder="Email" name="email_clientePF">
+						placeholder="Email" name="email_cliente">
 				</div>
 			</div>
 
@@ -248,13 +253,13 @@
 				<div class="form-group">
 					<label for="descricao_clientePF" style="color: #797676;" class="col-sm-2 control-label">Descrição</label>
 					<div class="col-sm-9">
-						<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"></textarea>
+						<textarea class="form-control" name="descricao_cliente" placeholder="Descrição" rows="3"></textarea>
 					</div>
 
 					<label for="status_clientePF" style="color: #797676;"
 						class="col-sm-2 control-label">Status</label>
 					<div class="col-sm-3">
-						<select class="form-control" name="status_clientePF">
+						<select class="form-control" name="status_cliente">
 							<option value="1">ATIVO</option>
 							<option value="0">INATIVO</option>
 						</select>

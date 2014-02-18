@@ -19,24 +19,34 @@ class Classificacao extends OXE_Model {
 	
 	public function list_once($id)
 	{
-		return $this->select()
-					->from($this->_name)
-					->where($this->_primary." = '$id'")
-					->result();
+		return $this->fetch($this->_primary." = '$id'");
 	}
 	
-	public function add_classificacao(array $data)
+	public function add(array $data)
 	{
 		return $this->insert($data);
 	}
 	
-	public function delete_classificacao($id)
+	public function remove($id)
 	{
 		return $this->delete($id);
 	}
 	
-	public function update_classificacao(array $data)
+	public function alter(array $data)
 	{
 		return $this->update($data,$this->_primary." = ".$data['id_classificacao']);
+	}
+	
+	public function DescTables()
+	{
+		return $this->query("DESC $this->_name");
+	}
+	
+	public function findClassificacao($title)
+	{
+		return $this->select()
+					->from()
+					->where("titulo_classificacao = '$title'")
+					->result();
 	}
 }

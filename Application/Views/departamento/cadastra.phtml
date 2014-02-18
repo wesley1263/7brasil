@@ -2,17 +2,19 @@
 <?php 
 
 	foreach($clientes as $cli){
-		$opt_cli[$cli['id_clientePJ']] = $cli['nomefantasia_clientePJ'];
+		if($cli['tipo_cliente'] == '2'){
+			$opt_cli[$cli['id_clientePF']] = $cli['nomefantasia_clientePJ'];
+		}
 	}
 	$form->init('form_departamento','/departamento/saveDepartamento','post');
 	
 	
-	$id = isset($deptos) ? $deptos[0]['id_departamento'] : null;
+	$id = isset($deptos) ? $deptos['id_departamento'] : null;
 	
 	echo '<input type="hidden" name="id_departamento" value="'.$id.'" />';
 	
 	$form->groupOpen();
-	$form->select($opt_cli,'id_clientePJ','Empresa','1',2,3);
+	$form->select($opt_cli,'id_clientePF','Empresa','1',2,3);
 	$form->groupClose();
 	
 	
@@ -24,7 +26,7 @@
 					'num_label' =>'2',
 					'num_input' =>'3',
 					'label' =>'Codigo',
-					'value' => isset($deptos) ? $deptos[0]['codigo_centrocusto'] : null,
+					'value' => isset($deptos) ? $deptos['codigo_centrocusto'] : null,
 					'required' => false
 					));
 	$form->groupClose();
@@ -38,20 +40,23 @@
 					'num_label' =>'2',
 					'num_input' =>'5',
 					'label' =>'Nome',
-					'value' => isset($deptos) ? $deptos[0]['nome_departamento'] : null,
+					'value' => isset($deptos) ? $deptos['nome_departamento'] : null,
 					'required' => true
 					));
 	$form->groupClose();
 	
 	
 	$form->groupOpen();
-	$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_departamento','Empresa',isset($deptos) ? $deptos[0]['status_departamento'] : '1',2,3);
+	$form->select(array('1'=>'Ativo','0'=>'Inativo'),'status_departamento','Empresa',isset($deptos) ? $deptos['status_departamento'] : '1',2,3);
 	$form->groupClose();
 	
-	$form->textarea('descricao_departamento','Descrição',isset($deptos) ? $deptos[0]['descricao_departamento'] : null,'Descrição',2,5);
+	$form->textarea('descricao_departamento','Descrição',isset($deptos) ? $deptos['descricao_departamento'] : null,'Descrição',2,5);
+	
 	echo '<br />';
+	
 	$form->groupOpen();
 	$form->submit(isset($deptos) ? 'Atualiazar' : 'Salvar');
+	echo '<a href="/departamento" id="bt_back" class="btn btn-default">Voltar</a>';
 	$form->groupClose();
 	
 	$form->close();

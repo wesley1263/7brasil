@@ -15,10 +15,7 @@ class DependentePF extends OXE_Model {
 	
 	public function list_all()
 	{
-		return $this->select(array('dep.*','cli.*'))
-					->from($this->_name, 'dep')
-					->join(array('tbl_clientePF' => 'cli'),'cli.id_clientePF = dep.id_clientePF')
-					->result();
+		return $this->fetchAll();
 	}
 	
 	public function list_once($id)
@@ -68,9 +65,33 @@ class DependentePF extends OXE_Model {
 	{
 		return $this->select()
 					->from()
-					->where("cpf_dependentePF = '$cpf'")
+					->where("cpf_dependente = '$cpf'")
 					->result();
 	}
 	
+	public function lista_tudo()
+	{
+		return $this->select()
+			        ->from('tbl_clientePF')
+			        ->result();
+	}
+	
+	public function getDependentePF($id)
+	{
+		$query = "SELECT dep.id_dependentePF, dep.nome_dependente,dep.cpf_dependente, dp.id_departamento, dp.nome_departamento
+					FROM tbl_dependentePF as dep
+
+					LEFT JOIN tbl_departamento as dp
+					ON dp.id_departamento = dep.id_departamento
+					
+					WHERE dep.id_clientePF = $id";
+		return $this->query($query);
+					
+	}
+	
+	public function lista_um($id)
+	{
+		return $this->fetch($this->_primary." = $id");
+	}
 	
 }

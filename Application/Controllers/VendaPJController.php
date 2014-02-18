@@ -6,6 +6,7 @@ use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
 use Application\Models\VendaPJ;
 use Application\Models\ClientePJ;
+use Application\Models\ClientePF;
 use Application\Models\Locadora;
 
 
@@ -44,8 +45,8 @@ class VendaPJController extends OXE_Controller{
 	public function cadVendaPJAction()
 	{
 		########### Estanciando Entidades ##########
-		$empresa = new ClientePJ();
-		$dependente = new Application\Models\DependentePJ();
+		$empresa = new ClientePF();
+		$dependente = new Application\Models\DependentePF();
 		$departamento = new Application\Models\Departamento();
 		$moedas = new Application\Models\Moeda();
 		$cambio = new Application\Models\Cambio();
@@ -458,7 +459,7 @@ class VendaPJController extends OXE_Controller{
 	
 	public function findClientePJAction()
 	{
-		$empresa = new ClientePJ();
+		$empresa = new ClientePF();
 		echo json_encode($empresa->getCNPJ($_POST['cnpj']));
 		
 	}
@@ -472,9 +473,9 @@ class VendaPJController extends OXE_Controller{
 	
 	public function addClientePJAction()
 	{
-		$empresa = new ClientePJ();
+		$empresa = new ClientePF();
 		$id_clientePJ = $empresa->list_once($_POST['id_PJ']);
-		$_SESSION['empresa']['id'] = $id_clientePJ[0]['id_clientePJ'] ;
+		$_SESSION['empresa']['id'] = $id_clientePJ[0]['id_clientePF'] ;
 		
 		$this->redirector('/vendaPJ/cadVendaPJ');
 	}
@@ -482,7 +483,12 @@ class VendaPJController extends OXE_Controller{
 	public function addDependentePJAction()
 	{
 		
-		foreach ($_POST['id_dependentePJ'] as $key => $value) {
+		foreach ($_POST['id_dependente'] as $key => $value) {
+			if(in_array($value,$_SESSION['funcionarios']['id'])){
+				$this->session->setFlashMessage('Funcionário já adicionado a lista!','error');
+				$this->redirector('/vendaPJ/cadVendaPJ');
+				exit;
+			}
 			$_SESSION['funcionarios']['id'][] = $value;
 			
 		}
@@ -501,6 +507,7 @@ class VendaPJController extends OXE_Controller{
 	public function removeClientePJAction()
 	{
 		unset($_SESSION['empresa']);
+		unset($_SESSION['funcionarios']);
 		$this->redirector('/vendaPJ/cadVendaPJ');
 	}
 	

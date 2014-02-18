@@ -19,7 +19,7 @@ class ClienteController extends OXE_Controller {
 	public function init()
 	{
 		$this->model = new ClientePF();
-		$this->model2 = new ClientePJ();
+		// $this->model2 = new ClientePJ();
 		$this->session = new Session();
 		
 		//Verifica se o usuário está logado
@@ -75,12 +75,14 @@ class ClienteController extends OXE_Controller {
 		$cambio = new Cambio();
 		$tipoCartao = new TipoCartao();
 		$form = new FormStyle();
+		$classificacao = new Classificacao();
 		
 		$data['moedas'] = $moeda->list_all();
 		$data['cambios'] = $cambio->list_all();
 		$data['title'] = 'Cadastro Clientes - Pessoa Física';
 		$data['form'] = $form;
 		$data['tipoCartoes'] = $tipoCartao->list_all();
+		$data['classificacao'] = $classificacao->list_all();
 
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -240,10 +242,10 @@ class ClienteController extends OXE_Controller {
 					}
 			}
 			
-			$this->session->setFlashMessage('Cliente PF atualizado com sucesso','success');
+			$this->session->setFlashMessage('Cliente Pessoa Física atualizado com sucesso','success');
 			$this->redirector('/cliente/fisica');
 		}else{
-			$this->session->setFlashMessage('Error ao tentar atualizar Cliente PF','error');
+			$this->session->setFlashMessage('Error ao tentar atualizar Cliente Pessoa Física','error');
 			$this->redirector('/cliente/fisica');
 		}
 	}
@@ -391,13 +393,15 @@ class ClienteController extends OXE_Controller {
 	public function juridicaAction()
 	{
 		$form = new FormStyle();	
-		$model = new ClientePJ();
+		$model = new ClientePF();
 		$table = new Table();
+		$tipoCartao = new TipoCartao();
 		
 		$data['title'] = 'Gerenciar Clientes - Pessoa Física';
 		$data['form'] = $form;
 		$data['clientes'] = $model->list_all();
 		$data['table'] = $table;
+		$data['tipoCartoes'] = $tipoCartao->list_all();
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -408,9 +412,13 @@ class ClienteController extends OXE_Controller {
 	
 	public function cadJuridicaAction()
 	{
-		$form = new FormStyle();	
+		$classificacao = new Classificacao();
+		$form = new FormStyle();
+		$tipoCartao = new TipoCartao();	
 		$data['title'] = 'Cadastrar Clientes - Pessoa Jurídica';
 		$data['form'] = $form;
+		$data['tipoCartoes'] = $tipoCartao->list_all();
+		$data['classificacao'] = $classificacao->list_all();
 		
 		$this->view('template/head',$data);
 		$this->view('template/header');
@@ -427,7 +435,7 @@ class ClienteController extends OXE_Controller {
 	
 	public function saveJuridicaAction()
 	{
-		$model = new ClientePJ();
+		$model = new ClientePF();
 		$_POST['nomefantasia_clientePJ'] = strtoupper($_POST['nomefantasia_clientePJ']);
 		foreach($_POST as $key => $value){
 			if(!is_array($value)){
@@ -449,18 +457,18 @@ class ClienteController extends OXE_Controller {
 			foreach($_POST as $key => $value){
 				if(is_array($value) && count($value) > 0){
 						
-					if($key == 'numero_cartaoPJ'){
+					if($key == 'numero_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['numero_cartaoPJ'] = $v;
+							$arr1[$n1]['numero_cartaoPF'] = $v;
 						}
 					}
 					
 					$n1 = 0;
-					if($key == 'codigo_seguranca_cartaoPJ'){
+					if($key == 'codigo_seguranca_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['codigo_seguranca_cartaoPJ'] = $v;
+							$arr1[$n1]['codigo_seguranca_cartaoPF'] = $v;
 						}
 					}
 					
@@ -473,10 +481,10 @@ class ClienteController extends OXE_Controller {
 					}
 					
 					$n1 = 0;
-					if($key == 'dt_validade_cartaoPJ'){
+					if($key == 'dt_validade_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['dt_validade_cartaoPJ'] = $this->dateToMysql($v);
+							$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
 						}
 					}
 					
@@ -485,19 +493,19 @@ class ClienteController extends OXE_Controller {
 			############# Iterando names de cartão de crédito  ###########
 			
 			
-			unset($_POST['numero_cartaoPJ']);
-			unset($_POST['codigo_seguranca_cartaoPJ']);
+			unset($_POST['numero_cartaoPF']);
+			unset($_POST['codigo_seguranca_cartaoPF']);
 			unset($_POST['id_tipoCartao']);
-			unset($_POST['dt_validade_cartaoPJ']);
+			unset($_POST['dt_validade_cartaoPF']);
 		
 
-		$CartaoPJ = new CartaoPJ();
+		$CartaoPJ = new CartaoPF();
 		
 		if(!$model->findCNPJ($_POST['cnpj_clientePJ'])){
 			$id = $model->insert_cli($_POST);
 			if($id){
 				foreach($arr1 as $key => $value){
-					$arr1[$key]['id_clientePJ'] = $id;
+					$arr1[$key]['id_clientePF'] = $id;
 				}
 				
 				foreach($arr1 as $key => $value){
@@ -523,12 +531,12 @@ class ClienteController extends OXE_Controller {
 	
 	public function updateJuridicaAction()
 	{
-		$model = new ClientePJ();
+		$model = new ClientePF();
 		$Classificacao = new Classificacao();
 		$param = func_get_args();
 		$form = new FormStyle();
 		$cartao = new TipoCartao();
-		$cards = new CartaoPJ();
+		$cards = new CartaoPF();
 				
 		$data['title'] = 'Cadastrar Clientes - Pessoa Jurídica';
 		$data['form'] = $form;
@@ -546,7 +554,7 @@ class ClienteController extends OXE_Controller {
 	
 	public function saveUpdateJuridicaAction()
 	{
-		$clientePJ = $this->model2->list_once($_POST['id_clientePJ']);
+		$clientePJ = $this->model->list_once($_POST['id_clientePF']);
 		
 		if($_FILES['logotipo_clientePJ']['size'] > 0){
 			unlink($clientePJ['logotipo_clientePJ']);
@@ -564,36 +572,27 @@ class ClienteController extends OXE_Controller {
 				if(is_array($value)){
 					
 					$n1 = 0;
-					if($key == 'id_cartaoPJ'){
+					if($key == 'id_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['id_cartaoPJ'] = $v;
+							$arr1[$n1]['id_cartaoPF'] = $v;
 						}
 					}
 					
 					$n1 = 0;
-					if($key == 'numero_cartaoPJ'){
+					if($key == 'numero_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['numero_cartaoPJ'] = $v;
-						}
-					}
-					
-					
-					$n1 = 0;
-					if($key == 'codigo_seguranca_cartaoPJ'){
-						foreach($value as $v){
-							$n1++;
-							$arr1[$n1]['codigo_seguranca_cartaoPJ'] = $v;
+							$arr1[$n1]['numero_cartaoPF'] = $v;
 						}
 					}
 					
 					
 					$n1 = 0;
-					if($key == 'id_tipoCartao'){
+					if($key == 'codigo_seguranca_cartaoPF'){
 						foreach($value as $v){
 							$n1++;
-							$arr1[$n1]['id_tipoCartao'] = $v;
+							$arr1[$n1]['codigo_seguranca_cartaoPF'] = $v;
 						}
 					}
 					
@@ -606,12 +605,21 @@ class ClienteController extends OXE_Controller {
 						}
 					}
 					
+					
 					$n1 = 0;
-					if($key == 'dt_validade_cartaoPJ'){
+					if($key == 'id_tipoCartao'){
+						foreach($value as $v){
+							$n1++;
+							$arr1[$n1]['id_tipoCartao'] = $v;
+						}
+					}
+					
+					$n1 = 0;
+					if($key == 'dt_validade_cartaoPF'){
 						foreach($value as $v){
 							if($v != null){
 								$n1++;
-								$arr1[$n1]['dt_validade_cartaoPJ'] = $this->dateToMysql($v);
+								$arr1[$n1]['dt_validade_cartaoPF'] = $this->dateToMysql($v);
 							}
 						}
 					}
@@ -621,27 +629,27 @@ class ClienteController extends OXE_Controller {
 			}
 			############# Iterando names de cartão de crédito  ###########
 			
-			unset($_POST['numero_cartaoPJ']);
-			unset($_POST['id_cartaoPJ']);
-			unset($_POST['codigo_seguranca_cartaoPJ']);
+			unset($_POST['numero_cartaoPF']);
+			unset($_POST['id_cartaoPF']);
+			unset($_POST['codigo_seguranca_cartaoPF']);
 			unset($_POST['id_tipoCartao']);
-			unset($_POST['dt_validade_cartaoPJ']);
+			unset($_POST['dt_validade_cartaoPF']);
 			
 			
 			######### Atribuindo id_clientePJ no array do cartão #############
 			if(!is_null($arr1)){
 				foreach($arr1 as $key => $value){
-					$arr1[$key]['id_clientePJ'] = $_POST['id_clientePJ'];
+					$arr1[$key]['id_clientePF'] = $_POST['id_clientePF'];
 				}
 			}
 			######### Atribuindo id_clientePJ no array do cartão #############
 			
-			$cartoes = new CartaoPJ();
+			$cartoes = new CartaoPF();
 			
-			if($this->model2->update_cli($_POST)){
+			if($this->model->update_cli($_POST)){
 				foreach($arr1 as $key => $value){
-					if($value['numero_cartaoPJ'] != null){
-						if($value['id_cartaoPJ'] == null){
+					if($value['numero_cartaoPF'] != null){
+						if($value['id_cartaoPF'] == null){
 							$cartoes->add($value);
 						}else{
 							$cartoes->alter($value);
@@ -658,12 +666,12 @@ class ClienteController extends OXE_Controller {
 	{
 		$param = func_get_args();
 		
-		$cliente = $this->model2->list_once($param[1]);
-		$CartaoPJ = new CartaoPJ();
-			if($this->model2->delete_cli($param[1])){
+		$cliente = $this->model->list_once($param[1]);
+		$CartaoPJ = new CartaoPF();
+			if($this->model->delete_cli($param[1])){
 				###Deletando todos os cartões do cliente PJ ###
 				if(count($CartaoPJ->listCartCli($param[1])) == 0){
-					$CartaoPJ->deleteCartao($param[1]);
+					$CartaoPJ->del($param[1]);
 				}
 				###Deletando todos os cartões do cliente PJ ###
 				unlink($cliente[0]['logotipo_clientePJ']);

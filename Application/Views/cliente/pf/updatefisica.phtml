@@ -3,6 +3,7 @@
 <form name="form_clifisica" method="post" action="/cliente/saveUpdatePF" id="form_clifisico" role="form" class="form-horizontal" enctype="multipart/form-data">
 	 <fieldset id="fs_form_pf">
 	 	<input type="hidden" name="id_clientePF" value="<?=$clientes[0]['id_clientePF']?>" />
+	 	<input type="hidden" name="tipo_cliente" value="1" />
 	 <?php
 	 foreach($classif as $class){
 	 	$opt_cl[$class['id_classificacao']] = $class['titulo_classificacao'];
@@ -43,14 +44,14 @@
    <div class="form-group">
    <label for="cep_clientePF" style="color: #797676;"  class="col-sm-2 control-label">*CEP</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="cep_clientePF" value="<?=$clientes[0]['cep_clientePF']?>" required name="cep_clientePF" placeholder="CEP"><div id="msg_cep"></div>
+      <input type="text" class="form-control" id="cep_clientePF" value="<?=$clientes[0]['cep_cliente']?>" required name="cep_cliente" placeholder="CEP"><div id="msg_cep"></div>
     </div>
   </div>
   
   	<div class="form-group">
     <label for="endereco_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Endereço</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control" id="endereco_clientePF" value="<?=utf8_encode($clientes[0]['endereco_clientePF'])?>" required placeholder="Endereço" name="endereco_clientePF">
+      <input type="text" class="form-control" id="endereco_clientePF" value="<?=utf8_encode($clientes[0]['endereco_cliente'])?>" required placeholder="Endereço" name="endereco_cliente">
     </div>
     
   </div>
@@ -58,24 +59,24 @@
    <div class="form-group">
     <label for="numero_clientePF" style="color: #797676;" class="col-sm-2 control-label">*Número</label>
     <div class="col-sm-2">
-      <input type="text" class="form-control" id="numero_clientePF" value="<?=$clientes[0]['numero_clientePF']?>" required placeholder="Número" name="numero_clientePF">
+      <input type="text" class="form-control" id="numero_clientePF" value="<?=$clientes[0]['numero_cliente']?>" required placeholder="Número" name="numero_cliente">
     </div>
     
      <label for="complemento_clientePF" style="color: #797676;" class="col-sm-2 control-label">Complemento</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="complemento_clientePF" value="<?=$clientes[0]['complemento_clientePF']?>" name="complemento_clientePF" placeholder="Complemento">
+      <input type="text" class="form-control" id="complemento_clientePF" value="<?=$clientes[0]['complemento_cliente']?>" name="complemento_cliente" placeholder="Complemento">
     </div>
   </div>
   
     <div class="form-group">
     <label for="bairro_clientePF" style="color: #797676;" class="col-sm-2 control-label">Bairro</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="bairro_clientePF" name="bairro_clientePF" value="<?=($clientes[0]['bairro_clientePF'])?>" placeholder="Bairro">
+      <input type="text" class="form-control" id="bairro_clientePF" name="bairro_cliente" value="<?=($clientes[0]['bairro_cliente'])?>" placeholder="Bairro">
     </div>
     
     <label for="cidade_clientePF" style="color: #797676;" class="col-sm-1 control-label">Cidade</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="cidade_clientePF" value="<?=($clientes[0]['cidade_clientePF'])?>" name="cidade_clientePF" placeholder="CIdade">
+      <input type="text" class="form-control" id="cidade_clientePF" value="<?=($clientes[0]['cidade_cliente'])?>" name="cidade_cliente" placeholder="CIdade">
     </div>
      
   </div>
@@ -84,19 +85,19 @@
   <div class="form-group">
   	<label for="uf_clientePF" style="color: #797676;" class="col-sm-2 control-label">UF</label>
     <div class="col-sm-2">
-      <input type="text" class="form-control" id="uf_clientePF" value="<?=$clientes[0]['uf_clientePF']?>" name="uf_clientePF" placeholder="UF">
+      <input type="text" class="form-control" id="uf_clientePF" value="<?=$clientes[0]['uf_cliente']?>" name="uf_cliente" placeholder="UF">
     </div>
     
     	<label for="pais_clientePF" style="color: #797676;" class="col-sm-2 control-label">País</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" id="pais_clientePF" name="pais_clientePF" value="<?=$clientes[0]['pais_clientePF']?>" placeholder="País">
+      <input type="text" class="form-control" id="pais_clientePF" name="pais_cliente" value="<?=$clientes[0]['pais_cliente']?>" placeholder="País">
     </div>
   </div>	
   	
   <div class="form-group">
     <label for="email_clientePF" style="color: #797676;" class="col-sm-2 control-label">Email</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control" id="email_clientePF" placeholder="Email" value="<?=$clientes[0]['email_clientePF']?>" name="email_clientePF">
+      <input type="text" class="form-control" id="email_cliente" placeholder="Email" value="<?=$clientes[0]['email_cliente']?>" name="email_cliente">
     </div>
   </div>
   
@@ -243,10 +244,10 @@
 	  <div class="form-group">
     	<label for="descricao_clientePF" style="color: #797676;" class="col-sm-2 control-label">Descrição</label>
 		<div class="col-sm-9">
-		<textarea class="form-control" name="descricao_clientePF" placeholder="Descrição" rows="3"><?=($clientes[0]['descricao_clientePF'])?></textarea>
+		<textarea class="form-control" name="descricao_cliente" placeholder="Descrição" rows="3"><?=($clientes[0]['descricao_cliente'])?></textarea>
 		</div>
 		
-	    <?php $form->select(array('1'=>'ATIVO','0'=>'INATIVO'),'status_clientePF','Status',$clientes[0]['status_clientePF']); ?>
+	    <?php $form->select(array('1'=>'ATIVO','0'=>'INATIVO'),'status_cliente','Status',$clientes[0]['status_cliente']); ?>
 	    
 	  </div>	
 	 
@@ -256,7 +257,8 @@
 	 <br />
 	  <div class="form-group">
     	<div class="col-sm-offset-5 col-sm-10">
-      <button type="submit" style="padding:20px 40px" class="btn btn-default">Atualizar</button>
+      <button type="submit" class="btn btn-default">Atualizar</button>
+      <button type="button" id="bt_back" class="btn btn-default">Voltar</button>
     </div>
   </div>
 	
@@ -264,6 +266,11 @@
 </div>
 <script>
 	jQuery(function(){
+		
+		jQuery('#bt_back').click(function(){
+			location.href="/cliente/fisica";
+		});		
+		
 		
 		 jQuery("#cep_clientePF").mask("99999-999");
 		 jQuery("#rg_clientePF").mask("99.999.999-9");

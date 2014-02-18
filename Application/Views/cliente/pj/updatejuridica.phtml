@@ -5,7 +5,7 @@
 <?php
 	// $this->dump($cards);
 	$form->init('form_cli_pj','/cliente/saveUpdateJuridica');	
-		echo '<input type="hidden" name="id_clientePJ" value="'.$clientes[0]['id_clientePJ'].'">';
+		echo '<input type="hidden" name="id_clientePF" value="'.$clientes[0]['id_clientePF'].'">';
 		######## Logotipo ##########
 		$form->groupOpen();	
 		$form->input(array(
@@ -30,7 +30,7 @@
 					'num_label' =>'2',
 					'num_input' =>'8',
 					'label' =>'Razão Social',
-					'value' =>$clientes[0]['razaosocial_clientePJ'],
+					'value' =>isset($clientes) ? $clientes[0]['razaosocial_ClientePJ'] : null,
 					'required' => false
 					));
 		$form->groupClose();		
@@ -68,13 +68,13 @@
 		######### CEP	############
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'cep_clientePJ',
+						'name' =>'cep_cliente',
 						'type' =>'text',
 						'placeholder' => 'CEP',
 						'num_label' =>'2',
 						'num_input' =>'2',
 						'label' =>'* CEP',
-						'value' =>$clientes[0]['cep_clientePJ'],
+						'value' =>$clientes[0]['cep_cliente'],
 						'required' => true
 						));		
 		$form->groupClose();
@@ -83,13 +83,13 @@
 		######### Endereço	############
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'endereco_clientePJ',
+						'name' =>'endereco_cliente',
 						'type' =>'text',
 						'placeholder' => 'Endereço',
 						'num_label' =>'2',
 						'num_input' =>'8',
 						'label' =>'* Endereço',
-						'value' =>$clientes[0]['endereco_clientePJ'],
+						'value' =>$clientes[0]['endereco_cliente'],
 						'required' => true
 						));		
 		$form->groupClose();		
@@ -98,23 +98,23 @@
 		######### Número e Complemento ############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'numero_clientePJ',
+						'name' =>'numero_cliente',
 						'type' =>'text',
 						'placeholder' => 'Número',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>'* Número',
-						'value' => $clientes[0]['numero_clientePJ'],
+						'value' => $clientes[0]['numero_cliente'],
 						'required' => false
 						));
 		$form->input(array(
-						'name' =>'complemento_clientePJ',
+						'name' =>'complemento_cliente',
 						'type' =>'text',
 						'placeholder' => 'Complemento',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' Complemento',
-						'value' => $clientes[0]['complemento_clientePJ'],
+						'value' => $clientes[0]['complemento_cliente'],
 						'required' => false
 						));
 		$form->groupClose();
@@ -123,23 +123,23 @@
 		######### Bairro e cidade ############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'bairro_clientePJ',
+						'name' =>'bairro_cliente',
 						'type' =>'text',
 						'placeholder' => 'Bairro',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>'* Bairro',
-						'value' => $clientes[0]['bairro_clientePJ'],
+						'value' => $clientes[0]['bairro_cliente'],
 						'required' => true
 						));
 		$form->input(array(
-						'name' =>'cidade_clientePJ',
+						'name' =>'cidade_cliente',
 						'type' =>'text',
 						'placeholder' => 'Cidade',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' Cidade',
-						'value' => $clientes[0]['cidade_clientePJ'],
+						'value' => $clientes[0]['cidade_cliente'],
 						'required' => false
 						));
 		$form->groupClose();
@@ -148,23 +148,23 @@
 		######### UF - Pais ############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'uf_clientePJ',
+						'name' =>'uf_cliente',
 						'type' =>'text',
 						'placeholder' => 'UF',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' UF',
-						'value' => $clientes[0]['uf_clientePJ'],
+						'value' => $clientes[0]['uf_cliente'],
 						'required' => false
 						));
 		$form->input(array(
-						'name' =>'pais_clientePJ',
+						'name' =>'pais_cliente',
 						'type' =>'text',
 						'placeholder' => 'País',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>' País',
-						'value' => $clientes[0]['pais_clientePJ'],
+						'value' => $clientes[0]['pais_cliente'],
 						'required' => false
 						));
 		$form->groupClose();
@@ -173,13 +173,13 @@
 		######### Telefone	############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'telefone_clientePJ',
+						'name' =>'telefone1_clientePJ',
 						'type' =>'text',
 						'placeholder' => 'Telefone',
 						'num_label' =>'2',
 						'num_input' =>'3',
 						'label' =>'* Telefone',
-						'value' => $clientes[0]['telefone_clientePJ'],
+						'value' => $clientes[0]['telefone1_clientePJ'],
 						'required' => true
 						));
 		$form->input(array(
@@ -198,13 +198,13 @@
 		######### email	############		
 		$form->groupOpen();		
 		$form->input(array(
-						'name' =>'email_clientePJ',
+						'name' =>'email_cliente',
 						'type' =>'text',
 						'placeholder' => 'E-mail',
 						'num_label' =>'2',
 						'num_input' =>'8',
 						'label' =>'* E-mail',
-						'value' =>$clientes[0]['email_clientePJ'],
+						'value' =>$clientes[0]['email_cliente'],
 						'required' => true
 						));	
 		$form->groupClose();		
@@ -219,15 +219,15 @@
 		?>
 		<div id="cloneDiv<?=$num?>" class="cartoes">
 			<div class="form-group">
-				<input type="hidden" class="id_cartaoPJ" name="id_cartaoPJ[]" value="<?=$cli['id_cartaoPJ']?>" id="id_cartaoPJ<?=$num?>"/>
+				<input type="hidden" class="id_cartaoPJ" name="id_cartaoPF[]" value="<?=$cli['id_cartaoPF']?>" id="id_cartaoPJ<?=$num?>"/>
 				<label for="numero_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Número Cartão</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control numero_cartaoPJ" id="numero_cartaoPJ<?=$num?>" placeholder="Número Cartão" name="numero_cartaoPJ[]" value="<?=$cli['numero_cartaoPJ']?>">
+				<input type="text" class="form-control numero_cartaoPJ" id="numero_cartaoPJ<?=$num?>" placeholder="Número Cartão" name="numero_cartaoPF[]" value="<?=$cli['numero_cartaoPF']?>">
 				</div>
 				
 				<label for="codigo_seguranca_cartaoPF" style="color: #797676;" class="col-sm-2 control-label">Código Segurança</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control codigo_seguranca_cartaoPJ" id="codigo_seguranca_cartaoPJ<?=$num?>" placeholder="Número Cartão" name="codigo_seguranca_cartaoPJ[]" value="<?=$cli['codigo_seguranca_cartaoPJ']?>">
+				<input type="text" class="form-control codigo_seguranca_cartaoPJ" id="codigo_seguranca_cartaoPJ<?=$num?>" placeholder="Número Cartão" name="codigo_seguranca_cartaoPF[]" value="<?=$cli['codigo_seguranca_cartaoPF']?>">
 					</div>
 			</div>
 			
@@ -236,12 +236,12 @@
 				  	foreach($cartao as $cart){
 				  		$opt_cart[$cart['id_tipoCartao']] = $cart['titulo_tipoCartao'];
 				  	}
-				  	$form->select($opt_cart,'id_tipoCartao[]','Tipo Cartão',$cli['id_tipoCartao']);
+				  	$form->select($opt_cart,'id_tipoCartao[]','Tipo Cartão',$cli['id_tipoCartao'],2,3);
 				  	?>			
 				  		
 				  	<label for="dt_validade_cartaoPJ" style="color: #797676;" class="col-sm-2 control-label">Data Validade</label>
 				<div class="col-sm-3">
-				<input type="text" class="form-control dt_validade_cartaoPJ" id="dt_validade_cartaoPJ<?=$num?>" placeholder="Data de Validade" name="dt_validade_cartaoPJ[]" value="<?=date('d/m/Y',strtotime($cli['dt_validade_cartaoPJ'])) ?>" >
+				<input type="text" class="form-control dt_validade_cartaoPJ" id="dt_validade_cartaoPJ<?=$num?>" placeholder="Data de Validade" name="dt_validade_cartaoPF[]" value="<?=date('d/m/Y',strtotime($cli['dt_validade_cartaoPF'])) ?>" >
 				</div>
 			</div>
 			<hr>
@@ -360,11 +360,11 @@
 						'value' =>$clientes[0]['credito_clientePJ'],
 						'required' => true
 						));	
-		$form->select(array('1' =>'Ativo','0' =>'Inativo'),'status_clientePJ','Status',$clientes[0]['status_clientePJ']);
+		$form->select(array('1' =>'Ativo','0' =>'Inativo'),'status_cliente','Status',$clientes[0]['status_cliente']);
 		$form->groupClose();
 
 		$form->groupOpen();		
-		$form->textarea('descricao_clientePJ','Descrição',$clientes[0]['descricao_clientePJ'],'Descrição',2,8);
+		$form->textarea('descricao_cliente','Descrição',$clientes[0]['descricao_cliente'],'Descrição',2,8);
 		$form->groupClose();
 
 		

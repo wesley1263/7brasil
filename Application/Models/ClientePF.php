@@ -71,4 +71,17 @@ class ClientePF extends OXE_Model {
 	{
 		return $this->fetch($this->_primary.' = '.$id);
 	}
+	
+	public function findCNPJ($cnpj)
+	{
+		return $this->select('cnpj_clientePJ')
+				      ->from($this->_name)
+					  ->where("cnpj_clientePJ = '$cnpj'")
+					  ->result();
+	}
+	
+	public function getCNPJ($cnpj)
+	{
+		return $this->fetch("cnpj_clientePJ = '$cnpj'");
+	}
 }
