@@ -5,7 +5,9 @@ $form->init('form_dep_pf','/dependente/alterDependentePF');
 
 echo '<input type="hidden" name="id_dependentePF" value="'.$dependente[0]['id_dependentePF'].'">';
 foreach($clientes as $cli){
-	$opt_cli[$cli['id_clientePF']] = $cli['nome_clientePF'];
+	if($cli['tipo_cliente'] == '1'){
+		$opt_cli[$cli['id_clientePF']] = $cli['nome_clientePF'];
+	}
 }
 
 foreach($classif as $clas){
@@ -22,124 +24,124 @@ $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'nome_dependentePF',
+				'name' =>'nome_dependente',
 				'type' =>'text',
 				'placeholder' => 'Nome',
 				'num_label' =>'2',
 				'num_input' =>'5',
 				'label' =>'Nome',
-				'value' => $dependente[0]['nome_dependentePF'],
+				'value' => $dependente[0]['nome_dependente'],
 				'required' => true
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'dt_nascimento_dependentePF',
+				'name' =>'dt_nascimento_dependente',
 				'type' =>'text',
 				'placeholder' => 'Data de Nasc.',
 				'num_label' =>'2',
 				'num_input' =>'3',
 				'label' =>'Data de Nasc.',
-				'value' =>date('d/m/Y',strtotime($dependente[0]['dt_nascimento_dependentePF'])),
+				'value' =>date('d/m/Y',strtotime($dependente[0]['dt_nascimento_dependente'])),
 				'required' => true
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'cpf_dependentePF',
+				'name' =>'cpf_dependente',
 				'type' =>'text',
 				'placeholder' => 'CPF',
 				'num_label' =>'2',
 				'num_input' =>'3',
 				'label' =>'* CPF',
-				'value' =>$dependente[0]['cpf_dependentePF'],
+				'value' =>$dependente[0]['cpf_dependente'],
 				'required' => true
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'rg_dependentePF',
+				'name' =>'rg_dependente',
 				'type' =>'text',
 				'placeholder' => '* RG',
 				'num_label' =>'2',
 				'num_input' =>'3',
 				'label' =>'RG',
-				'value' =>$dependente[0]['rg_dependentePF'],
+				'value' =>$dependente[0]['rg_dependente'],
 				'required' => true
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'telefone_dependentePF',
+				'name' =>'telefone_dependente',
 				'type' =>'text',
 				'placeholder' => ' *Telefone',
 				'num_label' =>'2',
 				'num_input' =>'2',
 				'label' =>'Telefone',
-				'value' =>$dependente[0]['telefone_dependentePF'],
+				'value' =>$dependente[0]['telefone_dependente'],
 				'required' => false
 				));
 // $form->groupClose();
 // 
 // $form->groupOpen();	
 $form->input(array(
-				'name' =>'celular_dependentePF',
+				'name' =>'celular_dependente',
 				'type' =>'text',
 				'placeholder' => 'Celular',
 				'num_label' =>'1',
 				'num_input' =>'2',
 				'label' =>'Celular',
-				'value' =>$dependente[0]['celular_dependentePF'],
+				'value' =>$dependente[0]['celular_dependente'],
 				'required' => false
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'email_dependentePF',
+				'name' =>'email_dependente',
 				'type' =>'text',
 				'placeholder' => 'Email',
 				'num_label' =>'2',
 				'num_input' =>'5',
 				'label' =>'Email',
-				'value' =>$dependente[0]['email_dependentePF'],
+				'value' =>$dependente[0]['email_dependente'],
 				'required' => false
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'numero_passaporte_dependentePF',
+				'name' =>'numero_passaporte_dependente',
 				'type' =>'text',
 				'placeholder' => 'Nº Passaporte',
 				'num_label' =>'2',
 				'num_input' =>'3',
 				'label' =>'Nº Passaporte',
-				'value' =>$dependente[0]['numero_passaporte_dependentePF'],
+				'value' =>$dependente[0]['numero_passaporte_dependente'],
 				'required' => false
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'dt_validade_passaporte_dependentePF',
+				'name' =>'dt_validade_passaporte_dependente',
 				'type' =>'text',
 				'placeholder' => 'Data Validade',
 				'num_label' =>'2',
 				'num_input' =>'3',
 				'label' =>'Data Validade',
-				'value' => date('d/m/Y',strtotime($dependente[0]['dt_validade_passaporte_dependentePF'])),
+				'value' => date('d/m/Y',strtotime($dependente[0]['dt_validade_passaporte_dependente'])),
 				'required' => false
 				));
 $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'foto_dependentePF',
+				'name' =>'foto_dependente',
 				'type' =>'file',
 				'placeholder' => 'Foto',
 				'num_label' =>'2',
@@ -152,7 +154,7 @@ $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'copia_cpf_dependentePF',
+				'name' =>'copia_cpf_dependente',
 				'type' =>'file',
 				'placeholder' => 'Cópia CPF',
 				'num_label' =>'2',
@@ -165,7 +167,7 @@ $form->groupClose();
 
 $form->groupOpen();	
 $form->input(array(
-				'name' =>'copia_rg_dependentePF',
+				'name' =>'copia_rg_dependente',
 				'type' =>'file',
 				'placeholder' => 'Cópia RG',
 				'num_label' =>'2',
@@ -178,7 +180,7 @@ $form->groupClose();
 
 
 // $form->groupOpen();		
-		$form->textarea('descricao_dependentePF','Descrição',$dependente[0]['descricao_dependentePF'],'Descrição',2,5);
+		$form->textarea('descricao_dependente','Descrição',$dependente[0]['descricao_dependente'],'Descrição',2,5);
 // $form->groupClose();
 		
 		
@@ -194,13 +196,13 @@ $form->close();
 <script>
 	jQuery(function(){
 		
-		jQuery('#nome_dependentePF').css('text-transform','uppercase');
-		jQuery('#dt_nascimento_dependentePF').mask('99/99/9999');
-		jQuery('#cpf_dependentePF').mask('999.999.999-99');
-		jQuery('#rg_dependentePF').mask('99.999.999-9');
-		jQuery('#telefone_dependentePF').mask('(99) 9999-9999');
-		jQuery('#celular_dependentePF').mask('(99) 9999-9999');
-		jQuery('#dt_validade_passaporte_dependentePF').mask('99/99/9999');
+		jQuery('#nome_dependente').css('text-transform','uppercase');
+		jQuery('#dt_nascimento_dependente').mask('99/99/9999');
+		jQuery('#cpf_dependente').mask('999.999.999-99');
+		jQuery('#rg_dependente').mask('99.999.999-9');
+		jQuery('#telefone_dependente').mask('(99) 9999-9999');
+		jQuery('#celular_dependente').mask('(99) 9999-9999');
+		jQuery('#dt_validade_passaporte_dependente').mask('99/99/9999');
 		
 	});
 </script>

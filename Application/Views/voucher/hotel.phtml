@@ -1,107 +1,129 @@
-<?php 
-// $this->dump($passagem);
-$id_agencia = $param[3];
-$agencia = $agencia->list_once($id_agencia);
-$img_comp = $compania->list_once($passagem['id_compania']);
-$emp = $empresa->list_all();
-//logotipo_compania
-$img_comp = explode('/',$img_comp['logotipo_compania']);
-	$img_comp = array_slice($img_comp,4);
-	$img_comp = implode('/', $img_comp);
+<?php
 
-if($id_agencia != '0'){
-	$img = explode('/',$agencia[0]['logotipo_agencia']);
-	$img = array_slice($img,4);
-	$img = implode('/', $img);
+foreach ($dependentes as $key => $value) {
+	$opt_dependentes[$value['id_dependentePF']] = $value['nome_dependente'];
+}
+
+foreach ($agencia as $key => $value) {
+	$opt_agencia[$value['id_agencia']] = $value['logotipo_agencia'];
+}
+
+foreach ($brokers as $key => $value) {
+	$opt_brokers[$value['id_brokers']] = $value['nome_brokers'];
+}
+
+foreach ($dependentes as $key => $value) {
+	$opt_dependente[$value['id_dependentePF']] = $value['nome_dependente'];
+}
+
+$logo =  null;
+if($venda[0]['id_agencia'] == '0'){
+	$logo = $empresa[0]['logotipo_empresa'];
 }else{
-	$img = explode('/',$emp[0]['logotipo_empresa']);
-	$img = array_slice($img,4);
-	$img = implode('/', $img);
+	$logo = $opt_agencia[$venda[0]['id_agencia']];
 }
 
-foreach ($origem as $key => $value) {
-	$opt_origem[$value['id_origem']] = $value['nome_origem'];
-}
-
-foreach ($destino as $key => $value) {
-	$opt_destino[$value['id_destino']] = $value['nome_destino'];
-}
-// ob_start();
- ?>
-<div class="container">
-	
-<table class="table">
-	<tr style="border: 2px solid #131212">
-		<td><img src="/<?=$img?>" /></td>
-		<td><center><h2 style="color: blue;">Bilhete Eletrônico</h2></center></td>
-		<td><img src="/<?=$img_comp?>" /></td>
-	</tr>
-	<tr><td></td></tr>
-		<?php foreach ($dependentePJ as $key => $value):
-				foreach ($value as $chave => $valor) {
-			?>
-	<tr style="border: 2px solid #131212;border-bottom: none">
-		<td colspan="3"><b>Nome do Passageiro:</b> <?=$valor['nome_dependentePJ']?></td>
-	</tr>
-		<?php 
-				}
-		endforeach; ?>
-	<tr style="border: 2px solid #131212;border-top: none;">
-		<td><b>Nº do Bilhete:</b> <?=$passagem['codigo_reserva_pasagensPJ']?></td>
-		<td></td>
-		<td></td>
-	</tr>
-</table>
-<br />
-<br />
-<table class="table table-bordered">
-	<thead>
-		<th><center>Voo</center></th>
-		<th><center>Origem</center></th>
-		<th><center>Destino</center></th>
-		<th><center>Data</center></th>
-		<th><center>Saida/Chegada</center></th>
-	</thead>
-	<tr>
-		<td><center><?=$passagem['voo_passagensPJ']?></center></td>
-		<td><center><?=$opt_origem[$passagem['id_origem']]?></center></td>
-		<td><center><?=$opt_destino[$passagem['id_destino']]?></center></td>
-		<td><center><?=date('d/m/Y',strtotime($passagem['dataIda_passagensPJ']))?></center></td>
-		<td><center><?=date('H:i a',strtotime($passagem['saidaIda_passagensPJ'])).' / '.date('H:i a',strtotime($passagem['chegadaIda_passagensPJ']))?></center></td>
-	</tr>
-</table>
-<center>
-<ul>
-	<li>Chegar com 3 horas de antecedencia nos Aéroportos.</li>
-	<li>Para embarque é necessário passaporte e visto válido.</li>
-</ul>
-</center>
-</div>
-
-
-
-
-
-
-
-
-
-<?php 
-// $voucher = ob_get_contents();
-// ob_end_clean();
-// try{
-// 	
-	// $this->HTML2PDF->init(); 
-	// $this->HTML2PDF->setDefaultFont('Arial');
-    // $this->HTML2PDF->writeHTML($voucher);
-    // $this->HTML2PDF->Output('exemple00.pdf');
-// }catch(Exception $e){
-	// echo $e->getMessage();
-// }
+$logo = explode('/', $logo);
+$logo = array_slice($logo,4);
+$logo = '/'.implode('/',$logo);
 
 ?>
+<div class="container">
+	<div class="alerta">
+		<div id="information">BONAMAIL</div>
+		<div id="brokers_info" style=" float: right; margin-top: -1.5%; "><?=$opt_brokers[$hotel[0]['id_brokers']]?></div>
+	</div>
+	<hr style=" border-top: 1px solid #000; margin: 0" />
+	<div class="logo_agencia"><img src="<?=$logo?>" width="20%" /></div>
+	<div class="imformation_default">
+		<center>
+		<p><h2 style="color: #990000">BONAIL VOUCHER</h2></p>
+		<p><h2 style="color: #990000">TO BE HANDED OVER HOTEL</h2></p>
+		<p>With the guarantee</p>
+		</center>
+	</div>
+	<hr style=" border-top: 1px solid #000; " />
+	<br />
+	<table class="table">
+		<tr>
+			<td>Booking Refenrence</td>
+			<td>: <?=$hotel[0]['codigo_hotel']?></td>
+		</tr>
+		<?php foreach ($hospedes as $key => $value): ?>
+		<tr>
+			<td>On behalf of</td>
+			<td>:<?=$opt_dependente[$value['id_dependentePF']]?></td>
+		</tr>
+		<?php endforeach; ?>
+		
+		<tr>
+			<td>Hotel</td>
+			<td>:<?=$hotel[0]['nome_hotel']?></td>
+		</tr>
+		<tr>
+			<td>Address</td>
+			<td>:<?=$hotel[0]['endereco_hotel']?></td>
+		</tr>
+		<tr>
+			<td>Town</td>
+			<td>:<?=$hotel[0]['cidade_hotel']?></td>
+		</tr>
+		<tr>
+			<td>Province</td>
+			<td>:<?=$hotel[0]['uf_hotel']?></td>
+		</tr>
+		<tr>
+			<td>Country</td>
+			<td>:<?=$hotel[0]['pais_hotel']?></td>
+		</tr>
+		<tr>
+			<td>Telephone</td>
+			<td>:<?=$hotel[0]['telefone_hotel']?></td>
+		</tr>
+	</table>
+	
+	<br />
+	<div class="alerta">
+		<div id="information">Services</div>
+	</div>
+	<table class="table">
+		<thead>
+			<th>From</th>
+			<th>TO</th>
+			<th>Type of room</th>
+			<th>NIGHTS</th>
+			<th>BOARD BASE</th>
+		</thead>
+		<tr>
+			<td><?=date('dM',strtotime($hotel[0]['data_de_hotel']))?></td>
+			<td><?=date(' dM',strtotime($hotel[0]['data_ate_hotel']))?></td>
+			<td><?=$hotel[0]['tipo_quartos']?></td>
+			<td><?=$hotel[0]['noites_hotel']?></td>
+			<td><?=$hotel[0]['servicos_hotel']?></td>
+		</tr>
+	</table>
+	<br />
+	<hr style=" border-top: 1px solid #000; " />
+	Remarks: Brooked and payable by <?=$opt_brokers[$hotel[0]['id_brokers']]?> and 7Brasil&nbsp;&nbsp;&nbsp;&nbsp;Check in:&nbsp;&nbsp;<?=$hotel[0]['checkin_hotel']?>
+	 &nbsp;&nbsp;&nbsp;&nbsp;Check out:&nbsp;&nbsp;<?=$hotel[0]['ckeckout_hotel']?> 
+	
+</div>
+<?php 
+
+	// $this->dump($hotel);
+	// $this->dump($hospedes);
+	// $this->dump($venda);
+
+?>
+<style>
+	.alerta {
+		padding: 5px;
+		background-color: #33CCFF;
+	}
+</style>
 <script>
 	jQuery(function(){
+		jQuery('#hr').css('border-top','1px solid #000 !important;');
 		print();
 	});
 </script>

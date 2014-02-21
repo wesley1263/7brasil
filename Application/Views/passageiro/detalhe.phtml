@@ -1,0 +1,210 @@
+<?php 
+
+// $this->dump($passageiro);
+?>
+<div class="container">
+	<center><h2>Dados de Dependentes</h2></center>
+	<br />
+	<br />
+	<?php 
+	$img = explode('/', $passageiro[0]['foto_dependente']);
+	$img = array_slice($img,4);
+	$img = '/'.implode('/', $img);
+	?>
+	<table class="table table-bordered">
+		<tr>
+			<td>Foto</td>
+			<td>
+				<img src="<?=$img?>" width="120" alt="<?=$passageiro[0]['nome_dependente']?>" class="img-thumbnail">
+			</td>
+		</tr>
+		<tr>
+			<td>Nome</td>
+			<td><?=$passageiro[0]['nome_dependente']?></td>
+		</tr>
+		<tr>
+			<td>Data Nascimento / Idade</td>
+			<?php $idade = new DateTime($passageiro[0]['dt_nascimento_dependente']); 
+				 $hoje = new DateTime();
+				 $intervalo = $hoje->diff($idade);
+			?>
+			<td><?=date('d/m/Y',strtotime($passageiro[0]['dt_nascimento_dependente']))?> - <?=$intervalo->format('%Y')?> Ano(s)</td>
+		</tr>
+		<tr>
+			<td>CPF</td>
+			<td><?=$passageiro[0]['cpf_dependente']?></td>
+		</tr>
+		<tr>
+			<td>RG</td>
+			<td><?=$passageiro[0]['rg_dependente']?></td>
+		</tr>
+		<tr>
+			<td>Telefone / Celular</td>
+			<td><?=$passageiro[0]['telefone_dependente']?> - <?=$passageiro[0]['celular_dependente']?></td>
+		</tr>
+		
+		<tr>
+			<td>Email</td>
+			<td><?=$passageiro[0]['email_dependente']?></td>
+		</tr>
+		
+		<?php if($passageiro[0]['endereco_dependente'] == '2'): ?>
+		<tr>
+			<td>Endereço / Nº / Complemento</td>
+			<td><?=$passageiro[0]['endereco_dependente']?>, <?=$passageiro[0]['numero_dependente']?> - <?=$passageiro[0]['complemento_dependente']?></td>
+		</tr>
+		<tr>
+			<td>Bairro / Cidade</td>
+			<td><?=$passageiro[0]['bairro_dependente']?> - <?=$passageiro[0]['cidade_dependente']?></td>
+		</tr>
+		<tr>
+			<td>UF / CEP</td>
+			<td><?=$passageiro[0]['uf_dependente']?> - <?=$passageiro[0]['cep_dependente']?></td>
+		</tr>
+		
+		<?php else: ?>
+		<tr>
+			<td>Endereço / Nº / Complemento</td>
+			<td><?=$passageiro[0]['endereco_cliente']?>, <?=$passageiro[0]['numero_cliente']?> - <?=$passageiro[0]['complemento_cliente']?></td>
+		</tr>
+		<tr>
+			<td>Bairro / Cidade</td>
+			<td><?=$passageiro[0]['bairro_cliente']?> - <?=$passageiro[0]['cidade_cliente']?></td>
+		</tr>
+		<tr>
+			<td>UF / CEP</td>
+			<td><?=$passageiro[0]['uf_cliente']?> - <?=$passageiro[0]['cep_cliente']?></td>
+		</tr>
+		<?php endif; ?>
+		
+		<tr>
+			<td>Status</td>
+			<td><?=$passageiro[0]['status_dependente'] == 1 ? 'Ativo' : 'Inativo'?></td>
+		</tr>
+		
+		<?php if($passageiro[0]['tipo_cliente'] == '2'): ?>
+			
+			<?php 
+			$img = explode('/', $passageiro[0]['logotipo_clientePJ']);
+			$img = array_slice($img,4);
+			$img = '/'.implode('/', $img);
+			?>
+			<table class="table table-bordered">
+				<center><h2>Dados do Titular</h2></center>
+				<tr>
+					<td>Logo</td>
+					<td>
+					<img src="<?=$img?>" width="120" alt="<?=$passageiro[0]['nomefantasia_clientePJ']?>" class="img-thumbnail">
+					</td>
+				</tr>
+				<tr>
+					<td>Nome Fantasia</td>
+					<td><?=$passageiro[0]['nomefantasia_clientePJ']?></td>
+				</tr>
+				<tr>
+					<td>CNPJ</td>
+					<td><?=$passageiro[0]['cnpj_clientePJ']?></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><?=$passageiro[0]['email_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Telefones</td>
+					<td><?=$passageiro[0]['telefone1_clientePJ']?> / <?=$passageiro[0]['telefone2_clientePJ']?>	</td>
+				</tr>
+				<tr>
+					<td>Endereço / Nº / Complemento</td>
+					<td><?=$passageiro[0]['endereco_cliente']?> - <?=$passageiro[0]['numero_cliente']?> - <?=$passageiro[0]['complemento_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Bairro / Cidade</td>
+					<td><?=$passageiro[0]['bairro_cliente']?> - <?=$passageiro[0]['cidade_cliente']?></td>
+				</tr>
+				<tr>
+					<td>CEP / UF</td>
+					<td><?=$passageiro[0]['cep_cliente']?> - <?=$passageiro[0]['uf_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Nome Responsável</td>
+					<td><?=$passageiro[0]['nomeresponsavel_clientePJ']?></td>
+				</tr>
+				<tr>
+					<td>Telefone Responsável</td>
+					<td><?=$passageiro[0]['telefone_responsavel_clientePJ']?></td>
+				</tr>
+				<tr>
+					<td>Email Responsável</td>
+					<td><?=$passageiro[0]['email_responsavel_clientePJ']?></td>
+				</tr>
+				<tr>
+					<td>RG / CPF Responsável</td>
+					<td><?=$passageiro[0]['rg_responsavel_clientePJ']?> - <?=$passageiro[0]['cpf_responsavel_clientePJ']?>	</td>
+				</tr>
+				<tr>
+					<td>Status</td>
+					<td><?=$passageiro[0]['status_cliente'] == '1' ? 'Ativo' :'Inativo' ?></td>
+				</tr>	
+				<tr>
+					<td>Descrição</td>
+					<td><?=$passageiro[0]['descricao_cliente']?></td>
+				</tr>
+			</table>
+		<?php else: ?>
+			<table class="table table-bordered">
+				<center><h2>Dados do Titular</h2></center>
+				<?php 
+					$img = explode('/', $passageiro[0]['foto_clientePF']);
+					$img = array_slice($img,4);
+					$img = '/'.implode('/', $img);
+				?>
+				<tr>
+					<td>Foto</td>
+					<td><img src="<?=$img?>" width="120" alt="<?=$passageiro[0]['nome_clientePF']?>" class="img-thumbnail"></td>
+				</tr>
+				<tr>
+					<td>Nome</td>
+					<td><?=$passageiro[0]['nome_clientePF']?></td>
+				</tr>
+				<tr>
+					<td>Data Nascimento / Idade</td>
+					<td><?=$passageiro[0]['descricao_cliente']?></td>
+				</tr>
+				<tr>
+					<td>RG/ CPF</td>
+					<td><?=$passageiro[0]['rg_clientePF']?> - <?=$passageiro[0]['cpf_clientePF']?></td>
+				</tr>
+				<tr>
+					<td>Endereço / Nº / Complemento</td>
+					<td><?=$passageiro[0]['endereco_cliente']?> - <?=$passageiro[0]['numero_cliente']?> - <?=$passageiro[0]['complemento_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Bairro / Cidade</td>
+					<td><?=$passageiro[0]['bairro_cliente']?> - <?=$passageiro[0]['cidade_cliente']?></td>
+				</tr>
+				<tr>
+					<td>CEP / UF</td>
+					<td><?=$passageiro[0]['cep_cliente']?> - <?=$passageiro[0]['uf_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><?=$passageiro[0]['email_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Telefone / Celular</td>
+					<td><?=$passageiro[0]['telefone_clientePF']?> - <?=$passageiro[0]['celular_clientePF']?></td>
+				</tr>
+				<tr>
+					<td>Decrição</td>
+					<td><?=$passageiro[0]['descricao_cliente']?></td>
+				</tr>
+				<tr>
+					<td>Status</td>
+					<td><?=$passageiro[0]['status_cliente'] == '1' ? 'Ativo' : 'Inativo' ?></td>
+				</tr>
+				
+			</table>
+		<?php endif; ?>
+		
+	</table>
+</div>

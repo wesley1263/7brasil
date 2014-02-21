@@ -1,0 +1,35 @@
+<?php
+
+?>
+<a href="/resultado/cadResultado" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
+	<form class="navbar-form navbar-right" role="search" >
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_de">
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_ate">
+		</div>
+		<div class="form-group">
+			<select name="id_agencia" class="form-control">
+				<option value="0">Todas</option>
+				<option value="3">7 Brasil - SP</option>
+				<option value="2">7 Brasil - RJ</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Teste','Teste','Status','Editar','Remover'));
+	$table->t_row(array(
+						'teste',
+						'teste',
+						'Ativo',
+						'<center><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></center>',
+						'<center><a href="#" onclick=" return confirm(\'Deseja realmente remover ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
+						));
+	$table->generate();
+	?>
+</div>

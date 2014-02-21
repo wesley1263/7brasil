@@ -12,39 +12,28 @@ if(isset($_SESSION['error'])){
 <h3 style="color: #C7187D">Cadastrado de Dependentes</h3>
 <br />
 	<a href="/dependente/cadDependentePF" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
-	
-	<form class="navbar-form navbar-right" role="search">
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Nome" name="nome_dependente">
-  </div>
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="CPF" name="cpf_dependente">
-  </div>
-  <div class="form-group">
-   <select name="id_cliente" class="form-control">
-   	<option>TODOS</option>
-   	<?php
-   	foreach($dependentes as $dep){
-   		echo '<option value="'.$dep['id_clientePF'].'">'.$dep['nome_clientePF'].'</option>';
-   	}
+	<br />
+	<br />
+	<?php
+	foreach ($cliente as $key => $value) {
+		$opt_cliente[$value['id_clientePF']] = $value['nome_clientePF'];
+	} 
 	?>
-   </select>
-  </div>
-  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
-</form>
 <br>
 	<?php
-	$table->t_init('class="table table-bordered"');
+	$table->t_init('class="table table-bordered" id="tbl_dependente"');
 	$table->t_head(array('Nome','CPF','Cliente','Editar','Excluir'));
 	
 	foreach($dependentes as $dep){
+		if($dep['id_departamento'] == null){
 		$table->t_row(array(
-			$dep['nome_dependentePF'],
-			$dep['cpf_dependentePF'],
-			$dep['nome_clientePF'],
+			$dep['nome_dependente'],
+			$dep['cpf_dependente'],
+			$opt_cliente[$dep['id_clientePF']],
 			'<center><a href="/dependente/updateDependentePF/id/'.$dep['id_dependentePF'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-			'<center><a href="/dependente/deleteDependentePF/id/'.$dep['id_dependentePF'].'" onclick="return confirm(\'Deseja Realmente remover '.$dep['nome_dependentePF'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>')
+			'<center><a href="/dependente/deleteDependentePF/id/'.$dep['id_dependentePF'].'" onclick="return confirm(\'Deseja Realmente remover '.$dep['nome_dependente'].'?\')"><span class="glyphicon glyphicon-remove"></span></a></center>')
 			);
+		}
 	}
 	$table->generate();
 	?>
@@ -52,5 +41,6 @@ if(isset($_SESSION['error'])){
 <script>
 	jQuery(function(){
 		jQuery('[name=cpf_dependente]').mask('999.999.999-99');
+		jQuery('#tbl_dependente').dataTable();
 	});
 </script>

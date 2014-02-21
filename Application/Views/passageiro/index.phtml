@@ -1,0 +1,50 @@
+<?php 
+?>
+	<form class="navbar-form navbar-right" role="search" method="post" action="/passageiro">
+		<div class="form-group">
+			<select name="tipo_cliente" class="form-control">
+				<option value="0">Todos</option>
+				<option value="1">Pessoa Física</option>
+				<option value="2">Pessoa Jurídica</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="CPF/CNPJ" name="cpf_cnpj">
+		</div>
+		<div class="form-group">
+			<select name="status" class="form-control">
+				<option value="">Todos</option>
+				<option value="1">Ativo</option>
+				<option value="0">Inativo</option>
+				
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<?php 
+	$table->t_init('class="table table-bordered" id="tbl_dependente"');
+	$table->t_head(array('Nome','Vinculo','Tipo','Status','Visualizar'));
+	foreach ($dependente as $key => $value) {
+		
+	$table->t_row(array(
+						$value['nome_dependente'],
+						$titulo = $value['nome_clientePF'] == null ? 'Funcionário: '.$value['nomefantasia_clientePJ'] : 'Dependente: '.$value['nome_clientePF'],
+						$value['tipo_cliente'] == '1' ? 'Pessoa Física' : 'Pesso Júridica',
+						$value['status_dependente'] == '1' ? 'Ativo' : 'Inativo',
+						'<center><a href="/passageiro/detalhe/id/'.$value['id_dependentePF'].'"><span class="glyphicon glyphicon-list-alt"></span></a></center>',
+						));
+	}
+	$table->generate();
+	?>
+</div>
+<script>
+	jQuery(function(){
+		jQuery('#tbl_dependente').dataTable({
+			"bFilter": false,"bInfo": false,
+			"sPaginationType": "full_numbers"
+			});
+		
+	});
+</script>

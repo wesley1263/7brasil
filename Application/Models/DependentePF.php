@@ -96,4 +96,52 @@ class DependentePF extends OXE_Model {
 		return $this->fetch($this->_primary." = $id");
 	}
 	
+	public function getListaPassageiro()
+	{
+		$query = "select dep.*,cli.* 
+
+				from tbl_dependentePF as dep
+				
+				join tbl_clientePF as cli
+				on dep.id_clientePF = cli.id_clientePF";
+				
+		return $this->query($query);
+	}
+	
+	
+	public function getPassageiro($id)
+	{
+		
+		$query = "select dep.*,cli.* 
+
+				from tbl_dependentePF as dep
+				
+				join tbl_clientePF as cli
+				on dep.id_clientePF = cli.id_clientePF
+				where dep.id_dependentePF = $id";
+				
+		return $this->query($query);
+		
+	}
+	
+	public function filterPassageiro(array $data)
+	{
+		$tipo_cliente = $data['tipo_cliente'] == '0' ? null : ' AND cli.tipo_cliente = '.$data['tipo_cliente'];
+		$cpf_cnpj = $data['cpf_cnpj'] == null ? null : ' AND cli.cnpj_clientePJ = \''.$data['cpf_cnpj'].'\' OR cli.cpf_clientePF = \''.$data['cpf_cnpj']."'";
+		$status = $data['status'] == null ? null : " AND status_cliente = ".$data['status'];
+		
+		$query = "select dep.*,cli.* 
+
+				from tbl_dependentePF as dep
+				
+				join tbl_clientePF as cli
+				on dep.id_clientePF = cli.id_clientePF
+				where TRUE ".
+				$tipo_cliente.
+				$cpf_cnpj.
+				$status;
+		return $this->query($query);
+		
+	}
+	
 }

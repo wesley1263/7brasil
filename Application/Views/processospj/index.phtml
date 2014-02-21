@@ -225,7 +225,10 @@
 		jQuery('.btn-default').css('width','100%');
 		jQuery('.form-group').css('width','100%');
 		
-		jQuery('#tbl_processo').dataTable({"bFilter": false,"bInfo": false});
+		jQuery('#tbl_processo').dataTable({
+			"bFilter": false,"bInfo": false,
+			"sPaginationType": "full_numbers"
+			});
 		
 		jQuery('.col-md-offset-2').css('margin-left','0');
 		jQuery('.col-md-10').css('width','82%');
