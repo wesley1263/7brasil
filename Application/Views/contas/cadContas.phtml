@@ -51,6 +51,17 @@
 					'value' => isset($contas) ? $contas['valor_contas'] : null,
 					'required' => true
 					));
+					
+			$form->input(array(
+					'name' =>'vezes_conta',
+					'type' =>'number',
+					'placeholder' => 'X',
+					'num_label' =>'1',
+					'num_input' =>'2',
+					'label' =>'Vezes',
+					'value' => '1',
+					'required' => true
+					));
 			$form->groupClose();
 					
 			$form->groupOpen();	
@@ -80,7 +91,7 @@
 			$form->groupClose();
 			
 			$form->groupOpen();	
-			$form->select(array('1'=>'Pendente','2'=>'Pago'),'status_contas','Status',isset($contas) ? $contas['status_contas'] : 0,2,3);
+			$form->select(array('2'=>'Pendente','1'=>'Pago'),'status_contas','Status',isset($contas) ? $contas['status_contas'] : 0,2,3);
 			$form->groupClose();
 			
 			

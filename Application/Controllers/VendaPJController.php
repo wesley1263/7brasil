@@ -411,6 +411,9 @@ class VendaPJController extends OXE_Controller{
 			############ Populando Passagend #################
 				if(isset($_SESSION['passagens'])){
 					$passagensCliente = new Application\Models\AdicionaClientePF();
+					$passagens = new Application\Models\Passagens();
+					
+					
 					$sess_passagens = $this->session->getSession('passagens');
 					$arrayPassagem = array();
 					foreach ($sess_passagens['id'] as $key => $value) {

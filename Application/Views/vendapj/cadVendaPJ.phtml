@@ -402,6 +402,19 @@
 				'required' => true
 				));
 			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'codigo_hotel',
+				'type' =>'text',
+				'placeholder' => 'Booking Reference',
+				'num_label' =>'2',
+				'num_input' =>'6',
+				'label' =>'Código',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
 
 			$form->groupOpen();	
 			$form->input(array(
@@ -414,6 +427,92 @@
 				'value' =>'',
 				'required' => true
 				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'data_de_hotel',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'De',
+				'value' =>'',
+				'required' => true
+				));
+				
+				$form->input(array(
+				'name' =>'checkin_hotel',
+				'type' =>'time',
+				'placeholder' => '',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'Check In',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'data_ate_hotel',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'De',
+				'value' =>'',
+				'required' => true
+				));
+				
+				$form->input(array(
+				'name' =>'ckeckout_hotel',
+				'type' =>'time',
+				'placeholder' => '',
+				'num_label' =>'1',
+				'num_input' =>'3',
+				'label' =>'Check Out',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tipo_quartos',
+				'type' =>'text',
+				'placeholder' => 'Type of Room',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Tipo',
+				'value' =>'',
+				'required' => true
+				));
+				
+			
+			$form->input(array(
+				'name' =>'servicos_hotel',
+				'type' =>'text',
+				'placeholder' => 'Board Base',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Serviços',
+				'value' =>'',
+				'required' => true
+				));			
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'noites_hotel',
+				'type' =>'text',
+				'placeholder' => 'Nights',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Noites',
+				'value' =>'',
+				'required' => true
+				));			
 			$form->groupClose();
 			
 			$form->groupOpen();
@@ -1261,7 +1360,20 @@
 			'required' => true
 			));
 		$form->groupClose();
-
+		
+		$form->groupOpen();
+		$form->input(array(
+			'name' =>'codigo_reserva_pasagens',
+			'type' =>'text',
+			'placeholder' => 'Nº Bilhete',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Código',
+			'value' =>'',
+			'required' => false
+			));
+		$form->groupClose();
+		
 		echo '<input type="checkbox" id="somente_ida" /> <strong>Somente ida</strong>';
 		echo '<fieldset id="fs_ida">';
 		echo '<legend><strong>IDA</strong></legend>';

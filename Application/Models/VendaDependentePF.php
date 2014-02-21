@@ -31,4 +31,12 @@ class VendaDependentePF extends OXE_Model {
 	}
 	
 	
+	public function getFunc($id_venda)
+	{
+		return $this->select()
+					->from()
+					->where("id_venda = $id_venda")
+					->result();
+	}
+	
 }

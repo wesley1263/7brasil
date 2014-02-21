@@ -3,10 +3,10 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <form class="navbar-form navbar-right" role="search" method="post" action="/processosPJ" style="padding:0 !important"> 
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Nº Processo" name="nm_processo_vendaPJ">
+			<input type="text" class="form-control" placeholder="Nº Processo" name="nm_processo_venda">
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Empresa" name="razaosocial_clientePJ">
+			<input type="text" class="form-control" placeholder="Empresa" name="nomefantasia_clientePJ">
 		</div>
 		<div class="form-group">
 			<input type="date" class="form-control" name="dt_de" value="<?=date('Y-m')?>-01" >
@@ -51,11 +51,19 @@
 		</div>
 		
 		<div class="form-group">
-			<select name="status_vendaPJ" class="form-control">
+			<select name="status_venda" class="form-control">
 				<option value="">--TODOS--</option>
 				<option value="0">Proccesando</option>
 				<option value="3">Concluido</option>
 				<option value="3">Cancelado</option>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<select name="tipoCliente" class="form-control">
+				<option value="0">--TODOS--</option>
+				<option value="1">Física</option>
+				<option value="2">Jurídica</option>
 			</select>
 		</div>
 		
@@ -82,20 +90,20 @@
 					$opt_agencia[$value['id_agencia']] = $value['nomefantasia_agencia'];
 				}
 				
-				$table->t_init('class="table table-striped"');
-				$table->t_head(array('Data','Processo','Vendedor','Empresa','Agência','Total','Status','Visualizar'));
+				$table->t_init('class="table table-striped" id="tbl_processo"');
+				$table->t_head(array('Data','Processo','Vendedor','Cliente','Agência','Total','Status','Visualizar'));
 				$total = 0;
 				foreach ($processos as $key => $value) {
 					$total += $value['total_venda'];
 				$table->t_row(array(
 						date('d/m/Y',strtotime($value['data_venda'])),
-						$value['nm_processo_vendaPJ'],
+						$value['nm_processo_venda'],
 						$opt_vendedor[$value['id_usuario']],
-						$value['razaosocial_clientePJ'],
+						$value['nomefantasia_clientePJ'] == null ? $value['nome_clientePF'] : $value['nomefantasia_clientePJ'],
 						$value['id_agencia'] == null ? '7 Brasil' : $opt_agencia[$value['id_agencia']],
 						number_format($value['total_venda'],2,',','.'),
-						$status[$value['status_vendaPJ']],
-						'<center><a href="/processosPJ/detalhe/id/'.$value['id_vendaPJ'].'"><span class="glyphicon glyphicon-list-alt"></span></a></center>'
+						$status[$value['status_venda']],
+						'<center><a href="/processosPJ/detalhe/id/'.$value['id_venda'].'"><span class="glyphicon glyphicon-list-alt"></span></a></center>'
 						));
 				}
 				$table->generate();
@@ -217,6 +225,7 @@
 		jQuery('.btn-default').css('width','100%');
 		jQuery('.form-group').css('width','100%');
 		
+		jQuery('#tbl_processo').dataTable({"bFilter": false,"bInfo": false});
 		
 		jQuery('.col-md-offset-2').css('margin-left','0');
 		jQuery('.col-md-10').css('width','82%');

@@ -357,6 +357,20 @@
 
 			$form->groupOpen();	
 			$form->input(array(
+				'name' =>'codigo_hotel',
+				'type' =>'text',
+				'placeholder' => 'Booking Reference',
+				'num_label' =>'2',
+				'num_input' =>'6',
+				'label' =>'Código',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			
+			$form->groupOpen();	
+			$form->input(array(
 				'name' =>'nome_hotel',
 				'type' =>'text',
 				'placeholder' => 'Nome',
@@ -366,6 +380,93 @@
 				'value' =>'',
 				'required' => true
 				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'data_de_hotel',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'De',
+				'value' =>'',
+				'required' => true
+				));
+				
+				$form->input(array(
+				'name' =>'checkin_hotel',
+				'type' =>'time',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Ckeck In',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'data_ate_hotel',
+				'type' =>'date',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'De',
+				'value' =>'',
+				'required' => true
+				));
+				
+				$form->input(array(
+				'name' =>'ckeckout_hotel',
+				'type' =>'time',
+				'placeholder' => '',
+				'num_label' =>'2',
+				'num_input' =>'3',
+				'label' =>'Ckeck Out',
+				'value' =>'',
+				'required' => true
+				));
+			$form->groupClose();
+
+
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'tipo_quartos',
+				'type' =>'text',
+				'placeholder' => 'Type of Room',
+				'num_label' =>'2',
+				'num_input' =>'4',
+				'label' =>'Tipo',
+				'value' =>'',
+				'required' => true
+				));
+				
+			
+			$form->input(array(
+				'name' =>'servicos_hotel',
+				'type' =>'text',
+				'placeholder' => 'Board Base',
+				'num_label' =>'1',
+				'num_input' =>'4',
+				'label' =>'Serviços',
+				'value' =>'',
+				'required' => true
+				));			
+			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->input(array(
+				'name' =>'noites_hotel',
+				'type' =>'text',
+				'placeholder' => 'Nights',
+				'num_label' =>'2',
+				'num_input' =>'2',
+				'label' =>'Noites',
+				'value' =>'',
+				'required' => true
+				));			
 			$form->groupClose();
 			
 			$form->groupOpen();
@@ -1200,7 +1301,20 @@
 			'required' => false
 			));
 		$form->groupClose();
-
+		
+		$form->groupOpen();
+		$form->input(array(
+			'name' =>'codigo_reserva_pasagens',
+			'type' =>'text',
+			'placeholder' => 'Nº Bilhete',
+			'num_label' =>'2',
+			'num_input' =>'8',
+			'label' =>'Código',
+			'value' =>'',
+			'required' => false
+			));
+		$form->groupClose();
+		
 		echo '<input type="checkbox" id="somente_ida" /> <strong>Somente ida</strong>';
 		echo '<fieldset id="fs_ida">';
 		echo '<legend><strong>IDA</strong></legend>';
@@ -1474,7 +1588,7 @@
 							    <p class="list-group-item-text">CPF: <?=$cliente['cpf_clientePF']?></p>
 							    <p class="list-group-item-text">RG: <?=$cliente['rg_clientePF']?></p>
 							    <p class="list-group-item-text">TELEFONE: <?=$cliente['telefone_clientePF']?></p>
-							    <p class="list-group-item-text">ENDEREÇO: <?=$cliente['endereco_clientePF']?></p>
+							    <p class="list-group-item-text">ENDEREÇO: <?=$cliente['endereco_cliente']?></p>
 							  </a>
 							</div>
 						<?php endforeach; ?>	
@@ -1958,14 +2072,14 @@
 			<tr class="warning">
 				<?php
 				$hoje = new DateTime();
-				$niver = new DateTime($v['dt_nascimento_dependentePF']);
+				$niver = new DateTime($v['dt_nascimento_dependente']);
 				
 				$anos = $niver->diff($hoje);
 				 ?>
-				<td><?='Dependente: '.$v['nome_dependentePF'].' -  '.$anos->format('%y').' Anos de idade' ?></td>
+				<td><?='Dependente: '.$v['nome_dependente'].' -  '.$anos->format('%y').' Anos de idade' ?></td>
 				<td>Dependente</td>
 				<td><?=$nome_cli[$v['id_clientePF']]?> </td>
-				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependentePF']?> da lista de venda?')" class="btn btn-danger">Remover</a></td>
+				<td><a href="/venda/deleteDependente/cli/<?=$v['id_clientePF']?>/id/<?=$v['id_dependentePF']?>" onclick="return confirm('Deseja remover <?=$v['nome_dependente']?> da lista de venda?')" class="btn btn-danger">Remover</a></td>
 			</tr>
 			<?php 
 				}
@@ -2195,7 +2309,7 @@
 							jQuery('.dependentePF').html('');
 							jQuery('.dependentePF').append('<input type="hidden" name="id_clientePF" value="'+data[0].id_clientePF+'"/>');
 							for(var i = 0; i < data.length; i++ ){
-								jQuery('.dependentePF').append('<input type="checkbox" name="id_dependentePF[]" value="'+data[i].id_dependentePF+'"/> '+data[i].nome_dependentePF + '<br />');
+								jQuery('.dependentePF').append('<input type="checkbox" name="id_dependentePF[]" value="'+data[i].id_dependentePF+'"/> '+data[i].nome_dependente + '<br />');
 							}
 						}else{
 							jQuery(".dependentePF").html('<h3>Esse cliente não tem dependente!</h3>');

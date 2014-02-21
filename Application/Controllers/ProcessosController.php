@@ -24,10 +24,33 @@ class ProcessosController extends OXE_Controller{
 	public function indexAction()
 	{
 				
-		$data['title'] = 'Processos';
+		$vendaPJ = new Application\Models\Venda();
+		$empresa = new Application\Models\ClientePJ();
+		$agencia = new Application\Models\Agencia();
+		
+		$moeda = new Application\Models\Cambio();
+		$usuario = new Application\Models\Usuario();
+		if($_POST){
+			
+			if(!isset($_POST['id_agente'])){
+				$_POST['id_agente'] = null;
+			}
+			$data['processos'] = $vendaPJ->listaProcessos($_POST);
+		}else{
+			$data['processos'] = $vendaPJ->lista_todosProcessos();
+		}	
+		
+				
+		$data['title'] = 'Processos Empresas';
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
+		
+		$data['empresa'] = $empresa->list_all(); 
+		$data['agencia'] = $agencia->list_all(); 
+		$data['moeda'] = $moeda->list_all(); 
+		$data['usuario'] = $usuario->list_all(); 
+		
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

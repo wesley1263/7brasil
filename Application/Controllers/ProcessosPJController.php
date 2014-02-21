@@ -23,14 +23,14 @@ class ProcessosPJController extends OXE_Controller{
 	
 	public function indexAction()
 	{
-		$vendaPJ = new VendaPJ();
-		$empresa = new Application\Models\ClientePJ();
+		$vendaPJ = new Application\Models\Venda();
+		$empresa = new Application\Models\ClientePF();
 		$agencia = new Application\Models\Agencia();
 		
 		$moeda = new Application\Models\Cambio();
 		$usuario = new Application\Models\Usuario();
 		if($_POST){
-			
+			// $this->dump($_POST);
 			if(!isset($_POST['id_agente'])){
 				$_POST['id_agente'] = null;
 			}
@@ -67,21 +67,21 @@ class ProcessosPJController extends OXE_Controller{
 	
 	public function detalheAction()
 	{
-		$vendaPJ = new VendaPJ();
-		$empresa = new Application\Models\ClientePJ();
+		$vendaPJ = new  Application\Models\Venda();
+		$empresa = new Application\Models\ClientePF();
 		$agencia = new Application\Models\Agencia();
 		$agente = new Application\Models\Agente();
 		
 		$cambio = new Application\Models\Cambio();
 		$moeda = new Application\Models\Moeda();
 		$usuario = new Application\Models\Usuario();
-		$passagens = new Application\Models\PassagensPJ();
+		$passagens = new Application\Models\Passagens();
 		$seguro = new Application\Models\SeguroPJ();
 		$carro = new Application\Models\CarroPJ();
 		$hotel = new Application\Models\HotelPJ();
-		$ticket = new Application\Models\CompraTicketPJ();
-		$produtos = new Application\Models\ProdutoOutrosPJ();
-		$cruzeiro = new Application\Models\CruzeiroPJ();
+		$ticket = new Application\Models\CompraTicket();
+		$produtos = new Application\Models\ProdutoOutros();
+		$cruzeiro = new Application\Models\Cruzeiro();
 		$brokers = new Application\Models\Brokers();
 		$locadora = new Application\Models\Locadora();
 		$seguradora = new Application\Models\Seguradora();
@@ -93,9 +93,10 @@ class ProcessosPJController extends OXE_Controller{
 		$classe = new Application\Models\Classe();
 		$destino = new Application\Models\Destino();
 		$origem = new Application\Models\Origem();
-		$dependente = new Application\Models\VendaDependentePJ();
-		$funcionario = new Application\Models\DependentePJ();
+		$dependente = new Application\Models\VendaDependentePF();
+		$funcionario = new Application\Models\DependentePF();
 		$departamento = new Application\Models\Departamento();
+		$vendaCliente = new Application\Models\VendaClientePF();
 		
 		$param = func_get_args();
 		
@@ -125,6 +126,7 @@ class ProcessosPJController extends OXE_Controller{
 		$data['funcionario'] = $funcionario->list_all();
 		$data['departamento'] = $departamento->list_all();
 		$data['vendas'] = $vendaPJ;
+		$data['vendaCliente'] = $vendaCliente->list_vendaCliente($param[1]);
 		
 		// $data['passagem'] = $passagens;
 		// $data['carro'] = $carro;

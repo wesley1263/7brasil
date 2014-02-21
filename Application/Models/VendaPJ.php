@@ -103,6 +103,7 @@ class VendaPJ extends OXE_Model {
 		ON  venda.id_usuario = user.id_usuario
 		
 		WHERE 1
+		
 		AND venda.data_venda BETWEEN '".date('Y-m-01')."' AND '".date('Y-m-d')."'";
 		
 		return $this->query($query);

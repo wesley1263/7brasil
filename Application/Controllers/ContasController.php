@@ -52,7 +52,7 @@ class ContasController extends OXE_Controller{
 			$limit = 10;
 			$total = ceil(count($this->model->list_all()) / $limit);
 			
-			$data['listas'] = $this->model->lista_tudo($array,$page,$limit);
+			$data['listas'] = $this->model->lista_tudo($array);
 			$data['total'] = $total;
 		}
 		
@@ -111,19 +111,40 @@ class ContasController extends OXE_Controller{
 			$_POST['recibo_conta'] = UPLOAD_PATH.$name.$ext;
 		}
 		
+		 
+		
+		
 		
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);
 		}
 		
+			 $vezes = $_POST['vezes_conta'];
+			 unset($_POST['vezes_conta']);
 		
 		
 		if($_POST['id_contas'] == null){
+			 $valor_total = $_POST['valor_contas'];
+			 $valor_parcelado = $valor_total / $vezes;
+			 $validade = new DateTime($_POST['validade_conta']);
+			 $arrayContas = array();
+			 
 			if(count($this->model->findContas($_POST)) == 0){
-				if($this->model->add($_POST)){
-					$this->session->setFlashMessage('Conta à pagar adicionado ao sistema.','success');
-					$this->redirector('/contas');
-				}
+				for ($i=0; $i < $vezes; $i++) { 
+					
+				 $arrayContas['id_grupo'] = $_POST['id_grupo'];
+				 $arrayContas['id_subgrupo'] = $_POST['id_subgrupo'];
+				 $arrayContas['id_filial'] = $_POST['id_filial'];
+				 $arrayContas['validade_conta'] =  $validade->format("Y-m-d");
+				 $arrayContas['valor_contas'] = $valor_parcelado;
+				 $arrayContas['status_contas'] = '2';
+				 $arrayContas['descricao_contas'] = $_POST['descricao_contas'];
+				 $validade->modify('+ 1 month');
+			$this->model->add($arrayContas);
+			
+		 }
+				$this->session->setFlashMessage('Conta à pagar adicionado ao sistema.','success');
+				$this->redirector('/contas');
 			}else{
 				$this->session->setFlashMessage('Conta à pagar já lançada no sistema!','error');
 				$this->redirector('/contas');

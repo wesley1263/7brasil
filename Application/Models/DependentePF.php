@@ -89,6 +89,8 @@ class DependentePF extends OXE_Model {
 					
 	}
 	
+	
+	
 	public function lista_um($id)
 	{
 		return $this->fetch($this->_primary." = $id");

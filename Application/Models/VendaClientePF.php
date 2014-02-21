@@ -34,5 +34,21 @@ class VendaClientePF extends OXE_Model {
 		return $this->update($data,$this->_primary.' = '.$data['id_venda']);
 	}
 	
+	public function list_vendaCliente($id_venda)
+	{
+		$query = "select cliVen.*, cli.nome_clientePF, cli.nomefantasia_clientePJ, cli.tipo_cliente 
+
+				from venda_clientePF as cliVen
+				
+				inner join tbl_clientePF as cli
+				on cliVen.id_clientePF = cli.id_clientePF
+				
+				where true
+				
+				and cliVen.id_venda = $id_venda";
+				
+				return $this->query($query);
+	}
+	
 	
 }

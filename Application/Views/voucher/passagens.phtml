@@ -1,0 +1,116 @@
+<?php 
+// $this->dump($passagem);
+$id_agencia = $param[3];
+$agencia = $agencia->list_once($id_agencia);
+$img_comp = $compania->list_once($passagem['id_compania']);
+$emp = $empresa->list_all();
+//logotipo_compania
+$img_comp = explode('/',$img_comp['logotipo_compania']);
+	$img_comp = array_slice($img_comp,4);
+	$img_comp = implode('/', $img_comp);
+
+if($id_agencia != '0'){
+	$img = explode('/',$agencia[0]['logotipo_agencia']);
+	$img = array_slice($img,4);
+	$img = implode('/', $img);
+}else{
+	$img = explode('/',$emp[0]['logotipo_empresa']);
+	$img = array_slice($img,4);
+	$img = implode('/', $img);
+}
+
+foreach ($origem as $key => $value) {
+	$opt_origem[$value['id_origem']] = $value['nome_origem'];
+}
+
+foreach ($destino as $key => $value) {
+	$opt_destino[$value['id_destino']] = $value['nome_destino'];
+}
+foreach ($dependentePJ as $key => $value) {
+	$opt_dependente[$value[0]['id_dependentePF']] = $value[0]['nome_dependente'];
+	// $this->dump($value);
+}
+
+// $this->dump($passagem);
+// ob_start();
+ ?>
+<div class="container">
+	
+<table class="table">
+	<tr style="border: 2px solid #131212">
+		<td><img src="/<?=$img?>" /></td>
+		<td><center><h2 style="color: blue;">Bilhete Eletrônico</h2></center></td>
+		<td><img src="/<?=$img_comp?>" /></td>
+	</tr>
+	<tr><td></td></tr>
+	<tr style="border: 2px solid #131212;border-bottom: none">
+		<td colspan="3"><b>Nome do Passageiro:</b> <?=$opt_dependente[$passagem['id_dependente']]?></td>
+	</tr>
+	<tr style="border: 2px solid #131212;border-top: none;">
+		<td><b>Nº do Bilhete:</b> <?=$passagem['codigo_reserva_pasagens']?></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+<br />
+<br />
+<table class="table table-bordered">
+	<thead>
+		<th><center>Voo</center></th>
+		<th><center>Origem</center></th>
+		<th><center>Destino</center></th>
+		<th><center>Data</center></th>
+		<th><center>Saida/Chegada</center></th>
+	</thead>
+	<tr>
+		<td><center><?=$passagem['voo_passagens']?></center></td>
+		<td><center><?=$opt_origem[$passagem['id_origem']]?></center></td>
+		<td><center><?=$opt_destino[$passagem['id_destino']]?></center></td>
+		<td><center><?=date('d/m/Y',strtotime($passagem['dataIda_passagens']))?></center></td>
+		<td><center><?=date('H:i a',strtotime($passagem['saidaIda_passagens'])).' / '.date('H:i a',strtotime($passagem['chegadaIda_passagens']))?></center></td>
+	</tr>
+	<?php if($passagem['dataVolta_passagens'] != '0000-00-00'): ?>
+	<tr>
+		<td><center><?=$passagem['voo_passagens']?></center></td>
+		<td><center><?=$opt_origem[$passagem['id_origem']]?></center></td>
+		<td><center><?=$opt_destino[$passagem['id_destino']]?></center></td>
+		<td><center><?=date('d/m/Y',strtotime($passagem['dataVolta_passagens']))?></center></td>
+		<td><center><?=date('H:i a',strtotime($passagem['saidaVolta_passagens'])).' / '.date('H:i a',strtotime($passagem['chegadaVolta_passagens']))?></center></td>
+	</tr>
+	<?php endif; ?>
+</table>
+<center>
+<ul>
+	<li>Chegar com 3 horas de antecedencia nos Aéroportos.</li>
+	<li>Para embarque é necessário passaporte e visto válido.</li>
+</ul>
+</center>
+</div>
+
+
+
+
+
+
+
+
+
+<?php 
+// $voucher = ob_get_contents();
+// ob_end_clean();
+// try{
+// 	
+	// $this->HTML2PDF->init(); 
+	// $this->HTML2PDF->setDefaultFont('Arial');
+    // $this->HTML2PDF->writeHTML($voucher);
+    // $this->HTML2PDF->Output('exemple00.pdf');
+// }catch(Exception $e){
+	// echo $e->getMessage();
+// }
+
+?>
+<script>
+	jQuery(function(){
+		print();
+	});
+</script>
