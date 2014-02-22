@@ -1,4 +1,8 @@
 <?php
+	foreach ($filial as $key => $value) {
+		$opt_filial[$value['id_filial']] = $value['nome_filial'];
+	}
+
 $id = isset($usuarios) ? $usuarios['id_usuario'] : null;
 	$form->init('form_usuario','/usuario/saveUsuario');
 		$form->groupOpen();	
@@ -34,6 +38,10 @@ $id = isset($usuarios) ? $usuarios['id_usuario'] : null;
 		
 
 
+			$form->groupOpen();	
+			$form->select($opt_filial,'id_filial','Filial',isset($usuarios) ? $usuarios['id_filial'] : 1,2,3);
+			$form->groupClose();
+			
 			$form->groupOpen();	
 			$form->input(array(
 				'name' =>'nome_usuario',

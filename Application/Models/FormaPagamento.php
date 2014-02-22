@@ -43,5 +43,16 @@ class FormaPagamento extends OXE_Model {
 		return $this->query("DESC $this->_name");
 	}
 	
+	public function getFormasAtual($id_venda)
+	{
+		$query = "select * 
+				from tbl_formaPagamento as forma
+				
+				left join tbl_tipoPagamento as tipo
+				on forma.id_tipoPagamento = tipo.id_tipoPagamento
+				
+				where forma.id_venda = $id_venda";
+		return $this->query($query);
+	}
 	
 }

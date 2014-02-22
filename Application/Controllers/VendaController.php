@@ -49,6 +49,7 @@ use Application\Models\OutroProdutoPF;
 use Application\Models\AdicionaClientePF;
 use Application\Models\AdicionarDependentePF;
 use Application\Models\Classificacao;
+use Application\Models\Receber;
 
 
 class VendaController extends OXE_Controller{
@@ -406,7 +407,7 @@ class VendaController extends OXE_Controller{
 		######### Buscando dados na Sessão ############
 		$cliente = $this->session->getSession('id_clientePF');
 		$usuario = $this->session->getSession('user');
-		$formaPagamento = $this->session->getSession('formarPagamento');
+		$SessFormPagamento = $this->session->getSession('formarPagamento');
 		if(isset($_SESSION['dependentes'])){
 			$dependente = $this->session->getSession('dependentes');
 		}else{
@@ -483,18 +484,28 @@ class VendaController extends OXE_Controller{
 				
 				######### Registrando forma de pagamento ###########
 				$data = array();
-				foreach($formaPagamento as $key => $value){
-					foreach($value as $chave => $valor){
+				foreach($SessFormPagamento['id'] as $key => $value){
 						$data['id_venda'] = $id_venda;
-						$data['id_formaPagamento'] = $valor;
+						$data['id_formaPagamento'] = $value;
 						$formPagamento->alter($data);
-					}
 				}
 				
-				
-				
-				
-				
+				$arrayReceber = array();
+				$receber = new Receber();
+				foreach($formPagamento->getFormasAtual($id_venda) as $key => $value){
+					$valor = $value['valor_formaPagamento'] / $value['vezes_formaPagamento'];
+					$dataReceber = new DateTime();
+					for($i = 0;$i < $value['vezes_formaPagamento'];$i++){
+						$arrayReceber['id_formaPagamento'] = $value['id_formaPagamento'];
+						$arrayReceber['id_venda'] = $value['id_venda'];
+						$arrayReceber['id_filial'] = @$usuario['id_filial'];
+						$arrayReceber['valor_receber'] = $valor;
+						$arrayReceber['data_receber'] = $dataReceber->format('Y-m-d');
+						$dataReceber->modify('+ 1 month');
+						$receber->add($arrayReceber);
+						// $this->dump($arrayReceber);
+					}
+				}
 				############### Adicionando ticket venda cliente ###########
 				if(isset($_SESSION['tickets'])){
 					$arrayTicket = array();

@@ -14,12 +14,15 @@ if(isset($_SESSION['success'])){
 	$table->t_init('class="table table-bordered"');
 	$table->t_head(array('Titulo','Status','Editar','Remover'));
 	foreach ($subgrupos as $key => $value) {
+		if($value['id_subgrupo'] != 4){
+			
 		$table->t_row(array(
 				$value['titulo_subgrupo'],
 				$value['status_subgrupo'] == '1' ? 'Ativo' : 'Inativo',
 				'<center><a href="/subgrupo/cadSubgrupo/id/'.$value['id_subgrupo'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
 				'<center><a href="/subgrupo/deleteSubgrupo/id/'.$value['id_subgrupo'].'" onclick=" return confirm(\'Deseja realmente remover Subgrupo?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
 				));
+		}
 	}
 		$table->generate();
 	?>

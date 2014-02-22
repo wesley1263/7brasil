@@ -1,8 +1,7 @@
 <?php
 
 ?>
-<a href="/resultado/cadResultado" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Novo</a>
-	<form class="navbar-form navbar-right" role="search" >
+	<form class="navbar-form navbar-right" role="search" method="post" action="/resultado">
 		<div class="form-group">
 			<input type="date" class="form-control" name="dt_de">
 		</div>
@@ -10,10 +9,11 @@
 			<input type="date" class="form-control" name="dt_ate">
 		</div>
 		<div class="form-group">
-			<select name="id_agencia" class="form-control">
+			<select name="id_filial" class="form-control">
 				<option value="0">Todas</option>
-				<option value="3">7 Brasil - SP</option>
-				<option value="2">7 Brasil - RJ</option>
+				<?php foreach ($filial as $key => $value): ?>
+				<option value="<?=$value['id_filial']?>"><?=$value['nome_filial']?></option>
+				<?php endforeach; ?>
 			</select>
 		</div>
 		<button type="submit" class="btn btn-default">

@@ -35,6 +35,7 @@ class LoginController extends OXE_Controller {
 					'id_empresa' => $ok[0]['id_empresa'],
 					'nome_usuario' => $ok[0]['nome_usuario'],
 					'email_usuario' => $ok[0]['email_usuario'],
+					'id_filial' => $ok[0]['id_filial'],
 					'porcentagem_usuario' => $ok[0]['porcentagem_usuario'],
 					'logado' => true,
 				);

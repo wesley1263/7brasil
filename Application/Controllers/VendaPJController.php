@@ -289,6 +289,23 @@ class VendaPJController extends OXE_Controller{
 						 
 					}
 					
+					$arrayReceber = array();
+				$receber = new Application\Models\Receber();
+				foreach($forma->getFormasAtual($id_venda) as $key => $value){
+					$valor = $value['valor_formaPagamento'] / $value['vezes_formaPagamento'];
+					$dataReceber = new DateTime();
+					for($i = 0;$i < $value['vezes_formaPagamento'];$i++){
+						$arrayReceber['id_formaPagamento'] = $value['id_formaPagamento'];
+						$arrayReceber['id_venda'] = $value['id_venda'];
+						$arrayReceber['id_filial'] = @$usuario['id_filial'];
+						$arrayReceber['valor_receber'] = $valor;
+						$arrayReceber['data_receber'] = $dataReceber->format('Y-m-d');
+						$dataReceber->modify('+ 1 month');
+						$receber->add($arrayReceber);
+						// $this->dump($arrayReceber);
+					}
+				}
+					
 				}
 				
 				

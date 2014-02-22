@@ -5,6 +5,7 @@ use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
 use Application\Models\Usuario;
+use Application\Models\Filial;
 
 class UsuarioController extends OXE_Controller{
 		
@@ -24,6 +25,9 @@ class UsuarioController extends OXE_Controller{
 	
 	public function indexAction()
 	{
+		$filial = new Filial();
+		
+		$data['filial'] = $filial->list_all();
 		$data['title'] = 'Titulo da Pagina';
 		$data['usuarios'] = $this->model->list_all();
 		$data['grupo'] = $this->model->getGrupo();
@@ -45,6 +49,9 @@ class UsuarioController extends OXE_Controller{
 			$data['usuarios'] = $this->model->list_once($param[1]);
 		}
 		
+		$filial = new Filial();
+		
+		$data['filial'] = $filial->list_all();
 		$data['title'] = 'Titulo da Pagina';
 		$data['grupo'] = $this->model->getGrupo();
 		$data['form'] = $this->form;

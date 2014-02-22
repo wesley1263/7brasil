@@ -1,0 +1,148 @@
+	<?php 
+	foreach ($venda as $key => $value) {
+		$opt_venda[$value['id_venda']] = $value['nm_processo_venda'];
+	}
+	
+	foreach ($tipoPagamento as $key => $value) {
+		$opt_tipoPagamento[$value['id_tipoPagamento']] = $value['titulo_tipoPagamento'];
+	}
+	
+	foreach ($tipoCartao as $key => $value) {
+		$opt_tipoCartao[$value['id_tipoCartao']] = $value['titulo_tipoCartao'];
+	}
+	
+	foreach ($formaPagamento as $key => $value) {
+		$opt_forma[$value['id_formaPagamento']] = $value['id_tipoPagamento'];
+			$opt_card[$value['id_formaPagamento']] = $value['id_tipoCartao'];
+	}
+	
+	foreach ($filial as $key => $value) {
+		$opt_filial[$value['id_filial']] = $value['nome_filial'];
+	}
+?>
+	<form class="navbar-form navbar-right" role="search" method="post" action="/receber">
+		<div class="form-group">
+			<input type="date" class="form-control" required="required" name="dt_de" value="<?=date('Y-m-01')?>">
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" required="required" name="dt_ate" value="<?=date('Y-m-t')?>">
+		</div>
+		
+		<div class="form-group" style=" width: 10%; ">
+			<input type="text" class="form-control"  placeholder="Nº Processo" name="nm_processo">
+		</div>
+		<div class="form-group">
+			<select name="id_tipoPagamento" class="form-control">
+				<option value="">TODAS</option>
+				<?php foreach ($tipoPagamento as $key => $value) { ?>
+				<option value="<?=$value['id_tipoPagamento']?>"><?=$value['titulo_tipoPagamento']?></option>
+				<?php } ?>
+			</select>
+		</div>
+		<div class="form-group tipoCartao">
+			<select name="id_tipoCartao" class="form-control">
+				<option value="">TODAS</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<select name="id_filial" class="form-control">
+				<option value="">TODAS</option>
+				<?php foreach ($filial as $key => $value): ?>
+				<option value="<?=$value['id_filial']?>"><?=$value['nome_filial']?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<!-- <div class="form-group">
+			<select name="id_moeda" class="form-control">
+				<option value="">Todas</option>
+				<option value="3">Real-BR</option>
+				<option value="3">Dollar-USA</option>
+			</select>
+		</div> -->
+		
+		<div class="form-group">
+			<select name="status_receber" class="form-control">
+				<option value="">Todos</option>
+				<option value="1">Recebido</option>
+				<option value="0">A Receber</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span>
+		</button>
+	</form>
+	
+	
+	<table class="table table-bordered">
+		<thead>
+			<th>Data</th>
+			<th>Venda</th>
+			<th>Forma</th>
+			<th>Valor</th>
+			<th>Filial</th>
+			<th>Status</th>
+			<th>Alterar</th>
+		</thead>
+		<?php foreach ($receber as $key => $value): ?>
+		<tr>
+			<td><?=date('d/m/Y',strtotime($value['data_receber']))?></td>
+			<td><?=$opt_venda[$value['id_venda']]?></td>
+			<td><?=$opt_tipoPagamento[$opt_forma[$value['id_formaPagamento']]]?> - <?=@$opt_tipoCartao[$opt_card[$value['id_formaPagamento']]]?></td>
+			<td>R$ <?=number_format($value['valor_receber'],2,',','.')?></td>
+			<td><?=$opt_filial[$value['id_filial']]?></td>
+			<td><?=$value['status_receber'] == '0'? 'A Receber' : 'Recebido'?></td>
+			<td>
+				<center>
+				<button type="button" id_receber = "<?=$value['id_receber']?>"  data-loading-text="Carregando..." <?=$value['status_receber'] == '0'? null : 'disabled'?> class="btn btn-primary bt_status">Status</button>
+				</center>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+</div>
+<script>
+jQuery(function(){
+	jQuery('.tipoCartao').hide();
+	
+	jQuery('[name=id_formaPagamento]').change(function(){
+		if(jQuery(this).val() == '3'){
+			jQuery('.tipoCartao').show();
+			
+			jQuery.ajax({
+				url: '/receber/findTipoCartao',
+				dataType: 'json',
+				success: function(data){
+					console.log(data);
+					jQuery('[name=id_tipoCartao]').html('');
+					for(var i = 0; i < data.length; i++){
+						jQuery('[name=id_tipoCartao]').append('<option value="'+data[i].id_tipoCartao+'">'+data[i].titulo_tipoCartao+'</option>');
+					}
+				}
+			});
+			
+		}else{
+			jQuery('[name=id_tipoCartao]').html('');
+			jQuery('.tipoCartao').hide();
+		}
+	});
+	
+  jQuery('.bt_status').click(function () {
+  	if(confirm('Tem realmente certeza do valor recebido?')){
+	    jQuery.ajax({
+	    	url: '/receber/alterStatus',
+	    	type: 'post',
+	    	dataType: 'html',
+	    	data: {id_receber : jQuery(this).attr('id_receber')},
+	    	success: function(data){
+	    		if(data){
+	    			jQuery(this).attr('disabled',true);
+	    			location.reload();
+	    		}else{
+	    			
+	    		}
+	    	}
+	    });
+  	}
+  });
+});
+</script>
