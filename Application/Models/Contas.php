@@ -78,4 +78,25 @@ class Contas extends OXE_Model {
 		return $this->query($query);
 	}
 	
+	public function listaContasMesPaga()
+	{
+		return $this->select()
+					->from()
+					->where("validade_conta BETWEEN '".date('Y-m-01')."' AND '".date('Y-m-t')."'")
+					->where("status_contas = 1")
+					->result();
+	}
+	
+	public function filterContasMesPaga(array $data)
+	{
+		$filial = $data['id_filial'] == '0' ? null : ' AND id_filial = '.$data['id_filial'];
+		$query = "SELECT * FROM $this->_name
+				 WHERE TRUE
+				 AND validade_conta BETWEEN '".$data['dt_de']."' AND '".$data['dt_ate']."'
+				 AND status_contas = 1 
+				 $filial";
+				
+		return $this->query($query);
+	}
+	
 }

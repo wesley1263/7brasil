@@ -64,7 +64,7 @@ if(isset($_SESSION['success'])){
 	}
 	
 	$table->t_init('class="table table-bordered" id="tbl_contas"');
-	$table->t_head(array('Grupo','Subgrupo','Filial','Validade','Status','Editar','Remover'));
+	$table->t_head(array('Grupo','Subgrupo','Filial','Validade','Valor','Status','Editar','Remover'));
 	if(!isset($listas)):
 		
 	
@@ -74,6 +74,7 @@ if(isset($_SESSION['success'])){
 			$opt_subgrupo[$value['id_subgrupo']],
 			$opt_filial[$value['id_filial']],
 			date('d/m/Y',strtotime($value['validade_conta'])),
+			'R$ '.number_format($value['valor_contas'],2,',','.'),
 			$value['status_contas'] == '1' ? 'PAGO' : 'PENDENTE',
 			'<center><a href="/contas/cadContas/id/'.$value['id_contas'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
 			'<center><a href="/contas/deleteContas/id/'.$value['id_contas'].'" onclick=" return confirm(\'Deseja realmente remover Conta?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
@@ -87,6 +88,7 @@ if(isset($_SESSION['success'])){
 			$opt_subgrupo[$value['id_subgrupo']],
 			$opt_filial[$value['id_filial']],
 			date('d/m/Y',strtotime($value['validade_conta'])),
+			'R$ '.number_format($value['valor_contas'],2,',','.'),
 			$value['status_contas'] == 1 ? 'PAGO' : 'PENDENTE',
 			'<center><a href="/contas/cadContas/id/'.$value['id_contas'].'"><span class="glyphicon glyphicon-pencil"></span></a></center>',
 			'<center><a href="/contas/deleteContas/id/'.$value['id_contas'].'" onclick=" return confirm(\'Deseja realmente remover Conta?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'

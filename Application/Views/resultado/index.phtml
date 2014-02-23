@@ -3,10 +3,10 @@
 ?>
 	<form class="navbar-form navbar-right" role="search" method="post" action="/resultado">
 		<div class="form-group">
-			<input type="date" class="form-control" name="dt_de">
+			<input type="date" class="form-control" name="dt_de" value="<?=date('Y-m-01')?>">
 		</div>
 		<div class="form-group">
-			<input type="date" class="form-control" name="dt_ate">
+			<input type="date" class="form-control" name="dt_ate" value="<?=date('Y-m-t')?>">
 		</div>
 		<div class="form-group">
 			<select name="id_filial" class="form-control">
@@ -20,16 +20,73 @@
 			<span class="glyphicon glyphicon-search"></span> Buscar
 		</button>
 	</form>
+	<br />
+	<br />
+	<h2>Pago</h2>
 	<?php 
+	// $this->dump($contas);
+	// $this->dump($receber);
+	foreach ($grupo as $key => $value) {
+		$opt_grupo[$value['id_grupo']] = $value['titulo_grupo'];
+	}
+	
+	foreach ($subgrupo as $key => $value) {
+		$opt_subgrupo[$value['id_subgrupo']] = $value['titulo_subgrupo'];
+	}
+	
+	$opt_moeda['0'] = 'Real-BR';
+	foreach ($moeda as $key => $value) {
+		$opt_moeda[$value['id_cambio']] = $value['titulo_cambio'];
+	}
+	
+	foreach ($usuario as $key => $value) {
+		$opt_usuario[$value['id_usuario']] = $value['nome_usuario'];
+	}
+	
+	foreach ($filial as $key => $value) {
+		$opt_filial[$value['id_filial']] = $value['nome_filial'];
+	}
+	
 	$table->t_init('class="table table-bordered"');
-	$table->t_head(array('Teste','Teste','Status','Editar','Remover'));
+	$table->t_head(array('Grupo','Data','Valor','Moeda','Filial','Subgrupo'));
+	$total_pagar = 0;
+	foreach ($contas as $key => $value) {
+		$total_pagar += $value['valor_contas'];
 	$table->t_row(array(
-						'teste',
-						'teste',
-						'Ativo',
-						'<center><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></center>',
-						'<center><a href="#" onclick=" return confirm(\'Deseja realmente remover ?\')"><span class="glyphicon glyphicon-remove"></span></a></center>'
-						));
+				$opt_grupo[$value['id_grupo']],
+				date('d/m/Y',strtotime($value['validade_conta'])),
+				number_format($value['valor_contas'],2,',','.'),
+				$opt_moeda[$value['id_cambio']],
+				$opt_filial[$value['id_filial']],
+				$opt_subgrupo[$value['id_subgrupo']]
+				));
+	}
 	$table->generate();
 	?>
+	
+	<h2>Recebido</h2>
+	<?php 
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Nome','Data','Valor','Filial','Nº Processo'));
+	$total_receber = 0;
+	foreach ($receber as $key => $value) {
+		$valor = ($value['valor_receber'] - ($value['valor_receber'] * $value['porcentagem_tipoPagamento'])/100 );
+		$total_receber += $valor;
+		$table->t_row(array(
+			$opt_usuario[$value['id_usuario']],
+			date('d/m/Y',strtotime($value['data_receber'])),
+			'R$ '.number_format($valor,2,'.',','),
+			$opt_filial[$value['id_filial']],
+			$value['nm_processo_venda'],
+			));
+	}
+	$table->generate();
+	
+	$total_resultado = $total_receber - $total_pagar;
+	?>
+	
+<br />
+<br />
+<h1> Total de Resultado: (Recebido - Pago)  R$ <?=number_format($total_resultado,2,',','.')?></h1>
+<br />
 </div>

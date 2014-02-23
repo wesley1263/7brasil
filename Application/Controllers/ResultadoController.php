@@ -5,6 +5,12 @@ use Vendor\Library\FormStyle\FormStyle;
 use Vendor\Library\Table\Table;
 use Vendor\Library\Session\Session;
 use Application\Models\Filial;
+use Application\Models\Receber;
+use Application\Models\Contas;
+use Application\Models\Grupo;
+use Application\Models\Subgrupo;
+use Application\Models\Cambio;
+use Application\Models\Usuario;
 
 class ResultadoController extends OXE_Controller{
 		
@@ -18,9 +24,19 @@ class ResultadoController extends OXE_Controller{
 	public function indexAction()
 	{
 		$filial = new Filial();
+		$receber = new Receber();
+		$contas = new Contas();
+		$grupo = new Grupo();
+		$subgrupo = new Subgrupo();
+		$moeda = new Cambio();
+		$usuario = new Usuario();
 		
 		if($_POST){
-			$this->dump($_POST);
+			$data['contas'] = $contas->filterContasMesPaga($_POST);
+			$data['receber'] = $receber->filterReceberMesPago($_POST);
+		}else{
+			$data['receber'] = $receber->listaReceberMesPago();
+			$data['contas'] = $contas->listaContasMesPaga();
 		}
 				
 		$data['title'] = 'Demonstrativo de Resultado';
@@ -28,6 +44,10 @@ class ResultadoController extends OXE_Controller{
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;
 		$data['filial'] = $filial->list_all();
+		$data['grupo'] = $grupo->list_all();
+		$data['subgrupo'] = $subgrupo->list_all();
+		$data['moeda'] = $moeda->list_all();
+		$data['usuario'] = $usuario->list_all();
 				
 		$this->view('template/head',$data);
 		$this->view('template/header');

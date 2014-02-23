@@ -60,7 +60,7 @@ class ContasController extends OXE_Controller{
 		$filial = new Filial();
 		$subgrupo = new Subgrupo();
 				
-		$data['title'] = 'Titulo da Pagina';
+		$data['title'] = 'Contas a Pagar';
 		$data['grupo'] = $grupo->list_all();
 		$data['filial'] = $filial->list_all();
 		$data['subgrupo'] = $subgrupo->list_all();
@@ -85,11 +85,13 @@ class ContasController extends OXE_Controller{
 		$grupo = new Grupo();
 		$filial = new Filial();
 		$subgrupo = new Subgrupo();
+		$moeda = new Application\Models\Cambio();
 		
 		$data['title'] = 'Cadastro de Contas';
 		$data['grupo'] = $grupo->list_all();
 		$data['filial'] = $filial->list_all();
 		$data['subgrupo'] = $subgrupo->list_all();
+		$data['moeda'] = $moeda->list_all();
 		$data['form'] = $this->form;
 		$data['table'] = $this->table;
 		$data['session'] = $this->session;

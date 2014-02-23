@@ -35,6 +35,11 @@ $id = isset($subgrupos)? $subgrupos['id_subgrupo'] : null;
 				'required' => true
 				));
 			$form->groupClose();
+			
+			$form->groupOpen();	
+			$form->select(array('1' => 'Ativo','0'=>'Inativo'),'status_subgrupo','Status',isset($subgrupos)? $subgrupos['status_subgrupo'] : 1,2,3);
+			$form->groupClose();
+			
 			$form->textarea('descricao_subgrupo','Descrição',isset($subgrupos)? $subgrupos['descricao_subgrupo'] : null,'Descrição',2,5);
 		
 		echo str_repeat('<br />',3);

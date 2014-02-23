@@ -62,9 +62,9 @@
 		
 		<div class="form-group">
 			<select name="status_receber" class="form-control">
-				<option value="">Todos</option>
+				<option value="0">Todos</option>
 				<option value="1">Recebido</option>
-				<option value="0">A Receber</option>
+				<option value="2">A Receber</option>
 			</select>
 		</div>
 		<button type="submit" class="btn btn-default">
@@ -73,7 +73,7 @@
 	</form>
 	
 	
-	<table class="table table-bordered">
+	<table class="table table-bordered" id="tbl_receber">
 		<thead>
 			<th>Data</th>
 			<th>Venda</th>
@@ -88,12 +88,13 @@
 			<td><?=date('d/m/Y',strtotime($value['data_receber']))?></td>
 			<td><?=$opt_venda[$value['id_venda']]?></td>
 			<td><?=$opt_tipoPagamento[$opt_forma[$value['id_formaPagamento']]]?> - <?=@$opt_tipoCartao[$opt_card[$value['id_formaPagamento']]]?></td>
-			<td>R$ <?=number_format($value['valor_receber'],2,',','.')?></td>
+			<?php $valor = ($value['valor_receber'] - ($value['valor_receber'] * $value['porcentagem_tipoPagamento'])/100 ); ?>
+			<td>R$ <?=number_format($valor,2,',','.')?></td>
 			<td><?=$opt_filial[$value['id_filial']]?></td>
 			<td><?=$value['status_receber'] == '0'? 'A Receber' : 'Recebido'?></td>
 			<td>
 				<center>
-				<button type="button" id_receber = "<?=$value['id_receber']?>"  data-loading-text="Carregando..." <?=$value['status_receber'] == '0'? null : 'disabled'?> class="btn btn-primary bt_status">Status</button>
+				<button type="button" id_receber = "<?=$value['id_receber']?>"  data-loading-text="Carregando..." <?=$value['status_receber'] == '2'? null : 'disabled'?> class="btn btn-primary bt_status">Status</button>
 				</center>
 			</td>
 		</tr>
@@ -102,6 +103,12 @@
 </div>
 <script>
 jQuery(function(){
+	
+	jQuery('#tbl_receber').dataTable({
+			"bFilter": false,"bInfo": false,
+			"sPaginationType": "full_numbers"
+			});
+	
 	jQuery('.tipoCartao').hide();
 	
 	jQuery('[name=id_formaPagamento]').change(function(){
