@@ -91,6 +91,19 @@
 			'required' => true
 			));
 		$form->groupClose();
+		
+		$form->groupOpen();	
+		$form->input(array(
+			'name' =>'voucher_produto',
+			'type' =>'file',
+			'placeholder' => 'Voucher',
+			'num_label' =>'2',
+			'num_input' =>'5',
+			'label' =>'Voucher',
+			'value' =>'',
+			'required' => false
+			));
+		$form->groupClose();
 		$form->textarea('descricao_produto','descricao_produto','','descricao_produto',2,8);
 		echo str_repeat('<br />',3);
 		

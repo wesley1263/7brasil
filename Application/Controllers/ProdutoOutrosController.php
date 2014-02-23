@@ -58,6 +58,14 @@ class ProdutoOutrosController extends OXE_Controller{
 	
 	public function saveProdutoOutrosAction()
 	{
+		if($_FILES['voucher_produto']['size'] > 0 && $_FILES['voucher_produto']['error'] == UPLOAD_ERR_OK){
+			$file = explode('.', $_FILES['voucher_produto']['name']);
+			$ext = '.'.end($file);
+			$name = md5(time().$file[0]);
+			move_uploaded_file($_FILES['voucher_produto']['tmp_name'],UPLOAD_PATH.$name.$ext);
+			$_POST['voucher_produto'] = UPLOAD_PATH.$name.$ext;
+		}
+		
 		$_POST['titulo_produto'] = strtoupper($_POST['titulo_produto']);
 		foreach($_POST as $key => $value){
 			$_POST[$key] = strip_tags($value);

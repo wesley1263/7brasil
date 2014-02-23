@@ -28,7 +28,7 @@ if(isset($_SESSION['success'])){
 	$table->t_init('class="table table-bordered"');
 	$table->t_head(array('Titulo','Status','Editar','Remover'));
 	foreach($grupos as $grup){
-		if($grup['id_grupo'] != 4){
+		if($grup['id_grupo'] != 1 && $grup['id_grupo'] != 1){
 			$table->t_row(array(
 					$grup['titulo_grupo'],
 					$grup['status_grupo'] == 1 ? 'Ativo' : 'Inativo',
