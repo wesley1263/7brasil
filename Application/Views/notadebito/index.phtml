@@ -1,0 +1,73 @@
+<?php
+foreach ($cliente as $key => $value) {
+	if($value['nomefantasia_clientePJ'] != null){
+		$opt_cliente[$value['id_clientePF']] = $value['nomefantasia_clientePJ'];
+	}else{
+		$opt_cliente[$value['id_clientePF']] = $value['nome_clientePF'];
+	}
+}
+
+
+foreach ($agencia as $key => $value) {
+	$opt_agencia[$value['id_agencia']] = $value['nomefantasia_agencia'];
+}
+
+foreach ($agente as $key => $value) {
+	$opt_agente[$value['id_agente']] = $value['nome_agente'];
+}
+
+if(isset($_SESSION['error'])){
+	echo '<div class="alert alert-danger">'.$this->session->getFlashMessage('error').'</div>';
+}
+?>
+	<form class="navbar-form navbar-right" role="search" method="post" action="/notaDebito">
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_de" value="<?=date('Y-m-01')?>">
+		</div>
+		<div class="form-group">
+			<input type="date" class="form-control" name="dt_ate" value="<?=date('Y-m-t')?>">
+		</div>
+		<div class="form-group">
+			<select name="id_agencia" class="form-control">
+				<?php foreach ($agencia as $key => $value): ?>
+					<option value="<?=$value['id_agencia']?>"><?=$value['nomefantasia_agencia']?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">
+			<span class="glyphicon glyphicon-search"></span> Buscar
+		</button>
+	</form>
+	<form method="post" name="form_nd" action="/notaDebito/detalhe">
+		
+	<?php 
+	// $this->dump($venda);
+	$table->t_init('class="table table-bordered"');
+	$table->t_head(array('Cliente','Agencia','Agente','Data','Processo','<center><input type="checkbox" class="ck_all"></center>'));
+	foreach ($venda as $key => $value) {
+		$table->t_row(array(
+				$opt_cliente[$value['id_clientePF']],
+				$opt_agencia[$value['id_agencia']],
+				$opt_agente[$value['id_agente']],
+				date('d/m/Y',strtotime($value['data_venda'])),
+				$value['nm_processo_venda'],
+				'<center><input type="checkbox" name="id_venda[]" class="ck_venda" value="'.$value['id_venda'].'"></center>'
+				));
+	}
+	
+	$table->generate();
+	echo $submit;
+	?>
+	
+	</form>
+</div>
+<script>
+	jQuery(function(){
+		jQuery('.ck_all').click(function(e){
+			 jQuery(this).closest('[name=form_nd]').find('.ck_venda').prop('checked', this.checked);
+		});
+	
+	
+		
+	});
+</script>

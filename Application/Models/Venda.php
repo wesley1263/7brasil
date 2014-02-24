@@ -233,12 +233,18 @@ class Venda extends OXE_Model {
 	
 	public function getFuncionario($id_venda)
 	{
-		$query = "select venFunc.*
+		$query = "select venFunc.*, cliente.*
 
 				from tbl_venda as venda
 				
 				left join venda_dependentePF as venFunc
 				on venda.id_venda = venFunc.id_venda
+				
+				left join venda_clientePF as venCli
+				on venda.id_venda = venCli.id_venda
+				
+				left join tbl_clientePF as cliente
+				on venCli.id_clientePF = cliente.id_clientePF
 				
 				where venFunc.id_venda = ".$id_venda;
 		return $this->query($query);
@@ -251,6 +257,84 @@ class Venda extends OXE_Model {
 					
 					inner join tbl_dependentePF as dep
 					on cli.id_clientePF = dep.id_clientePF";
+		return $this->query($query);
+	}
+	
+	
+	public function listaClienteDepVenda($id_venda)
+	{
+		$query = "select cli.*, venDep.*
+					from tbl_clientePF as cli
+					
+					inner join tbl_dependentePF as dep
+					on cli.id_clientePF = dep.id_clientePF
+					
+					
+					left join venda_clientePF as venCli
+					on  cli.id_clientePF = venCli.id_clientePF
+					
+					left join venda_dependentePF as venDep
+					on  venCli.id_venda = venDep.id_venda
+					
+					WHERE TRUE
+					AND venCli.id_venda = $id_venda";
+		return $this->query($query);
+	}
+	
+	public function getNotaDebito()
+	{
+		$query = "SELECT * 
+					FROM tbl_venda as venda
+		
+					left join venda_clientePF as venCli
+					on  venda.id_venda = venCli.id_venda
+					
+					WHERE TRUE
+					
+					AND faturado_venda = 1
+					AND data_venda BETWEEN '".date('Y-m-01')."' AND '".date('Y-m-t')."'";
+		return $this->query($query);
+	}
+	
+	public function getFilterNotaDebito(array $data)
+	{
+		$cliente = $data['id_agencia'] == null ? null : ' AND venda.id_agencia = '.$data['id_agencia'];
+		$query = "SELECT * 
+					FROM tbl_venda as venda
+		
+					left join venda_clientePF as venCli
+					on  venda.id_venda = venCli.id_venda
+					
+					WHERE TRUE
+					AND id_agencia IS NOT NULL
+					AND faturado_venda = 1
+					AND data_venda BETWEEN '".$data['dt_de']."' AND '".$data['dt_ate']."'".
+					$cliente;
+				  
+		return $this->query($query);
+	}
+	
+	public function getAgencia($id_agencia)
+	{
+		return $this->select()
+					->from('tbl_agencia')
+					->where("id_agencia = $id_agencia")
+					->result();
+	}
+	
+	public function getCliente($id_venda)
+	{
+		$query = "SELECT * 
+					FROM tbl_venda as venda
+		
+					left join venda_clientePF as venCli
+					on  venda.id_venda = venCli.id_venda
+					
+					left join tbl_clientePF as cliente
+					on venCli.id_clientePF = cliente.id_clientePF
+					
+					WHERE venda.id_venda = $id_venda";
+					
 		return $this->query($query);
 	}
 }

@@ -1,0 +1,184 @@
+<?php 
+
+	$agencia = $produtos->getAgencia($vendas[0][0]['id_agencia']);
+	// $this->dump($agencia);
+	
+foreach ($dependente as $key => $value) {
+	$opt_dependente[$value['id_dependentePF']] = $value['nome_dependente'];
+}
+
+foreach ($agente as $key => $value) {
+	$opt_agente[$value['id_agente']] = $value['nome_agente'];
+}
+
+foreach ($ticket as $key => $value) {
+	$opt_ticket[$value['id_ticket']] = $value['nome_ticket'];
+}
+
+foreach ($locadora as $key => $value) {
+	$opt_locadora[$value['id_locadora']] = $value['nome_locadora'];
+}
+
+foreach ($cruzeiro as $key => $value) {
+	$opt_cruzeiro[$value['id_compania_cruzeiro']] = $value['nome_compania_cruzeiro'];
+}
+
+foreach ($compania as $key => $value) {
+	$opt_compania[$value['id_compania']] = $value['nome_compania'];
+}
+
+foreach ($classe as $key => $value) {
+	$opt_classe[$value['id_classe']] = $value['titulo_classe'];
+}
+
+foreach ($cliente as $key => $value) {
+	if($value['nome_clientePF'] != null){
+		$opt_cliente[$value['id_clientePF']] = $value['nome_clientePF'];
+	}else{
+		$opt_cliente[$value['id_clientePF']] = $value['nomefantasia_clientePJ'];
+		
+	}
+}
+
+foreach ($vendas as $key => $value) {
+	$cliente = $produtos->getCliente($value[0]['id_venda']);
+	$dependentes = $produtos->getFuncionario($value[0]['id_venda']);
+	// $this->dump($value);
+	$total_tudo = 0;
+?>
+<div class="container">
+	<table class="table table-bordered">
+		<tr>
+			<td>
+				<?php
+				$img = explode('/', $empresa[0]['logotipo_empresa']);
+				$img = array_slice($img,4);
+				$img = '/'.implode('/',$img);
+				?>
+				<img src="<?=$_SERVER['HTTP_ORIGIN'].$img?>" style=" width: 100%; " alt="<?=$empresa[0]['nomefantasia_empresa']?>" class="img-thumbnail">
+			</td>
+			<td>
+				<p>Razao Social: <?=$empresa[0]['razaosocial_empresa']?> / <?=$empresa[0]['nomefantasia_empresa']?></p>
+				<p>End.: <?=$empresa[0]['endereco_empresa']?>, <?=$empresa[0]['numero_empresa']?> - <?=$empresa[0]['complemento_empresa']?></p>
+				<p><?=$empresa[0]['cidade_empresa']?> - <?=$empresa[0]['uf_empresa']?> - CEP: <?=$empresa[0]['cep_empresa']?></p>
+				<p>CNPJ: <?=$empresa[0]['cnpj_empresa']?> - I.EST.: <?=$empresa[0]['ie_empresa']?></p>
+				<p>Fone: <?=$empresa[0]['telefone_empresa']?></p>
+				<p>Email: <?=$empresa[0]['email_empresa']?></p>
+			</td>
+		</tr>
+		<tr>
+			<td><strong>DATA: <?=date('d/m/Y',strtotime($value[0]['data_venda']))?></strong></td>
+			<td><center><h2><b>NOTA DE DEBITO</b></h2></center></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<p><b><?=$agencia[0]['nomefantasia_agencia']?> - CNPJ: <?=$agencia[0]['cnpj_agencia']?></b></p>
+			<p><b><?=$agencia[0]['endereco_agencia']?>, <?=$agencia[0]['numero_agencia']?> - <?=$agencia[0]['complemento_agencia']?> - <?=$agencia[0]['bairro_agencia']?></b></p>
+			<p><b><?=$agencia[0]['cidade_agencia']?> , <?=$agencia[0]['uf_agencia']?>, <?=$agencia[0]['cep_agencia']?></b></p>
+			
+			<p><b>VALOR:............ R$ <?=number_format($value[0]['total_venda'],2,',','.')?></b></p>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<p><b>DESCRIÇÃO DOS SERVIÇOS: </b></p>
+				<p><b>PROCESSO: </b> <?=$value[0]['nm_processo_venda']?> - <?=$opt_agente[$value[0]['id_agente']]?> - DATA: <?=date('d/m/Y',strtotime($value[0]['data_venda']))?></p>
+				<br />
+				<br />
+				<p>DESCRIÇÃO: </p>
+				<p><b>CLIENTE: <?=$opt_cliente[$cliente[0]['id_clientePF']]?></b></p>
+				
+				<?php foreach ($produtos->getHotel($value[0]['id_venda']) as $chave => $valor):  ?>
+					<p><?=$valor['cidade_hotel']?>/<?=$valor['uf_hotel']?> - De: <?=date('d/m/Y',strtotime($valor['data_de_hotel']))?> A  <?=date('d/m/Y',strtotime($valor['data_ate_hotel']))?> - <?=$valor['noites_hotel']?> DIARIAS EM <?=$valor['tipo_quartos']?></p>				
+					<?php 
+					$total = $valor['valor_hotel'] + $valor['valor_casa_hotel'] + $value[0]['valor_agencia'];
+					$total_tudo += $total;
+					?>
+					<p>R$ <?=number_format($total,2,',','.')?></p>
+					<br />
+				<?php endforeach; ?>
+				
+				
+				<?php foreach ($produtos->getCarros($value[0]['id_venda']) as $chave => $valor):  ?>
+					<?=$opt_locadora[$valor['id_locadora']]?> - <?=$valor['local_inicio_carro']?> - DE  <?=date('d/m/Y',strtotime($valor['dt_inicio_carro']))?>  A  <?=date('d/m/Y',strtotime($valor['dt_devolucao_carro']))?>
+					<?php 
+					$total = $valor['valor_carro'] + $valor['valor_casa_carro'] + $valor['taxa_carro'] + $value[0]['valor_agencia'];
+					$total_tudo += $total;
+					?>
+					<p>R$ <?=number_format($total,2,',','.')?></p>
+				<?php endforeach; ?>
+				
+				<!--
+				<?php foreach ($produtos->getSeguro($value[0]['id_venda']) as $chave => $valor):  ?>
+					<?php $this->dump($valor) ?>
+				
+				<?php endforeach; ?>
+				-->
+				
+				<?php foreach ($produtos->getTicket($value[0]['id_venda']) as $chave => $valor):  ?>
+					<?php 
+					$total = $valor['valor_compraTicket'] + $valor['comissao_compraTicket'] + $value[0]['valor_agencia'];
+					$total_tudo += $total;
+					?>
+					<p><?=$opt_ticket[$valor['id_ticket']]?> - FORNECEDOR: <?=$valor['fornecedor_compraTicket']?></p>
+					<p>R$ <?=number_format($total,2,',','.')?></p>
+					<p></p>
+				
+				<?php endforeach; ?>
+				
+				
+				<?php foreach ($produtos->getCruzeiro($value[0]['id_venda']) as $chave => $valor):  ?>
+					<?=$opt_cruzeiro[$valor['id_compania_cruzeiro']]?> 
+					- CABINE: <?=$valor['tipo_cabine_cruzeiro']?> 
+					- ROTA: <?=$valor['rota_cruzeiro']?>
+					- N º<?=$valor['nm_confirmacao_cruzeiro']?> 
+					- DE <?=date('d/m/Y',strtotime($valor['dt_inicio_cruzeiro']))?> A <?=date('d/m/Y',strtotime($valor['dt_fim_cruzeiro']))?>
+					<?php
+					$total = $valor['valor_cruzeiro'] + $valor['comissao_cruzeiro'] + $value[0]['valor_agencia'];
+					$total_tudo += $total;
+					 ?>
+					<p>R$ <?=number_format($total,2,',','.')?></p>
+				<?php endforeach; ?>
+				
+				<!--
+				<?php foreach ($produtos->getProdutos($value[0]['id_venda']) as $chave => $valor):  ?>
+					<?php $this->dump($valor) ?>
+				
+				<?php endforeach; ?>
+				-->
+				
+				<?php foreach ($produtos->getPassagens($value[0]['id_venda']) as $chave => $valor):  ?>
+					COMPANIA: <?=$opt_compania[$valor['id_compania']]?>
+					- CLASSE: <?=$opt_classe[$valor['id_classe']]?>
+					- VOO : <?=$valor['voo_passagens']?>
+					- DATA <?=date('d/m/Y',strtotime($valor['dataIda_passagens']))?>
+					- PARTIDA <?=date('H:i',strtotime($valor['saidaIda_passagens']))?>
+					- CHEGADA <?=date('H:i',strtotime($valor['chegadaIda_passagens']))?>
+					<?php 
+					$total = $valor['tarifa_passagens'] + $valor['valor_casa_passagens'] + $valor['tx_embarque_passagens'] + $valor['tx_outras_passagens'] + $valor['tx_repasse_passagens'] + $value[0]['valor_agencia'];
+					$total_tudo += $total;
+					
+					?>
+					<p>R$ <?=number_format($total,2,',','.')?></p>
+				<?php endforeach; ?>
+				
+				<?php
+				$valor_total = $total_tudo - $value[0]['valor_agencia'];
+				?>
+				<p><b>TOTAL: <?=number_format($total_tudo,2,',','.')?> - <?=number_format($value[0]['valor_agencia'],2,',','.')?> = <?=number_format($valor_total,2,',','.')?></b></p>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><center><strong> TOTAL DE DEBITO DOS SERVIÇOS TURISTICOS: R$ <?=number_format($valor_total,2,',','.')?></strong></center></td>
+		</tr>
+	</table>
+	<a href="#" class="btn btn-default print"><span class="glyphicon glyphicon-print"></span></a>
+<?php } ?>
+</div>
+<script>
+	jQuery(function(){
+		jQuery('.print').click(function(){
+			$('.table').printElement();
+		});
+	});
+</script>
